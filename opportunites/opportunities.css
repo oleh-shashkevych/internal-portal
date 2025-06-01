@@ -1,0 +1,1374 @@
+.opportunity_details,
+.contact_roles,
+.quotes,
+.funding_details,
+.documents,
+.follow_up {
+	display: none;
+}
+
+.opportunity_details.selected,
+.contact_roles.selected,
+.quotes.selected,
+.funding_details.selected,
+.documents.selected,
+.follow_up.selected {
+	display: block;
+}
+
+.content_main-opportunities {
+	border-radius: 3px;
+	border: 1px solid #eee;
+	background: #fff;
+	box-shadow: 0px 0px 10px 0px rgba(8, 30, 11, 0.01);
+	padding: 24px;
+	min-width: 1260px;
+	overflow: auto;
+	min-height: calc(100vh - 147px);
+}
+
+.opportunities_nav {
+	display: flex;
+	align-items: center;
+	margin-bottom: 28px;
+}
+.opportunities_nav-item {
+	color: rgba(35, 35, 35, 0.65);
+	font-family: 'proxima_novasemibold';
+	font-size: 16px;
+	text-transform: capitalize;
+	padding: 12px 0;
+	border-bottom: 1.3px solid transparent;
+	cursor: pointer;
+	width: 100%;
+}
+
+.opportunities_nav-item:hover {
+	color: #159c2a;
+	border-bottom: 1.3px solid #159c2a;
+}
+
+.opportunities_nav-item.selected {
+	color: #159c2a;
+	border-bottom: 1.3px solid #159c2a;
+}
+
+.quotes_top {
+	border-radius: 3px 3px 0px 0px;
+	border-bottom: 1px solid #eee;
+	background: #fff;
+	padding: 25px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border: 1px solid #eee;
+}
+.quotes_top-nav {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	background: #f9f9f9;
+	padding: 3px 2px;
+	height: 45px;
+}
+
+.quotes_top-nav--item {
+	padding: 7px 10px;
+	position: relative;
+	color: #232323;
+	font-family: 'proxima_nova';
+	font-size: 15px;
+	text-transform: capitalize;
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.quotes_top-nav--item:not(:last-child)::after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	right: 0;
+	width: 1px;
+	height: 70%;
+	background: #e8e9e8;
+}
+
+.quotes_top-nav--item.active {
+	border: 1px solid #e8e9e8;
+	background: #fff;
+}
+
+.quotes_top-nav--item.active {
+	font-family: 'proxima_novasemibold';
+}
+
+.quotes_top-nav--item.active span {
+	font-family: 'proxima_nova';
+}
+
+.quotes_top-nav--item.active::after {
+	background: transparent;
+}
+
+.quotes_top-btns {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.quotes_top-btns button {
+	border: 1px solid #d0d3d1;
+	color: #232323;
+	text-align: center;
+	font-family: 'proxima_novasemibold';
+	font-size: 14px;
+	padding: 10px 25px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	background: #fff;
+	height: 45px;
+}
+
+.quotes_top-btns button:hover {
+	background: #232323;
+	color: #fff;
+}
+
+.quotes_top-btns button:hover > svg path {
+	fill: #fff;
+}
+
+.quotes_quotesBlock,
+.quotes_referral,
+.quotes_merchant,
+#add_new-referral {
+	display: none;
+}
+
+.quotes_quotesBlock.active,
+.quotes_referral.active,
+.quotes_merchant.active {
+	display: block;
+}
+
+.quotes_quotesBlock.active #submit_deal {
+	display: block;
+}
+
+.quotes_referral.active #add_new-referral {
+	display: block;
+}
+
+.quotes_quotesBlock-top {
+	border-bottom: 1px solid #e8e9e8;
+	background: #fff;
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05),
+		0px -1px 4px 0px rgba(0, 0, 0, 0.05);
+	display: grid;
+	grid-template-columns: 180px 160px 120px 140px 140px 140px 240px;
+	padding: 13px 30px;
+	justify-items: start;
+	justify-content: space-between; /* Выравниваем элементы по началу */
+	color: #232323;
+	font-family: 'proxima_novasemibold';
+	font-size: 14px;
+	text-transform: capitalize;
+}
+
+.quotes_quotesBlock-items {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #eee;
+	border-radius: 3px;
+}
+
+.quotes_quotesBlock-item {
+	border-bottom: 1px solid #eee;
+	background: #fff;
+	display: grid;
+	grid-template-columns: 180px 160px 120px 140px 140px 140px 240px;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 30px;
+	color: rgba(35, 35, 35, 0.7);
+	font-family: 'proxima_nova';
+	font-size: 13px;
+	height: 45px;
+}
+
+.quotes_quotesBlock-item:hover {
+	text-decoration: none;
+	color: inherit;
+	background: #eee;
+}
+
+.quotes_quotesBlock-item .details {
+	display: block;
+	width: 100%; /* Ширина для урезанного текста */
+	height: auto; /* Высота для автоматического размещения текста */
+	position: relative;
+	cursor: pointer;
+	color: var(--071-c-0-c, #48644d);
+	font-family: 'proxima_nova';
+	font-size: 13px;
+}
+
+.quotes_quotesBlock-item .details p {
+	margin: 0; /* Убираем отступы у параграфа */
+	white-space: normal; /* Текст может переноситься */
+	overflow: hidden; /* Обрезаем текст */
+	text-overflow: ellipsis; /* Добавляем многоточие при обрезке */
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* Ограничиваем текст двумя строками */
+	-webkit-box-orient: vertical; /* Вертикальная ориентация */
+	width: 240px;
+}
+
+.quotes_quotesBlock-item .details_tooltip {
+	position: absolute;
+	left: 0px;
+	bottom: -40px;
+	background: #fff;
+	color: var(--071-c-0-c, #48644d);
+	border: 1px solid #000;
+	font-family: 'proxima_nova';
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-size: 13px;
+	z-index: 10;
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out;
+	pointer-events: none;
+	width: 270px;
+	white-space: normal;
+	word-wrap: break-word;
+	line-height: 1.4;
+}
+
+.quotes_quotesBlock-item .details:hover .details_tooltip {
+	opacity: 1;
+}
+
+.last_modified,
+.sender,
+.lender,
+.status,
+.approval_amount,
+.competing,
+.details {
+	width: 100%;
+	min-width: 0;
+}
+
+.competing {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.approval_amount {
+	color: #232323;
+}
+
+.status > div {
+	height: 19px;
+	padding: 2px 6px;
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	color: #000;
+	background: #eee;
+	text-align: center;
+	font-family: 'proxima_novasemibold';
+	font-size: 12px;
+	text-transform: uppercase;
+	width: fit-content;
+	line-height: normal;
+}
+
+.status .status_approved {
+	color: #1bb21b;
+	background: #f2fff4;
+}
+.status .status_underwriting {
+	color: #808080;
+	background: rgba(128, 128, 128, 0.37);
+}
+.status .status_contracts_out {
+	color: #d6a30f;
+	background: #fff6db;
+}
+.status .status_declined {
+	color: #ff5555;
+	background: rgba(255, 0, 0, 0.12);
+}
+.status .status_funded {
+	color: #008000;
+	background: rgba(0, 128, 0, 0.26);
+}
+.status .status_contracts-in {
+	color: #42a7c8;
+	background: #f0fbff;
+}
+
+.quotes_top-btns .submit_deal {
+	border-radius: 5px;
+	background: #159c2a;
+	color: #fff;
+	border: 1px solid transparent;
+}
+
+.quotes_top-btns .submit_deal:hover {
+	border: 1px solid #159c2a;
+	background: transparent;
+	color: #159c2a;
+}
+
+.quotes_referral-table {
+	margin-top: 22px;
+}
+
+.quotes_referral-table--top {
+	display: grid;
+	grid-template-columns: 110px 95px 100px 100px 80px 100px 75px 100px 85px 40px 90px 40px;
+	align-items: center;
+	gap: 18px;
+	border-bottom: 1px solid #e8e9e8;
+	padding-bottom: 4px;
+	color: rgba(35, 35, 35, 0.8);
+	font-family: 'Sofia Pro-M';
+	text-transform: capitalize;
+	font-size: 15px;
+}
+
+.quotes_referral-table--item {
+	display: grid;
+	grid-template-columns: 110px 95px 100px 100px 80px 100px 75px 100px 85px 40px 90px 40px;
+	align-items: center;
+	gap: 18px;
+	padding: 10px 0;
+	border-bottom: 1px solid #e8e9e8;
+	color: #232323;
+	font-family: 'Sofia Pro';
+	font-size: 14px;
+}
+
+.referral-table-date {
+	padding-left: 10px;
+	width: 110px;
+	flex-shrink: 0;
+}
+
+.quotes_referral-table--item .referral-table-date {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	color: #636864;
+	font-family: 'Sofia Pro';
+	font-size: 14px;
+	text-transform: capitalize;
+}
+
+.referral-table-stips {
+	text-align: center;
+}
+
+.proposed {
+	border-radius: 3px;
+	background: rgba(27, 178, 27, 0.15);
+	padding: 2px 6px;
+	color: #159c2a;
+}
+
+.quotes_referral-table--item .referral-table-stips {
+	cursor: pointer;
+}
+
+.referral-table-delete-btn {
+	border-radius: 3px;
+	background: #8b928c80;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 27px;
+	height: 24px;
+	margin: 0 auto;
+}
+
+.referral-table-delete-btn:hover {
+	background: rgb(236, 2, 2);
+}
+
+.create_quote-documents--item_checkbox {
+	border-radius: 2px;
+	border: 1.2px solid var(--1px, #c8d4ca);
+	background: #fff;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+	position: relative;
+	flex-shrink: 0;
+}
+
+.create_quote-documents--item_checkbox.checked {
+	background-color: #159c2a;
+	border-color: #159c2a;
+}
+
+.create_quote-documents--item_checkbox.checked::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	transform: translate(-50%, -50%);
+	background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><rect width="16" height="16" rx="2" fill="%23159C2A"/><path d="M6.18182 9.53898L3.79545 7.34429L3 8.07585L6.18182 11.0021L13 4.73156L12.2045 4L6.18182 9.53898Z" fill="white" stroke="white" stroke-width="0.5"/></svg>');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.popup-delete {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: none; /* Схований за замовчуванням */
+	justify-content: center;
+	align-items: start;
+	z-index: 10000;
+	padding-top: 250px;
+}
+
+.popup-delete.open {
+	display: flex;
+}
+
+.popup-add.open {
+	display: flex;
+}
+
+.popup-stips.open {
+	display: flex;
+	align-items: start;
+	padding-top: 150px;
+	overflow: auto;
+}
+
+.popup-delete .popup-content {
+	background: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	max-width: 400px;
+	text-align: center;
+}
+
+.popup-delete h3 {
+	margin-bottom: 20px;
+	font-size: 1.25rem;
+}
+
+.popup-delete .popup-buttons {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.popup-delete .btn-delete {
+	padding: 10px 20px;
+	background: #f44336;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.popup-delete .btn-cancel {
+	padding: 10px 20px;
+	background: #4caf50;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 1rem;
+}
+
+.popup-delete button:hover {
+	transform: translateY(2px);
+}
+
+.popup-add {
+	align-items: center;
+	padding-top: 0;
+}
+
+#add-item-form {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 15px;
+	align-items: end;
+}
+
+.popup-add .popup-content {
+	width: 682px;
+	max-width: 100%;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.popup-stips .popup-content {
+	width: 682px;
+	max-width: 100%;
+}
+
+.popup_add-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+.popup-add h3 {
+	color: #232323;
+	font-family: 'Sofia Pro-S';
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+	margin-bottom: 0;
+}
+.popup_add-item {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	position: relative;
+}
+
+.popup_add-item label {
+	margin-bottom: 0;
+	color: rgba(35, 35, 35, 1);
+	font-family: 'proxima_novasemibold';
+	text-align: start;
+}
+
+.popup_add-item input,
+.custom-selectADD,
+.popup-stips input {
+	border: 1px solid #d0d3d1;
+	background: #fff;
+	width: 100%;
+	padding: 10px;
+	color: #232323;
+	font-family: 'proxima_nova';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.custom-selectADD {
+	cursor: pointer;
+	padding: 0;
+	min-height: 42px;
+	position: relative;
+}
+
+.custom-selectADD::after {
+	content: '';
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 10px;
+	height: 10px;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="10" viewBox="0 0 5 10" fill="none"><path d="M-3.47013e-07 1.55982L3.09171 5.17843L-4.63892e-08 8.79704L0.95413 9.91382L5 5.17843L0.95413 0.443049L-3.47013e-07 1.55982Z" fill="%238B928C80"/></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	transform: rotate(90deg);
+}
+
+.popup_add-item input:focus,
+.popup-stips input:focus {
+	box-shadow: 0px 0px 1px 0px #159c2a;
+	border: 1px solid #159c2a;
+}
+
+.popup-stips input {
+	padding-right: 35px;
+}
+
+.select-input {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	min-height: 42px;
+	padding: 10px;
+}
+
+.options-list {
+	position: absolute;
+	top: calc(100% + 5px);
+	left: 0;
+	right: 0;
+	border: 1px solid #ccc;
+	background: #fff;
+	max-height: 150px;
+	overflow-y: auto;
+	z-index: 100;
+	display: none;
+}
+
+.options-list li {
+	padding: 8px 10px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.options-list li:hover {
+	background-color: #ddf1e1;
+}
+
+.options-list.show,
+.options-listPay.show {
+	display: block;
+}
+
+.payments_modal-btn {
+	border-radius: 5px;
+	background: #159c2a;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 43px;
+	color: #fff;
+	font-family: 'proxima_novasemibold';
+	font-size: 15px;
+	transition: 300ms ease;
+	width: 40%;
+	margin: 0 auto;
+}
+
+.payments_modal-btn:hover {
+	background: #fff;
+	border: 1px solid #159c2a;
+	color: #159c2a;
+}
+
+.popup-stips h3 {
+	color: #232323;
+	font-family: 'Sofia Pro-S';
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+	margin-bottom: 0;
+}
+
+.edit_check-wrapper {
+	margin-top: 50px;
+	margin-bottom: 25px;
+	display: flex;
+	flex-direction: column;
+}
+
+.edit_check {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: #8b928c80;
+	font-family: 'proxima_nova';
+	text-transform: capitalize;
+	height: 42px;
+	cursor: pointer;
+	width: fit-content;
+}
+
+.edit_check p {
+	flex-shrink: 0;
+}
+
+.voided_check-input {
+	display: none;
+}
+
+.edit_check:has(.create_quote-documents--item_checkbox.checked) {
+	color: #159c2a;
+	font-family: 'proxima_novasemibold';
+	width: 100%;
+}
+
+.edit_check:has(.create_quote-documents--item_checkbox.checked)
+	.voided_check-input {
+	display: block;
+}
+
+.popup_edit-items {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.popup_edit-item {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.popup_edit-add {
+	border-radius: 3px;
+	background: #8b928c80;
+	border: none;
+	width: 36px;
+	height: 33px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+}
+.popup_edit-btns {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 17px;
+	margin-top: 40px;
+}
+.popup_edit-cancel {
+	border-radius: 3px;
+	background: #1b1b1b;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	color: #fff;
+	width: 96px;
+}
+
+.popup_edit-save {
+	border-radius: 3px;
+	background: #159c2a;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	color: #fff;
+	width: 79px;
+}
+
+.delete-field-btn {
+	position: absolute;
+	right: 10px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+input.error {
+	border-color: #ff0000;
+}
+
+.popup_edit-item input.error {
+	border-color: #ff0000;
+}
+
+/* Optional: Add a shake animation for invalid inputs */
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-10px);
+	}
+	75% {
+		transform: translateX(10px);
+	}
+}
+
+input.error,
+.custom-selectADD.error {
+	animation: shake 0.3s ease-in-out;
+}
+
+/*funding_details*/
+
+.funding_details-edit {
+	border-radius: 5px;
+	background: #8b928c80;
+	width: 25px;
+	height: 25px;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.funding_details-edit:hover {
+	background: #159c2a;
+}
+
+.funding_details-info {
+	padding: 25px 20px;
+	border-radius: 3px;
+	border: 1px solid #eee;
+	background: #fff;
+}
+.funding_details-info_items {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 8px;
+}
+.funding_details-info_item {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	color: rgba(35, 35, 35, 0.8);
+	font-size: 14px;
+}
+
+.funding_details-info_item span {
+	min-width: 180px;
+	padding: 10px 0;
+	font-family: 'proxima_nova';
+}
+
+.funding_details-info_item p {
+	font-family: 'proxima_novasemibold';
+}
+
+.funding_details-editModal {
+	background: #fff;
+	display: none;
+}
+
+.funding_details-editModal.selected {
+	display: block;
+}
+
+.funding_details-editModal_items {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 35px;
+}
+.funding_details-editModal_item {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.funding_details-editModal_item label,
+.funding_details-editModal_checkboxField label {
+	color: rgba(35, 35, 35, 0.8);
+	font-family: 'proxima_novasemibold';
+	font-size: 14px;
+}
+
+.funding_details-editModal_field {
+	border: 1px solid #d0d3d1;
+	background: #fff;
+	box-shadow: 0px 0px 1px 0px rgba(223, 229, 224, 0.1);
+	height: 45px;
+	position: relative;
+}
+
+.funding_details-editModal_field:hover {
+	border: 1px solid #000;
+}
+
+.funding_details-editModal_field:active {
+	border: 1px solid #000;
+}
+
+.funding_details-editModal_field.error {
+	border: 1px solid red;
+}
+
+.funding_details-editModal_calendarField {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	padding: 10px;
+}
+
+.funding_details-editModal_customSelect {
+	cursor: pointer;
+	color: #232323;
+	font-size: 16px;
+	font-family: 'proxima_nova';
+	padding: 10px;
+}
+
+.funding_details-editModal_textField input {
+	width: 100%;
+	border: none;
+	outline: none;
+	color: #232323;
+	font-size: 16px;
+	font-family: 'proxima_nova';
+	padding: 10px;
+	height: 100%;
+}
+
+.funding_details-editModal_textField input::placeholder {
+	font-family: 'proxima_nova';
+	font-size: 16px;
+	color: #aaa;
+}
+
+.funding_details-editModal_textAreaField {
+	height: 100px;
+}
+
+.funding_details-editModal_textAreaField textarea {
+	height: 100%;
+	width: 100%;
+	resize: none;
+	border: none;
+	outline: none;
+	color: #232323;
+	font-size: 16px;
+	font-family: 'proxima_nova';
+	padding: 10px;
+}
+
+.funding_details-editModal_textAreaField textarea::placeholder {
+	color: #aaa;
+}
+
+.funding_details-editModal_checkboxField {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 16px;
+	font-family: 'proxima_nova';
+	cursor: pointer;
+}
+
+.funding_details-editModal_checkboxField label {
+	pointer-events: none;
+}
+
+.custom_checkbox {
+	border-radius: 3px;
+	border: 1px solid #c6c6c6;
+	background: #fff;
+	flex-shrink: 0;
+	width: 16px;
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custom_checkbox.error {
+	border: 1px solid red;
+}
+
+.custom_checkbox.checked {
+	background: #159c2a;
+	border: 1px solid #159c2a;
+}
+
+.funding_details-editModal_checkboxField:hover > .custom_checkbox {
+	border: 1px solid #000;
+}
+
+.funding_details-editModal_item.full-width {
+	grid-column: span 2;
+}
+
+.funding_details-editModal_btns {
+	display: flex;
+	align-items: center;
+	gap: 26px;
+	justify-content: end;
+	margin-top: 40px;
+	text-align: center;
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+.funding_details-editModal_cancel {
+	width: 150px;
+	height: 45px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Montserrat', sans-serif;
+	color: #f00;
+	border-radius: 5px;
+	border: 1px solid #f00;
+	background: #fff;
+	font-weight: 600;
+}
+.funding_details-editModal_save {
+	width: 150px;
+	height: 45px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-weight: 600;
+	border-radius: 5px;
+	background: #159c2a;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 600;
+}
+
+.funding_details-editModal_cancel:hover,
+.funding_details-editModal_save:hover {
+	scale: 0.95;
+}
+
+.arrow_select {
+	display: inline-block;
+	transition: transform 0.3s ease;
+	transform-origin: center;
+	position: absolute;
+	right: 10px;
+}
+
+/*funding_details*/
+
+.logo_burger {
+	display: none;
+}
+
+#burger,
+#close_burger {
+	display: none;
+}
+
+.swiper-container {
+	max-width: 1260px !important;
+}
+
+.swiper-slide {
+	text-align: center;
+}
+
+#go_home-desc {
+	display: block;
+}
+
+#go_home-mob {
+	display: none;
+}
+
+.hidden-date-input {
+	/* Невидим, не занимает места, но клики можно эмулировать через JS */
+	opacity: 0;
+	position: absolute;
+	pointer-events: none;
+	width: 0;
+	height: 0;
+	z-index: -9999;
+}
+
+/* Класс, скрывающий элемент визуально, но оставляющий его в документе */
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* Примерно так можно стилизовать контейнер, чтобы не "дёргался" */
+.funding_details-editModal_calendarField {
+	position: relative;
+}
+
+.flatpickr-calendar.open {
+	top: 55px !important;
+	left: 0 !important;
+}
+
+.funding_details-editModal_calendarField span {
+	margin-right: auto; /* чтобы иконка ушла вправо */
+}
+
+.mobile-input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	z-index: 2;
+	border: none;
+	background: transparent;
+}
+
+@media screen and (max-width: 1910px) {
+	.right_cp_bar {
+		min-width: 0;
+	}
+
+	.content_main-opportunities {
+		min-width: 0;
+		overflow-x: hidden;
+	}
+
+	.notes_bar {
+		position: fixed;
+		right: 0;
+		top: 80px;
+		padding-top: 0;
+		padding-left: 0;
+		z-index: 99;
+	}
+
+	.comments {
+		padding-bottom: 35px;
+	}
+
+	.right_cp_bar {
+		padding: 19px 26px 19px 26px;
+	}
+
+	.quote_item-top {
+		padding-right: 80px;
+	}
+}
+
+@media screen and (max-width: 1050px) {
+	.left_cp_bar {
+		position: fixed;
+		height: 100%;
+		min-height: 100vh;
+		z-index: 500;
+		padding: 15px 0;
+		width: 325px;
+		transform: translateX(-120%);
+		transition: 300ms ease;
+		z-index: 999;
+	}
+	.cp_left_nav_def,
+	.logo_cp_bar {
+		width: 325px;
+	}
+
+	.logo_cp_bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.logo_cp_bar,
+	.cp_left_nav_el a {
+		padding: 0 18px;
+	}
+
+	.header_cp_bar {
+		padding: 0 26px;
+	}
+
+	.main_cp_bar {
+		min-height: 0;
+		height: 100%;
+	}
+
+	.main_container {
+		min-width: 0;
+	}
+
+	.cp_body {
+		min-width: 0;
+	}
+	.logo_burger {
+		display: flex;
+		align-items: center;
+		gap: 27px;
+	}
+
+	#burger,
+	#close_burger {
+		cursor: pointer;
+		display: block;
+	}
+
+	.page_nav {
+		background: #fff;
+		height: 36px;
+		padding: 10px 0 10px 13px;
+		margin-bottom: 19px;
+	}
+
+	.quote_item-top--right {
+		display: none;
+	}
+
+	.content_main-opportunities {
+		background: transparent;
+		padding: 0;
+		border: none;
+		box-shadow: none;
+	}
+
+	.opportunities_nav {
+		padding: 0 10px;
+		margin-bottom: 19px;
+		margin-top: 19px;
+		background: #fff;
+	}
+
+	.swiper-container {
+		background: #fff;
+	}
+
+	.quotes {
+		overflow-x: hidden;
+	}
+
+	/* .notes_bar {
+		top: 136px;
+	} */
+
+	.quote_item-middle-internal,
+	.quote_item-middle-external {
+		width: 53px;
+		height: 53px;
+	}
+
+	.quote_item-top {
+		padding-right: 0px;
+	}
+
+	.funding_details-editModal {
+		padding: 20px;
+	}
+}
+
+@media screen and (max-width: 850px) {
+	.funding_details-info_items,
+	.funding_details-editModal_items {
+		grid-template-columns: 1fr;
+	}
+
+	.funding_details-editModal_item.full-width {
+		grid-column: auto;
+	}
+
+	.bar_menu_bl {
+		margin-right: 0;
+	}
+
+	.quote_item-top {
+		margin-bottom: 0;
+	}
+
+	.funding_details-editModal_items {
+		gap: 0px;
+	}
+
+	.right_cp_bar {
+		padding: 19px;
+	}
+
+	.header_cp_bar {
+		padding: 0 19px;
+	}
+
+	.funding_details-editModal_checkboxField {
+		padding: 10px;
+	}
+	.funding_details-editModal_btns {
+		justify-content: center;
+	}
+
+		.funding_details-editModal_item {
+		padding: 10px;
+	}
+}
+
+@media screen and (max-width: 650px) {
+	.cp_header_nav {
+		display: none;
+	}
+
+	.dashboard_right-cp-bar {
+		padding: 19px 26px;
+	}
+
+
+	.header-content {
+		gap: 20px;
+	}
+
+	.page_nav {
+		padding: 10px;
+		flex-wrap: wrap;
+		height: auto;
+		gap: 9px;
+	}
+
+	.page_nav a {
+		font-size: 10px;
+		padding: 0;
+	}
+
+	#go_home-desc {
+		display: none;
+	}
+
+	#go_home-mob {
+		display: block;
+	}
+	/* .notes_bar {
+		top: 147px;
+	} */
+
+	.opportunities_nav-item {
+		font-size: 14px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.funding_details-info_item span {
+		min-width: 120px;
+		max-width: 120px;
+	}
+
+	.page_nav {
+		gap: 4px;
+	}
+}
+
+@media screen and (max-width: 380px) {
+	.funding_details-info_item {
+		font-size: 12px;
+	}
+
+	.logo_burger {
+		gap: 12px;
+	}
+
+	.header-content {
+		gap: 10px;
+	}
+}

@@ -1,0 +1,952 @@
+/* Підключення шрифтів */
+@font-face {
+	font-family: 'Sofia Pro-L';
+	src: url('./assets/fonts/SofiaProLight.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Sofia Pro';
+	src: url('./assets/fonts/SofiaProRegular.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Sofia Pro-M';
+	src: url('./assets/fonts/SofiaProMedium.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Sofia Pro-S';
+	src: url('./assets/fonts/SofiaProSemiBold.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'proxima_nova';
+	src: url('./assets/fonts/proxima_nova_regular-webfont.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'proxima_novasemibold';
+	src: url('./assets/fonts/proxima_nova_semibold-webfont.woff2') format('woff2');
+}
+
+/* Загальні стилі для всіх елементів */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	transition: 0.3s ease;
+	scrollbar-width: thin; /* Тонкий скроллбар */
+	scrollbar-color: #a5d6a7 transparent; /* Зелёный ползунок, прозрачный фон */
+	-ms-overflow-style: none;
+}
+
+/* Стилі для скролбару */
+/* Для Chrome, Safari, Edge */
+::-webkit-scrollbar {
+	width: 2px; /* Минимальная ширина полоски */
+}
+
+::-webkit-scrollbar-track {
+	background: transparent; /* Прозрачный фон для дорожки */
+}
+
+::-webkit-scrollbar-thumb {
+	background: #a5d6a7; /* Зелёный цвет ползунка */
+	border-radius: 10px; /* Скругление углов */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #91da93; /* Чуть темнее зелёный при наведении */
+}
+
+/* Базові стилі для елементів */
+*:focus {
+	outline: none;
+}
+
+ul {
+	list-style: none;
+	margin-bottom: 0;
+}
+
+svg {
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+img {
+	max-width: 100%;
+}
+
+button {
+	border: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+button:disabled {
+	cursor: not-allowed;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+}
+
+/* Стилі для overlay */
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	background: rgba(35, 35, 35, 0.35);
+	z-index: 995;
+}
+
+
+.overlay.open {
+	display: flex;
+}
+
+
+/* Стилі для сповіщень */
+.notification {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	padding: 15px;
+	border-radius: 5px;
+	color: white;
+	z-index: 10000000;
+	display: block;
+}
+
+.error_notification {
+	background-color: #ff4d4d;
+}
+
+.success_notification {
+	background-color: #4caf50;
+}
+
+.info_notification {
+	background-color: #006dd4;
+}
+
+/* Головний контейнер */
+
+.cp_body {
+	background-color: #f9f9f9;
+	min-width: 1024px;
+	color: #212529;
+	font-family: 'Sofia Pro';
+}
+
+.active-search {
+	overflow: hidden;
+}
+
+.active-search .search-bg {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.main_container {
+	max-width: 1920px;
+	min-width: 1024px;
+	margin: 0 auto;
+}
+
+.main_container,
+.base_itm {
+	height: 100%;
+}
+
+/* Стилі для хедера */
+
+.header_cp_bar {
+	padding: 0;
+	box-shadow: none;
+	height: 62px;
+	width: 100%;
+	padding-left: 235px;
+	transition: padding-left 1s;
+	background-color: #ffffff;
+	border-bottom: 1px solid #ffffff;
+}
+
+.header_cp_el {
+	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: start;
+	align-items: center;
+}
+
+.header-content {
+	display: flex;
+	justify-content: space-between;
+	flex: 1;
+	height: 62px;
+	gap: 25px;
+}
+
+.search {
+	padding-top: 13px;
+	margin-left: 13px;
+	width: 100%;
+	max-width: 670px;
+	position: relative;
+	z-index: 9;
+}
+
+.search svg {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: opacity 0.3s ease;
+	margin-left: 10px;
+}
+
+.search input {
+	border-radius: 3px;
+	background: rgba(196, 196, 196, 0.2);
+	width: 100%;
+	border: none;
+	outline: none;
+	height: 35px;
+	padding-left: 30px;
+	color: #808080;
+	font-family: 'Sofia Pro', sans-serif;
+	font-size: 13px;
+	transition: all 0.3s ease;
+}
+
+.search input::placeholder {
+	color: #80808071;
+}
+
+.search.active input::placeholder {
+	color: #808080;
+}
+
+.search input:focus {
+	background: #fff;
+	color: #232323;
+	border: 1px solid #232323;
+	padding-left: 40px;
+	position: relative;
+	z-index: 9;
+}
+
+.search.active input {
+	background: #fff;
+	color: #232323;
+	border: 1px solid #D0D3D1;
+	padding-left: 40px;
+	position: relative;
+	z-index: 9;
+	border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+	box-shadow: 0px 4px 14px 0px #63686466;
+}
+
+.active-icon {
+	position: absolute;
+	width: 27px;
+	height: 27px;
+	border-radius: 3px;
+	background: #1bb21b;
+	top: 50%;
+	left: 5px;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	transform: translateY(-50%);
+	transition: opacity 0.3s ease;
+}
+
+.active-icon svg {
+	width: 14px;
+	height: 14px;
+	margin-left: 0;
+}
+
+.search.active .active-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+}
+
+.cancel {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	cursor: pointer;
+	display: none;
+	margin-right: 10px;
+}
+
+.cancel svg {
+	margin-left: 0;
+}
+
+.search.active .cancel {
+	display: block;
+	z-index: 10;
+}
+
+.dropdown {
+	width: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 47px !important;
+}
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	color: #212529;
+	text-align: center;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-color: transparent;
+	border: 1px solid transparent;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
+	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+		border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn:not(:disabled):not(.disabled) {
+	cursor: pointer;
+}
+
+.dropdown-toggle {
+	display: none;
+	white-space: nowrap;
+}
+
+.dropdown-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 10rem;
+	padding: 0.5rem 0;
+	margin: 0;
+	font-size: 1rem;
+	color: #212529;
+	text-align: left;
+	list-style: none;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #D0D3D1;
+	border-radius: 0 0 0.25rem 0.25rem;
+	width: 100%;
+	box-shadow: 0px 7px 14px 0px #63686466;
+}
+
+.dropdown-item {
+	color: #232323;
+	font-family: 'Sofia Pro';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	text-transform: capitalize;
+	height: 35px;
+	width: 100%;
+	clear: both;
+	line-height: 35px;
+	padding: 0;
+	padding-left: 40px;
+	background-image: url(./assets/images/search.svg);
+	background-position: 11px center;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 0;
+	display: block;
+}
+
+.bar_menu_bl {
+	margin-top: -5px;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: nowrap;
+	width: auto;
+	margin-right: 1.5rem;
+}
+
+.header_cp_bar_menu {
+	margin: 6px;
+}
+
+.cp_user_logout {
+	display: flex;
+	align-items: center;
+	gap: 17px;
+	user-select: none;
+}
+
+.cp_header_nav {
+	margin-left: -5px;
+	position: relative;
+}
+.cp_header_user_toggler {
+	display: inline-block;
+	line-height: normal;
+	text-decoration: none;
+	position: relative;
+}
+.cp_header_user_toggler_nh {
+	cursor: default;
+}
+
+.cp_user_header_lb {
+	color: #071c0c;
+}
+
+.user-name {
+	color: #159c2a;
+	font-family: 'Sofia Pro-S';
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
+.main_cp_bar {
+	position: relative;
+	min-height: 90vh;
+	height: calc(100vh - 62px);
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: flex-start;
+	align-items: normal;
+}
+
+/* Лівий сайдбар */
+.left_cp_bar {
+	width: 235px;
+	background-color: #fff;
+	padding-bottom: 0;
+	box-shadow: 0px 0px 31px 0px rgba(4, 41, 10, 0.05);
+	margin-top: -62px;
+	padding: 12px 0 0;
+	max-width: none;
+	min-width: 235px;
+	transition: width 1s;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+.cp_left_nav {
+	margin-bottom: 10px;
+	position: relative;
+	height: 100%;
+}
+.logo_cp_bar {
+	padding-left: 18px;
+	width: 235px;
+	transition: width 1s;
+}
+
+.cp_left_nav_el {
+	padding-top: 26px;
+}
+.main-sidebar {
+	height: calc(100% - 106px);
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.cp_left_nav_def {
+	width: 235px;
+}
+
+.cp_left_nav_el a {
+	color: #232323;
+	font-family: 'Public Sans';
+	font-weight: 600;
+	text-transform: capitalize;
+	height: 35px;
+	padding: 0;
+	padding-left: 14px;
+	padding-right: 16px;
+	display: flex;
+	align-items: center;
+	border-left: 3px solid transparent;
+	justify-content: space-between;
+}
+
+.cp_left_nav_el a:hover {
+	background: rgba(241, 249, 242, 0.7);
+	color: #159c2a;
+	border-color: #159c2a;
+}
+
+.cp_left_nav_el a > div {
+	display: flex;
+	align-items: center;
+}
+
+.cp_left_nav_el a span {
+	transition: opacity 1s;
+	padding-left: 11px;
+}
+
+.cp_left_nav_el a .arrow {
+	opacity: 1;
+	transition: opacity 1s ease-out;
+}
+
+/* Новые стили для кастомного collapse */
+.collapsible-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.3s ease-out;
+}
+
+.cp_left_nav_el .collapse-link {
+	padding-left: 31px;
+	color: #232323;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+}
+
+.cp_left_nav_el .collapse-link svg {
+	opacity: 0;
+	transition: opacity 1s;
+}
+
+/* Стили для активного состояния */
+.collapse-parent.active {
+	background: rgba(241, 249, 242, 0.7);
+	color: #159c2a;
+	border-color: #159c2a;
+}
+
+.collapse-parent.active .arrow {
+	transform: rotate(90deg);
+}
+
+.collapse-parent.active .arrow path {
+	fill: #159c2a;
+}
+
+.fixed-naw {
+	padding: 0;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	user-select: none;
+}
+
+.fixed-naw .cp_left_nav_def {
+	border-bottom: 1px solid #e8e9e8;
+}
+
+.fixed-naw .cp_left_nav_def:last-child {
+	border-bottom: none;
+}
+
+/* Головна контентна область */
+.right_cp_bar {
+	/* min-width: 1100px; */
+	min-width: 789px;
+	padding: 0 17px;
+	flex: auto;
+	height: auto;
+	width: auto;
+	overflow-x: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.right_cp_bar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Навігація контенту */
+.content_main-nav {
+	display: flex;
+	flex-direction: column;
+	width: 166px;
+	flex-shrink: 0;
+}
+
+.content_main-nav--li {
+	padding: 16px 0 16px 10px;
+	color: #8b928c;
+	font-family: 'Sofia Pro-S';
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: capitalize;
+	border-radius: 2px;
+	cursor: pointer;
+	height: 53px;
+	position: relative;
+}
+
+.content_main-nav--li:hover {
+	background: #f1f9f2;
+	color: #159c2a;
+}
+
+.content_main-nav--li.active {
+	background: #f1f9f2;
+	color: #159c2a;
+}
+
+.content_main-nav--li a {
+	color: inherit;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	padding: 16px 0 16px 10px;
+}
+
+.content_main-nav--li a:hover {
+	text-decoration: none;
+}
+
+/* Навігація по сайту */
+.page_nav {
+	display: flex;
+	align-items: center;
+	height: 50px;
+}
+
+.page_nav a {
+	color: #8b928c;
+	text-align: center;
+	font-family: Inter;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+	padding: 10px 6px;
+}
+
+#go_home {
+	padding: 0;
+}
+
+.page_nav .active_page-nav {
+	color: #232323;
+}
+
+/* Пагінація всередині контенту */
+
+.content_pag-wrap {
+	padding: 20px 40px;
+}
+
+.content_pag {
+	display: flex;
+	width: fit-content;
+	border: 1px solid #e8e9e8;
+	height: 35px;
+	border-radius: 5px;
+	margin-left: auto;
+}
+
+.content_pag button {
+	display: flex;
+	height: 35px;
+	justify-content: center;
+	align-items: center;
+	background: transparent;
+	cursor: pointer;
+	border: none;
+	width: 36px;
+}
+
+.content_pag span {
+	background: transparent;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 35px;
+	position: relative;
+	top: -1px;
+	color: #8b928c;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+	width: 36px;
+}
+
+.content_pag .active_pag {
+	background: #159c2a;
+	color: #fff;
+}
+
+/* Title та кнопка яка чисто використовується */
+
+.content_title {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	font-weight: 400;
+	font-size: 22px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+.main_green-btn {
+	border-radius: 5px;
+	background: #159c2a;
+	gap: 10px;
+	display: flex;
+	text-align: center;
+	align-items: center;
+	font-family: 'Sofia Pro-S';
+	height: 42px;
+	padding: 10px 20px;
+	cursor: pointer;
+	margin-left: auto;
+	color: #fff;
+	user-select: none;
+}
+
+.main_green-btn:hover {
+	scale: 0.95;
+}
+
+.main_green-btn span {
+	color: #fff;
+	text-transform: capitalize;
+	padding-bottom: 2px;
+}
+
+/* Статуси */
+.approved {
+	border-radius: 3px;
+	background: #1bb21b;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: uppercase;
+	width: 89px;
+	height: 24px;
+}
+
+.declined {
+	width: 83px;
+	height: 24px;
+	border-radius: 3px;
+	background: #f55;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.underwriting {
+	width: 123px;
+	height: 24px;
+	border-radius: 3px;
+	background: #e6e6e6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #808080;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.funded {
+	width: 72px;
+	height: 24px;
+	border-radius: 3px;
+	background: #159c2a;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+/* Стили для календаря Flatpickr */
+
+.flatpickr-day {
+	text-align: center;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dayContainer {
+	background: transparent !important;
+	padding-bottom: 5px;
+}
+
+.flatpickr-day.inRange {
+	box-shadow: none;
+}
+
+/* Цвет для выбранных дат */
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+	background-color: #159c2a; /* Зеленый фон */
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+	background-color: #159c2a;
+}
+
+/* Цвет для диапазона между выбранными датами */
+.flatpickr-day.inRange {
+	background: rgba(21, 156, 42, 0.2); /* Прозрачный зеленый */
+	color: #159c2a; /* Зеленый текст */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.startRange,
+.flatpickr-day.startRange.startRange,
+.flatpickr-day.endRange.startRange {
+	border-radius: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.endRange,
+.flatpickr-day.startRange.endRange,
+.flatpickr-day.endRange.endRange {
+	border-radius: 0 !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+	background: #159c2a;
+	border: none;
+}
+
+/* Стили для текущей даты, если она не выбрана */
+.flatpickr-day.today:not(.selected):not(.startRange):not(.endRange) {
+	border: 1px solid #159c2a; /* Зеленый бордер */
+}
+
+/* При наведении на текущую дату, если она не выбрана */
+.flatpickr-day.today:not(.selected):not(.startRange):not(.endRange):hover {
+	background: #159c2a; /* Зеленый бекграунд */
+	color: white;
+}
+
+/* Зеленый фон и белый текст при наведении на обычный день */
+.flatpickr-day:not(.selected):not(.startRange):not(.endRange):hover {
+	background: #159c2a;
+	color: white;
+}

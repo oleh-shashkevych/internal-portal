@@ -1,0 +1,460 @@
+
+.content_main-attendance {
+	border: 1px solid #eee;
+	background: #fff;
+	min-height: 800px;
+	display: flex;
+	align-items: flex-start;
+	gap: 80px;
+	padding: 37px 37px 37px 23px;
+	min-width: 880px;
+	overflow-x: auto;
+}
+
+.attendance {
+	width: 100%;
+}
+
+.attendance_head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 35px;
+}
+
+.attendance_info {
+	display: flex;
+	align-items: center;
+	background: #f9f9f9;
+	color: #1b1b1b;
+	font-family: 'Sofia Pro-M';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.date_absent {
+	width: 100%;
+	max-width: 280px;
+	padding: 10px 25px;
+}
+.absent_type {
+	width: 100%;
+	max-width: 280px;
+	padding: 10px 25px;
+}
+
+.absent_type-input, .paid-status-hidden-input {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 43px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.notes {
+	width: 100%;
+}
+
+.attendance_items {
+	display: flex;
+	flex-direction: column;
+}
+
+.attendance_pag-wrap {
+	padding: 20px 40px;
+	width: 100%;
+}
+
+.attendance_item {
+	display: flex;
+	align-items: center;
+	color: #1b1b1b;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+	border-bottom: 1px solid #e8e9e8;
+	padding: 7px 0;
+}
+
+.lonk_break {
+	border-radius: 3px;
+	background: #ffd984;
+	padding: 2px 6px;
+	color: #6c592e;
+	text-align: center;
+	font-family: 'Sofia Pro-M';
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.late_to_work {
+	border-radius: 3px;
+	background: #f55;
+	padding: 2px 6px;
+	color: #fff;
+	text-align: center;
+	font-family: 'Sofia Pro-M';
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.vacation {
+	border-radius: 3px;
+	background: #e6e6e6;
+	padding: 2px 6px;
+	color: #808080;
+	text-align: center;
+	font-family: 'Sofia Pro-M';
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.personal {
+	border-radius: 3px;
+	background: rgba(208, 235, 212, 0.6);
+	padding: 2px 6px;
+	color: #006100;
+	text-align: center;
+	font-family: 'Sofia Pro-M';
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.attendance_modal {
+	padding: 20px;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	width: 682px;
+}
+
+.hidden {
+	display: none;
+}
+
+.flatpickr-calendar.inline {
+	position: absolute;
+	bottom: 100%;
+	top: auto;
+}
+
+.attendance_modal-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+
+.attendance_modal-title {
+	color: #232323;
+	font-family: 'Sofia Pro-S';
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+	margin-bottom: 0;
+}
+
+.attendance_modal-item {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	position: relative;
+}
+
+.attendance_modal-bottom {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 25px;
+	margin-top: -10px;
+	margin-bottom: 20px;
+}
+
+.attendance_modal-bottom .attendance_modal-item {
+	height: 90px;
+}
+
+.attendance_modal-bottom .attendance_modal-item p {
+	margin-top: auto;
+}
+
+.attendance_modal-item label,
+.attendance_modal--label {
+	margin-bottom: 0;
+	color: rgba(35, 35, 35, 0.8);
+	font-family: 'proxima_novasemibold';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.attendance_modal-item--input {
+	border: 1px solid #d0d3d1;
+	background: #fff;
+	box-shadow: 0px 0px 1px 0px #159c2a;
+	width: 100%;
+	padding: 10px;
+	color: #232323;
+	font-family: 'proxima_nova';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.attendance_modal-item--input:focus,
+.attendance_modal-item textarea:focus {
+	border: 1px solid #159c2a;
+}
+
+.attendance_modal-item textarea {
+	padding: 10px;
+	border: 1px solid #d0d3d1;
+	background: #fff;
+	box-shadow: 0px 0px 1px 0px rgba(223, 229, 224, 0.1);
+	width: 100%;
+	color: rgba(35, 35, 35, 0.8);
+	max-height: 85px;
+	resize: none;
+	font-family: 'proxima_nova';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.textarea_left {
+	color: #232323;
+	font-family: 'proxima_nova';
+	font-size: 12px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.attendance_modal-calendar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	gap: 7px;
+	box-shadow: 0px 0px 1px 0px rgba(223, 229, 224, 0.1);
+	height: 45px;
+	border: 1px solid #d0d3d1;
+	padding-right: 10px;
+	cursor: pointer;
+}
+
+.attendance_modal-calendar-p {
+	padding: 10px;
+	margin-bottom: 0;
+	color: rgba(35, 35, 35, 0.8);
+	text-align: center;
+	font-family: 'proxima_nova';
+	font-size: 16px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.attendance_modal-btn {
+	border-radius: 5px;
+	background: #159c2a;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 43px;
+	color: #fff;
+	font-family: 'proxima_novasemibold';
+	font-size: 15px;
+	transition: 300ms ease;
+}
+
+.attendance_modal-btn:hover {
+	background: #fff;
+	border: 1px solid #159c2a;
+	color: #159c2a;
+}
+
+/* Стили для календаря Flatpickr */
+
+.flatpickr-day {
+	text-align: center;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dayContainer {
+	background: transparent !important;
+}
+
+.flatpickr-day.inRange {
+	box-shadow: none;
+}
+
+/* Цвет для выбранных дат */
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+	background-color: #159c2a; /* Зеленый фон */
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+	background-color: #159c2a;
+}
+
+/* Цвет для диапазона между выбранными датами */
+.flatpickr-day.inRange {
+	background: rgba(21, 156, 42, 0.2); /* Прозрачный зеленый */
+	color: #159c2a; /* Зеленый текст */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.startRange,
+.flatpickr-day.startRange.startRange,
+.flatpickr-day.endRange.startRange {
+	border-radius: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.endRange,
+.flatpickr-day.startRange.endRange,
+.flatpickr-day.endRange.endRange {
+	border-radius: 0 !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+	background: #159c2a;
+	border: none;
+}
+
+.pipeline_chooseDate-bottom {
+	display: none; /* Скрыто изначально */
+}
+
+.custom-select--attendance {
+	position: relative;
+}
+
+/* Инпут в виде поля ввода */
+.custom-select__input {
+	border: 1px solid #ccc;
+	padding: 10px;
+	cursor: pointer;
+	background-color: white;
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 14px;
+	user-select: none;
+}
+
+.error-message {
+	color: red;
+	font-size: 12px;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+
+.attendance_modal-calendar .error-message {
+	position: absolute;
+	bottom: -25px;
+}
+
+.custom-select__input:focus {
+	outline: none;
+}
+
+/* Стили выпадающего списка */
+.custom-select__dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	border: 1px solid #ccc;
+	background-color: white;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	z-index: 10;
+	margin-top: 5px;
+	padding: 0;
+	list-style: none;
+}
+
+/* Пункты выпадающего списка */
+.custom-select__dropdown li {
+	padding: 10px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.custom-select__dropdown li:hover {
+	background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 1810px) {
+	.attendance_item {
+		padding: 10px 0;
+	}
+	.absent_type {
+		max-width: 220px;
+	}
+
+	.date_absent {
+		max-width: 150px;
+	}
+
+	.content_main {
+		gap: 50px;
+	}
+}
+
+@media screen and (max-width: 1310px) {
+	.absent_type {
+		max-width: 180px;
+	}
+
+	.content_main {
+		gap: 20px;
+	}
+}

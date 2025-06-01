@@ -1,0 +1,494 @@
+
+.content_main-pipline {
+	border: 1px solid #eee;
+	background: #fff;
+	min-height: 800px;
+	display: flex;
+	align-items: flex-start;
+	gap: 80px;
+	padding: 37px 37px 37px 23px;
+	min-width: 880px;
+	overflow-x: auto;
+}
+
+.pipeline {
+	width: 95%;
+	position: relative;
+}
+
+.pipeline_head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 23px;
+}
+
+.pipline_header-calendar {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	padding: 0 10px;
+	border-radius: 3px;
+	border: 1px solid #159c2a;
+	background: #fff;
+	width: 210px;
+	height: 35px;
+	position: relative;
+	z-index: 100;
+	cursor: pointer;
+}
+
+.pipline_header-calendar svg {
+	cursor: pointer;
+}
+
+.pipline_header-calendar p {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: lowercase;
+	margin-bottom: 0;
+}
+
+.pipline_info {
+	display: flex;
+	gap: 55px;
+	align-items: start;
+	margin-bottom: 45px;
+}
+
+.pipline_info-concluded,
+.pipline_info-contracts {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.pipline_info-title {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	font-weight: 400;
+	font-size: 18px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+.pipline_info-green {
+	color: #159c2a;
+	font-family: 'Sofia Pro-S';
+	font-size: 34px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+.pipline-info-term {
+	color: #646564;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+	margin-bottom: 0;
+}
+
+.pipline-info-term span {
+	color: #159c2a;
+}
+
+.pipline_table {
+	margin-top: 75px;
+}
+.pipline_table-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: #1b1b1b;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: capitalize;
+	background: #f9f9f9;
+	border-bottom: 1px solid #e8e9e8;
+}
+
+.funded_date {
+	padding: 10px 25px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	width: 168px;
+	text-align: left;
+}
+.business_name {
+	padding: 10px 25px;
+	width: 290px;
+	text-align: left;
+}
+.lender {
+	padding: 10px 25px;
+	width: 200px;
+	text-align: left;
+}
+.funded_amount {
+	padding: 10px 25px;
+	width: 165px;
+	text-align: center;
+}
+.commission_paid {
+	padding: 10px 25px;
+	width: 176px;
+	text-align: center;
+}
+.renewal_status {
+	padding: 10px 25px;
+	width: 162px;
+	text-align: left;
+	flex-shrink: 0;
+}
+
+.pipline_table-item {
+	border-bottom: 1px solid #e8e9e8;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: #636864;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+
+.pipeline_chooseDate {
+	position: absolute;
+	top: -34px;
+	right: -18px;
+	background: #fff;
+	padding: 35px 20px 15px;
+	box-shadow: 0px 7px 13px 0px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	display: none;
+	z-index: 99;
+}
+.pipeline_chooseDate-top {
+	display: flex;
+	align-items: start;
+	gap: 20px;
+}
+.pipeline_chooseDate-dates {
+	border-radius: 5px;
+	border: 1px solid #d9d9d9;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	width: 191px;
+	height: 341px;
+	justify-content: space-evenly;
+	flex-shrink: 0;
+}
+
+.pipeline_chooseDate-dates li {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: capitalize;
+	padding: 10px 15px;
+	height: 37px;
+	cursor: pointer;
+}
+
+.pipeline_chooseDate-dates li:hover {
+	background: #d9d9d9;
+}
+
+.pipeline_chooseDate-right {
+	width: 100%;
+	display: flex;
+	align-items: start;
+	flex-direction: column;
+}
+.pipline_header-calendar {
+	margin-left: auto;
+	margin-bottom: 10px;
+}
+.pipeline_chooseDate-calendar {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+.pipeline_chooseDate-bottom {
+	border: 1px solid #eee;
+	display: flex;
+	height: 66px;
+	padding: 0px 20px;
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	gap: 60px;
+	flex-shrink: 0;
+	margin-top: 20px;
+}
+
+.pipeline_chooseDate-bottom--dates {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+#chooseDate-monthStart,
+#chooseDate-monthEnd {
+	border-bottom: 1px dashed #1bb21b;
+	padding: 3px;
+	color: #232323;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+#chooseDate-dayEnd,
+#chooseDate-dayStart {
+	padding: 3px 10px;
+	color: #1bb21b;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: normal;
+	text-transform: capitalize;
+	width: 35px;
+	height: 26px;
+	background: linear-gradient(
+			0deg,
+			rgba(241, 249, 242, 0.7) 0%,
+			rgba(241, 249, 242, 0.7) 100%
+		),
+		#fff;
+}
+
+#chooseDate-yearEnd,
+#chooseDate-yearStart {
+	padding: 3px;
+	color: #232323;
+	text-align: center;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: normal;
+	text-transform: capitalize;
+}
+
+.pipeline_chooseDate-btns {
+	display: flex;
+	align-items: center;
+	gap: 17px;
+}
+
+.pipeline_chooseDate-btns button {
+	padding: 10px 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	text-align: center;
+	font-family: Montserrat;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+	text-transform: capitalize;
+	border: none;
+}
+
+.pipeline_chooseDate-btns button:hover {
+	scale: 0.95;
+}
+
+#pipeline_chooseDate-cancel {
+	background: #1b1b1b;
+}
+
+#pipeline_chooseDate-apply {
+	background: #159c2a;
+}
+
+/* Стили для календаря Flatpickr */
+
+.flatpickr-day {
+	text-align: center;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dayContainer {
+	background: transparent !important;
+}
+
+.flatpickr-day.inRange {
+	box-shadow: none;
+}
+
+/* Цвет для выбранных дат */
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+	background-color: #159c2a; /* Зеленый фон */
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+	background-color: #159c2a;
+}
+
+/* Цвет для диапазона между выбранными датами */
+.flatpickr-day.inRange {
+	background: rgba(21, 156, 42, 0.2); /* Прозрачный зеленый */
+	color: #159c2a; /* Зеленый текст */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.startRange,
+.flatpickr-day.startRange.startRange,
+.flatpickr-day.endRange.startRange {
+	border-radius: 0 !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flatpickr-day.selected.endRange,
+.flatpickr-day.startRange.endRange,
+.flatpickr-day.endRange.endRange {
+	border-radius: 0 !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+	background: #159c2a;
+	border: none;
+}
+
+.pipeline_chooseDate-bottom {
+	display: none; /* Скрыто изначально */
+}
+
+.no-data {
+	margin: 25px auto;
+	display: block;
+	text-align: center;
+	color: red;
+	font-weight: 500;
+	font-family: 'Sofia Pro';
+}
+
+/* Общий стиль тултипа */
+#custom-tooltip {
+	border-radius: 3px;
+	border: 1px solid #e8e9e8;
+	background: #fff;
+	box-shadow: 0px 2px 3px 0px rgba(3, 3, 3, 0.1);
+	color: #1b1b1b;
+	font-family: 'Sofia Pro';
+	padding: 8px;
+	width: 127px;
+	height: 64px;
+}
+
+/* Стиль для первой строки (Funded Amount) */
+#custom-tooltip .tooltip-value {
+	color: #1b1b1b;
+	font-size: 18px;
+	font-weight: 400;
+	margin-bottom: 4px;
+}
+
+/* Стиль для второй строки (сумма) */
+#custom-tooltip .tooltip-label {
+	color: #1b1b1b;
+	font-size: 14px;
+	font-family: 'Sofia Pro-L';
+}
+
+.pipeline_chooseDate.show {
+	display: block;
+}
+
+@media screen and (max-width: 1800px) {
+	.content_main-nav {
+		flex-shrink: 0;
+	}
+
+	.funded_date,
+	.business_name,
+	.lender,
+	.funded_amount,
+	.commission_paid,
+	.renewal_status {
+		padding: 10px;
+		font-size: 14px;
+	}
+
+	.business_name {
+		width: 220px;
+	}
+
+	.lender {
+		width: 150px;
+	}
+
+	.funded_amount, .commission_paid {
+		width: 130px;
+	}
+
+	.content_main-pipline {
+		gap: 30px;
+	}
+}

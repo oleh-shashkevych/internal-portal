@@ -1,0 +1,319 @@
+.year_dropdown ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.user-link {
+	color: #000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ecfeee;
+}
+
+.user-link:hover {
+	text-decoration: none;
+}
+
+.row-hover:hover .user-link {
+	color: #04900d;
+}
+
+.user_dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #f9f9f9;
+	width: 100%;
+	z-index: 10;
+	border-radius: 5px;
+	display: none;
+}
+
+.user_dropdown li {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	font-size: 13px;
+}
+
+.user_dropdown.active {
+	display: block;
+}
+
+.user_dropdown li:hover {
+	background-color: #f0f0f0;
+}
+
+.selector_flex {
+	display: flex;
+	align-items: center;
+	gap: 34px;
+}
+
+.change_input {
+	border: none;
+	outline: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.day-cell {
+	color: #000;
+	background: #ecfeee;
+}
+
+.row-hover:hover .day-cell {
+	color: #04900d;
+}
+
+
+.content_main-attendance {
+	border: 1px solid #eee;
+	background: #fff;
+	min-height: 800px;
+	display: flex;
+	align-items: flex-start;
+	gap: 80px;
+	padding: 37px 37px 37px 23px;
+	overflow-x: auto;
+}
+
+.outbound_calls {
+	width: 100%;
+}
+
+.attendance_head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 35px;
+}
+
+
+.hidden {
+	display: none;
+}
+
+.outbound_head-selector {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	gap: 10px;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 3px;
+	width: 120px;
+	background: #f9f9f9;
+	position: relative;
+	user-select: none;
+}
+
+.outbound_head-selector svg {
+	pointer-events: none;
+}
+
+.year_dropdown {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #f9f9f9;
+	width: 100%;
+	z-index: 10;
+	border-radius: 5px;
+	display: none;
+}
+
+.year_dropdown ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.year_dropdown li {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	font-size: 13px;
+}
+
+.year_dropdown.active {
+	display: block;
+}
+
+.year_dropdown li:hover {
+	background-color: #f0f0f0;
+}
+
+.selected_year {
+	color: #071c0c;
+	font-family: 'Sofia Pro';
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	text-transform: lowercase;
+	margin-bottom: 0;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th,
+td {
+	border: 1px solid #e8e9e8;
+	text-align: center;
+	padding: 8px;
+}
+
+td {
+	color: #232323;
+	font-family: 'Sofia Pro';
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+	position: relative;
+}
+
+.month-header {
+	background: #f9f9f9;
+	color: #868686;
+	font-family: 'Sofia Pro-M';
+	font-weight: 500;
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+	text-transform: uppercase;
+}
+
+.rep-header {
+	background: linear-gradient(0deg, #fff 0%, #fff 100%);
+	color: #232323;
+	font-family: 'Sofia Pro-M';
+	font-weight: 500;
+	font-size: 15px;
+	font-style: normal;
+	line-height: normal;
+}
+
+.total-header {
+	background: #159c2a;
+	color: #fff;
+	font-family: 'Sofia Pro-M';
+	font-weight: 500;
+}
+
+.total-column {
+	background: #159c2a;
+	color: #fff;
+}
+
+.row-hover:hover {
+	background: #e5f9e7;
+}
+
+.row-hover:hover .total-column {
+	background: #000;
+	color: #fff;
+}
+
+.total-row {
+	background: #f0f0f0;
+}
+
+.total-row td {
+	font-weight: bold;
+	color: #006910;
+}
+
+.total-row td:first-child {
+	font-family: 'Sofia Pro-S';
+	color: #000;
+}
+.total-row td:last-child {
+	font-family: 'Sofia Pro-S';
+	color: #fff;
+}
+
+.average-row {
+	background: #f7f7f7;
+}
+
+.average-row td {
+	color: #3caa43;
+}
+
+.average-row td:first-child {
+	font-family: 'Sofia Pro-S';
+	color: #000;
+}
+.average-row td:last-child {
+	font-family: 'Sofia Pro-S';
+	color: #fff;
+}
+
+.user-link {
+	color: #000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #ecfeee;
+}
+
+.user-link:hover {
+	text-decoration: none;
+}
+
+.row-hover:hover .user-link {
+	color: #04900d;
+}
+
+@media screen and (max-width: 1810px) {
+	.attendance_item {
+		padding: 10px 0;
+	}
+	.absent_type {
+		max-width: 220px;
+	}
+
+	.date_absent {
+		max-width: 150px;
+	}
+
+	.content_main {
+		gap: 50px;
+	}
+}
+
+@media screen and (max-width: 1310px) {
+	.absent_type {
+		max-width: 180px;
+	}
+
+	.content_main {
+		gap: 20px;
+	}
+}
