@@ -511,78 +511,109 @@
                                 <li class="content_main-nav--li"><a href="../gallery/gallery.html">Gallery</a></li>
                             </ul>
                             <div class="pipeline">
-                                <div class="pipeline_chooseDate">
-                                    <div class="pipeline_chooseDate-top">
-                                        <ul class="pipeline_chooseDate-dates">
-                                            <li>Today</li>
-                                            <li>Yesterday</li>
-                                            <li>This Month</li>
-                                            <li>Last Month</li>
-                                            <li>Last 7 Days</li>
-                                            <li>Last 30 Days</li>
-                                            <li>Last 60 Days</li>
-                                            <li>Last 90 Days</li>
-                                        </ul>
-                                        <div class="pipeline_chooseDate-right">
-                                            <div class="pipline_header-calendar" style="opacity: 0;">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"
-                                                    viewBox="0 0 14 15" fill="none">
-                                                    <path
-                                                        d="M4.9 0.5V1.9H9.1V0.5H10.5V1.9H13.3C13.4857 1.9 13.6637 1.97375 13.795 2.10503C13.9263 2.2363 14 2.41435 14 2.6V13.8C14 13.9857 13.9263 14.1637 13.795 14.295C13.6637 14.4263 13.4857 14.5 13.3 14.5H0.7C0.514348 14.5 0.336301 14.4263 0.205025 14.295C0.0737498 14.1637 0 13.9857 0 13.8V2.6C0 2.41435 0.0737498 2.2363 0.205025 2.10503C0.336301 1.97375 0.514348 1.9 0.7 1.9H3.5V0.5H4.9ZM12.6 7.5H1.4V13.1H12.6V7.5ZM3.5 3.3H1.4V6.1H12.6V3.3H10.5V4.7H9.1V3.3H4.9V4.7H3.5V3.3Z"
-                                                        fill="#071C0C" />
-                                                </svg>
-                                                <p> <span class="pipeline_dateStart">DD.MM.YYYY</span> - <span
-                                                        class="pipeline_dateEnd">DD.MM.YYYY</span></p>
-                                            </div>
-                                            <div class="pipeline_chooseDate-calendar">
-                                                <!-- Start Date Picker -->
-                                                <div class="start-date-picker">
 
-                                                    <input hidden type="text" id="pipeline_startDatePicker"
-                                                        class="date-picker-input">
-                                                </div>
-
-                                                <!-- End Date Picker -->
-                                                <div class="end-date-picker">
-
-                                                    <input hidden type="text" id="pipeline_endDatePicker"
-                                                        class="date-picker-input">
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                    <div class="pipeline_chooseDate-bottom">
-                                        <div class="pipeline_chooseDate-bottom--dates">
-                                            <div class="pipeline_chooseDate-dates--date">
-                                                <span id="chooseDate-monthStart">Month</span>
-                                                <span id="chooseDate-dayStart">0</span>
-                                                <span id="chooseDate-yearStart">0</span>
-                                            </div> -
-                                            <div class="pipeline_chooseDate-dates--date">
-                                                <span id="chooseDate-monthEnd">Month</span>
-                                                <span id="chooseDate-dayEnd">0</span>
-                                                <span id="chooseDate-yearEnd">0</span>
-                                            </div>
-                                        </div>
-                                        <div class="pipeline_chooseDate-btns">
-                                            <button id="pipeline_chooseDate-cancel">Cancel</button>
-                                            <button id="pipeline_chooseDate-apply">Apply</button>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="pipeline_head">
                                     <h2 class="content_title">Funding Pipeline</h2>
-                                    <div class="pipline_header-calendar" id="chooseDate_open">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15"
-                                            viewBox="0 0 14 15" fill="none">
-                                            <path
-                                                d="M4.9 0.5V1.9H9.1V0.5H10.5V1.9H13.3C13.4857 1.9 13.6637 1.97375 13.795 2.10503C13.9263 2.2363 14 2.41435 14 2.6V13.8C14 13.9857 13.9263 14.1637 13.795 14.295C13.6637 14.4263 13.4857 14.5 13.3 14.5H0.7C0.514348 14.5 0.336301 14.4263 0.205025 14.295C0.0737498 14.1637 0 13.9857 0 13.8V2.6C0 2.41435 0.0737498 2.2363 0.205025 2.10503C0.336301 1.97375 0.514348 1.9 0.7 1.9H3.5V0.5H4.9ZM12.6 7.5H1.4V13.1H12.6V7.5ZM3.5 3.3H1.4V6.1H12.6V3.3H10.5V4.7H9.1V3.3H4.9V4.7H3.5V3.3Z"
-                                                fill="#071C0C" />
-                                        </svg>
-                                        <p> <span class="pipeline_dateStart">MM.DD.YYYY</span> - <span
-                                                class="pipeline_dateEnd">MM.DD.YYYY</span></p>
+
+                                    <div id="filtersContainer">
+                                        <!-- Year Filter -->
+                                        <div id="year_filter_wrapper">
+                                            <button class="user-button" id="year_filter_button">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 16 16" fill="none">
+                                                    <path
+                                                        d="M14.836 1.8554C14.5797 1.32803 14.0684 1 13.5021 1H2.49733C1.92708 1 1.41446 1.33082 1.15948 1.86371C0.90449 2.39661 0.958136 3.02364 1.29988 3.50048L5.80025 9.78387C5.86449 9.87315 5.8996 9.98457 5.8996 10.096V14.4789C5.8996 14.6692 5.99894 14.845 6.15921 14.9363C6.23405 14.9792 6.31618 15 6.39831 15C6.49236 15 6.58575 14.9723 6.6672 14.9176L10.3702 12.4365C10.5132 12.341 10.6 12.1756 10.6 11.9977V9.53807C10.6 9.42665 10.6331 9.32075 10.696 9.23079L14.711 3.48511C15.0448 3.00758 15.0931 2.38262 14.8368 1.85527L14.836 1.8554ZM13.9048 2.87069L9.88988 8.61636C9.70178 8.88558 9.60178 9.20463 9.60178 9.53821V11.7126L6.89627 13.5251V10.0952C6.89627 9.75958 6.7903 9.42739 6.59823 9.15885L2.09787 2.87545C1.98197 2.7142 1.96474 2.51003 2.05084 2.3301C2.13694 2.15016 2.30385 2.04219 2.49657 2.04219H13.5014C13.6928 2.04219 13.859 2.14877 13.9458 2.32734C14.0326 2.50589 14.0167 2.70866 13.9041 2.87061L13.9048 2.87069Z"
+                                                        fill="#071C0C" stroke="#071C0C" stroke-width="0.4" />
+                                                </svg>
+                                                <div>Year</div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"
+                                                    viewBox="0 0 10 6" fill="none">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M1.09039 1.08392C1.11896 1.05732 1.15291 1.03621 1.19029 1.02181C1.22767 1.00741 1.26774 1 1.30821 1C1.34867 1 1.38874 1.00741 1.42612 1.02181C1.4635 1.03621 1.49745 1.05732 1.52603 1.08392L5.00008 4.30995L8.47413 1.08392C8.50274 1.05736 8.5367 1.03629 8.57407 1.02192C8.61145 1.00755 8.6515 1.00015 8.69195 1.00015C8.73241 1.00015 8.77247 1.00755 8.80984 1.02192C8.84721 1.03629 8.88117 1.05736 8.90978 1.08392C8.93838 1.11048 8.96107 1.142 8.97655 1.1767C8.99203 1.2114 9 1.24859 9 1.28615C9 1.32371 8.99203 1.3609 8.97655 1.3956C8.96107 1.4303 8.93838 1.46183 8.90978 1.48839L5.2179 4.91608C5.18932 4.94268 5.15537 4.96379 5.11799 4.97819C5.08062 4.99259 5.04055 5 5.00008 5C4.95961 5 4.91954 4.99259 4.88217 4.97819C4.84479 4.96379 4.81084 4.94268 4.78226 4.91608L1.09039 1.48839C1.06173 1.46185 1.039 1.43033 1.02349 1.39563C1.00798 1.36093 1 1.32372 1 1.28615C1 1.24858 1.00798 1.21138 1.02349 1.17667C1.039 1.14197 1.06173 1.11045 1.09039 1.08392Z"
+                                                        fill="#8B928C" stroke="#8B928C" stroke-width="0.7" />
+                                                </svg>
+                                            </button>
+                                            <div class="custom_dropdown" id="year_filter_dropdown">
+                                                <div id="year_filter_list_container">
+                                                    <div class="dropdown_search-wrapper">
+                                                        <div class="dropdown_search">
+                                                            <input type="text" placeholder="Search Year"
+                                                                id="year_filter_searchInput" />
+                                                            <svg class="revenue_dropdown-searchBTN"
+                                                                xmlns="http://www.w3.org/2000/svg" width="14"
+                                                                height="14" viewBox="0 0 14 14" fill="none">
+                                                                <path opacity="0.15"
+                                                                    d="M12 6.5C12 9.53754 9.53754 12 6.5 12C3.46243 12 1 9.53754 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53754 1 12 3.46243 12 6.5Z"
+                                                                    fill="#232323" />
+                                                                <path
+                                                                    d="M13 13L10.0376 10.0376M11.5882 6.29412C11.5882 3.37025 9.21795 1 6.29412 1C3.37025 1 1 3.37025 1 6.29412C1 9.21795 3.37025 11.5882 6.29412 11.5882C9.21795 11.5882 11.5882 9.21795 11.5882 6.29412Z"
+                                                                    stroke="#232323" stroke-width="1.3"
+                                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="custom_dropdown-users" id="year_filter_yearsList">
+                                                        <!-- Years will be generated here by JS -->
+                                                    </ul>
+                                                    <div class="custom_dropdown-btns">
+                                                        <button class="custom_dropdown-apply"
+                                                            id="year_filter_applyBtn">Apply</button>
+                                                        <button class="custom_dropdown-cancel"
+                                                            id="year_filter_cancelBtn">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Representative Filter -->
+                                        <div id="representative_filter_wrapper">
+                                            <button class="user-button" id="representative_filter_button">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    viewBox="0 0 16 16" fill="none"> <!-- Re-using filter icon -->
+                                                    <path
+                                                        d="M14.836 1.8554C14.5797 1.32803 14.0684 1 13.5021 1H2.49733C1.92708 1 1.41446 1.33082 1.15948 1.86371C0.90449 2.39661 0.958136 3.02364 1.29988 3.50048L5.80025 9.78387C5.86449 9.87315 5.8996 9.98457 5.8996 10.096V14.4789C5.8996 14.6692 5.99894 14.845 6.15921 14.9363C6.23405 14.9792 6.31618 15 6.39831 15C6.49236 15 6.58575 14.9723 6.6672 14.9176L10.3702 12.4365C10.5132 12.341 10.6 12.1756 10.6 11.9977V9.53807C10.6 9.42665 10.6331 9.32075 10.696 9.23079L14.711 3.48511C15.0448 3.00758 15.0931 2.38262 14.8368 1.85527L14.836 1.8554ZM13.9048 2.87069L9.88988 8.61636C9.70178 8.88558 9.60178 9.20463 9.60178 9.53821V11.7126L6.89627 13.5251V10.0952C6.89627 9.75958 6.7903 9.42739 6.59823 9.15885L2.09787 2.87545C1.98197 2.7142 1.96474 2.51003 2.05084 2.3301C2.13694 2.15016 2.30385 2.04219 2.49657 2.04219H13.5014C13.6928 2.04219 13.859 2.14877 13.9458 2.32734C14.0326 2.50589 14.0167 2.70866 13.9041 2.87061L13.9048 2.87069Z"
+                                                        fill="#071C0C" stroke="#071C0C" stroke-width="0.4" />
+                                                </svg>
+                                                <div>Representative</div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="6"
+                                                    viewBox="0 0 10 6" fill="none"> <!-- Re-using dropdown arrow -->
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M1.09039 1.08392C1.11896 1.05732 1.15291 1.03621 1.19029 1.02181C1.22767 1.00741 1.26774 1 1.30821 1C1.34867 1 1.38874 1.00741 1.42612 1.02181C1.4635 1.03621 1.49745 1.05732 1.52603 1.08392L5.00008 4.30995L8.47413 1.08392C8.50274 1.05736 8.5367 1.03629 8.57407 1.02192C8.61145 1.00755 8.6515 1.00015 8.69195 1.00015C8.73241 1.00015 8.77247 1.00755 8.80984 1.02192C8.84721 1.03629 8.88117 1.05736 8.90978 1.08392C8.93838 1.11048 8.96107 1.142 8.97655 1.1767C8.99203 1.2114 9 1.24859 9 1.28615C9 1.32371 8.99203 1.3609 8.97655 1.3956C8.96107 1.4303 8.93838 1.46183 8.90978 1.48839L5.2179 4.91608C5.18932 4.94268 5.15537 4.96379 5.11799 4.97819C5.08062 4.99259 5.04055 5 5.00008 5C4.95961 5 4.91954 4.99259 4.88217 4.97819C4.84479 4.96379 4.81084 4.94268 4.78226 4.91608L1.09039 1.48839C1.06173 1.46185 1.039 1.43033 1.02349 1.39563C1.00798 1.36093 1 1.32372 1 1.28615C1 1.24858 1.00798 1.21138 1.02349 1.17667C1.039 1.14197 1.06173 1.11045 1.09039 1.08392Z"
+                                                        fill="#8B928C" stroke="#8B928C" stroke-width="0.7" />
+                                                </svg>
+                                            </button>
+                                            <div class="custom_dropdown" id="representative_filter_dropdown">
+                                                <div id="representative_filter_list_container">
+                                                    <div class="dropdown_search-wrapper">
+                                                        <div class="dropdown_search">
+                                                            <input type="text" placeholder="Search Representative"
+                                                                id="representative_filter_searchInput" />
+                                                            <svg class="revenue_dropdown-searchBTN"
+                                                                xmlns="http://www.w3.org/2000/svg" width="14"
+                                                                height="14" viewBox="0 0 14 14" fill="none">
+                                                                <path opacity="0.15"
+                                                                    d="M12 6.5C12 9.53754 9.53754 12 6.5 12C3.46243 12 1 9.53754 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53754 1 12 3.46243 12 6.5Z"
+                                                                    fill="#232323" />
+                                                                <path
+                                                                    d="M13 13L10.0376 10.0376M11.5882 6.29412C11.5882 3.37025 9.21795 1 6.29412 1C3.37025 1 1 3.37025 1 6.29412C1 9.21795 3.37025 11.5882 6.29412 11.5882C9.21795 11.5882 11.5882 9.21795 11.5882 6.29412Z"
+                                                                    stroke="#232323" stroke-width="1.3"
+                                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="custom_dropdown-users"
+                                                        id="representative_filter_representativesList">
+                                                        <!-- Representatives will be generated here by JS -->
+                                                    </ul>
+                                                    <div class="custom_dropdown-btns">
+                                                        <button class="custom_dropdown-apply"
+                                                            id="representative_filter_applyBtn">Apply</button>
+                                                        <button class="custom_dropdown-cancel"
+                                                            id="representative_filter_cancelBtn">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="pipline_info">
@@ -649,6 +680,7 @@
         </div>
     </div>
 
+    <div id="overlay" class="overlay"></div>
 
     <script src="../script.js"></script>
     <script src="./funding_pipeline.js"></script>

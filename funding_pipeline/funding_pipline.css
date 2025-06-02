@@ -1,4 +1,3 @@
-
 .content_main-pipline {
 	border: 1px solid #eee;
 	background: #fff;
@@ -104,6 +103,7 @@
 .pipline_table {
 	margin-top: 75px;
 }
+
 .pipline_table-top {
 	display: flex;
 	align-items: center;
@@ -128,26 +128,31 @@
 	width: 168px;
 	text-align: left;
 }
+
 .business_name {
 	padding: 10px 25px;
 	width: 290px;
 	text-align: left;
 }
+
 .lender {
 	padding: 10px 25px;
 	width: 200px;
 	text-align: left;
 }
+
 .funded_amount {
 	padding: 10px 25px;
 	width: 165px;
 	text-align: center;
 }
+
 .commission_paid {
 	padding: 10px 25px;
 	width: 176px;
 	text-align: center;
 }
+
 .renewal_status {
 	padding: 10px 25px;
 	width: 162px;
@@ -182,11 +187,13 @@
 	display: none;
 	z-index: 99;
 }
+
 .pipeline_chooseDate-top {
 	display: flex;
 	align-items: start;
 	gap: 20px;
 }
+
 .pipeline_chooseDate-dates {
 	border-radius: 5px;
 	border: 1px solid #d9d9d9;
@@ -223,16 +230,19 @@
 	align-items: start;
 	flex-direction: column;
 }
+
 .pipline_header-calendar {
 	margin-left: auto;
 	margin-bottom: 10px;
 }
+
 .pipeline_chooseDate-calendar {
 	position: relative;
 	display: flex;
 	align-items: center;
 	gap: 1rem;
 }
+
 .pipeline_chooseDate-bottom {
 	border: 1px solid #eee;
 	display: flex;
@@ -279,11 +289,9 @@
 	text-transform: capitalize;
 	width: 35px;
 	height: 26px;
-	background: linear-gradient(
-			0deg,
+	background: linear-gradient(0deg,
 			rgba(241, 249, 242, 0.7) 0%,
-			rgba(241, 249, 242, 0.7) 100%
-		),
+			rgba(241, 249, 242, 0.7) 100%),
 		#fff;
 }
 
@@ -358,7 +366,8 @@
 /* Цвет для выбранных дат */
 .flatpickr-day.startRange,
 .flatpickr-day.endRange {
-	background-color: #159c2a; /* Зеленый фон */
+	background-color: #159c2a;
+	/* Зеленый фон */
 	color: white;
 	display: flex;
 	align-items: center;
@@ -372,8 +381,10 @@
 
 /* Цвет для диапазона между выбранными датами */
 .flatpickr-day.inRange {
-	background: rgba(21, 156, 42, 0.2); /* Прозрачный зеленый */
-	color: #159c2a; /* Зеленый текст */
+	background: rgba(21, 156, 42, 0.2);
+	/* Прозрачный зеленый */
+	color: #159c2a;
+	/* Зеленый текст */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -417,7 +428,8 @@
 }
 
 .pipeline_chooseDate-bottom {
-	display: none; /* Скрыто изначально */
+	display: none;
+	/* Скрыто изначально */
 }
 
 .no-data {
@@ -461,6 +473,276 @@
 	display: block;
 }
 
+/* Wrapper for both filters to sit side-by-side */
+#filtersContainer {
+	display: flex;
+	gap: 10px;
+	/* Space between filter buttons */
+	align-items: flex-start;
+	/* Align items at the top */
+}
+
+/* Original CSS from user, with minor adjustments if needed */
+#year_filter_wrapper,
+#representative_filter_wrapper {
+	/* Updated to use new wrapper IDs */
+	position: relative;
+}
+
+.user-button {
+	border: 1px solid #d3d3d3;
+	background: #fff;
+	padding: 10px 17px;
+	font-size: 14px;
+	/* text-transform: uppercase; */
+	/* Removed uppercase for better fit with "Representative" */
+	cursor: pointer;
+	position: relative;
+	color: #000;
+	font-family: "Sofia Pro-M", "Sofia Pro", sans-serif;
+	/* Added fallback */
+	min-width: 150px;
+	font-size: 13px;
+	text-transform: capitalize;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 9px;
+	border-radius: 4px;
+	/* Added slight rounding */
+}
+
+.user-button:hover {
+	border: 1px solid #c0c0c0;
+	/* Slightly darker border on hover */
+	background: #f0f0f0;
+	/* Slightly different hover background */
+	box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.04) inset;
+	/* Adjusted shadow */
+}
+
+.user-button.active {
+	border: 1px solid #c0c0c0;
+	background: #ececec;
+	box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
+}
+
+.custom_dropdown {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	width: 250px;
+	/* Slightly wider for representative names */
+	border: 1px solid #d3d3d3;
+	border-radius: 3px;
+	box-shadow: 0px 7px 20px 0px rgba(35, 35, 35, 0.15);
+	z-index: 999;
+	display: none;
+}
+
+.custom_dropdown li {
+	color: #071c0c;
+	font-family: "Sofia Pro", sans-serif;
+	display: flex;
+	align-items: center;
+	padding: 10px 12px;
+	/* Adjusted padding */
+	font-size: 13px;
+	gap: 10px;
+	/* Increased gap for checkbox */
+	/* text-align: center; */
+	/* Removed text-align center for left alignment */
+	text-transform: capitalize;
+	cursor: pointer;
+	white-space: nowrap;
+	/* Prevent names from wrapping */
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.custom_dropdown.active {
+	display: block;
+}
+
+.custom_dropdown li:hover {
+	background-color: #e6e5e5;
+}
+
+.dropdown_search-wrapper {
+	border-radius: 3px 3px 0px 0px;
+	border-bottom: 1px solid #eee;
+	/* Used direct value for --LINE */
+	background: #fff;
+	padding: 10px;
+}
+
+.dropdown_search {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	border-radius: 3px;
+	border: 1px solid #232323;
+	height: 30px;
+	/* Increased height */
+	padding: 0 10px;
+	/* Adjusted padding */
+}
+
+.dropdown_search-wrapper input {
+	width: 100%;
+	border: none;
+	background: transparent;
+	outline: none;
+	font-size: 13px;
+	font-family: "Sofia Pro", sans-serif;
+}
+
+.dropdown_search-wrapper input::placeholder {
+	color: #808080;
+	font-family: "Sofia Pro", sans-serif;
+	font-size: 13px;
+}
+
+.dropdown_search-wrapper svg {
+	flex-shrink: 0;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+}
+
+.custom_dropdown-users {
+	max-height: 370px;
+	/* Adjusted max height */
+	overflow-y: auto;
+}
+
+/* Custom scrollbar for webkit browsers */
+.custom_dropdown-users::-webkit-scrollbar {
+	width: 6px;
+}
+
+.custom_dropdown-users::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 3px;
+}
+
+.custom_dropdown-users::-webkit-scrollbar-thumb {
+	background: #c1c1c1;
+	border-radius: 3px;
+}
+
+.custom_dropdown-users::-webkit-scrollbar-thumb:hover {
+	background: #a1a1a1;
+}
+
+.custom_checkbox {
+	border-radius: 3px;
+	border: 1px solid #c6c6c6;
+	background: #fff;
+	flex-shrink: 0;
+	width: 16px;
+	/* Slightly larger checkbox */
+	height: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custom_checkbox.checked {
+	background: #159c2a;
+	border: 1px solid #159c2a;
+}
+
+.custom_checkbox svg {
+	width: 11px;
+	/* Ensure SVG size is consistent */
+	height: 8px;
+}
+
+.custom_dropdown-btns {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 17px 10px;
+	border-radius: 0px 0px 3px 3px;
+	border-top: 1px solid #eee;
+	/* Used direct value for --LINE */
+	background: #fff;
+	color: #232323;
+	font-family: "Sofia Pro-M", "Sofia Pro", sans-serif;
+	/* "proxima_novasemibold" might not be available */
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: normal;
+}
+
+.custom_dropdown-apply,
+.custom_dropdown-cancel {
+	/* Combined for shared properties */
+	width: 85px;
+	/* Increased width for better text fit */
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 3px;
+	/* Added border-radius */
+	cursor: pointer;
+	/* Added cursor pointer */
+	transition: transform 0.1s ease;
+	/* Smooth transition for hover */
+}
+
+.custom_dropdown-apply {
+	color: #fff;
+	background: #159c2a;
+	border: none;
+	/* Removed default border */
+}
+
+.custom_dropdown-cancel {
+	color: #232323;
+	border: 1px solid #159c2a;
+	background: #fff;
+	/* Explicit background */
+}
+
+.custom_dropdown-apply:hover,
+.custom_dropdown-cancel:hover {
+	transform: scale(0.97);
+	/* Slightly different hover effect */
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	background: rgba(35, 35, 35, 0.35);
+	z-index: 995;
+}
+
+.overlay.open {
+	display: flex;
+}
+
+.employee-count {
+	/* This class is reused for count display */
+	color: #159c2a;
+	font-family: "Sofia Pro-M", "Sofia Pro", sans-serif;
+	font-weight: bold;
+	/* Make count bold */
+}
+
 @media screen and (max-width: 1800px) {
 	.content_main-nav {
 		flex-shrink: 0;
@@ -484,7 +766,8 @@
 		width: 150px;
 	}
 
-	.funded_amount, .commission_paid {
+	.funded_amount,
+	.commission_paid {
 		width: 130px;
 	}
 

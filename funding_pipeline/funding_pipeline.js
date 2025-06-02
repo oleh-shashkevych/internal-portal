@@ -1,3 +1,384 @@
+class YearDropdown {
+	constructor() {
+		// Get all necessary DOM elements for the Year filter
+		this.button = document.getElementById('year_filter_button');
+		this.dropdown = document.getElementById('year_filter_dropdown');
+		this.overlay = document.getElementById('overlay'); // Shared overlay
+		this.yearsList = document.getElementById('year_filter_yearsList');
+		this.searchInput = document.getElementById('year_filter_searchInput');
+		this.applyBtn = document.getElementById('year_filter_applyBtn');
+		this.cancelBtn = document.getElementById('year_filter_cancelBtn');
+
+		// State variables for years
+		this.years = []; // Holds the currently displayed/filtered years
+		this.selectedYears = new Set(); // Holds the applied selected years
+		this.tempSelectedYears = new Set(); // Holds years selected in the dropdown before applying
+		this.allYears = []; // Holds all available years
+
+		// Initialize the dropdown
+		if (this.button && this.dropdown && this.yearsList && this.searchInput && this.applyBtn && this.cancelBtn && this.overlay) {
+			this.init();
+		} else {
+			console.error("YearDropdown: One or more essential DOM elements are missing.");
+		}
+	}
+
+	init() {
+		this.generateYears();
+		this.renderYears();
+		this.attachEventListeners();
+		this.updateButtonText(); // Initial button text update
+	}
+
+	generateYears() {
+		const currentYear = new Date().getFullYear();
+		for (let year = 2018; year <= currentYear; year++) {
+			this.years.push(year);
+		}
+		this.allYears = [...this.years]; // Store a copy of all years
+	}
+
+	renderYears() {
+		this.yearsList.innerHTML = ''; // Clear existing list items
+		this.years.forEach(year => {
+			const li = document.createElement('li');
+			li.setAttribute('data-year', year);
+
+			const isSelected = this.tempSelectedYears.has(year);
+
+			// Create checkbox and year text
+			li.innerHTML = `
+                        <div class="custom_checkbox ${isSelected ? 'checked' : ''}">
+                            <svg width="11" height="8" viewBox="0 0 11 8" fill="none" style="display: ${isSelected ? 'block' : 'none'}">
+                                <path d="M8.94558 0.255056C9.11838 0.089653 9.34834 -0.00178848 9.58693 2.65108e-05C9.82551 0.0018415 10.0541 0.0967713 10.2244 0.264784C10.3947 0.432797 10.4934 0.660752 10.4997 0.900549C10.506 1.14034 10.4194 1.37323 10.2582 1.55005L5.36357 7.70436C5.2794 7.79551 5.17782 7.86865 5.0649 7.91942C4.95198 7.97018 4.83003 7.99754 4.70636 7.99984C4.58268 8.00214 4.45981 7.97935 4.3451 7.93282C4.23038 7.88629 4.12618 7.81698 4.03872 7.72903L0.792827 4.46564C0.702435 4.38096 0.629933 4.27884 0.579648 4.16537C0.529362 4.05191 0.502323 3.92942 0.500143 3.80522C0.497964 3.68102 0.520688 3.55765 0.566961 3.44248C0.613234 3.3273 0.682108 3.22267 0.769473 3.13483C0.856838 3.047 0.960905 2.97775 1.07547 2.93123C1.19003 2.88471 1.31273 2.86186 1.43627 2.86405C1.5598 2.86624 1.68163 2.89343 1.79449 2.94398C1.90734 2.99454 2.00892 3.06743 2.09315 3.15831L4.66189 5.73967L8.92227 0.28219L8.94558 0.255056Z" fill="white"></path>
+                            </svg>
+                        </div>
+                        ${year}
+                    `;
+
+			li.addEventListener('click', () => this.toggleYear(year));
+			this.yearsList.appendChild(li);
+		});
+	}
+
+	toggleYear(year) {
+		const listItem = this.yearsList.querySelector(`[data-year="${year}"]`);
+		if (!listItem) return;
+
+		const checkbox = listItem.querySelector('.custom_checkbox');
+		const checkmark = checkbox.querySelector('svg');
+
+		if (this.tempSelectedYears.has(year)) {
+			this.tempSelectedYears.delete(year);
+			checkbox.classList.remove('checked');
+			checkmark.style.display = 'none';
+		} else {
+			this.tempSelectedYears.add(year);
+			checkbox.classList.add('checked');
+			checkmark.style.display = 'block';
+		}
+	}
+
+	updateButtonText() {
+		const buttonTextDiv = this.button.querySelector('div'); // The div containing "Year"
+		let existingCountSpan = buttonTextDiv.querySelector('.employee-count');
+
+		if (existingCountSpan) {
+			existingCountSpan.remove();
+		}
+
+		if (this.selectedYears.size > 0) {
+			const countSpan = document.createElement('span');
+			countSpan.className = 'employee-count'; // Reusing class for styling
+			countSpan.textContent = ` (${this.selectedYears.size})`;
+			buttonTextDiv.appendChild(countSpan);
+		}
+	}
+
+	openDropdown() {
+		this.tempSelectedYears = new Set(this.selectedYears); // Copy applied selections to temp
+		this.years = [...this.allYears]; // Reset to all years before potential filtering
+		this.renderYears(); // Re-render to reflect current temp selections
+		this.dropdown.classList.add('active');
+		this.overlay.classList.add('open');
+		this.button.classList.add('active');
+		this.searchInput.value = ''; // Clear search input
+		setTimeout(() => this.searchInput.focus(), 100); // Focus search input
+	}
+
+	closeDropdown() {
+		this.dropdown.classList.remove('active');
+		this.overlay.classList.remove('open'); // Close overlay if this is the only active dropdown
+		this.button.classList.remove('active');
+		// Reset search and list to full on close
+		this.searchInput.value = '';
+		this.years = [...this.allYears];
+		this.renderYears(); // Re-render to show all years with correct temp selections
+	}
+
+	applySelection() {
+		this.selectedYears = new Set(this.tempSelectedYears); // Apply temp selections
+		this.updateButtonText();
+		this.closeDropdown();
+		// Potentially dispatch an event or call a callback with selectedYears
+		// console.log('Selected Years:', Array.from(this.selectedYears));
+	}
+
+	cancelSelection() {
+		// No need to revert tempSelectedYears, as openDropdown resets it from selectedYears
+		this.closeDropdown();
+	}
+
+	filterYears(searchTerm) {
+		const lowerCaseSearchTerm = searchTerm.toLowerCase();
+		this.years = this.allYears.filter(year =>
+			year.toString().toLowerCase().includes(lowerCaseSearchTerm)
+		);
+		this.renderYears(); // Re-render list with filtered years
+	}
+
+	attachEventListeners() {
+		this.button.addEventListener('click', (e) => {
+			e.stopPropagation(); // Prevent click from bubbling to document
+			// Close other dropdowns if any are open
+			document.querySelectorAll('.custom_dropdown.active').forEach(activeDropdown => {
+				if (activeDropdown !== this.dropdown) {
+					// Find the instance managing this other dropdown and call its close method
+					// This is a bit complex. For now, just close it.
+					// A more robust solution would involve a central manager or custom events.
+					activeDropdown.classList.remove('active');
+					activeDropdown.previousElementSibling.classList.remove('active'); // Assuming button is previous sibling
+				}
+			});
+			if (this.dropdown.classList.contains('active')) {
+				this.closeDropdown();
+			} else {
+				this.openDropdown();
+			}
+		});
+
+		// Close dropdown if clicking outside of it (on the overlay)
+		this.overlay.addEventListener('click', () => {
+			if (this.dropdown.classList.contains('active')) {
+				this.cancelSelection();
+			}
+		});
+
+		// Prevent dropdown from closing when clicking inside it
+		this.dropdown.addEventListener('click', (e) => {
+			e.stopPropagation();
+		});
+
+		this.applyBtn.addEventListener('click', () => {
+			this.applySelection();
+		});
+
+		this.cancelBtn.addEventListener('click', () => {
+			this.cancelSelection();
+		});
+
+		this.searchInput.addEventListener('input', (e) => {
+			this.filterYears(e.target.value);
+		});
+
+		// Global listener for Escape key to close dropdown
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && this.dropdown.classList.contains('active')) {
+				this.cancelSelection();
+			}
+		});
+	}
+}
+
+class RepresentativeDropdown {
+	constructor() {
+		// Get all necessary DOM elements for the Representative filter
+		this.button = document.getElementById('representative_filter_button');
+		this.dropdown = document.getElementById('representative_filter_dropdown');
+		this.overlay = document.getElementById('overlay'); // Shared overlay
+		this.representativesListElement = document.getElementById('representative_filter_representativesList');
+		this.searchInput = document.getElementById('representative_filter_searchInput');
+		this.applyBtn = document.getElementById('representative_filter_applyBtn');
+		this.cancelBtn = document.getElementById('representative_filter_cancelBtn');
+
+		// State variables for representatives
+		this.representatives = []; // Holds the currently displayed/filtered representatives
+		this.selectedRepresentatives = new Set(); // Holds the applied selected representatives
+		this.tempSelectedRepresentatives = new Set(); // Holds representatives selected before applying
+		this.allRepresentatives = [
+			"Monica Cooper", "Laurence Meyer", "Alan Barton", "John Doe", "Jane Smith",
+			"Alan Barton1", "John Doe1", "Jane Smith1", "Monica Cooper22", "Laurence Meyer123",
+			"Alan Barton124", "John Doe2414", "Jane Smith12412", "Alan Barton1124",
+			"John Doe1124", "Jane Smith12414"
+		];
+
+		// Initialize the dropdown
+		if (this.button && this.dropdown && this.representativesListElement && this.searchInput && this.applyBtn && this.cancelBtn && this.overlay) {
+			this.init();
+		} else {
+			console.error("RepresentativeDropdown: One or more essential DOM elements are missing.");
+		}
+	}
+
+	init() {
+		this.representatives = [...this.allRepresentatives]; // Initialize with all representatives
+		this.renderRepresentatives();
+		this.attachEventListeners();
+		this.updateButtonText(); // Initial button text update
+	}
+
+	renderRepresentatives() {
+		this.representativesListElement.innerHTML = ''; // Clear existing list items
+		this.representatives.forEach(name => {
+			const li = document.createElement('li');
+			li.setAttribute('data-representative-name', name); // Use a descriptive data attribute
+
+			const isSelected = this.tempSelectedRepresentatives.has(name);
+
+			// Create checkbox and representative name
+			li.innerHTML = `
+                        <div class="custom_checkbox ${isSelected ? 'checked' : ''}">
+                            <svg width="11" height="8" viewBox="0 0 11 8" fill="none" style="display: ${isSelected ? 'block' : 'none'}">
+                                <path d="M8.94558 0.255056C9.11838 0.089653 9.34834 -0.00178848 9.58693 2.65108e-05C9.82551 0.0018415 10.0541 0.0967713 10.2244 0.264784C10.3947 0.432797 10.4934 0.660752 10.4997 0.900549C10.506 1.14034 10.4194 1.37323 10.2582 1.55005L5.36357 7.70436C5.2794 7.79551 5.17782 7.86865 5.0649 7.91942C4.95198 7.97018 4.83003 7.99754 4.70636 7.99984C4.58268 8.00214 4.45981 7.97935 4.3451 7.93282C4.23038 7.88629 4.12618 7.81698 4.03872 7.72903L0.792827 4.46564C0.702435 4.38096 0.629933 4.27884 0.579648 4.16537C0.529362 4.05191 0.502323 3.92942 0.500143 3.80522C0.497964 3.68102 0.520688 3.55765 0.566961 3.44248C0.613234 3.3273 0.682108 3.22267 0.769473 3.13483C0.856838 3.047 0.960905 2.97775 1.07547 2.93123C1.19003 2.88471 1.31273 2.86186 1.43627 2.86405C1.5598 2.86624 1.68163 2.89343 1.79449 2.94398C1.90734 2.99454 2.00892 3.06743 2.09315 3.15831L4.66189 5.73967L8.92227 0.28219L8.94558 0.255056Z" fill="white"></path>
+                            </svg>
+                        </div>
+                        ${name}
+                    `;
+
+			li.addEventListener('click', () => this.toggleRepresentative(name));
+			this.representativesListElement.appendChild(li);
+		});
+	}
+
+	toggleRepresentative(name) {
+		const listItem = this.representativesListElement.querySelector(`[data-representative-name="${name}"]`);
+		if (!listItem) return;
+
+		const checkbox = listItem.querySelector('.custom_checkbox');
+		const checkmark = checkbox.querySelector('svg');
+
+		if (this.tempSelectedRepresentatives.has(name)) {
+			this.tempSelectedRepresentatives.delete(name);
+			checkbox.classList.remove('checked');
+			checkmark.style.display = 'none';
+		} else {
+			this.tempSelectedRepresentatives.add(name);
+			checkbox.classList.add('checked');
+			checkmark.style.display = 'block';
+		}
+	}
+
+	updateButtonText() {
+		const buttonTextDiv = this.button.querySelector('div'); // The div containing "Representative"
+		let existingCountSpan = buttonTextDiv.querySelector('.employee-count');
+
+		if (existingCountSpan) {
+			existingCountSpan.remove();
+		}
+
+		if (this.selectedRepresentatives.size > 0) {
+			const countSpan = document.createElement('span');
+			countSpan.className = 'employee-count'; // Reusing class for styling
+			countSpan.textContent = ` (${this.selectedRepresentatives.size})`;
+			buttonTextDiv.appendChild(countSpan);
+		}
+	}
+
+	openDropdown() {
+		this.tempSelectedRepresentatives = new Set(this.selectedRepresentatives);
+		this.representatives = [...this.allRepresentatives]; // Reset to all before filtering
+		this.renderRepresentatives();
+		this.dropdown.classList.add('active');
+		this.overlay.classList.add('open');
+		this.button.classList.add('active');
+		this.searchInput.value = '';
+		setTimeout(() => this.searchInput.focus(), 100);
+	}
+
+	closeDropdown() {
+		this.dropdown.classList.remove('active');
+		this.overlay.classList.remove('open');
+		this.button.classList.remove('active');
+		this.searchInput.value = '';
+		this.representatives = [...this.allRepresentatives];
+		this.renderRepresentatives();
+	}
+
+	applySelection() {
+		this.selectedRepresentatives = new Set(this.tempSelectedRepresentatives);
+		this.updateButtonText();
+		this.closeDropdown();
+		// Potentially dispatch an event or call a callback with selectedRepresentatives
+		// console.log('Selected Representatives:', Array.from(this.selectedRepresentatives));
+	}
+
+	cancelSelection() {
+		this.closeDropdown();
+	}
+
+	filterRepresentatives(searchTerm) {
+		const lowerCaseSearchTerm = searchTerm.toLowerCase();
+		this.representatives = this.allRepresentatives.filter(name =>
+			name.toLowerCase().includes(lowerCaseSearchTerm)
+		);
+		this.renderRepresentatives();
+	}
+
+	attachEventListeners() {
+		this.button.addEventListener('click', (e) => {
+			e.stopPropagation();
+			// Close other dropdowns
+			document.querySelectorAll('.custom_dropdown.active').forEach(activeDropdown => {
+				if (activeDropdown !== this.dropdown) {
+					activeDropdown.classList.remove('active');
+					if (activeDropdown.previousElementSibling && activeDropdown.previousElementSibling.classList.contains('user-button')) {
+						activeDropdown.previousElementSibling.classList.remove('active');
+					}
+				}
+			});
+			if (this.dropdown.classList.contains('active')) {
+				this.closeDropdown();
+			} else {
+				this.openDropdown();
+			}
+		});
+
+		this.overlay.addEventListener('click', () => {
+			if (this.dropdown.classList.contains('active')) {
+				this.cancelSelection();
+			}
+		});
+
+		this.dropdown.addEventListener('click', (e) => {
+			e.stopPropagation();
+		});
+
+		this.applyBtn.addEventListener('click', () => {
+			this.applySelection();
+		});
+
+		this.cancelBtn.addEventListener('click', () => {
+			this.cancelSelection();
+		});
+
+		this.searchInput.addEventListener('input', (e) => {
+			this.filterRepresentatives(e.target.value);
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && this.dropdown.classList.contains('active')) {
+				this.cancelSelection();
+			}
+		});
+	}
+}
+
+// Initialize the dropdowns when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+	new YearDropdown();
+	new RepresentativeDropdown();
+});
+
 const items = [
 	{
 		funded_date: '01.02.2025',
@@ -270,7 +651,7 @@ chart.canvas.addEventListener('click', event => {
 			const itemYear = item.funded_date.split('.')[2]; // Получаем год из последней части даты (MM.DD.YYYY)
 			return (
 				months[index].slice(0, 3).toLowerCase() ===
-					months[parseInt(itemMonth) - 1].slice(0, 3).toLowerCase() &&
+				months[parseInt(itemMonth) - 1].slice(0, 3).toLowerCase() &&
 				itemYear === selectedYear.toString() // Добавляем проверку по году
 			);
 		});
@@ -531,10 +912,9 @@ function renderTableItems(items) {
       <div class="commission_paid">$${item.commission_paid}</div>
       <div class="renewal_status">
         <div class="${item.renewal_status}">
-          ${
-						item.renewal_status.charAt(0).toUpperCase() +
-						item.renewal_status.slice(1)
-					}
+          ${item.renewal_status.charAt(0).toUpperCase() +
+			item.renewal_status.slice(1)
+			}
         </div>
       </div>
     `;
@@ -565,26 +945,26 @@ const applyChooseCalendar = document.getElementById(
 );
 
 // Обработчик клика по кнопке Apply
-applyChooseCalendar.addEventListener('click', () => {
-	chooseDate.classList.toggle('show');
+// applyChooseCalendar.addEventListener('click', () => {
+// 	chooseDate.classList.toggle('show');
 
-	const startSelectedDate = startDatePicker.selectedDates[0];
-	const endSelectedDate = endDatePicker.selectedDates[0] || startSelectedDate;
+// 	const startSelectedDate = startDatePicker.selectedDates[0];
+// 	const endSelectedDate = endDatePicker.selectedDates[0] || startSelectedDate;
 
-	if (startSelectedDate && endSelectedDate) {
-		// Filter items by date range
-		const filteredItems = filterItemsByDateRange(items, [
-			startSelectedDate,
-			endSelectedDate,
-		]);
+// 	if (startSelectedDate && endSelectedDate) {
+// 		// Filter items by date range
+// 		const filteredItems = filterItemsByDateRange(items, [
+// 			startSelectedDate,
+// 			endSelectedDate,
+// 		]);
 
-		// Update table
-		renderTableItems(filteredItems);
+// 		// Update table
+// 		renderTableItems(filteredItems);
 
-		// Update chart with filtered items
-		updateChartData(filteredItems);
-	}
-});
+// 		// Update chart with filtered items
+// 		updateChartData(filteredItems);
+// 	}
+// });
 
 // Функция для обновления данных графика
 function updateChartData(filteredItems) {
@@ -617,36 +997,36 @@ function updateChartData(filteredItems) {
 }
 
 // Открыть календарь
-openChooseCalendar.addEventListener('click', () => {
-	chooseDate.classList.toggle('show');
-});
+// openChooseCalendar.addEventListener('click', () => {
+// 	chooseDate.classList.toggle('show');
+// });
 
 // Закрыть календарь и сбросить выбор
-closeChooseCalendar.addEventListener('click', () => {
-	chooseDate.classList.toggle('show');
+// closeChooseCalendar.addEventListener('click', () => {
+// 	chooseDate.classList.toggle('show');
 
-	// Сброс выбора в календаре
-	startDatePicker.clear();
-	endDatePicker.clear();
+// 	// Сброс выбора в календаре
+// 	startDatePicker.clear();
+// 	endDatePicker.clear();
 
-	// Обнуление значений в блоках
-	document
-		.querySelectorAll('.pipeline_dateStart, .pipeline_dateEnd')
-		.forEach(el => {
-			el.innerText = 'DD.MM.YYYY';
-		});
+// 	// Обнуление значений в блоках
+// 	document
+// 		.querySelectorAll('.pipeline_dateStart, .pipeline_dateEnd')
+// 		.forEach(el => {
+// 			el.innerText = 'DD.MM.YYYY';
+// 		});
 
-	document.getElementById('chooseDate-dayStart').innerText = '0';
-	document.getElementById('chooseDate-monthStart').innerText = 'Month';
-	document.getElementById('chooseDate-yearStart').innerText = '0';
+// 	document.getElementById('chooseDate-dayStart').innerText = '0';
+// 	document.getElementById('chooseDate-monthStart').innerText = 'Month';
+// 	document.getElementById('chooseDate-yearStart').innerText = '0';
 
-	document.getElementById('chooseDate-dayEnd').innerText = '0';
-	document.getElementById('chooseDate-monthEnd').innerText = 'Month';
-	document.getElementById('chooseDate-yearEnd').innerText = '0';
+// 	document.getElementById('chooseDate-dayEnd').innerText = '0';
+// 	document.getElementById('chooseDate-monthEnd').innerText = 'Month';
+// 	document.getElementById('chooseDate-yearEnd').innerText = '0';
 
-	// Скрываем блок с кнопками
-	document.querySelector('.pipeline_chooseDate-bottom').style.display = 'none';
-});
+// 	// Скрываем блок с кнопками
+// 	document.querySelector('.pipeline_chooseDate-bottom').style.display = 'none';
+// });
 
 
 function filterItemsByYear(items, year) {
