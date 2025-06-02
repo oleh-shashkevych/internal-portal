@@ -432,6 +432,75 @@
 	background-color: #f0f0f0;
 }
 
+.attendance_item .edits {
+	display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline-start: 10px;
+    flex-shrink: 0;
+}
+
+.attendance_item .edits button {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.attendance_item .edits button.edit:hover svg path {
+    fill: #159C2A;
+}
+
+.attendance_item .edits button.delete:hover svg path {
+    fill: #EC0202;
+}
+
+/* Add these at the end of your attendance.css file */
+
+.deleting-item {
+    background: #e8e9e8 !important; /* Grey gradient */
+}
+
+/* Styles for the Delete Confirmation Popup */
+#deleteConfirmOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002; /* Ensure it's on top */
+}
+
+#deleteConfirmModal {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    min-width: 320px;
+}
+
+#deleteConfirmModal p {
+    font-family: 'Sofia Pro', sans-serif; /* Using a font from your existing styles */
+    font-size: 18px;
+    color: #232323;
+    margin-bottom: 25px;
+}
+
+#deleteConfirmModal .popup-buttons {
+    display: flex;
+    justify-content: space-evenly; /* Or space-around */
+    gap: 15px; /* Adds space between buttons */
+}
+
+/* Re-using button styles but allowing override for specific delete popup buttons */
+#deleteConfirmModal .attendance_modal-btn {
+    min-width: 120px; /* Give buttons a bit more width */
+}
+
 @media screen and (max-width: 1810px) {
 	.attendance_item {
 		padding: 10px 0;

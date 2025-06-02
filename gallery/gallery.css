@@ -76,6 +76,18 @@
 	scale: 0.95;
 }
 
+.gallery_item-btns button.gallery_item-close:hover {
+	background-color: rgb(255, 85, 85);
+}
+
+.gallery_item-btns button.gallery_item-close:hover span {
+	color: #fff;
+}
+
+.gallery_item-btns button.gallery_item-close:hover svg path {
+	fill: #fff;
+}
+
 .gallery_item-btns button span {
 	color: #8b928c;
 	text-align: center;
@@ -88,7 +100,7 @@
 .drag_bar {
 	width: 381px;
 	flex-shrink: 0;
-	padding-top: 35px;
+	padding-top: 49px;
 }
 
 .upload_block {
