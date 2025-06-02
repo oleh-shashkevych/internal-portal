@@ -1,268 +1,268 @@
 .dashboard_right-cp-bar {
-  padding: 0 50px 70px 17px;
+    padding: 0 50px 70px 17px;
 }
 
 .dashboard_top {
-  display: flex;
-  align-items: stretch;
-  gap: 25px;
+    display: flex;
+    align-items: stretch;
+    gap: 25px;
 }
 
 .dashboard_dateContainer {
-  background: #159c2a;
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 0px 35px;
-  flex-shrink: 0;
+    background: #159c2a;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 0px 35px;
+    flex-shrink: 0;
 }
 
 .dashboard_date {
-  color: #fff;
-  font-family: "Sofia Pro-M";
-  font-size: 27px;
-  font-style: normal;
-  line-height: normal;
-  text-transform: uppercase;
+    color: #fff;
+    font-family: "Sofia Pro-M";
+    font-size: 27px;
+    font-style: normal;
+    line-height: normal;
+    text-transform: uppercase;
 }
 
 .goal_chart {
-  background: #fff;
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
-  width: 100%;
+    background: #fff;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
+    width: 100%;
 }
 
 .dashboard_block-top {
-  padding: 15px 17px;
-  border-bottom: 1px solid #d3d3d3;
+    padding: 15px 17px;
+    border-bottom: 1px solid #d3d3d3;
 }
 
 .dashboard_top-h3 {
-  color: #232323;
-  font-family: "Sofia Pro-M";
-  font-size: 17px;
-  font-style: normal;
-  line-height: normal;
-  font-weight: 500;
-  text-transform: uppercase;
+    color: #232323;
+    font-family: "Sofia Pro-M";
+    font-size: 17px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: 500;
+    text-transform: uppercase;
 }
 
 .goal_chart-blocks {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  height: 195px;
-  width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 195px;
+    width: 100%;
 }
 
 .goal_chart-block {
-  position: relative;
+    position: relative;
 }
 
 .goal_chart-block::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  width: 1px;
-  height: 80%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #d3d3d3;
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 1px;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #d3d3d3;
 }
 
 .goal_chart-block:last-child::after {
-  display: none;
+    display: none;
 }
 
 .goal_chart-monthly {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
 }
 
 .rounded_2m {
-  width: 110px;
-  height: 110px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 10px solid #159c2a;
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 10px solid #159c2a;
 }
 
 .goal_chart-blocks-title {
-  color: #000;
-  font-family: "Sofia Pro";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+    color: #000;
+    font-family: "Sofia Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .goal_chart-monthly_amount {
-  color: #727272;
-  font-family: "Sofia Pro-M";
-  font-size: 24px;
-  font-style: normal;
-  line-height: normal;
+    color: #727272;
+    font-family: "Sofia Pro-M";
+    font-size: 24px;
+    font-style: normal;
+    line-height: normal;
 }
 
 .goal_chart-funded {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
 }
 
 .goal_chart-funded_amount {
-  color: #159c2a;
-  font-family: "Sofia Pro-M";
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+    color: #159c2a;
+    font-family: "Sofia Pro-M";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .goal_chart-remaining {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
 }
 
 .goal_chart-block-infoWrapper {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .goal-chart-funded_amount--black {
-  color: #000;
+    color: #000;
 }
 
 .birthdays {
-  flex-shrink: 0;
-  background: #fff;
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+    background: #fff;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
 }
 
 .birthdays_top {
-  display: flex;
-  align-items: center;
-  gap: 35px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
 }
 
 .birthdays_title-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .view_all-btn {
-  height: 30px;
-  color: #fff;
-  font-family: "Sofia Pro-M";
-  font-size: 15px;
-  line-height: normal;
-  border-radius: 0;
+    height: 30px;
+    color: #fff;
+    font-family: "Sofia Pro-M";
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 0;
 }
 
 .birthdays_items {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  max-height: 195px;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 195px;
+    overflow-y: auto;
 }
 
 .birthdays_item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  position: relative;
-  padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    padding: 5px 20px;
 }
 
 .birthdays_item:hover {
-  background: #159c291a;
+    background: #159c291a;
 }
 
 .birthdays_item-link {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .birthdays_item-avatar {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(100, 101, 100, 0.1);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(100, 101, 100, 0.1);
 }
 
 .birthdays_item-date {
-  color: #646564;
-  font-family: "proxima_nova";
-  font-size: 11px;
-  font-style: normal;
-  line-height: normal;
+    color: #646564;
+    font-family: "proxima_nova";
+    font-size: 11px;
+    font-style: normal;
+    line-height: normal;
 }
 
 .birthdays_item-name {
-  color: #232323;
-  font-family: "proxima_novasemibold";
-  font-size: 16px;
-  font-style: normal;
-  line-height: normal;
-  font-weight: 400;
+    color: #232323;
+    font-family: "proxima_novasemibold";
+    font-size: 16px;
+    font-style: normal;
+    line-height: normal;
+    font-weight: 400;
 }
 
 .birthdays_item-happy {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #159c2a;
-  font-family: "Sofia Pro";
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #159c2a;
+    font-family: "Sofia Pro";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
 }
 
 .dashboard_middle {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 25px;
-  margin: 30px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin: 30px 0;
 }
 
 .revenue,
 .applications {
-  background: #fff;
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
 }
 
 .applications {
-  max-width: 100%;
-  overflow: hidden;
+    max-width: 100%;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
 }
 
 .applications_info {
-  width: 100%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -270,845 +270,915 @@
 
 .revenue_info,
 .applications_info {
-  padding: 30px;
+    padding: 30px;
 }
 
 .dashboard_filter-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
 
 .dashboard_filter {
-  display: flex;
-  align-items: center;
-  gap: 13px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
 }
 
 .dashboard_filter_block-wrapper,
 .user-button {
-  border: 1px solid #d3d3d3;
-  background: #fff;
-  padding: 10px 17px;
-  font-size: 14px;
-  text-transform: uppercase;
-  cursor: pointer;
-  position: relative;
-  color: #000;
-  font-family: "Sofia Pro-M";
+    border: 1px solid #d3d3d3;
+    background: #fff;
+    padding: 10px 17px;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    color: #000;
+    font-family: "Sofia Pro-M";
 }
 
 .user-button {
-  min-width: 150px;
-  font-size: 13px;
-  text-transform: capitalize;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
+    min-width: 150px;
+    font-size: 13px;
+    text-transform: capitalize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
 }
 
 .user-button:hover {
-  border: 1px solid #d3d3d3;
-  background: #ececec;
-  box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
+    border: 1px solid #d3d3d3;
+    background: #ececec;
+    box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
 }
 
 .dashboard_filter_block-wrapper.active,
 .user-button.active {
-  border: 1px solid #d3d3d3;
-  background: #ececec;
-  box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
+    border: 1px solid #d3d3d3;
+    background: #ececec;
+    box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
 }
 
 .revenue_info-items {
-  display: flex;
-  flex-direction: column;
-  /* max-height: 132px;
+    display: flex;
+    flex-direction: column;
+    /* max-height: 132px;
   min-height: 132px; */
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 .revenue_user {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 5px 0;
 }
 
 .revenue_user p {
-  min-width: 110px;
-  max-width: 110px;
-  overflow: hidden;
-  flex-shrink: 0;
-  text-align: right;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  text-align: start;
+    min-width: 110px;
+    max-width: 110px;
+    overflow: hidden;
+    flex-shrink: 0;
+    text-align: right;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: start;
 }
 
 .user_progress-bar {
-  width: 100%;
-  background: #d9d9d9;
-  height: 14px;
-  position: relative; /* важно для абсолютного позиционирования внутренних элементов */
+    width: 100%;
+    background: #d9d9d9;
+    height: 14px;
+    position: relative;
+    /* важно для абсолютного позиционирования внутренних элементов */
 }
 
 .user_progress_line {
-  display: block;
-  background: #159c2a;
-  height: 14px;
-  color: #fff;
-  text-align: right;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.35);
-  font-weight: 500;
-  font-size: 10px;
-  font-family: "Inter";
-  padding-right: 15px;
-  position: relative;
+    display: block;
+    background: #159c2a;
+    height: 14px;
+    color: #fff;
+    text-align: right;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.35);
+    font-weight: 500;
+    font-size: 10px;
+    font-family: "Inter";
+    padding-right: 15px;
+    position: relative;
 }
 
 .user_progress_line-value {
-  position: absolute;
-  right: 10px;
-  white-space: nowrap;
+    position: absolute;
+    right: 10px;
+    white-space: nowrap;
 }
 
 .revenue_progress {
-  display: flex;
-  flex-direction: column;
-  padding-left: 110px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 110px;
 }
 
 .revenue_progress-top {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .revenue_progress-top-symbol {
-  color: rgba(35, 35, 35, 0.4);
-  font-family: "Sofia Pro";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  flex-shrink: 0;
+    color: rgba(35, 35, 35, 0.4);
+    font-family: "Sofia Pro";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    flex-shrink: 0;
 }
 
 .revenue_progress-top-line {
-  width: 100%;
-  height: 1px;
-  display: block;
-  background: #d3d3d3;
+    width: 100%;
+    height: 1px;
+    display: block;
+    background: #d3d3d3;
 }
 
 .revenue_progress-amounts {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: rgba(35, 35, 35, 0.4);
-  font-family: "Sofia Pro-S";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: rgba(35, 35, 35, 0.4);
+    font-family: "Sofia Pro-S";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .applications_chart-wrapper {
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-  width: 100%;
-  max-width: 100%;
-  
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+
 }
 
 .application_submitted {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
 }
 
 .application_submitted-num {
-  color: #159c2a;
-  font-family: "Sofia Pro-M";
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+    color: #159c2a;
+    font-family: "Sofia Pro-M";
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
 }
 
 .application_submitted-text {
-  max-width: 95px;
-  text-align: center;
-  color: #232323;
-  font-family: "Sofia Pro-L";
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 21px; /* 131.25% */
+    max-width: 95px;
+    text-align: center;
+    color: #232323;
+    font-family: "Sofia Pro-L";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 21px;
+    /* 131.25% */
 }
 
 .chart-container {
-  width: 100%;
+    width: 100%;
     height: 100%;
-  position: relative;
-  flex-grow: 1; /* Позволяет графику занимать оставшееся пространство */
-  min-width: 200px; /* Минимальная ширина графика */
-  max-width: 100%; /* Ограничиваем максимальную ширину графика */
+    position: relative;
+    flex-grow: 1;
+    /* Позволяет графику занимать оставшееся пространство */
+    min-width: 200px;
+    /* Минимальная ширина графика */
+    max-width: 100%;
+    /* Ограничиваем максимальную ширину графика */
 }
 
 .dashboard_funded-deals {
-  background: #fff;
-  box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.05);
 }
 
 .funded_deals-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .see_more-btn {
-  font-size: 15px;
-  font-family: "Sofia Pro-M";
-  font-weight: 500;
-  border-radius: 0;
+    font-size: 15px;
+    font-family: "Sofia Pro-M";
+    font-weight: 500;
+    border-radius: 0;
 }
 
 .funded_deals-info {
-  padding: 30px;
+    padding: 30px;
 }
 
 .funded_deals-table {
-  display: flex;
-  flex-direction: column;
-  max-height: 580px;
-  overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    max-height: 580px;
+    overflow-y: auto;
 }
 
 .funded_deals-table_item,
-.funded_deals-table_head {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  background: #fff;
-  border-bottom: 1px solid #d3d3d3;
+.funded_deals-table_head,
+.funded_deals-table_summary { /* Added summary class here */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Changed from 5 to 7 */
+    align-items: center;
+    /* justify-content: space-between; Removed as grid handles spacing with 1fr */
+    padding: 15px;
+    background: #fff;
+    border-bottom: 1px solid #d3d3d3;
+    text-decoration: none; /* For <a> tags if used as items */
+    color: inherit; /* For <a> tags if used as items */
 }
 
-.funded_deals-table_head {
-  background: #f9f9f9;
-  font-family: "Sofia Pro-M";
+.funded_deals-table_head,
+.funded_deals-table_summary { /* Grouped head and summary for shared styles */
+    background: #f9f9f9;
+    font-family: "Sofia Pro-M", sans-serif; /* Added sans-serif as a fallback */
+    font-weight: 600; /* Semi-bold often corresponds to 600 */
 }
+
+.funded_deals-table_summary p { /* Ensure p tags within summary inherit font weight */
+    font-family: "Sofia Pro-M", sans-serif;
+    font-weight: 600;
+}
+
+/* Individual column classes can be used for specific text alignment if needed */
+.funded_deals-table_item-date,
+.funded_deals-table_item-program,
+.funded_deals-table_item-2, /* Lender */
+.funded_deals-table_item-3, /* Business Name */
+.funded_deals-table_item-4, /* Representative */
+.funded_deals-table_item-amount,
+.funded_deals-table_item-revenue,
+.funded_deals-table_item-representative-count {
+    /* Example: text-align: left; */
+    /* Add any specific alignment or styling per column if needed */
+}
+
+.funded_deals-table_item-amount {
+    /* Example: text-align: right; if you want amounts educação à direita */
+}
+.funded_deals-table_item-revenue {
+    /* Example: text-align: right; */
+}
+
+.funded_deals-table_item-representative-count {
+    text-align: right; /* Align item count to the right */
+    padding-right: 15px; /* Add some padding if needed */
+}
+
 
 .funded_deals-table_item:hover {
-  background: #159c291a;
+    background: #159c291a;
+}
+
+/* To ensure the <p> tags inside the <a> fill the grid cell correctly and allow text styling */
+.funded_deals-table_item p {
+    margin: 0; /* Reset default paragraph margins */
+    overflow: hidden; /* Optional: handle long text */
+    text-overflow: ellipsis; /* Optional: handle long text */
+    white-space: nowrap; /* Optional: prevent wrapping if desired, adjust per column */
 }
 
 .goal_chart-progress {
-  width: 110px;
-  height: 110px;
-  position: relative;
+    width: 110px;
+    height: 110px;
+    position: relative;
 }
 
 .goal_chart-progress svg {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .progress-circle {
-  transform-origin: center;
-  transform: rotate(90deg);
+    transform-origin: center;
+    transform: rotate(90deg);
 }
 
 .progress-bg {
-  fill: none;
-  stroke: #232323;
-  stroke-width: 10;
-  opacity: 1;
+    fill: none;
+    stroke: #232323;
+    stroke-width: 10;
+    opacity: 1;
 }
 
 .progress-bar {
-  fill: none;
-  stroke: #159c2a;
-  stroke-width: 10;
-  stroke-dasharray: 283;
-  stroke-dashoffset: 283;
-  transition: stroke-dashoffset 1s ease-in-out;
+    fill: none;
+    stroke: #159c2a;
+    stroke-width: 10;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 1s ease-in-out;
 }
 
 .progress-text {
-  font-size: 24px;
-  font-family: 'Sofia Pro';
-  text-anchor: middle;
-  dominant-baseline: middle;
-  fill: black;
+    font-size: 24px;
+    font-family: 'Sofia Pro';
+    text-anchor: middle;
+    dominant-baseline: middle;
+    fill: black;
 }
 
 .custom_dropdown {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  width: 220px;
-  border: 1px solid #d3d3d3;
-  border-radius: 3px;
-  box-shadow: 0px 7px 20px 0px rgba(35, 35, 35, 0.15);
-  z-index: 999;
-  display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    width: 220px;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    box-shadow: 0px 7px 20px 0px rgba(35, 35, 35, 0.15);
+    z-index: 999;
+    display: none;
 }
 
 
 .custom_dropdown li {
-  color: #071c0c;
-  font-family: "Sofia Pro";
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  font-size: 13px;
-  gap: 7px;
-  text-align: center;
-  text-transform: capitalize;
-  cursor: pointer;
+    color: #071c0c;
+    font-family: "Sofia Pro";
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 13px;
+    gap: 7px;
+    text-align: center;
+    text-transform: capitalize;
+    cursor: pointer;
 }
 
 .custom_dropdown.active {
-  display: block;
+    display: block;
 }
 
 .custom_dropdown li:hover {
-  background-color: #e6e5e5;
+    background-color: #e6e5e5;
 }
 
 #funded_userWrapper,
 #applications_userWrapper,
 #revenue_userWrapper {
-  position: relative;
+    position: relative;
 }
 
 #chartjs-tooltip {
-  position: absolute;
-  transform: translate(-50%, -115%);
-  background: #fff;
-  color: #000;
-  padding: 8px 12px;
-  border: 1px solid #d3d3d3;
-  border-radius: 4px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 999;
-  font-family: "Sofia Pro";
+    position: absolute;
+    transform: translate(-50%, -115%);
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+    font-family: "Sofia Pro";
 }
 
 #chartjs-tooltip::after {
-  content: "";
-  position: absolute;
-  bottom: -11px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: #fff;
+    content: "";
+    position: absolute;
+    bottom: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #fff;
 }
 
 #chartjs-tooltip .tooltip-title {
-  color: #000;
-  font-size: 12px;
-  margin-bottom: 4px;
-  text-wrap: nowrap;
+    color: #000;
+    font-size: 12px;
+    margin-bottom: 4px;
+    text-wrap: nowrap;
 }
 
 
 #chartjs-tooltip .tooltip-value {
-  color: #159c2a;
-  font-size: 14px;
+    color: #159c2a;
+    font-size: 14px;
 }
 
 .dropdown_search-wrapper {
-  border-radius: 3px 3px 0px 0px;
-  border-bottom: 1px solid var(--LINE, #eee);
-  background: #fff;
-  padding: 10px;
+    border-radius: 3px 3px 0px 0px;
+    border-bottom: 1px solid var(--LINE, #eee);
+    background: #fff;
+    padding: 10px;
 }
 
 .dropdown_search {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  border-radius: 3px;
-  border: 1px solid #232323;
-  height: 25px;
-  padding: 0 7px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 3px;
+    border: 1px solid #232323;
+    height: 25px;
+    padding: 0 7px 0 10px;
 }
 
 .dropdown_search-wrapper input {
-  width: 100%;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 13px;
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
 }
 
 .dropdown_search-wrapper input::placeholder {
-  color: #808080;
-  font-family: "Sofia Pro";
-  font-size: 13px;
+    color: #808080;
+    font-family: "Sofia Pro";
+    font-size: 13px;
 }
 
 .dropdown_search-wrapper svg {
-  flex-shrink: 0;
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
 }
 
 .custom_dropdown-users {
-  max-height: 230px;
-  overflow-y: auto;
+    max-height: 370px;
+    overflow-y: auto;
+}
+
+.custom_dropdown-users li:nth-child(1),
+.custom_dropdown-users li:nth-child(2) {
+    display: none;
 }
 
 .custom_checkbox {
-  border-radius: 3px;
-  border: 1px solid #c6c6c6;
-  background: #fff;
-  flex-shrink: 0;
-  width: 15px;
-  height: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    border-radius: 3px;
+    border: 1px solid #c6c6c6;
+    background: #fff;
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .custom_checkbox.checked {
-  background: #159c2a;
-  border: 1px solid #159c2a;
+    background: #159c2a;
+    border: 1px solid #159c2a;
 }
 
 .custom_dropdown-btns {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 17px 10px;
-  border-radius: 0px 0px 3px 3px;
-  border-top: 1px solid var(--LINE, #eee);
-  background: #fff;
-  color: #232323;
-  font-family: "proxima_novasemibold";
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 17px 10px;
+    border-radius: 0px 0px 3px 3px;
+    border-top: 1px solid var(--LINE, #eee);
+    background: #fff;
+    color: #232323;
+    font-family: "proxima_novasemibold";
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
+
 .custom_dropdown-apply {
-  width: 75px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #159c2a;
+    width: 75px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #159c2a;
 }
+
 .custom_dropdown-cancel {
-  width: 75px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #232323;
-  border: 1px solid #159c2a;
+    width: 75px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #232323;
+    border: 1px solid #159c2a;
 }
 
 .custom_dropdown-apply:hover,
 .custom_dropdown-cancel:hover {
-  scale: 0.95;
+    scale: 0.95;
 }
 
 .applications_selected-users,
 .funded_deals-selected_users {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 50px;
-  overflow-x: auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 50px;
+    overflow-x: auto;
 }
 
 .applications_selected-users {
-  max-width: 100%; /* Ограничиваем ширину до доступного пространства */
-  overflow-x: auto; /* Горизонтальный скролл при переполнении */
-  overflow-y: hidden;
-  white-space: nowrap;
+    max-width: 100%;
+    /* Ограничиваем ширину до доступного пространства */
+    overflow-x: auto;
+    /* Горизонтальный скролл при переполнении */
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.applications_selected-users.empty {
+    display: none;
 }
 
 .funded_deals-selected_users {
-  min-height: 37px;
+    min-height: 37px;
 }
 
 .applications_selected-user,
 .funded_deals_selected-user {
-  display: flex;
-  align-items: center;
-  color: #fff;
-  font-family: "Sofia Pro-L";
-  font-size: 12px;
-  padding: 5px;
-  border-radius: 3px;
-  background: #159c2a;
-  cursor: pointer;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-family: "Sofia Pro-L";
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 3px;
+    background: #159c2a;
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
 .funded_deals_selected-user {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .selected-user-name {
-  font-size: 13px;
-  margin-left: 5px;
-  font-family: "Sofia Pro-M";
+    font-size: 13px;
+    margin-left: 5px;
+    font-family: "Sofia Pro-M";
 }
 
 .applications_selected-user svg,
 .remove-icon {
-  flex-shrink: 0;
-  margin-left: 10px;
+    flex-shrink: 0;
+    margin-left: 10px;
 }
 
 .applications_selected-user:active {
-  scale: 0.95;
+    scale: 0.95;
 }
 
 .employee-count {
-  color: #159c2a;
-  font-family: "Sofia Pro-M";
+    color: #159c2a;
+    font-family: "Sofia Pro-M";
 }
 
 .custom_dropdown .no-users-found {
-  text-align: center;
-  color: red;
-  justify-content: center;
+    text-align: center;
+    color: red;
+    justify-content: center;
 }
 
 .logo_burger {
-  display: none;
+    display: none;
 }
 
 #burger,
 #close_burger {
-  display: none;
+    display: none;
 }
 
 @media screen and (max-width: 1900px) {
-  .goal_chart-monthly {
-    gap: 10px;
-    flex-direction: column;
-  }
+    .goal_chart-monthly {
+        gap: 10px;
+        flex-direction: column;
+    }
 
-  .goal_chart-progress {
-    width: 70px;
-    height: 70px;
-  }
+    .goal_chart-progress {
+        width: 70px;
+        height: 70px;
+    }
 
-  .goal_chart-blocks-title {
-    text-align: center;
-  }
+    .goal_chart-blocks-title {
+        text-align: center;
+    }
 }
 
 @media screen and (max-width: 1550px) {
-  .dashboard_middle {
-    grid-template-columns: 1fr;
-  }
+    .dashboard_middle {
+        grid-template-columns: 1fr;
+    }
 
-  .goal_chart-funded_amount,
-  .goal_chart-monthly_amount {
-    font-size: 22px;
-  }
+    .goal_chart-funded_amount,
+    .goal_chart-monthly_amount {
+        font-size: 22px;
+    }
 }
 
 @media screen and (max-width: 1350px) {
-  .goal_chart-funded_amount,
-  .goal_chart-monthly_amount {
-    font-size: 20px;
-  }
 
-  .dashboard_right-cp-bar {
-    min-width: auto;
-    padding: 19px 26px 50px 26px;
-  }
+    .goal_chart-funded_amount,
+    .goal_chart-monthly_amount {
+        font-size: 20px;
+    }
 
-  .dashboard_top {
-    flex-direction: column;
-  }
+    .dashboard_right-cp-bar {
+        min-width: auto;
+        padding: 19px 26px 50px 26px;
+    }
 
-  .dashboard_dateContainer {
-    flex-direction: row;
-    gap: 20px;
-    padding: 15px;
-  }
+    .dashboard_top {
+        flex-direction: column;
+    }
 
-  .dashboard_dateContainer svg {
-    width: 35px;
-    height: 35px;
-  }
+    .dashboard_dateContainer {
+        flex-direction: row;
+        gap: 20px;
+        padding: 15px;
+    }
 
-  .page_nav {
-    background: #fff;
-    height: 36px;
-    margin-bottom: 23px;
-  }
+    .dashboard_dateContainer svg {
+        width: 35px;
+        height: 35px;
+    }
 
-  .applications_selected-users,
-  .funded_deals-selected_users {
-    flex-wrap: wrap;
-  }
+    .page_nav {
+        background: #fff;
+        height: 36px;
+        margin-bottom: 23px;
+    }
 
-  .revenue_info-items {
-    max-height: 128px;
-    min-height: 128px;
-  }
+    .applications_selected-users,
+    .funded_deals-selected_users {
+        flex-wrap: wrap;
+    }
 
-  .funded_deals-info {
-    padding: 30px;
-    width: 100%;
-    overflow-x: hidden;
-  }
+    .revenue_info-items {
+        max-height: 128px;
+        min-height: 128px;
+    }
 
-  .funded_table {
-    overflow-x: auto;
-  }
+    .funded_deals-info {
+        padding: 30px;
+        width: 100%;
+        overflow-x: hidden;
+    }
 
-  .funded_deals-table {
-    min-width: 800px;
-    width: 100%;
-    overflow-x: auto;
-  }
+    .funded_table {
+        overflow-x: auto;
+    }
+
+    .funded_deals-table {
+        min-width: 800px;
+        width: 100%;
+        overflow-x: auto;
+    }
 }
 
 @media screen and (max-width: 1050px) {
-  .left_cp_bar {
-    position: fixed;
-    height: 100%;
-    min-height: 100vh;
-    z-index: 500;
-    padding: 15px 0;
-    width: 325px;
-    transform: translateX(-120%);
-    transition: 300ms ease;
-    z-index: 999;
-  }
-  .cp_left_nav_def,
-  .logo_cp_bar {
-    width: 325px;
-  }
+    .left_cp_bar {
+        position: fixed;
+        height: 100%;
+        min-height: 100vh;
+        z-index: 500;
+        padding: 15px 0;
+        width: 325px;
+        transform: translateX(-120%);
+        transition: 300ms ease;
+        z-index: 999;
+    }
 
-  .logo_cp_bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .logo_cp_bar,
-  .cp_left_nav_el a {
-    padding: 0 18px;
-  }
+    .cp_left_nav_def,
+    .logo_cp_bar {
+        width: 325px;
+    }
 
-  .header_cp_bar {
-    padding: 0 26px;
-  }
+    .logo_cp_bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-  .main_cp_bar {
-    min-height: 0;
-    height: 100%;
-  }
+    .logo_cp_bar,
+    .cp_left_nav_el a {
+        padding: 0 18px;
+    }
 
-  .main_container {
-    min-width: 0;
-  }
+    .header_cp_bar {
+        padding: 0 26px;
+    }
 
-  .cp_body {
-    min-width: 0;
-  }
-  .logo_burger {
-    display: flex;
-    align-items: center;
-    gap: 27px;
-  }
+    .main_cp_bar {
+        min-height: 0;
+        height: 100%;
+    }
 
-  #burger,
-  #close_burger {
-    cursor: pointer;
-    display: block;
-  }
+    .main_container {
+        min-width: 0;
+    }
+
+    .cp_body {
+        min-width: 0;
+    }
+
+    .logo_burger {
+        display: flex;
+        align-items: center;
+        gap: 27px;
+    }
+
+    #burger,
+    #close_burger {
+        cursor: pointer;
+        display: block;
+    }
 }
+
 @media screen and (max-width: 850px) {
-  .dashboard_filter_block-wrapper,
-  .user-button {
-    padding: 10px 11px;
-    font-size: 12px;
-  }
+
+    .dashboard_filter_block-wrapper,
+    .user-button {
+        padding: 10px 11px;
+        font-size: 12px;
+    }
 }
 
 @media screen and (max-width: 768px) {
-  .dashboard_dateContainer svg {
-    width: 25px;
-    height: 25px;
-  }
+    .dashboard_dateContainer svg {
+        width: 25px;
+        height: 25px;
+    }
 
-  .revenue_info-items {
-    max-height: 305px;
-    min-height: 0;
-  }
+    .revenue_info-items {
+        max-height: 305px;
+        min-height: 0;
+    }
 
-  .revenue_progress {
-    display: none;
-  }
+    .revenue_progress {
+        display: none;
+    }
 
-  .dashboard_date {
-    font-size: 20px;
-  }
+    .dashboard_date {
+        font-size: 20px;
+    }
 
-  .goal_chart-blocks-title {
-    padding-bottom: 5px;
-  }
+    .goal_chart-blocks-title {
+        padding-bottom: 5px;
+    }
 
-  .revenue_user {
-    flex-direction: column;
-    align-items: start;
-    gap: 6px;
-    padding: 10px 0;
-  }
+    .revenue_user {
+        flex-direction: column;
+        align-items: start;
+        gap: 6px;
+        padding: 10px 0;
+    }
 
-  .revenue_user p {
-    min-width: 0;
-    max-width: 100%;
-    gap: 10px;
-  }
+    .revenue_user p {
+        min-width: 0;
+        max-width: 100%;
+        gap: 10px;
+    }
 
-  .applications_chart-wrapper {
-    flex-direction: column;
-    height: auto;
-    align-items: center;
-  }
+    .applications_chart-wrapper {
+        flex-direction: column;
+        height: auto;
+        align-items: center;
+    }
 }
 
 @media screen and (max-width: 650px) {
-  .cp_header_nav {
-    display: none;
-  }
+    .cp_header_nav {
+        display: none;
+    }
 
-  .dashboard_right-cp-bar {
-    padding: 19px 26px;
-  }
+    .dashboard_right-cp-bar {
+        padding: 19px 26px;
+    }
 
-  .header-content {
-    gap: 20px;
-  }
+    .header-content {
+        gap: 20px;
+    }
 
-  .bar_menu_bl {
-    margin-right: 0;
-  }
+    .bar_menu_bl {
+        margin-right: 0;
+    }
 
-  .dashboard_filter {
-    gap: 9px;
-  }
+    .dashboard_filter {
+        gap: 9px;
+    }
 
-  .application_submitted-text {
-    width: 100%;
-  }
+    .application_submitted-text {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 580px) {
-  .dashboard_filter-wrapper {
-    flex-direction: column;
-    align-items: start;
-    gap: 12px;
-  }
+    .dashboard_filter-wrapper {
+        flex-direction: column;
+        align-items: start;
+        gap: 12px;
+    }
 
-  .dashboard_filter_block-wrapper,
-  .user-button {
-    padding: 10px 11px;
-    font-size: 14px;
-  }
+    .dashboard_filter_block-wrapper,
+    .user-button {
+        padding: 10px 11px;
+        font-size: 14px;
+    }
 
-  .goal_chart-blocks {
-    grid-template-columns: repeat(2, 1fr);
-  }
+    .goal_chart-blocks {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-  .goal_chart-blocks {
-    height: auto;
-  }
+    .goal_chart-blocks {
+        height: auto;
+    }
 
-  .goal_chart-blocks > div {
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
+    .goal_chart-blocks>div {
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 
-  .goal_chart-block::after {
-    display: none;
-  }
+    .goal_chart-block::after {
+        display: none;
+    }
 
-  .goal_chart-progress {
-    width: 110px;
-    height: 110px;
-  }
+    .goal_chart-progress {
+        width: 110px;
+        height: 110px;
+    }
 
-  .goal_chart-blocks .goal_chart-monthly {
-    grid-column: span 2;
-    flex-direction: row;
-    gap: 50px;
-  }
+    .goal_chart-blocks .goal_chart-monthly {
+        grid-column: span 2;
+        flex-direction: row;
+        gap: 50px;
+    }
 
-  .revenue_user p {
-    font-size: 14px;
-  }
+    .revenue_user p {
+        font-size: 14px;
+    }
 
-  .user_progress_line {
-    font-size: 9px;
-  }
+    .user_progress_line {
+        font-size: 9px;
+    }
 
 
-  .dashboard_middle {
-    display: flex;
-    flex-direction: column;
-  }
+    .dashboard_middle {
+        display: flex;
+        flex-direction: column;
+    }
 
-  .revenue_progress {
-    padding-left: 60px;
-  }
+    .revenue_progress {
+        padding-left: 60px;
+    }
 
-  .revenue_info,
-  .applications_info,
-  .funded_deals-info {
-    padding: 20px;
-  }
+    .revenue_info,
+    .applications_info,
+    .funded_deals-info {
+        padding: 20px;
+    }
 
-  .dashboard_filter_block-wrapper,
-  .user-button {
-    font-size: 12px;
-  }
+    .dashboard_filter_block-wrapper,
+    .user-button {
+        font-size: 12px;
+    }
 
-  .applications_selected-users,
-  .funded_deals-selected_users {
-    max-height: 200px; /* Ограничение высоты контейнера, настройте под ваши нужды */
-    overflow-y: auto; /* Включаем вертикальную прокрутку, если контента больше */
-  }
+    .applications_selected-users,
+    .funded_deals-selected_users {
+        max-height: 200px;
+        /* Ограничение высоты контейнера, настройте под ваши нужды */
+        overflow-y: auto;
+        /* Включаем вертикальную прокрутку, если контента больше */
+    }
 
-  .dashboard_right-cp-bar {
-    padding: 20px;
-  }
+    .dashboard_right-cp-bar {
+        padding: 20px;
+    }
 
-  .header_cp_bar {
-    padding: 0 20px;
-  }
+    .header_cp_bar {
+        padding: 0 20px;
+    }
 }
