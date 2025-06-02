@@ -105,19 +105,22 @@
 }
 
 .pipline_table-top {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	color: #1b1b1b;
-	text-align: center;
-	font-family: 'Sofia Pro';
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: normal;
-	text-transform: capitalize;
+	display: grid;
+	grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr;
 	background: #f9f9f9;
-	border-bottom: 1px solid #e8e9e8;
+    font-family: "Sofia Pro-M";
+	border-bottom: 1px solid #d3d3d3;
+	padding: 15px;
+	align-items: center;
+    justify-content: space-between;
+}
+
+.pipline_table-top > div {
+	padding: 0;
+	text-align: start;
+	font-size: 16px;
+	color: #212529;
+	width: 100%;
 }
 
 .funded_date {
@@ -161,20 +164,29 @@
 }
 
 .pipline_table-item {
-	border-bottom: 1px solid #e8e9e8;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr;
+	background: #fff;
+	border-bottom: 1px solid #d3d3d3;
+	padding: 15px;
 	align-items: center;
-	justify-content: space-between;
-	color: #636864;
-	text-align: center;
-	font-family: 'Sofia Pro';
-	font-size: 15px;
-	font-style: normal;
-	font-weight: 400;
-	line-height: normal;
-	text-transform: capitalize;
+    justify-content: space-between;
 }
 
+.pipline_table-item:hover {
+	background: linear-gradient(0deg,
+			rgba(241, 249, 242, 0.7) 0%,
+			rgba(241, 249, 242, 0.7) 100%),
+		#fff;
+}
+
+.pipline_table-item > div {
+	padding: 0;
+	text-align: start;
+	font-size: 16px;
+	color: #212529;
+	width: 100%;
+}
 
 .pipeline_chooseDate {
 	position: absolute;
@@ -741,6 +753,35 @@
 	font-family: "Sofia Pro-M", "Sofia Pro", sans-serif;
 	font-weight: bold;
 	/* Make count bold */
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping if many representatives */
+    justify-content: center; /* Center legend items */
+    gap: 15px; /* Space between legend items */
+    margin-top: 20px; /* Space above the legend */
+    margin-bottom: 15px; /* Space below the legend */
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between color swatch and name */
+    font-family: 'Sofia Pro', sans-serif;
+    font-size: 14px;
+    cursor: default; /* Indicate it's not interactive */
+}
+.legend-color-swatch {
+    width: 20px;
+    height: 10px;
+    border-radius: 2px;
+    display: inline-block; /* Ensure it takes up space */
+}
+
+/* Ensure enough space for the chart and legend */
+.pipline_main {
+    /* Adjust height or min-height if necessary */
+    padding-bottom: 20px; /* Add some padding at the bottom */
 }
 
 @media screen and (max-width: 1800px) {
