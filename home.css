@@ -492,7 +492,6 @@
 .funded_deals-table {
     display: flex;
     flex-direction: column;
-    max-height: 580px;
     overflow-y: auto;
 }
 
@@ -514,12 +513,12 @@
 .funded_deals-table_summary { /* Grouped head and summary for shared styles */
     background: #f9f9f9;
     font-family: "Sofia Pro-M", sans-serif; /* Added sans-serif as a fallback */
-    font-weight: 600; /* Semi-bold often corresponds to 600 */
+    font-weight: 400; /* Semi-bold often corresponds to 600 */
 }
 
 .funded_deals-table_summary p { /* Ensure p tags within summary inherit font weight */
     font-family: "Sofia Pro-M", sans-serif;
-    font-weight: 600;
+    font-weight: 400;
 }
 
 /* Individual column classes can be used for specific text alignment if needed */

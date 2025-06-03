@@ -220,7 +220,8 @@ function createDeleteConfirmationPopup() {
     confirmButton.addEventListener('click', () => {
         if (currentItemToDelete) {
             console.log('Confirmed delete for item:', currentItemToDelete);
-            // currentItemToDelete.remove(); // Actual removal from DOM
+            currentItemToDelete.remove(); // Actual removal from DOM
+            // currentItemToDelete.classList.remove('deleting-item');
         }
         deleteConfirmOverlayElement.style.display = 'none';
         document.body.style.overflow = 'auto';

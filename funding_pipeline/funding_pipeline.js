@@ -112,11 +112,12 @@ class YearDropdown {
 		this.selectedYears = new Set(this.tempSelectedYears);
 		this.updateButtonText();
 		this.closeDropdown();
-		updateDashboard();
+		updateDashboard(); // This will call updateResetButtonVisibility
 	}
 
 	cancelSelection() {
 		this.closeDropdown();
+		updateResetButtonVisibility(); // Call directly
 	}
 
 	filterYears(searchTerm) {
@@ -253,11 +254,12 @@ class RepresentativeDropdown {
 		this.selectedRepresentatives = new Set(this.tempSelectedRepresentatives);
 		this.updateButtonText();
 		this.closeDropdown();
-		updateDashboard();
+		updateDashboard(); // This will call updateResetButtonVisibility
 	}
 
 	cancelSelection() {
 		this.closeDropdown();
+		updateResetButtonVisibility(); // Call directly
 	}
 
 	filterRepresentatives(searchTerm) {
@@ -288,7 +290,7 @@ class RepresentativeDropdown {
 	}
 }
 
-let yearDropdown, representativeDropdown;
+let yearDropdown, representativeDropdown, resetFiltersButton;
 
 const items = [
 	{ funded_date: '01.02.2025', business_name: 'Certified Mailing Solutions, Inc', lender: 'Daniel Tighe', funded_amount: 100000, commission_paid: 50000, renewal_status: 'approved', representative: 'Monica Cooper' },
@@ -376,8 +378,21 @@ const chart = new Chart(ctx, {
 				enabled: true,
                 mode: 'index',
                 intersect: false,
+                backgroundColor: '#FFFFFF', // White background for tooltip
+                titleColor: '#000000',    // Black title text
+                bodyColor: '#000000',     // Black body text
 				callbacks: {
-					label: function(context) {
+					labelColor: function(context) { // For the color swatch
+                        const dataset = context.chart.data.datasets[context.datasetIndex];
+                        const color = dataset.borderColor;
+                        return {
+                            borderColor: color,
+                            backgroundColor: color, // Makes the square filled
+                            borderWidth: 2, // Can adjust if using pointStyle
+                            // pointStyle: 'rect', // Optionally use for explicit square
+                        };
+                    },
+                    label: function(context) {
 						let label = context.dataset.label || '';
 						if (label) label += ': ';
 						if (context.parsed.y !== null) {
@@ -416,12 +431,11 @@ function renderTableItems(filteredData) {
         return;
     }
     filteredData.forEach(item => {
-        const itemElement = document.createElement('a'); // Остается 'a'
+        const itemElement = document.createElement('a');
         itemElement.classList.add('pipline_table-item');
-        itemElement.href = 'https://olehshashkevych.io/wp-content/themes/template/projects/broker-portal/templates/details/details.html'; // Устанавливаем атрибут href
+        itemElement.href = 'https://olehshashkevych.io/wp-content/themes/template/projects/broker-portal/templates/details/details.html';
 
-        // Преобразуем формат даты для отображения
-        const displayDate = item.funded_date.replace(/\./g, '/'); // Заменяем все точки на слэши
+        const displayDate = item.funded_date.replace(/\./g, '/');
 
         itemElement.innerHTML = `
             <div class="funded_date">${displayDate}</div>
@@ -433,6 +447,29 @@ function renderTableItems(filteredData) {
         `;
         pipelineTableItems.appendChild(itemElement);
     });
+}
+
+function updateResetButtonVisibility() {
+    if (!yearDropdown || !representativeDropdown || !resetFiltersButton) return;
+
+    const currentGlobalYear = new Date().getFullYear();
+    // Check if the only selected year is the current year (default)
+    const isDefaultYearOnlySelected = yearDropdown.selectedYears.size === 1 && yearDropdown.selectedYears.has(currentGlobalYear);
+    // Check if no representatives are selected
+    const noRepsSelected = representativeDropdown.selectedRepresentatives.size === 0;
+
+    if (isDefaultYearOnlySelected && noRepsSelected) {
+        // This is the default state (current year selected, no reps selected)
+        resetFiltersButton.classList.add('hidden');
+    } else if (yearDropdown.selectedYears.size === 0 && noRepsSelected && yearDropdown.allYears.includes(currentGlobalYear)) {
+        // This handles the case where filters might have been cleared to a state where no year is explicitly selected
+        // but the chart defaults to the current year. If current year is a valid option, this is effectively default.
+         resetFiltersButton.classList.add('hidden');
+    }
+    else {
+        // Any other combination means filters are active beyond the default
+        resetFiltersButton.classList.remove('hidden');
+    }
 }
 
 function updateLegend(selectedRepsArray, activeDatasets) {
@@ -533,12 +570,11 @@ function updateDashboard() {
 
     let chartDisplayYear;
     if (selectedYears.length > 0) {
-        chartDisplayYear = selectedYears[0]; // Chart shows data for the first selected year
+        chartDisplayYear = selectedYears[0];
     } else {
-        chartDisplayYear = new Date().getFullYear(); // Default to current year if no year is selected
+        chartDisplayYear = new Date().getFullYear();
     }
 
-    // Filter data for the table: uses all selected years and selected representatives
     let filteredForTable = [...items];
     if (selectedYears.length > 0) {
         filteredForTable = filteredForTable.filter(item => {
@@ -550,22 +586,45 @@ function updateDashboard() {
         filteredForTable = filteredForTable.filter(item => selectedReps.includes(item.representative));
     }
     renderTableItems(filteredForTable);
-
-    // For the chart, we process all items, and `updateChartData` will internally filter by `chartDisplayYear`
-    // and then by each selected representative.
     updateChartData(items, selectedReps, chartDisplayYear);
+    updateResetButtonVisibility(); // Call this after dashboard updates
 }
 
 document.addEventListener('DOMContentLoaded', () => {
 	yearDropdown = new YearDropdown();
 	representativeDropdown = new RepresentativeDropdown();
+    resetFiltersButton = document.getElementById('reset_filters_button');
 
     const currentGlobalYear = new Date().getFullYear();
-    // Set current year as default selected ONLY if no years are already selected (e.g. from a saved state if implemented later)
     if (yearDropdown.allYears.includes(currentGlobalYear) && yearDropdown.selectedYears.size === 0) {
         yearDropdown.selectedYears.add(currentGlobalYear);
-        yearDropdown.tempSelectedYears.add(currentGlobalYear); // Sync temp selection for initial UI consistency
+        yearDropdown.tempSelectedYears.add(currentGlobalYear);
         yearDropdown.updateButtonText();
     }
-	updateDashboard();
+
+    if (resetFiltersButton) {
+        resetFiltersButton.addEventListener('click', () => {
+            // Reset Year Dropdown
+            yearDropdown.selectedYears.clear();
+            yearDropdown.tempSelectedYears.clear();
+            // Set current year as default selected after reset
+            const currentYr = new Date().getFullYear();
+            if (yearDropdown.allYears.includes(currentYr)) {
+                yearDropdown.selectedYears.add(currentYr);
+                yearDropdown.tempSelectedYears.add(currentYr); // Keep temp in sync
+            }
+            yearDropdown.updateButtonText();
+
+            // Reset Representative Dropdown
+            representativeDropdown.selectedRepresentatives.clear();
+            representativeDropdown.tempSelectedRepresentatives.clear();
+            representativeDropdown.updateButtonText();
+
+            updateDashboard(); // This will also call updateResetButtonVisibility
+        });
+    } else {
+        console.error("Reset filters button not found.");
+    }
+
+	updateDashboard(); // Initial load will also call updateResetButtonVisibility
 });

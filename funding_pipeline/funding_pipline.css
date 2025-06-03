@@ -784,6 +784,49 @@
     padding-bottom: 20px; /* Add some padding at the bottom */
 }
 
+.reset-button {
+    background-color: #808080; /* Grey background */
+    border: 1px solid #707070; /* Slightly darker grey border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px 12px; /* Adjust padding to fit icon nicely */
+    cursor: pointer;
+    display: flex; /* To center SVG */
+    align-items: center;
+    justify-content: center;
+    min-width: auto; /* Override user-button min-width */
+    width: 38px; /* Fixed width for a more square button with padding */
+    height: 38px; /* Fixed height */
+    box-shadow: none; /* Remove inherited shadow if any */
+}
+
+.reset-button:hover {
+    background-color: #707070;
+    border-color: #606060;
+    box-shadow: none; /* Ensure no shadow on hover either */
+}
+
+.reset-button.active { /* In case .active class is added, ensure styles are consistent */
+    background-color: #6a6a6a;
+    border-color: #5a5a5a;
+    box-shadow: none;
+}
+
+.reset-button svg {
+    width: 16px; /* SVG size */
+    height: 16px;
+    fill: white; /* SVG color */
+}
+
+.hidden {
+    display: none !important; /* To hide the button */
+}
+
+/* Ensure user-button general styles don't conflict too much if reset-button is also a user-button */
+.user-button.reset-button { /* Specificity for reset button that might also have user-button class */
+    text-transform: none; /* Override text-transform if needed */
+    font-size: initial; /* Override font-size if needed */
+}
+
 @media screen and (max-width: 1800px) {
 	.content_main-nav {
 		flex-shrink: 0;
