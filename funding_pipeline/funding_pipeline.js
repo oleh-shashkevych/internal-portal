@@ -430,6 +430,7 @@ function renderTableItems(filteredData) {
         pipelineTableItems.innerHTML = '<div class="no-data">No items found for the selected criteria.</div>';
         return;
     }
+
     filteredData.forEach(item => {
         const itemElement = document.createElement('a');
         itemElement.classList.add('pipline_table-item');
@@ -437,12 +438,22 @@ function renderTableItems(filteredData) {
 
         const displayDate = item.funded_date.replace(/\./g, '/');
 
+        const formattedFundedAmount = `$ ${item.funded_amount.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`;
+
+        const formattedCommissionPaid = `$ ${item.commission_paid.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}`;
+
         itemElement.innerHTML = `
             <div class="funded_date">${displayDate}</div>
             <div class="business_name">${item.business_name}</div>
             <div class="lender">${item.lender}</div>
-            <div class="funded_amount">$${item.funded_amount.toLocaleString()}</div>
-            <div class="commission_paid">$${item.commission_paid.toLocaleString()}</div>
+            <div class="funded_amount">${formattedFundedAmount}</div>
+            <div class="commission_paid">${formattedCommissionPaid}</div>
             <div class="renewal_status"><div class="${item.renewal_status.toLowerCase()}">${item.renewal_status.charAt(0).toUpperCase() + item.renewal_status.slice(1)}</div></div>
         `;
         pipelineTableItems.appendChild(itemElement);
