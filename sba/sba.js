@@ -747,24 +747,35 @@ document.addEventListener('DOMContentLoaded', () => {
      function openEditPopup(itemId) {
         const itemData = tableData.find(item => item.id === itemId);
         if (!itemData) {
-            
+            console.error("Item data not found for ID:", itemId);
             return;
         }
-    
+
         const form = document.getElementById('editFeeForm');
-        form.reset(); // Сбрасываем форму
-    
-        // Заполняем поля формы
+        form.reset(); 
+
+        // Get input elements for easier access
+        const fundingInput = form.querySelector('#editFundingAmount');
+        const feeInput = form.querySelector('#editFeeAmount');
+
+        // Fill the form fields with raw data
         form.querySelector('#editItemId').value = itemData.id;
         $('#editOpportunityName').val(itemData.name).trigger('change');
-        form.querySelector('#editFundingAmount').value = itemData.fundingAmount.toFixed(2);
-        form.querySelector('#editFeeAmount').value = itemData.fee.toFixed(2);
+        fundingInput.value = itemData.fundingAmount.toFixed(2); // Set raw value
+        feeInput.value = itemData.fee.toFixed(2);               // Set raw value
         form.querySelector('#editRoutingNumber').value = itemData.routingNumber || '';
         form.querySelector('#editAccountNumber').value = itemData.accountNumber || '';
-        
-        // Форматируем числовые поля после заполнения
-        finalizeCurrencyFormat({ target: form.querySelector('#editFundingAmount') });
-        finalizeCurrencyFormat({ target: form.querySelector('#editFeeAmount') });
+
+        // --- FIX STARTS HERE ---
+        // Manually trigger the 'input' event to apply the comma formatting mask.
+        // This simulates user input and calls your `formatCurrencyInput` function.
+        fundingInput.dispatchEvent(new Event('input'));
+        feeInput.dispatchEvent(new Event('input'));
+        // --- FIX ENDS HERE ---
+
+        // Now, finalize the format (adds .00 if needed), which you were already doing.
+        finalizeCurrencyFormat({ target: fundingInput });
+        finalizeCurrencyFormat({ target: feeInput });
 
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
         openPopup(editFeePopup);
@@ -801,8 +812,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const editFeeAmountInput = document.getElementById('editFeeAmount'); // Новое поле
 
     // Устанавливаем плейсхолдер
-    fundingAmountInput.setAttribute('placeholder', '9,999,999.00');
-    feeAmountInput.setAttribute('placeholder', '9,999,999.00');
+    // fundingAmountInput.setAttribute('placeholder', '9,999,999.00');
+    // feeAmountInput.setAttribute('placeholder', '9,999,999.00');
 
     // Функция для форматирования значения в реальном времени
     function formatCurrencyInput(e) {

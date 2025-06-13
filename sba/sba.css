@@ -425,14 +425,13 @@
 }
 
 .form-group label {
-	display: block;
-	margin-bottom: 5px;
-	font-family: 'Urbanist', sans-serif;
-	font-weight: 400;
-	font-size: 12px;
-	line-height: 15px;
-	color: rgba(35, 35, 35, 0.8);
-	
+	    display: block;
+    margin-bottom: 5px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: rgb(6 6 6 / 80%);
 }
 
 .form-group label .required {
@@ -444,14 +443,14 @@
 .form-group textarea,
 .form-group input {
 	width: 100%;
-	padding: 10px 6px;
-	border: 1px solid #D0D3D1;
-	border-radius: 3px;
-	font-size: 14px;
-	line-height: 20px;
-	font-family: 'Urbanist', sans-serif;
-	color: rgba(35, 35, 35, 0.8);
-	box-sizing: border-box;
+    padding: 10px 6px;
+    border: 1px solid #D0D3D1;
+    border-radius: 3px;
+    font-size: 16px;
+    line-height: 20px;
+    font-family: 'Urbanist', sans-serif;
+    color: #232323;
+    box-sizing: border-box;
 	
 }
 
@@ -1261,7 +1260,7 @@
 
 /* Pre Approvals Block */
 .not-leads-approvals__title {
-	padding: 10px 15px;
+	padding: 5px 15px 30px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -1404,11 +1403,6 @@
 }
 
 /* NEW STYLES FOR FEE AGREEMENT TABLE */
-
-.fee-agreement-section {
-	margin-top: 40px;
-}
-
 .not-leads-fee-agreement__row {
 	display: grid;
 	grid-template-columns: 1fr 2fr 1fr 1.5fr 1.5fr 1fr calc(21px * 4);
@@ -1602,6 +1596,10 @@
 	border-color: #b5170d;
 }
 
+#deleteConfirmPopup .btn-apply:active {
+	color: #fff;
+}
+
 #deleteConfirmPopup .btn-cancel {
 	background-color: #4C4C4C;
 	border-color: #4C4C4C;
@@ -1628,7 +1626,7 @@
 	border: 1px solid #D0D3D1;
 	border-radius: 3px;
 	height: 42px;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -1662,7 +1660,7 @@
 }
 
 .select2-results__option {
-	font-size: 14px;
+	font-size: 16px;
     line-height: 20px;
 }
 
