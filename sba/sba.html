@@ -18,9 +18,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Public+Sans:ital,wght@0,100..900&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
 	
 	<!-- Styles -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="../index.css">
 	<link rel="stylesheet" href="../quote/quote.css">
 	<link rel="stylesheet" href="./sba.css">
@@ -793,7 +793,7 @@
 										<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M7.31107 5.68893V0H5.68893V5.68893H0V7.31107H5.68893V13H7.31107V7.31107H13V5.68893H7.31107Z" fill="#159C2A"></path>
 										</svg>
-										Preview
+										PREVIEW
 									</button>
 									<button type="button" class="not-leads-approvals__button" id="create-fee-btn">
 										<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1541,53 +1541,6 @@
 	<!-- Common overlay -->
 	<div class="popup-overlay" id="popupOverlay"></div>
 
-	<!-- Edit Popup -->
-	<div class="popup" id="editPreapprovalPopup">
-		<div class="popup-top">
-			<h2>Edit Pre-approval</h2>
-			<button type="button" class="popup-close js-popup-close" data-close="editPreapprovalPopup">
-				<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path fill-rule="evenodd" clip-rule="evenodd"
-						d="M1.43774 15.6456C1.1839 15.8994 0.772346 15.8994 0.518506 15.6456C0.264665 15.3917 0.264665 14.9802 0.518506 14.7263L6.74483 8.5L0.518506 2.27368C0.264665 2.01984 0.264665 1.60828 0.518506 1.35444C0.772346 1.1006 1.1839 1.1006 1.43774 1.35444L7.66406 7.58076L13.8904 1.35444C14.1442 1.1006 14.5558 1.1006 14.8096 1.35444C15.0635 1.60828 15.0635 2.01984 14.8096 2.27368L8.5833 8.5L14.8096 14.7263C15.0635 14.9802 15.0635 15.3917 14.8096 15.6456C14.5558 15.8994 14.1442 15.8994 13.8904 15.6456L7.66406 9.41924L1.43774 15.6456Z"
-						fill="#232323" />
-					</svg>
-			</button>
-		</div>
-		<form id="editPreapprovalForm" novalidate>
-			<input type="hidden" id="editPreapprovalId" name="preapprovalId">
-			<div class="form-group">
-				<label for="editStatus">Status</label>
-				<select id="editStatus" name="status">
-					<option value="Approved">Approved</option>
-					<option value="FUNDED">FUNDED</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="approvalProgramType">Program Type<span class="required">*</span></label>
-				<select id="approvalProgramType" name="programType" required>
-					<option value="" disabled selected>Select</option>
-					<option value="sba_bolt">SBA Bolt</option>
-					<option value="sba_express">SBA Express</option>
-					<option value="sba_working_capital">SBA Working Capital</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="approvalLender">Sub-Lenders<span class="required">*</span></label>
-				<select id="approvalLender" name="subLender" required>
-					<option value="" disabled selected>Select</option>
-					<option value="colony_bank">Colony Bank</option>
-					<option value="fidelity_bank">Fidelity Bank</option>
-					<option value="cadence_bank">Сadence Bank</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="editAmount">Amount</label>
-				<input type="text" id="editAmount" name="amount" placeholder="$ 0.00">
-				</div>
-			<button type="submit" class="btn-apply">Save Changes</button>
-		</form>
-	</div>
-
 	<!-- Email Popup -->
 	<div class="popup" id="emailPopup">
 		<div class="popup-top">
@@ -1696,48 +1649,6 @@
 		</form>
 	</div>
 
-	<!-- Approval Popup -->
-	<div class="popup" id="approvalPopup">
-		<div class="popup-top">
-			<h2>Approval</h2>
-			<button type="button" class="popup-close" data-close="approvalPopup">
-				<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path fill-rule="evenodd" clip-rule="evenodd"
-						d="M1.43774 15.6456C1.1839 15.8994 0.772346 15.8994 0.518506 15.6456C0.264665 15.3917 0.264665 14.9802 0.518506 14.7263L6.74483 8.5L0.518506 2.27368C0.264665 2.01984 0.264665 1.60828 0.518506 1.35444C0.772346 1.1006 1.1839 1.1006 1.43774 1.35444L7.66406 7.58076L13.8904 1.35444C14.1442 1.1006 14.5558 1.1006 14.8096 1.35444C15.0635 1.60828 15.0635 2.01984 14.8096 2.27368L8.5833 8.5L14.8096 14.7263C15.0635 14.9802 15.0635 15.3917 14.8096 15.6456C14.5558 15.8994 14.1442 15.8994 13.8904 15.6456L7.66406 9.41924L1.43774 15.6456Z"
-						fill="#232323" />
-					<path
-						d="M0.518506 15.6456L0.341729 15.8223H0.341729L0.518506 15.6456ZM1.43774 15.6456L1.61452 15.8223H1.61452L1.43774 15.6456ZM0.518506 14.7263L0.695282 14.9031H0.695282L0.518506 14.7263ZM6.74483 8.5L6.9216 8.67678C7.01923 8.57915 7.01923 8.42086 6.9216 8.32323L6.74483 8.5ZM0.518506 2.27368L0.695282 2.09691L0.695282 2.09691L0.518506 2.27368ZM0.518506 1.35444L0.341729 1.17767L0.341729 1.17767L0.518506 1.35444ZM1.43774 1.35444L1.61452 1.17767L1.61452 1.17767L1.43774 1.35444ZM7.66406 7.58076L7.48729 7.75754C7.53417 7.80442 7.59776 7.83076 7.66406 7.83076C7.73037 7.83076 7.79396 7.80442 7.84084 7.75754L7.66406 7.58076ZM14.8096 2.27368L14.6328 2.09691L14.8096 2.27368ZM8.5833 8.5L8.40653 8.32323C8.3089 8.42086 8.3089 8.57915 8.40653 8.67678L8.5833 8.5ZM14.8096 14.7263L14.6328 14.9031L14.8096 14.7263ZM13.8904 15.6456L13.7136 15.8223L13.8904 15.6456ZM7.66406 9.41924L7.84084 9.24246C7.79396 9.19558 7.73037 9.16924 7.66406 9.16924C7.59776 9.16924 7.53417 9.19558 7.48729 9.24246L7.66406 9.41924ZM0.341729 15.8223C0.693201 16.1738 1.26305 16.1738 1.61452 15.8223L1.26097 15.4688C1.10476 15.625 0.851492 15.625 0.695282 15.4688L0.341729 15.8223ZM0.341729 14.5495C-0.00974298 14.901 -0.00974298 15.4709 0.341729 15.8223L0.695282 15.4688C0.539073 15.3126 0.539073 15.0593 0.695282 14.9031L0.341729 14.5495ZM6.56805 8.32323L0.341729 14.5495L0.695282 14.9031L6.9216 8.67678L6.56805 8.32323ZM0.341729 2.45046L6.56805 8.67678L6.9216 8.32323L0.695282 2.09691L0.341729 2.45046ZM0.341729 1.17767C-0.00974298 1.52914 -0.00974298 2.09899 0.341729 2.45046L0.695282 2.09691C0.539073 1.9407 0.539073 1.68743 0.695282 1.53122L0.341729 1.17767ZM1.61452 1.17767C1.26305 0.826195 0.693201 0.826195 0.341729 1.17767L0.695282 1.53122C0.851492 1.37501 1.10476 1.37501 1.26097 1.53122L1.61452 1.17767ZM7.84084 7.40399L1.61452 1.17767L1.26097 1.53122L7.48729 7.75754L7.84084 7.40399ZM13.7136 1.17767L7.48729 7.40399L7.84084 7.75754L14.0672 1.53122L13.7136 1.17767ZM14.9864 1.17767C14.6349 0.826195 14.0651 0.826195 13.7136 1.17767L14.0672 1.53122C14.2234 1.37501 14.4766 1.37501 14.6328 1.53122L14.9864 1.17767ZM14.9864 2.45046C15.3379 2.09899 15.3379 1.52914 14.9864 1.17767L14.6328 1.53122C14.7891 1.68743 14.7891 1.9407 14.6328 2.09691L14.9864 2.45046ZM8.76008 8.67678L14.9864 2.45046L14.6328 2.09691L8.40653 8.32323L8.76008 8.67678ZM14.9864 14.5495L8.76008 8.32323L8.40653 8.67678L14.6328 14.9031L14.9864 14.5495ZM14.9864 15.8223C15.3379 15.4709 15.3379 14.901 14.9864 14.5495L14.6328 14.9031C14.7891 15.0593 14.7891 15.3126 14.6328 15.4688L14.9864 15.8223ZM13.7136 15.8223C14.0651 16.1738 14.6349 16.1738 14.9864 15.8223L14.6328 15.4688C14.4766 15.625 14.2234 15.625 14.0672 15.4688L13.7136 15.8223ZM7.48729 9.59602L13.7136 15.8223L14.0672 15.4688L7.84084 9.24246L7.48729 9.59602ZM1.61452 15.8223L7.84084 9.59602L7.48729 9.24246L1.26097 15.4688L1.61452 15.8223Z"
-						fill="#232323" />
-				</svg>
-			</button>
-		</div>
-		<form id="approvalForm" novalidate>
-			<div class="form-group">
-				<label for="approvalProgramType">Program Type<span class="required">*</span></label>
-				<select id="approvalProgramType" required>
-					<option value="" disabled selected>Select</option>
-					<option value="sba_bolt">SBA Bolt</option>
-					<option value="sba_express">SBA Express</option>
-					<option value="sba_working_capital">SBA Working Capital</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="approvalAmount">Pre-Approval<span class="required">*</span></label>
-				<input type="text" id="approvalAmount" maxlength="15" required placeholder="0,000,000.00" />
-			</div>
-			<div class="form-group">
-				<label for="approvalLender">Sub-Lenders<span class="required">*</span></label>
-				<select id="approvalLender" required>
-					<option value="" disabled selected>Select</option>
-					<option value="colony_bank">Colony Bank</option>
-					<option value="fidelity_bank">Fidelity Bank</option>
-					<option value="cadence_bank">Сadence Bank</option>
-				</select>
-			</div>
-			<button type="submit" class="btn-apply">Apply</button>
-		</form>
-	</div>
-
 	<!-- Popups for Fee Agreement Table -->
 	<div class="popup" id="createFeePopup">
 		<div class="popup-top">
@@ -1750,7 +1661,7 @@
 			<div class="form-group">
 				<label for="opportunityName">Opportunity Name <span class="required">*</span></label>
 				<select id="opportunityName" name="opportunityName" required class="select2-field" style="width: 100%;">
-					<option></option> <!-- Placeholder for select2 -->
+					<option label=" "></option> <!-- Placeholder for select2 -->
 					<option value="Nicole’s Consulting & Trucking Solutions #1">Nicole’s Consulting & Trucking Solutions #1</option>
 					<option value="D c expediting llc #1">D c expediting llc #1</option>
 					<option value="The KEY2TAX Refund Service LLC #1">The KEY2TAX Refund Service LLC #1</option>
@@ -1775,8 +1686,8 @@
 				<input type="text" id="accountNumber" name="accountNumber" maxlength="250" required>
 			</div>
 			<div class="form-buttons">
-				<button type="button" class="btn-save-draft">SAVE DRAFT</button>
-				<button type="submit" class="btn-apply">PREVIEW</button>
+				<button type="button" class="btn-save-draft">Save Draft</button>
+				<button type="submit" class="btn-apply">Preview</button>
 			</div>
 		</form>
 	</div>
@@ -1793,7 +1704,7 @@
 			<div class="form-group">
 				<label for="editOpportunityName">Opportunity Name <span class="required">*</span></label>
 				<select id="editOpportunityName" name="opportunityName" required class="select2-field" style="width: 100%;">
-					<option></option> 
+					<option label=" "></option> 
 					<option value="Nicole’s Consulting & Trucking Solutions #1">Nicole’s Consulting & Trucking Solutions #1</option>
 					<option value="D c expediting llc #1">D c expediting llc #1</option>
 					<option value="The KEY2TAX Refund Service LLC #1">The KEY2TAX Refund Service LLC #1</option>
@@ -1831,7 +1742,7 @@
 		</div>
 	</div>
 
-	<div class="popup" id="previewFeePopup">
+	<div class="popup popup--large" id="previewFeePopup">
 		<div class="popup-top">
 			<h2>Preview</h2>
 			<button type="button" class="popup-close js-popup-close" data-close="previewFeePopup">
@@ -1848,13 +1759,16 @@
 					<div class="form-group">
 						<label for="previewText">Text <span class="required">*</span></label>
 						<textarea id="previewText" name="text" maxlength="400" required></textarea>
+						<div class="char-counter-wrapper">
+							<span id="previewTextCounter" class="char-counter">400 characters left</span>
+						</div>
 					</div>
 				</div>
 				<div class="form-column">
 					<div class="form-group">
 						<label for="previewOpportunityName">Opportunity Name <span class="required">*</span></label>
 						<select id="previewOpportunityName" name="opportunityName" required class="select2-field" style="width: 100%;">
-							<option></option>
+							<option label=" "></option>
 							<option value="Nicole’s Consulting & Trucking Solutions #1">Nicole’s Consulting & Trucking Solutions #1</option>
 							<option value="D c expediting llc #1">D c expediting llc #1</option>
 							<option value="The KEY2TAX Refund Service LLC #1">The KEY2TAX Refund Service LLC #1</option>
@@ -1880,9 +1794,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-buttons">
+			<div class="form-buttons form-buttons--end">
 				<button type="button" class="btn-cancel js-popup-close" data-close="previewFeePopup">Cancel</button>
-				<button type="submit" class="btn-apply">Apply</button>
+				<button type="submit" class="btn-apply">Send</button>
 			</div>
 		</form>
 	</div>

@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const createFeePopup = document.getElementById('createFeePopup');
     const previewFeePopup = document.getElementById('previewFeePopup');
 
-    // Если на странице нет контейнера для таблицы, прекращаем выполнение этого блока
     if (!feeAgreementTableContainer || !editFeePopup || !deleteConfirmPopup || !popupOverlay || !createFeePopup || !previewFeePopup) {
         return;
     }
@@ -66,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let nextId = tableData.length > 0 ? Math.max(...tableData.map(i => i.id)) + 1 : 1;
 
-    // --- Utility Functions ---
     function generateRandomDate() {
         const start = new Date(2024, 0, 1);
         const end = new Date();
@@ -89,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return `tag-${status.toLowerCase()}`;
     }
 
-    // --- Rendering ---
     function renderTable() {
         const rows = feeAgreementTableContainer.querySelectorAll('.row-wrapper');
         rows.forEach(row => row.remove());
@@ -120,9 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- НОВАЯ ФУНКЦИЯ: Централизованный сброс всех форм ---
     function resetAllPopupForms() {
-        // Сброс формы "Create Fee"
         const createFeeForm = document.getElementById('createFeeForm');
         if (createFeeForm) {
             createFeeForm.reset();
@@ -130,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             createFeeForm.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
         }
 
-        // Сброс формы "Edit Fee"
         const editFeeForm = document.getElementById('editFeeForm');
         if (editFeeForm) {
             editFeeForm.reset();
@@ -138,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
             editFeeForm.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
         }
 
-        // Сброс формы "Preview"
         const previewFeeForm = document.getElementById('previewFeeForm');
         if (previewFeeForm) {
             previewFeeForm.reset();
@@ -147,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Popup Handling ---
     let itemToDeleteId = null;
 
     function openPopup(popup) {
@@ -156,15 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('noscroll');
     }
 
-    // --- ОБНОВЛЕНИЕ: Логика сброса вызывается здесь ---
     function closeAllPopups() {
         document.querySelectorAll('.popup.active').forEach(p => p.classList.remove('active'));
         popupOverlay.classList.remove('active');
         document.body.classList.remove('noscroll');
         document.querySelectorAll('.row-wrapper').forEach(r => r.classList.remove('focused-edit', 'focused-delete'));
         itemToDeleteId = null;
-
-        // Вызываем сброс всех форм при закрытии любого попапа
         resetAllPopupForms();
     }
 
@@ -173,8 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!itemData) return;
 
         const form = document.getElementById('editFeeForm');
-        
-        // ОБНОВЛЕНИЕ: Логика сброса перенесена в closeAllPopups. Здесь только заполняем данными.
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
 
         const fundingInput = form.querySelector('#editFundingAmount');
@@ -200,11 +187,12 @@ document.addEventListener('DOMContentLoaded', () => {
         openPopup(deleteConfirmPopup);
     }
 
-    // --- Form Logic: Create & Preview Fee ---
     const createFeeBtn = document.getElementById('create-fee-btn');
     const previewFeeBtn = document.getElementById('preview-fee-btn');
     const createFeeForm = document.getElementById('createFeeForm');
     const previewFeeForm = document.getElementById('previewFeeForm');
+    const saveDraftBtn = createFeeForm.querySelector('.btn-save-draft');
+    const createPreviewBtn = createFeeForm.querySelector('.btn-apply');
 
     $('#opportunityName, #editOpportunityName, #previewOpportunityName').each(function() {
         const popupId = $(this).closest('.popup').attr('id');
@@ -215,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const currencyInputs = ['fundingAmount', 'feeAmount', 'editFundingAmount', 'editFeeAmount', 'previewFundingAmount', 'previewFee'];
+    const currencyInputs = ['fundingAmount', 'feeAmount', 'editFundingAmount', 'editFeeAmount', 'previewFundingAmount', 'previewFeeAmount'];
     const numberInputs = ['routingNumber', 'accountNumber', 'editRoutingNumber', 'editAccountNumber', 'previewRoutingNumber', 'previewAccountNumber'];
 
     function formatCurrencyInput(e) {
@@ -270,13 +258,11 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', (e) => e.target.value = e.target.value.replace(/[^0-9]/g, ''));
         }
     });
-    
+
     function validateForm(form) {
         let isValid = true;
         const requiredFields = form.querySelectorAll('[required]');
-        // Сначала убираем все старые ошибки
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
-        // Потом проверяем и добавляем новые
         requiredFields.forEach(field => {
             const group = field.closest('.form-group');
             if (group) {
@@ -289,32 +275,79 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
-    // --- ОБНОВЛЕНИЕ: Логика сброса убрана. Кнопки просто открывают попапы ---
     createFeeBtn.addEventListener('click', () => {
         openPopup(createFeePopup);
     });
-    
+
     previewFeeBtn.addEventListener('click', () => {
         openPopup(previewFeePopup);
     });
 
-    // Handle Create Fee Form Submission
-    createFeeForm.addEventListener('submit', (e) => {
+    if (createPreviewBtn) {
+        createPreviewBtn.type = 'button';
+        createPreviewBtn.addEventListener('click', () => {
+            if (validateForm(createFeeForm)) {
+                const createData = new FormData(createFeeForm);
+                const previewForm = document.getElementById('previewFeeForm');
+
+                $('#previewOpportunityName').val(createData.get('opportunityName')).trigger('change');
+                previewForm.querySelector('#previewFundingAmount').value = createData.get('fundingAmount');
+                previewForm.querySelector('#previewFeeAmount').value = createData.get('fee');
+                previewForm.querySelector('#previewRoutingNumber').value = createData.get('routingNumber');
+                previewForm.querySelector('#previewAccountNumber').value = createData.get('accountNumber');
+                previewForm.querySelector('#previewSubject').value = `Fee Agreement for ${createData.get('opportunityName')}`;
+                previewForm.querySelector('#previewText').value = `Please review the attached fee agreement for the funding amount of ${createData.get('fundingAmount')}.`;
+                
+                // Manually trigger input event for the counter
+                previewForm.querySelector('#previewText').dispatchEvent(new Event('input'));
+
+
+                createFeePopup.classList.remove('active');
+                openPopup(previewFeePopup);
+            }
+        });
+    }
+
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', () => {
+            if (validateForm(createFeeForm)) {
+                const formData = new FormData(createFeeForm);
+                const fundingAmountRaw = formData.get('fundingAmount') || '0';
+                const feeAmountRaw = formData.get('fee') || '0';
+                const newItem = {
+                    id: nextId++,
+                    name: $('#opportunityName').val(),
+                    fundingAmount: parseFloat(fundingAmountRaw.replace(/[^\d.]/g, '')),
+                    fee: parseFloat(feeAmountRaw.replace(/[^\d.]/g, '')),
+                    routingNumber: formData.get('routingNumber'),
+                    accountNumber: formData.get('accountNumber'),
+                    sentDate: new Date().toLocaleDateString('en-US'),
+                    program: 'SBA',
+                    status: 'Draft',
+                };
+                tableData.push(newItem);
+                renderTable();
+                closeAllPopups();
+            }
+        });
+    }
+
+    previewFeeForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (validateForm(createFeeForm)) {
-            const formData = new FormData(createFeeForm);
-            const programs = ['SLOC', 'SBA', 'MCA'];
-            const statuses = ['Draft', 'Sent', 'Signed', 'Cancelled'];
+        if (validateForm(previewFeeForm)) {
+            const formData = new FormData(previewFeeForm);
             const fundingAmountRaw = formData.get('fundingAmount') || '0';
             const feeAmountRaw = formData.get('fee') || '0';
             const newItem = {
                 id: nextId++,
-                name: formData.get('opportunityName'),
+                name: $('#previewOpportunityName').val(),
                 fundingAmount: parseFloat(fundingAmountRaw.replace(/[^\d.]/g, '')),
                 fee: parseFloat(feeAmountRaw.replace(/[^\d.]/g, '')),
-                sentDate: generateRandomDate(),
-                program: programs[Math.floor(Math.random() * programs.length)],
-                status: statuses[Math.floor(Math.random() * statuses.length)],
+                routingNumber: formData.get('routingNumber'),
+                accountNumber: formData.get('accountNumber'),
+                sentDate: new Date().toLocaleDateString('en-US'),
+                program: 'SBA',
+                status: 'Sent',
             };
             tableData.push(newItem);
             renderTable();
@@ -322,20 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle Preview Form Submission
-    previewFeeForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (validateForm(previewFeeForm)) {
-            const formData = new FormData(previewFeeForm);
-            console.log("----- Preview Form Data -----");
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
-            closeAllPopups();
-        }
-    });
-
-    // Handle Edit Form Submission
     const editFeeForm = document.getElementById('editFeeForm');
     editFeeForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -355,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Table Action & General Event Listeners ---
     function handleTableClick(e) {
         const actionBtn = e.target.closest('.action-btn');
         if (!actionBtn) return;
@@ -395,6 +413,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
     document.getElementById('cancelDeleteBtn').addEventListener('click', closeAllPopups);
 
-    // Initial Render
+    // --- НОВАЯ ЛОГИКА СЧЕТЧИКА СИМВОЛОВ ---
+    function setupCharacterCounter(textareaId, counterId) {
+        const textarea = document.getElementById(textareaId);
+        const counter = document.getElementById(counterId);
+
+        if (textarea && counter) {
+            const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
+
+            const updateCounter = () => {
+                const currentLength = textarea.value.length;
+                const remaining = maxLength - currentLength;
+                counter.textContent = `${remaining} characters left`;
+            };
+            
+            textarea.addEventListener('input', updateCounter);
+            updateCounter(); // Set initial value on load
+        }
+    }
+
+    setupCharacterCounter('previewText', 'previewTextCounter');
+    setupCharacterCounter('emailNote', 'emailNoteCounter');
+    setupCharacterCounter('callNote', 'callNoteCounter');
+    setupCharacterCounter('smsNote', 'smsNoteCounter');
+    // --- КОНЕЦ НОВОЙ ЛОГИКИ ---
+
     renderTable();
 });
