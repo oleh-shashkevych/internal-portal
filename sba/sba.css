@@ -484,8 +484,34 @@
 }
 
 .form-buttons>.btn-apply,
-.form-buttons>.btn-cancel {
+.form-buttons>.btn-cancel,
+.form-buttons > .btn-save-draft {
 	margin: 0 !important;
+}
+
+/* Styles for the wrapper of the fee agreement buttons */
+.fee-agreement-buttons-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Styles for two-column form layout */
+.form-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+#previewFeePopup .form-group textarea {
+    min-height: 120px; /* Увеличим высоту для поля "Text" */
+}
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 650px) {
+    .form-columns {
+        grid-template-columns: 1fr;
+    }
 }
 
 .char-counter-wrapper {
@@ -1421,9 +1447,9 @@
 	font-size: 15px;
 	line-height: 20px;
 	font-family: 'urbanist';
-	white-space: nowrap;
+	/* white-space: nowrap;
 	overflow: hidden;
-	text-overflow: ellipsis;
+	text-overflow: ellipsis; */
 }
 
 .not-leads-fee-agreement__item.actions {
@@ -1652,7 +1678,7 @@
 	background-color: #159C2A;
 }
 .form-group.invalid .select2-container--default .select2-selection--single {
-	border-color: #DB1C10;
+	border-color: #FF496B;
 }
 
 .select2-selection__clear {
@@ -1681,6 +1707,30 @@
 	transform: translateY(-50%) rotate(180deg);
 }
 
+.btn-save-draft {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 160px;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #808080;
+    background-color: #808080;
+    color: #fff;
+    border-radius: 3px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    cursor: pointer;
+}
+
+.btn-save-draft:hover {
+    background-color: #666666;
+    border-color: #666666;
+}
+
 .logo_burger {
 	display: none;
 }
@@ -1696,6 +1746,55 @@
 
 #go_home-mob {
 	display: none;
+}
+
+/* Counter */
+.sba-counter {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	border-top: 1px solid #E8E9E8;
+	border-bottom: 1px solid #E8E9E8;
+	margin-bottom: 36px;
+}
+
+.sba-counter__item {
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 25px;
+	height: 115px;
+}
+
+.sba-counter__item-icon {
+	width: 50px;
+	height: 50px;
+}
+
+.sba-counter__item-icon > * {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.sba-counter__item-data {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.sba-counter__item-data-text {
+	color: #808080;
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 400;
+}
+
+.sba-counter__item-data-number {
+	color: #1B1B1B;
+	font-size: 25px;
+	line-height: 34px;
+	text-transform: uppercase;
 }
 
 @media screen and (max-width: 1910px) {
