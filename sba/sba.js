@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 </div>
-                <div class="additional-info-row"><div class="additional-info-content">05/29/2025 12:21 PM Jonathan Sivak Moved from Discovery Call to Declined, 5 days turnaround<br>05/23/2025 22:45 PM Nataliya Baltsevych Moved from Preliminary Review to Discovery Call, same day turnaround<br>05/23/2025 22:45 PM Nataliya Baltsevych Moved to Preliminary Review</div></div>
+                <div class="additional-info-row"><div class="additional-info-content">05/29/2025 12:25 PM Monica Miller <strong>signed</strong> SBA Fee Sheet <br>05/29/2025 12:21 PM Jonathan Sivak Moved <strong>edited</strong> SBA Fee Sheet from Funding Amount $50,000.00 to $120,000.00 and <strong>send</strong> to <strong>Monica Miller</strong> at <strong>monica@gmail.com</strong> CC <strong>jimmy@gmail.com</strong><br>05/23/2025 22:45 PM Nataliya Baltsevych <strong>saved</strong> SBA Fee Sheet as Draft. <br>05/23/2025 22:45 PM Nataliya Baltsevych <strong>created</strong> SBA Fee Sheet and <strong>send</strong> to <strong>Monica Miller</strong> at <strong>monica@gmail.com</strong> CC <strong>jimmy@gmail.com</strong></div></div>
             `;
             feeAgreementTableContainer.appendChild(rowWrapper);
         });
