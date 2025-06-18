@@ -1782,35 +1782,68 @@
 				</div>
 				<div class="form-column">
 					<div class="form-group">
-						<label for="previewOpportunityName">Opportunity Name <span class="required">*</span></label>
-						<select id="previewOpportunityName" name="opportunityName" required class="select2-field" style="width: 100%;">
-							<option label=" "></option>
-							<option value="Nicole’s Consulting & Trucking Solutions #1">Nicole’s Consulting & Trucking Solutions #1</option>
-							<option value="D c expediting llc #1">D c expediting llc #1</option>
-							<option value="The KEY2TAX Refund Service LLC #1">The KEY2TAX Refund Service LLC #1</option>
-							<option value="Go Property Restoration Llc #1">Go Property Restoration Llc #1</option>
-							<option value="503 Automotive And Tire Llc #1">503 Automotive And Tire Llc #1</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="previewFundingAmount">Funding Amount <span class="required">*</span></label>
-						<input type="text" id="previewFundingAmount" name="fundingAmount" required>
-					</div>
-					<div class="form-group">
-						<label for="previewFeeAmount">Fee <span class="required">*</span></label>
-						<input type="text" id="previewFeeAmount" name="fee" required>
-					</div>
-					<div class="form-group">
-						<label for="previewRoutingNumber">Routing Number <span class="required">*</span></label>
-						<input type="text" id="previewRoutingNumber" name="routingNumber" maxlength="250" required>
-					</div>
-					<div class="form-group">
-						<label for="previewAccountNumber">Account Number <span class="required">*</span></label>
-						<input type="text" id="previewAccountNumber" name="accountNumber" maxlength="250" required>
+						<label class="details-label">Details:</label>
+						<div class="pdf-preview-content">
+							<div class="pdf-preview-content__page">
+								<p class="pdf-docusign-id">Docusign Envelope ID: E67F1D5D-EDAD-45B7-A7DB-0B5C747C4333</p>
+								<h3 class="pdf-title">ACH Authorization Form</h3>
+								<p class="pdf-note">All information on this form is required unless otherwise noted.</p>
+								<h4 class="pdf-subtitle">AGREEMENT FOR FINANCIAL SERVICES</h4>
+
+								<div class="pdf-section">
+									<h5>Business Authorized to Debit/Credit Account:</h5>
+									<p><strong>Authorized Business Name:</strong> B & S Consulting Group LLC DBA Fundshop</p>
+									<p><strong>Authorized Business Phone Number:</strong> 877-628-9494</p>
+								</div>
+
+								<div class="pdf-section">
+									<h5>Business Information:</h5>
+									<p><strong>Business Name:</strong> <span id="pdf-business-name"></span></p>
+									<p><strong>Business DBA:</strong></p>
+									<p><strong>Business Phone:</strong></p>
+									<p><strong>Account Holder Address:</strong></p>
+								</div>
+
+								<div class="pdf-section">
+									<h5>Account Holder's Bank Information:</h5>
+									<div class="pdf-grid">
+										<p><strong>Name of Bank:</strong></p><p></p>
+										<p><strong>Bank Routing Number:</strong> <span id="pdf-routing-number"></span></p>
+										<p><strong>Bank Account Number:</strong> <span id="pdf-account-number"></span></p>
+									</div>
+								</div>
+
+								<div class="pdf-section">
+									<h5>Transaction Information:</h5>
+									<div class="pdf-grid">
+										<p><strong>Loan Amount:</strong> $<span id="pdf-loan-amount"></span></p>
+										<p><strong>Fee Percentage:</strong> <span id="pdf-fee-percentage"></span>%</p>
+										<p><strong>Amount of Transaction:</strong> $<span id="pdf-fee-amount"></span></p>
+										<p><strong>Effective Date:</strong> <span id="pdf-effective-date"></span></p>
+									</div>
+									<p class="pdf-note">*This fee is due once the loan is funded. If we are unable to secure financing, this agreement will be null & void.</p>
+								</div>
+								
+								<div class="pdf-section">
+									<h5>Authorization:</h5>
+									<p>The Undersigned <strong id="pdf-account-holder-name-auth"></strong> herein after known as Client or Borrower, hereby appoints and authorizes B & S Consulting Group LLC DBA Fundshop as their Correspondent Lender / Consultant, to obtain a loan and to submit financial data and information supplied by the Client, for the purpose of obtaining financing for Client with terms and conditions of said financing per client's request. Client hereby agrees to pay Consultant a non-refundable processing, due diligence and administration fee for the time and expenses involved in appraising the feasibility and management of Client's financing requirements.</p>
+									<p>Client hereby agrees to pay Consultant a fee of the principal amount of the financing obtained to B & S Consulting Group LLC DBA Fundshop in full. The Fee is earned, due and payable at the time of issuance of such commitment. As a mere courtesy, we defer collection of the Fee until closing but it must be paid no later than at closing via ACH or Wire Transfer. If the loan is not closed due to refusal or failure on the part of the Client to go forward after he/she has accepted loan approval from B & S Consulting Group LLC DBA Fundshop or our designated lender, the fee is immediately due and payable in full.</p>
+									<p>As further consideration to Consultant, Client agrees not to obtain financing from Lender/Investors supplied by Consultant, either directly or through third parties, without prior written consent of Consultant, for a period of 6 months from the date of this agreement except through Consultant and that a separate agreement shall be required for these services. This agreement will be recognized as an exclusive agreement for broker services for a period of 180 days from the above listed date; and shall supersede any and all other agreements from this day forward. If there is a breach of this contract, the above listed fee shall be due and payable immediately. Client understands and hereby agrees that there is no guarantee that said application can be successfully placed or that a commitment will be issued by B & S Consulting Group LLC DBA Fundshop, on behalf of the Lender. Consultant is an Independent Financial Consultant, and is not authorized to make any financial commitments on behalf of any Lender/Investor.</p>
+								</div>
+
+								<div class="pdf-section pdf-footer-grid">
+									<p><strong>Name of Account Holder:</strong> <span id="pdf-account-holder-name"></span></p>
+									<p><strong>Signature:</strong></p>
+									<p><strong>Title of Account Holder:</strong> President</p>
+									<p><strong>Date:</strong> <span id="pdf-date-footer"></span></p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="form-buttons form-buttons--end">
+				<button type="button" class="btn-back">Back</button>
 				<button type="button" class="btn-cancel js-popup-close" data-close="previewFeePopup">Cancel</button>
 				<button type="submit" class="btn-apply">Send</button>
 			</div>

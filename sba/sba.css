@@ -383,7 +383,7 @@
 }
 
 .popup--large {
-	max-width: 1000px;
+	max-width: 1240px;
 }
 
 .popup#stipsPopup {
@@ -495,7 +495,8 @@
 
 .form-buttons>.btn-apply,
 .form-buttons>.btn-cancel,
-.form-buttons > .btn-save-draft {
+.form-buttons > .btn-save-draft,
+.form-buttons > .btn-back {
 	margin: 0 !important;
 }
 
@@ -566,6 +567,33 @@
 	border-color: #28B028;
 	background-color: #fff;
 	color: #159C2A;
+}
+
+.btn-back {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 160px;
+	height: 40px;
+	padding: 10px;
+	border: 1px solid #232323;
+	background-color: #fff;
+	color: #232323;
+	border-radius: 3px;
+	font-family: 'Urbanist', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 19px;
+	cursor: pointer;
+	margin: 25px auto 0;
+	
+}
+
+.btn-back:hover {
+	background-color: #1B1B1B;
+	border-color: #1B1B1B;
+	color: #fff;
 }
 
 .btn-cancel {
@@ -1755,6 +1783,10 @@
     gap: 10px; /* Use gap for spacing between items */
 }
 
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+	border: 1px solid #D0D3D1;
+}
+
 /* The <ul> that holds the choices. We'll make it "disappear" so its <li> children become flex items. */
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
     display: contents;
@@ -1827,7 +1859,7 @@
 .select2-container--default .select2-search--inline .select2-search__field {
         width: auto;
     min-width: 20px;
-    height: 26px;
+    height: 22px;
     margin-top: 0;
     padding: 0;
     border: none;
@@ -1838,6 +1870,116 @@
 	min-height: unset;
 }
 
+/* Лейбл для секції "Details" */
+.details-label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: rgb(6 6 6 / 80%);
+}
+
+/* Контейнер для попереднього перегляду PDF */
+.pdf-preview-content {
+    border: 1px solid #E8E9E8;
+    padding: 10px;
+    font-family: 'Urbanist', Times, serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+    background-color: #F9F9F9;
+    height: 520px; /* Фіксована висота для контейнера */
+    overflow-y: auto;
+    border-radius: 3px;
+}
+
+.pdf-preview-content__page {
+	border: 1px solid #E8E9E8;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 3px;
+}
+
+/* Ховаємо скролбар для Webkit браузерів (Chrome, Safari) */
+.pdf-preview-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ховаємо скролбар для Firefox та IE/Edge */
+.pdf-preview-content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+.pdf-preview-content p,
+.pdf-preview-content h3,
+.pdf-preview-content h4,
+.pdf-preview-content h5 {
+    margin-bottom: 12px;
+}
+
+.pdf-docusign-id {
+    font-size: 10px;
+    color: #555;
+    text-align: left;
+}
+
+.pdf-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.pdf-subtitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.pdf-note {
+    font-size: 11px;
+    font-style: italic;
+    text-align: center;
+}
+
+.pdf-section {
+    margin-bottom: 20px;
+}
+
+.pdf-section h5 {
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+}
+
+.pdf-section p {
+    margin-bottom: 8px;
+}
+
+/* Сітки для табличних даних */
+.pdf-grid, .pdf-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 20px;
+}
+
+/* Футер з полями для підпису */
+.pdf-footer-grid {
+    margin-top: 30px;
+}
+
+.pdf-footer-grid p {
+    border-top: 1px solid #000;
+    padding-top: 5px;
+}
 
 .logo_burger {
 	display: none;

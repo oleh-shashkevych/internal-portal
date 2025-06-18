@@ -312,28 +312,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (createPreviewBtn) {
         createPreviewBtn.type = 'button';
         createPreviewBtn.addEventListener('click', () => {
+            // Проверяем, валидна ли форма
             if (validateForm(createFeeForm)) {
-                const createData = new FormData(createFeeForm);
-                const previewForm = document.getElementById('previewFeeForm');
 
-                $('#previewOpportunityName').val(createData.get('opportunityName')).trigger('change');
-                previewForm.querySelector('#previewFundingAmount').value = createData.get('fundingAmount');
-                previewForm.querySelector('#previewFeeAmount').value = createData.get('fee');
-                previewForm.querySelector('#previewRoutingNumber').value = createData.get('routingNumber');
-                previewForm.querySelector('#previewAccountNumber').value = createData.get('accountNumber');
-                previewForm.querySelector('#previewSubject').value = `Fee Agreement for ${createData.get('opportunityName')}`;
-                previewForm.querySelector('#previewText').value = `Please review the attached fee agreement for the funding amount of ${createData.get('fundingAmount')}.`;
-                
-                // Pre-fill To and CC with some default/demo values as none are coming from create form
-                $('#previewTo').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
-                $('#previewCC').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
+                // 1. Собираем данные из формы (этот код взят из обработчика saveDraftBtn)
+                const formData = new FormData(createFeeForm);
+                const fundingAmountRaw = formData.get('fundingAmount') || '0';
+                const feeAmountRaw = formData.get('fee') || '0';
+                const newItem = {
+                    id: nextId++,
+                    name: $('#opportunityName').val(),
+                    fundingAmount: parseFloat(fundingAmountRaw.replace(/[^\d.]/g, '')),
+                    fee: parseFloat(feeAmountRaw.replace(/[^\d.]/g, '')),
+                    routingNumber: formData.get('routingNumber'),
+                    accountNumber: formData.get('accountNumber'),
+                    sentDate: new Date().toLocaleDateString('en-US'),
+                    program: 'SBA', // Можете поменять при необходимости
+                    status: 'Draft', // Можете поменять на 'Sent' или другой статус
+                };
 
-                // Manually trigger input event for the counter
-                previewForm.querySelector('#previewText').dispatchEvent(new Event('input'));
+                // 2. Добавляем новый элемент в наш массив данных
+                tableData.push(newItem);
 
+                // 3. Теперь перерисовываем таблицу с новыми данными
+                renderTable();
 
-                createFeePopup.classList.remove('active');
-                openPopup(previewFeePopup);
+                // 4. И в конце закрываем окно
+                closeAllPopups();
             }
         });
     }
