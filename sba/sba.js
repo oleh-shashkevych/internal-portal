@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="not-leads-fee-agreement__item" data-label="Status"><span class="status-tag ${getStatusClass(item.status)}">${item.status}</span></div>
                     <div class="not-leads-fee-agreement__item actions">
                         <div class="fee-agreement-actions">
-                            <button class="action-btn edit" data-action="edit" title="Edit"><svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.446184 12.4912L2.43697 12.5C2.43764 12.5 2.43831 12.5 2.43898 12.5C2.55787 12.5 2.67182 12.4527 2.75597 12.3685L10.8688 4.24189C10.9528 4.15772 11 4.04346 11 3.92438C11 3.8053 10.9527 3.69116 10.8687 3.60698L8.89549 1.63143C8.72047 1.45623 8.43676 1.45612 8.26174 1.63154L0.138721 9.76821C0.0551321 9.85194 0.00784725 9.96541 0.0075111 10.0838L3.80098e-06 12.0405C-0.00100464 12.2884 0.198779 12.4901 0.446184 12.4912ZM8.57872 2.58374L9.91794 3.92449L8.10565 5.73989L6.76666 4.39891L8.57872 2.58374ZM0.903122 10.2723L6.1328 5.03371L7.47168 6.3748L2.2541 11.6013L0.898079 11.5953L0.903122 10.2723Z" fill="#6D6D6D"></path></svg></button>
-                            <button class="action-btn resend" data-action="resend" title="Resend"><svg width="14" height="12" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.3103 0.233398H0.999744C0.667053 0.233398 0.39502 0.503594 0.39502 0.838123V17.1638C0.39502 17.4965 0.667053 17.7667 0.999744 17.7667H22.3103C22.6448 17.7667 22.915 17.4965 22.915 17.1638V0.838123C22.915 0.503594 22.6448 0.233398 22.3103 0.233398ZM20.5917 1.44285L11.655 10.0395L2.72017 1.44285H20.5917ZM21.7056 16.5591H1.60447V2.09536L11.2782 11.2765C11.4988 11.4548 11.8131 11.4548 12.0337 11.2765L21.7056 2.09536V16.5591Z" fill="#6D6D6D"></path></svg></button>
-                            <button class="action-btn delete" data-action="delete" title="Delete"><svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.01676 11.3813C1.01676 12.4483 1.88371 13.3152 2.95069 13.3152H8.60119C9.66815 13.3152 10.5351 12.4483 10.5351 11.3813V4.42344H12V3.353H8.31411V1.84421C8.31411 1.20586 7.79283 0.68457 7.15447 0.68457H4.40165C3.7633 0.68457 3.24201 1.20586 3.24201 1.84421V3.35161H0V4.42205H1.01678L1.01676 11.3813ZM4.31247 1.84421C4.31247 1.79404 4.35149 1.75501 4.40167 1.75501H7.15449C7.20467 1.75501 7.24369 1.79404 7.24369 1.84421V3.35161H4.31247V1.84421ZM2.08941 4.42201H9.46468V11.3799C9.46468 11.8566 9.0772 12.2433 8.60122 12.2433H2.95287C2.47618 12.2433 2.08941 11.8559 2.08941 11.3799V4.42201ZM4.13033 6.33301H5.20077V10.2685H4.13033V6.33301ZM7.64626 6.33301H6.57582V10.2685H7.64626V6.33301Z" fill="#6D6D6D"></path></svg></button>
-                            <button class="action-btn toggle-details" data-action="toggle" title="Open/Hide Details"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="#6D6D6D" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                            <button class="action-btn edit" data-action="edit" title="Edit"><svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path d="M0.446184 12.4912L2.43697 12.5C2.43764 12.5 2.43831 12.5 2.43898 12.5C2.55787 12.5 2.67182 12.4527 2.75597 12.3685L10.8688 4.24189C10.9528 4.15772 11 4.04346 11 3.92438C11 3.8053 10.9527 3.69116 10.8687 3.60698L8.89549 1.63143C8.72047 1.45623 8.43676 1.45612 8.26174 1.63154L0.138721 9.76821C0.0551321 9.85194 0.00784725 9.96541 0.0075111 10.0838L3.80098e-06 12.0405C-0.00100464 12.2884 0.198779 12.4901 0.446184 12.4912ZM8.57872 2.58374L9.91794 3.92449L8.10565 5.73989L6.76666 4.39891L8.57872 2.58374ZM0.903122 10.2723L6.1328 5.03371L7.47168 6.3748L2.2541 11.6013L0.898079 11.5953L0.903122 10.2723Z" fill="#6D6D6D"></path></svg></button>
+                            <button class="action-btn resend" data-action="resend" title="Resend"><svg width="14" height="12" viewBox="0 0 23 18" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path d="M22.3103 0.233398H0.999744C0.667053 0.233398 0.39502 0.503594 0.39502 0.838123V17.1638C0.39502 17.4965 0.667053 17.7667 0.999744 17.7667H22.3103C22.6448 17.7667 22.915 17.4965 22.915 17.1638V0.838123C22.915 0.503594 22.6448 0.233398 22.3103 0.233398ZM20.5917 1.44285L11.655 10.0395L2.72017 1.44285H20.5917ZM21.7056 16.5591H1.60447V2.09536L11.2782 11.2765C11.4988 11.4548 11.8131 11.4548 12.0337 11.2765L21.7056 2.09536V16.5591Z" fill="#6D6D6D"></path></svg></button>
+                            <button class="action-btn delete" data-action="delete" title="Delete"><svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.01676 11.3813C1.01676 12.4483 1.88371 13.3152 2.95069 13.3152H8.60119C9.66815 13.3152 10.5351 12.4483 10.5351 11.3813V4.42344H12V3.353H8.31411V1.84421C8.31411 1.20586 7.79283 0.68457 7.15447 0.68457H4.40165C3.7633 0.68457 3.24201 1.20586 3.24201 1.84421V3.35161H0V4.42205H1.01678L1.01676 11.3813ZM4.31247 1.84421C4.31247 1.79404 4.35149 1.75501 4.40167 1.75501H7.15449C7.20467 1.75501 7.24369 1.79404 7.24369 1.84421V3.35161H4.31247V1.84421ZM2.08941 4.42201H9.46468V11.3799C9.46468 11.8566 9.0772 12.2433 8.60122 12.2433H2.95287C2.47618 12.2433 2.08941 11.8559 2.08941 11.3799V4.42201ZM4.13033 6.33301H5.20077V10.2685H4.13033V6.33301ZM7.64626 6.33301H6.57582V10.2685H7.64626V6.33301Z" fill="#6D6D6D"></path></svg></button>
+                            <button class="action-btn toggle-details" data-action="toggle" title="Open/Hide Details"><svg viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path d="M19.9201 8.94995L13.4001 15.47C12.6301 16.24 11.3701 16.24 10.6001 15.47L4.08008 8.94995" stroke="#6D6D6D" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                         </div>
                     </div>
                 </div>
@@ -136,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (previewFeeForm) {
             previewFeeForm.reset();
             $('#previewOpportunityName').val(null).trigger('change');
+            $('#previewTo').val(null).trigger('change');
+            $('#previewCC').val(null).trigger('change');
             previewFeeForm.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
         }
     }
@@ -194,11 +196,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveDraftBtn = createFeeForm.querySelector('.btn-save-draft');
     const createPreviewBtn = createFeeForm.querySelector('.btn-apply');
 
+    // Initialize single-select Select2
     $('#opportunityName, #editOpportunityName, #previewOpportunityName').each(function() {
         const popupId = $(this).closest('.popup').attr('id');
         $(this).select2({
             placeholder: "Select an opportunity",
             allowClear: true,
+            dropdownParent: $(`#${popupId}`)
+        });
+    });
+
+    // Initialize multi-select Select2 for new fields
+    $('.select2-field-multiple').each(function() {
+        const popupId = $(this).closest('.popup').attr('id');
+        $(this).select2({
+            placeholder: "Select emails...",
+            tokenSeparators: [',', ' '],
             dropdownParent: $(`#${popupId}`)
         });
     });
@@ -263,10 +276,19 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
         const requiredFields = form.querySelectorAll('[required]');
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
+
         requiredFields.forEach(field => {
             const group = field.closest('.form-group');
             if (group) {
-                if (!field.value || field.value.trim() === '') {
+                let isEmpty = false;
+                // Check for multi-select select2
+                if ($(field).hasClass('select2-field-multiple')) {
+                    isEmpty = $(field).val().length === 0;
+                } else if (!field.value || field.value.trim() === '') {
+                    isEmpty = true;
+                }
+                
+                if (isEmpty) {
                     group.classList.add('invalid');
                     isValid = false;
                 }
@@ -275,11 +297,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
+
     createFeeBtn.addEventListener('click', () => {
         openPopup(createFeePopup);
     });
 
     previewFeeBtn.addEventListener('click', () => {
+        // Pre-fill with demo data as per the screenshot, since no other source is specified
+        $('#previewTo').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
+        $('#previewCC').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
         openPopup(previewFeePopup);
     });
 
@@ -298,6 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 previewForm.querySelector('#previewSubject').value = `Fee Agreement for ${createData.get('opportunityName')}`;
                 previewForm.querySelector('#previewText').value = `Please review the attached fee agreement for the funding amount of ${createData.get('fundingAmount')}.`;
                 
+                // Pre-fill To and CC with some default/demo values as none are coming from create form
+                $('#previewTo').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
+                $('#previewCC').val(['JBlanchard@mail.com', 'EvaRMoore@mail.com']).trigger('change');
+
                 // Manually trigger input event for the counter
                 previewForm.querySelector('#previewText').dispatchEvent(new Event('input'));
 

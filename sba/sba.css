@@ -513,7 +513,7 @@
     gap: 20px;
 }
 
-#previewFeePopup .form-group textarea {
+#previewFeePopup .form-group textarea:not(.select2-search__field) {
     min-height: 120px; /* Увеличим высоту для поля "Text" */
 }
 
@@ -1736,6 +1736,108 @@
     border-color: #1B1B1B;
 	color: #fff;
 }
+
+/* sba.css: Нові стилі для мульти-селект полів */
+
+/* The main container for the multiple select */
+.select2-container--default .select2-selection--multiple {
+	border: 1px solid #D0D3D1;
+	border-radius: 3px;
+	padding: 5px;
+	min-height: 42px;
+    box-sizing: border-box;
+    cursor: text;
+
+    /* Make it a flex container to layout choices and search field */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Use gap for spacing between items */
+}
+
+/* The <ul> that holds the choices. We'll make it "disappear" so its <li> children become flex items. */
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: contents;
+}
+
+/* Individual selected choice (the tags) */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+	background-color: #fff;
+    border: 1px solid #D0D3D1;
+    border-radius: 3px;
+    padding: 2px 8px 2px 10px;
+    color: #232323;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    gap: 8px;
+    height: 28px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+	padding: 0;
+}
+
+/* The 'x' button to remove a choice */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #8B928C;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 8px;
+    float: none; /* Remove float */
+    line-height: 1;
+    cursor: pointer;
+
+	position: unset;
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='9' height='9' viewBox='0 0 9 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.190278 0.469677C0.444119 0.215837 0.856359 0.215837 1.1102 0.469677L4.22153 3.58101L7.33286 0.469677L7.4354 0.38667C7.68769 0.22014 8.03069 0.247592 8.25278 0.469677C8.47487 0.691767 8.50232 1.03477 8.33579 1.28706L8.25278 1.3896L5.14145 4.50093L8.25278 7.61226C8.50662 7.8661 8.50662 8.27834 8.25278 8.53218C7.99892 8.78581 7.58663 8.78595 7.33286 8.53218L4.22153 5.42085L1.1102 8.53218L1.00766 8.61519C0.755397 8.7815 0.41228 8.75418 0.190278 8.53218C-0.0317239 8.31017 -0.0590417 7.96706 0.10727 7.71479L0.190278 7.61226L3.30161 4.50093L0.190278 1.3896C-0.0634945 1.13583 -0.0633575 0.723535 0.190278 0.469677Z' fill='%23232323' fill-opacity='0.6'/%3E%3C/svg%3E%0A");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: transparent;
+    background-size: contain;
+    width: 11px;
+    height: 9px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    background-image: url("data:image/svg+xml,%3Csvg width='9' height='9' viewBox='0 0 9 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.190278 0.469677C0.444119 0.215837 0.856359 0.215837 1.1102 0.469677L4.22153 3.58101L7.33286 0.469677L7.4354 0.38667C7.68769 0.22014 8.03069 0.247592 8.25278 0.469677C8.47487 0.691767 8.50232 1.03477 8.33579 1.28706L8.25278 1.3896L5.14145 4.50093L8.25278 7.61226C8.50662 7.8661 8.50662 8.27834 8.25278 8.53218C7.99892 8.78581 7.58663 8.78595 7.33286 8.53218L4.22153 5.42085L1.1102 8.53218L1.00766 8.61519C0.755397 8.7815 0.41228 8.75418 0.190278 8.53218C-0.0317239 8.31017 -0.0590417 7.96706 0.10727 7.71479L0.190278 7.61226L3.30161 4.50093L0.190278 1.3896C-0.0634945 1.13583 -0.0633575 0.723535 0.190278 0.469677Z' fill='%23FF496B' fill-opacity='0.6'/%3E%3C/svg%3E%0A");
+	color: transparent;
+}
+
+/* Style for invalid state */
+.form-group.invalid .select2-container--default .select2-selection--multiple {
+    border-color: #FF496B;
+}
+
+/* The inline search field container */
+.select2-container--default .select2-search--inline {
+    /* Make it grow to fill available space */
+    flex: 1 1 auto;
+    padding: 0;
+    margin: 0;
+    align-self: center; /* Align vertically in the middle */
+}
+
+/* The actual search input/textarea */
+.select2-container--default .select2-search--inline .select2-search__field {
+        width: auto;
+    min-width: 20px;
+    height: 26px;
+    margin-top: 0;
+    padding: 0;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    vertical-align: top;
+    min-height: middle;
+    margin: 0;
+	min-height: unset;
+}
+
 
 .logo_burger {
 	display: none;
