@@ -1900,6 +1900,114 @@
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 3px;
+    font-family: 'Urbanist', serif;
+    font-size: 11px;
+    color: #000;
+	line-height: 1.4;
+}
+
+.pdf-preview-content .client-data {
+    background-color: rgb(243, 248, 244);
+    padding: 1px 4px;
+    display: inline-flex;
+    align-items: center;
+    flex-grow: 1;
+    height: 16px;
+}
+
+.pdf-preview-content .pdf-docusign-id {
+    font-size: 8px;
+    color: #000;
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.pdf-preview-content .pdf-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.pdf-preview-content .pdf-subtitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.pdf-preview-content .pdf-note {
+    font-size: 10px;
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.pdf-preview-content .pdf-section {
+    margin-bottom: 15px;
+}
+
+.pdf-preview-content .pdf-section h5 {
+    font-weight: bold;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.pdf-preview-content .pdf-section p {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+    margin-bottom: 5px;
+}
+
+.pdf-preview-content .pdf-section--text p {
+	display: block;
+}
+
+.pdf-preview-content .pdf-section--text .client-data {
+	color: transparent;
+}
+
+.pdf-preview-content p > strong {
+    font-weight: bold;
+}
+
+.pdf-preview-content .pdf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 20px;
+}
+
+.pdf-grid, .pdf-footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 20px;
+}
+
+.pdf-preview-content .pdf-footer-grid {
+    margin-top: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+}
+
+.pdf-preview-content .pdf-footer-grid p {
+    padding-top: 5px;
+    margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.pdf-preview-content .pdf-footer-grid p span {
+	flex-shrink: 0;
+}
+
+/* Override existing styles to remove border from all p tags first */
+.pdf-preview-content p {
+    border-top: none; 
 }
 
 /* Ховаємо скролбар для Webkit браузерів (Chrome, Safari) */
@@ -1911,74 +2019,6 @@
 .pdf-preview-content {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-}
-
-
-.pdf-preview-content p,
-.pdf-preview-content h3,
-.pdf-preview-content h4,
-.pdf-preview-content h5 {
-    margin-bottom: 12px;
-}
-
-.pdf-docusign-id {
-    font-size: 10px;
-    color: #555;
-    text-align: left;
-}
-
-.pdf-title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-.pdf-subtitle {
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.pdf-note {
-    font-size: 11px;
-    font-style: italic;
-    text-align: center;
-}
-
-.pdf-section {
-    margin-bottom: 20px;
-}
-
-.pdf-section h5 {
-    font-weight: bold;
-    font-size: 13px;
-    text-transform: uppercase;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 4px;
-    margin-bottom: 10px;
-}
-
-.pdf-section p {
-    margin-bottom: 8px;
-}
-
-/* Сітки для табличних даних */
-.pdf-grid, .pdf-footer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 20px;
-}
-
-/* Футер з полями для підпису */
-.pdf-footer-grid {
-    margin-top: 30px;
-}
-
-.pdf-footer-grid p {
-    border-top: 1px solid #000;
-    padding-top: 5px;
 }
 
 .logo_burger {
