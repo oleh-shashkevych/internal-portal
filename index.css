@@ -28,6 +28,11 @@
 	src: url('./assets/fonts/proxima_nova_semibold-webfont.woff2') format('woff2');
 }
 
+@font-face {
+	font-family: 'source_code';
+	src: url('./assets/fonts/SourceCodePro-VariableFont_wght.woff2') format('woff2');
+}
+
 /* Загальні стилі для всіх елементів */
 * {
 	margin: 0;

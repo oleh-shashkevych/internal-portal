@@ -1385,6 +1385,281 @@
 	border-bottom: 1px solid #E8E9E8;
 }
 
+/* History Email Block */
+.history-email {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.history-email__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px 10px 15px;
+}
+
+.history-email__title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-email__title {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 600;
+    font-family: 'urbanist';
+    color: #071C0C;
+    text-transform: capitalize;
+}
+
+.history-email__toggle-btn {
+    background: #fff;
+    border: 1px solid #E8E9E8;
+	border-radius: 3px;
+    cursor: pointer;
+	width: 35px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.history-email__toggle-btn:hover {
+	background-color: #eee;
+}
+
+.history-email__toggle-btn svg {
+	transform: rotate(180deg);
+}
+
+.history-email.open .history-email__toggle-btn svg {
+    transform: rotate(0);
+}
+
+.history-email__header-buttons {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 28px;
+}
+
+.history-email__send-btn {
+    padding: 9px 20px;
+	border: 1px solid #159C2A;
+	background-color: #159C2A;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-size: 16px;
+	line-height: 19px;
+	color: #fff;
+	font-weight: 500;
+	font-family: 'urbanist';
+}
+
+.history-email__send-btn:hover {
+	background-color: #fff;
+	color: #159C2A;
+}
+
+.history-email__send-btn:hover svg path {
+	fill: #159C2A;
+}
+
+.history-email__content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.history-email__content-header {
+ 	display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+}
+
+.history-email__content-header span {
+	background-color: #F9F9F9;
+	color: #232323B2;
+	font-size: 11px;
+	line-height: 20px;
+	font-weight: 500;
+	font-family: 'Urbanist';
+	padding: 10px 15px;
+}
+
+.history-email.open .history-email__content {
+    max-height: 800px;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.history-email.open .history-email__content::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
+
+.history-email__item:not(:last-child) {
+    border-bottom: 1px solid #E8E9E8;
+}
+
+.history-email__item-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.history-email__item.history-email__item--open .history-email__item-header {
+    background-color: #E6F8E6;
+}
+
+.history-email__item-header span, .history-email__item-header div {
+    font-family: 'urbanist';
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	color: #232323CC;
+}
+
+.history-email__item-header span.history-email__item-description {
+	color: #232323;
+}
+
+.history-email__item-header div span {
+	font-size: 12px;
+	font-weight: 500;
+	color: #232323;
+}
+
+.history-email__item-header > * {
+	padding: 15px;
+}
+
+.history-email__item-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-email__item-type svg {
+	width: 15px;;
+}
+
+.history-email__item-content {
+    display: none;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.history-email__item.history-email__item--open .history-email__item-content {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+}
+
+.history-email__item-details {
+    max-height: 468px;
+    overflow-y: auto;
+    padding: 25px 30px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+	background-color: #F9F9F9;
+}
+
+.history-email__item-log {
+    max-height: 468px;
+    overflow-y: auto;
+    padding: 15px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.history-email__item-details::-webkit-scrollbar,
+.history-email__item-log::-webkit-scrollbar {
+    display: none;
+}
+
+.history-email__item-info {
+    margin-bottom: 10px;
+  font-family: 'source_code';
+  font-size: 10px;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 5px;
+}
+
+.history-email__item-info:last-child {
+	margin-bottom: 0;
+}
+
+.history-email__item-info strong {
+	color: #000;
+	font-weight: 500;
+}
+
+.history-email__item-info span {
+	color: #000;
+	font-weight: 400;
+}
+
+.history-email__item-info.subject span{
+	color: #48644D;
+	font-weight: 600;
+}
+
+.history-email__item-info .status-sent { color: #159C2A; font-weight: 600; }
+.history-email__item-info .status-failed { color: #E44F5E; font-weight: 600; }
+.history-email__item-info .status-warning { color: #FFC23B; font-weight: 600; }
+
+
+.history-email__item-body {
+    margin-top: 25px;
+	padding: 20px 25px;
+	background: #fff;
+	border: 1px solid #E8E9E8;
+	border-radius: 3px;
+}
+
+.history-email__item-body p {
+	margin-bottom: 10px;
+	font-size: 11px;
+	line-height: 15px;
+	color: #232323;
+	font-family: 'Urbanist';
+	font-weight: 400;
+}
+
+.history-email__item-body p:last-child {
+	margin-bottom: 0;
+}
+
+.history-email__item-log {
+    max-height: 468px;
+    overflow-y: auto;
+    padding: 5px 15px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 0;
+    -moz-tab-size: 0;
+    font-family: 'source_code';
+    font-size: 10px;
+	font-weight: 400;
+	color: #232323;
+}
+
+/* Color coding for log background */
+.history-email__item--verification.history-email__item--open .history-email__item-log { background-color: #C2EBC1; }
+.history-email__item--failed.history-email__item--open .history-email__item-log { background-color: #FFDDDC; }
+.history-email__item--warning.history-email__item--open .history-email__item-log { background-color: #FFF2C3; }
+
 .logo_burger {
 	display: none;
 }

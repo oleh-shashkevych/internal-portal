@@ -642,3 +642,41 @@ checkBlocks.forEach(block => {
         block.classList.toggle('active_cat_files');
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // History Email Block functionality
+	const historyEmailBlock = document.querySelector('.history-email');
+	if (historyEmailBlock) {
+		const header = historyEmailBlock.querySelector('.history-email__toggle-btn');
+		const emailItemHeaders = historyEmailBlock.querySelectorAll('.history-email__item-header');
+
+		// Обробник для розгортання/згортання всього блоку
+		if (header) {
+			header.addEventListener('click', (e) => {
+				if (!e.target.closest('.history-email__send-btn')) {
+					historyEmailBlock.classList.toggle('open');
+				}
+			});
+		}
+
+		// Обробник для розгортання/згортання окремих листів (акордеон)
+		emailItemHeaders.forEach(itemHeader => {
+			itemHeader.addEventListener('click', () => {
+				const parentItem = itemHeader.parentElement;
+				const wasAlreadyOpen = parentItem.classList.contains('history-email__item--open');
+
+				// Спочатку безумовно закриваємо всі відкриті елементи
+				historyEmailBlock.querySelectorAll('.history-email__item--open').forEach(openItem => {
+					openItem.classList.remove('history-email__item--open');
+				});
+
+				// Якщо елемент, на який клікнули, не був відкритий, то відкриваємо його.
+				if (!wasAlreadyOpen) {
+					parentItem.classList.add('history-email__item--open');
+				}
+				// Якщо ж він був відкритий, то він залишиться закритим після першого кроку.
+			});
+		});
+	}
+});
