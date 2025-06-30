@@ -1554,12 +1554,17 @@
 								<div class="documents-inner">
 									<div class="documents-inner__top">
 										<span>Signed Contract</span>
-										<button type="button" class="documents-inner__button" id="addDocumentFile">
-											<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M7.31107 6.18893V0.5H5.68893V6.18893H0V7.81107H5.68893V13.5H7.31107V7.81107H13V6.18893H7.31107Z" fill="white"/>
-											</svg>
-											Add File
-										</button>
+										<div class="documents-inner__top-buttons-wrapper" style="display: flex; gap: 10px;">
+											<button type="button" class="documents-inner__button" id="addDocumentFile">
+												<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M7.31107 6.18893V0.5H5.68893V6.18893H0V7.81107H5.68893V13.5H7.31107V7.81107H13V6.18893H7.31107Z" fill="white"/>
+												</svg>
+												Add File
+											</button>
+											<button type="button" class="documents-inner__button" id="addDocumentFile2">
+												Add File2
+											</button>
+										</div>
 									</div>
 									<div class="documents-inner__list">
 										<div class="documents-inner__item">
@@ -2644,6 +2649,39 @@
 		</div>
 		<div class="popup-buttons" style="display: flex; justify-content: center;">
 			<button id="confirm-delete-btn" class="btn-apply">Yes</button>
+		</div>
+	</div>
+
+	<div class="popup-overlay" id="upload-popup-overlay"></div>
+	<div class="popup upload-popup" id="upload-popup">
+		<div class="popup-top">
+			<h2>UPLOAD APPLICATION AND REQUESTED FILES</h2>
+			<button class="popup-close" id="closeUploadPopupBtn">
+				<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M1.43774 15.6456C1.1839 15.8994 0.772346 15.8994 0.518506 15.6456C0.264665 15.3917 0.264665 14.9802 0.518506 14.7263L6.74483 8.5L0.518506 2.27368C0.264665 2.01984 0.264665 1.60828 0.518506 1.35444C0.772346 1.1006 1.1839 1.1006 1.43774 1.35444L7.66406 7.58076L13.8904 1.35444C14.1442 1.1006 14.5558 1.1006 14.8096 1.35444C15.0635 1.60828 15.0635 2.01984 14.8096 2.27368L8.5833 8.5L14.8096 14.7263C15.0635 14.9802 15.0635 15.3917 14.8096 15.6456C14.5558 15.8994 14.1442 15.8994 13.8904 15.6456L7.66406 9.41924L1.43774 15.6456Z" fill="#232323"></path>
+				</svg>
+			</button>
+		</div>
+
+		<div class="upload-view" id="empty-upload-view">
+			<div class="drag-drop-area" id="drag-drop-area">
+				<input type="file" id="file-input-trigger" multiple="" accept=".jpeg,.jpg,.png" style="display: none;">
+				<p>Drag and Drop files</p>
+				<span class="divider">or</span>
+				<button class="browse-files-btn" id="browse-files-btn">BROWSE FILES</button>
+				<p class="upload-specs">Upload Files: <span>*PDF, JPG, JPEG, Word, Excel</span> - Maximum All Upload Size <strong>25 MB</strong></p>
+			</div>
+		</div>
+
+		<div class="upload-view" id="files-selected-view" style="display: none;">
+			<div class="file-grid" id="file-grid-container">
+				</div>
+			<div class="popup-footer">
+				<button class="documents-inner__button" id="add-more-files-btn">
+					<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.31107 6.18893V0.5H5.68893V6.18893H0V7.81107H5.68893V13.5H7.31107V7.81107H13V6.18893H7.31107Z" fill="white"></path></svg>
+					ADD FILES
+				</button>
+			</div>
 		</div>
 	</div>
 

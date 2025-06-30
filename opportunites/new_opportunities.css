@@ -956,6 +956,7 @@
 .documents-inner__item-info .select2-container {
     width: 260px !important;
     margin-bottom: 0;
+	height: 100%;
 }
 .documents-inner__item-info .select2-container .select2-selection--single {
     height: 38px;
@@ -964,13 +965,68 @@
     display: flex;
     align-items: center;
 }
+.documents-inner__item-info .select2-container .select2-selection--single .select2-selection__arrow {
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.20129 0.879027C1.23344 0.846795 1.27164 0.821222 1.31369 0.803774C1.35574 0.786325 1.40082 0.777344 1.44634 0.777344C1.49187 0.777344 1.53695 0.786325 1.579 0.803774C1.62104 0.821222 1.65924 0.846795 1.69139 0.879027L5.5997 4.78803L9.50801 0.879027C9.54019 0.846847 9.57839 0.82132 9.62044 0.803905C9.66249 0.786489 9.70755 0.777525 9.75306 0.777525C9.79857 0.777525 9.84363 0.786489 9.88568 0.803905C9.92772 0.82132 9.96593 0.846847 9.99811 0.879027C10.0303 0.911208 10.0558 0.949411 10.0732 0.991456C10.0906 1.0335 10.0996 1.07857 10.0996 1.12408C10.0996 1.16959 10.0906 1.21465 10.0732 1.25669C10.0558 1.29874 10.0303 1.33694 9.99811 1.36912L5.84475 5.52248C5.8126 5.55472 5.7744 5.58029 5.73235 5.59774C5.6903 5.61518 5.64523 5.62417 5.5997 5.62417C5.55417 5.62417 5.5091 5.61518 5.46705 5.59774C5.425 5.58029 5.3868 5.55472 5.35465 5.52248L1.20129 1.36912C1.16906 1.33697 1.14349 1.29878 1.12604 1.25673C1.10859 1.21468 1.09961 1.1696 1.09961 1.12408C1.09961 1.07855 1.10859 1.03347 1.12604 0.991422C1.14349 0.949372 1.16906 0.911178 1.20129 0.879027Z' fill='%23636864' stroke='%23636864' stroke-width='0.4'/%3E%3C/svg%3E%0A");
+	width: 11px;
+	height: 6px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	top: calc(50% - 3px);
+  	right: 12px;
+}
+
+.documents-inner__item-info .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow {
+	transform: rotate(180deg);
+}
+
+.documents-inner__item-info .select2-container .select2-selection--single .select2-selection__arrow b {
+	opacity: 0;
+}
 .documents-inner__item-info .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 36px;
-    padding-left: 8px;
+    padding-left: 10px;
     color: #232323;
 }
-.documents-inner__item-info .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 36px;
+
+.select2-dropdown {
+	box-shadow: 0 4px 14px 0 #63686433;
+	border-radius: 0;
+	border: none;
+}
+
+.select2-container--default .select2-results > .select2-results__options {
+	scrollbar-width: none;
+}
+
+.select2-results__option {
+	padding: 6px 15px;
+	background-color: #fff;
+	border: 1px solid #D0D3D1;
+	border-bottom: none;
+	font-size: 15px;
+	line-height: 18px;
+	font-weight: 400;
+	font-family: 'Urbanist';
+	color: #808080;
+}
+
+.select2-results__option:last-child {
+	border-bottom: 1px solid #D0D3D1;
+}
+
+.select2-container--default .select2-results__option--selected,
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable.select2-results__option--selected {
+	font-weight: 600;
+	color: #fff;
+	background-color: #159C2A;
+	border-color: #159C2A;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+	background-color: #F1F9F2B2;
+	color: #232323;
+	border-color: #D0D3D1;
 }
 /* Убираем анимацию появления для выпадающего списка Select2 */
 .select2-container--open .select2-dropdown {
@@ -1010,4 +1066,280 @@
 #confirm-delete-btn:hover {
 	background-color: #F05363DB;
 	border-color: #F05363DB;
+}
+
+/* new_opportunities.css */
+
+/* --- Upload Popup Styles --- */
+.upload-popup {
+    max-width: 1640px;
+    width: 85%;
+	padding: 20px 16px;
+}
+
+.upload-popup .popup-top {
+	padding: 20px 25px;
+  	margin-bottom: 20px;
+	border-bottom: 1px solid #E8E9E8;
+}
+
+.upload-popup h2 {
+	font-size: 22px;
+	line-height: 27px;
+	font-weight: 600;
+	color: #1BB21B;
+}
+
+#closeUploadPopupBtn {
+	width: 32px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #80808026;
+	border-radius: 5px;
+}
+
+.upload-view {
+    padding: 0 18px;
+}
+
+.drag-drop-area {
+    border: 2px dashed #159C2A;
+	border-radius: 20px;
+	padding: 50px 20px;
+	text-align: center;
+	cursor: pointer;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.drag-drop-area p {
+    font-family: 'Urbanist', sans-serif;
+	font-size: 15px;
+	color: #232323;
+	margin: 0 0 15px 0;
+	line-height: 18px;
+	font-weight: 600;
+}
+.drag-drop-area span.divider {
+    font-family: 'Urbanist', sans-serif;
+	font-size: 7px;
+	color: #C0C0C0;
+	margin-bottom: 25px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	text-transform: uppercase;
+}
+.drag-drop-area span.divider::before,
+.drag-drop-area span.divider::after {
+	content: '';
+	display: block;
+	width: 90px;
+	height: 1px;
+	background-color: #D1D1D1;
+}
+/* --- Drag & Drop Highlight --- */
+.drag-drop-area.drag-over {
+    background-color: #e8f6ea; /* Світло-зелений фон */
+    border-color: #0d801f;   /* Темно-зелена рамка */
+}
+/* --- Drag & Drop Highlight on Files View --- */
+#files-selected-view {
+    position: relative;
+}
+
+#files-selected-view.drag-over::before {
+    content: 'Drop files anywhere to upload';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(232, 246, 234, 0.95); /* Напівпрозорий світло-зелений */
+    border: 2px dashed #0d801f;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d801f;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Urbanist', sans-serif;
+    z-index: 10;
+    pointer-events: none; /* Дозволяє подіям проходити "крізь" цей елемент */
+}
+.browse-files-btn {
+    font-family: 'Urbanist', sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	color: #159C2A;
+	background-color: transparent;
+	border: 1px solid #159C2A;
+	padding: 13px 25px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-bottom: 30px;
+}
+.browse-files-btn:hover {
+    background-color: #159C2A;
+    color: #fff;
+}
+.drag-drop-area p.upload-specs {
+    text-align: center;
+    font-family: 'Urbanist', sans-serif;
+    color: #000000;
+    font-size: 12px;
+    margin: 0;
+	font-weight: 400;
+}
+.drag-drop-area p.upload-specs span {
+	color: #159C2A;
+}
+.drag-drop-area p.upload-specs strong {
+    font-weight: 600;
+}
+
+/* Files Selected View */
+.file-grid {
+    margin-bottom: 25px;
+    max-height: 450px;
+    overflow-y: auto;
+	border: 2px dashed #159C2A;
+	border-radius: 20px;
+	padding: 20px;
+	background-color: #fff;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 30px;
+	scrollbar-width: none;
+}
+
+.file-card {
+    border: 1px solid #D0D3D14D;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+}
+
+.file-icon {
+    width: 95px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.file-name {
+    font-family: 'Urbanist', sans-serif;
+	font-size: 16px;
+	color: #232323;
+	word-break: break-all;
+	text-align: center;
+	overflow: hidden;
+	line-height: 22px;
+	margin: 20px 20px 16px;
+	font-weight: 500;
+}
+
+.file-size {
+    font-family: 'Urbanist', sans-serif;
+	font-size: 16px;
+	color: #808080;
+	margin-bottom: 20px;
+	line-height: 1;
+	font-weight: 300;
+}
+
+.remove-file-btn {
+    font-family: 'Urbanist', sans-serif;
+	background-color: #C4C4C41A;
+	border: 1px solid #D0D3D180;
+	border-radius: 0;
+	color: #808080;
+	font-size: 15px;
+	padding: 10px;
+	width: calc(100% - 50px);
+	cursor: pointer;
+	margin: 0 25px 15px;
+	line-height: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+.remove-file-btn:hover {
+    background-color: #FB2B41;
+    color: #fff;
+    border-color: #FB2B41;
+}
+
+.remove-file-btn:hover svg path {
+	fill: #fff;
+}
+
+.category-wrapper {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 5px;
+	padding: 15px;
+	background-color: #F1F9F2B2;
+	font-family: 'Urbanist';
+	color: #232323;
+	font-size: 14px;
+	line-height: 17px;
+}
+
+.popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+#add-more-files-btn {
+    font-size: 14px;
+}
+
+/* Select2 styles for upload popup */
+.file-card .select2-container {
+    width: 100% !important;
+}
+.file-card .select2-container .select2-selection--single {
+    height: 39px;
+    border: 1px solid #D0D3D180;
+	background-color: #FFFFFF;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+}
+.file-card .select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding: 5px 15px;
+    font-size: 15px;
+	line-height: 18px;
+    color: #232323;
+}
+.file-card .select2-container--default .select2-selection--single .select2-selection__arrow {
+    background-image: url("data:image/svg+xml,%3Csvg width='11' height='6' viewBox='0 0 11 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M1.20129 0.879027C1.23344 0.846795 1.27164 0.821222 1.31369 0.803774C1.35574 0.786325 1.40082 0.777344 1.44634 0.777344C1.49187 0.777344 1.53695 0.786325 1.579 0.803774C1.62104 0.821222 1.65924 0.846795 1.69139 0.879027L5.5997 4.78803L9.50801 0.879027C9.54019 0.846847 9.57839 0.82132 9.62044 0.803905C9.66249 0.786489 9.70755 0.777525 9.75306 0.777525C9.79857 0.777525 9.84363 0.786489 9.88568 0.803905C9.92772 0.82132 9.96593 0.846847 9.99811 0.879027C10.0303 0.911208 10.0558 0.949411 10.0732 0.991456C10.0906 1.0335 10.0996 1.07857 10.0996 1.12408C10.0996 1.16959 10.0906 1.21465 10.0732 1.25669C10.0558 1.29874 10.0303 1.33694 9.99811 1.36912L5.84475 5.52248C5.8126 5.55472 5.7744 5.58029 5.73235 5.59774C5.6903 5.61518 5.64523 5.62417 5.5997 5.62417C5.55417 5.62417 5.5091 5.61518 5.46705 5.59774C5.425 5.58029 5.3868 5.55472 5.35465 5.52248L1.20129 1.36912C1.16906 1.33697 1.14349 1.29878 1.12604 1.25673C1.10859 1.21468 1.09961 1.1696 1.09961 1.12408C1.09961 1.07855 1.10859 1.03347 1.12604 0.991422C1.14349 0.949372 1.16906 0.911178 1.20129 0.879027Z' fill='%23636864' stroke='%23636864' stroke-width='0.4'/%3E%3C/svg%3E%0A");
+	width: 11px;
+	height: 6px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	top: calc(50% - 3px);
+  	right: 15px;
+}
+
+.file-card .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow {
+	transform: rotate(180deg);
+}
+
+.file-card .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	opacity: 0;
 }

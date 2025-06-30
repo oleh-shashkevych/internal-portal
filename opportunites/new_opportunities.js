@@ -471,3 +471,179 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeDeleteBtn) closeDeleteBtn.addEventListener('click', closeDeletePopup);
     if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDeletion);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const uploadPopup = document.getElementById('upload-popup');
+    const uploadOverlay = document.getElementById('upload-popup-overlay');
+    const closeUploadBtn = document.getElementById('closeUploadPopupBtn');
+    const addFileBtn1 = document.getElementById('addDocumentFile');
+    const addFileBtn2 = document.getElementById('addDocumentFile2');
+    const emptyView = document.getElementById('empty-upload-view');
+    const filesView = document.getElementById('files-selected-view');
+    const fileGrid = document.getElementById('file-grid-container');
+    const fileInput = document.getElementById('file-input-trigger');
+    const dragDropArea = document.getElementById('drag-drop-area');
+    const browseBtn = document.getElementById('browse-files-btn');
+    const addMoreBtn = document.getElementById('add-more-files-btn');
+
+    const categories = [
+        "Applications", "Bank Statements", "EIDL Files", "Financials",
+        "Funding Contracts", "Other", "Recorded Calls", "Salesforce"
+    ];
+
+    // --- НОВА ФУНКЦІЯ для створення динамічної SVG іконки ---
+    const createFileIconSVG = (fileType = 'default') => {
+        const type = fileType.toUpperCase();
+        const colors = {
+            'PDF': '#D62E2E',
+            'DOC': '#0461A0',
+            'DOCX': '#0461A0',
+            'JPG': '#E8B800',
+            'JPEG': '#E8B800',
+            'PNG': '#159C2A',
+            'DEFAULT': '#808080'
+        };
+        const fillColor = colors[type] || colors['DEFAULT'];
+
+        // Використовуємо тег <text> для динамічного тексту
+        return `
+            <svg width="100%" height="100%" viewBox="0 0 96 109" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M26.9533 0.663436L28.6429 0H93.4107C94.7264 0 95.7994 1.01359 95.7994 2.26677V106.435C95.7994 107.684 94.7313 108.702 93.4107 108.702L10.0909 108.697C8.77517 108.697 7.70215 107.684 7.70215 106.431L7.80896 19.1931L7.9886 18.7876L26.9533 0.663436ZM12.475 22.1328V104.164H91.0219V4.52847H31.0257V19.8707C31.0257 21.1192 29.9576 22.1374 28.6369 22.1374L12.475 22.1328ZM26.2541 17.604V7.73077L15.8494 17.604H26.2541Z" fill="#D0D3D1"/>
+                <rect x="0.8" y="57.89" width="65.88" height="36.56" rx="1.83" fill="${fillColor}"/>
+                <text x="33.74" y="78" text-anchor="middle" dominant-baseline="middle" fill="white" font-size="28" font-family="Urbanist, sans-serif" font-weight="700">${type}</text>
+            </svg>
+        `;
+    };
+
+    const createCategorySelect = () => {
+        let options = categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        return `<select class="file-type-select">${options}</select>`;
+    };
+
+    const renderDemoFiles = () => {
+        fileGrid.innerHTML = '';
+        const demoFiles = [
+            { name: 'Application.PDF', type: 'pdf', size: '2.1 MB' },
+            { name: 'Photo_01.JPEG', type: 'jpeg', size: '3.4 MB' },
+            { name: 'Scan.PNG', type: 'png', size: '1.8 MB' },
+            { name: 'Contract.DOC', type: 'doc', size: '0.8 MB' },
+            { name: 'BankStatement.PDF', type: 'pdf', size: '1.2 MB' },
+            { name: 'logo_new.PNG', type: 'png', size: '0.5 MB' },
+            { name: 'image_id.JPG', type: 'jpg', size: '4.1 MB' },
+        ];
+        demoFiles.forEach(file => {
+            // ОНОВЛЕНО: Використовуємо нову функцію
+            const fileCardHTML = `
+                <div class="file-card">
+                    <p class="file-name">${file.name}</p>
+                    <div class="file-icon">${createFileIconSVG(file.type)}</div>
+                    <p class="file-size">${file.size}</p>
+                    <button class="remove-file-btn"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.7998 0.701172C8.06502 0.701172 8.3193 0.806604 8.50684 0.994141C8.69437 1.18168 8.7998 1.43596 8.7998 1.70117H12.2998C12.565 1.70117 12.8193 1.8066 13.0068 1.99414C13.1944 2.18168 13.2998 2.43596 13.2998 2.70117V3.70117C13.2998 3.96639 13.1944 4.22067 13.0068 4.4082C12.8193 4.59574 12.565 4.70117 12.2998 4.70117H11.7998V13.7012C11.7998 14.2316 11.5889 14.7402 11.2139 15.1152C10.8388 15.4903 10.3302 15.7012 9.7998 15.7012H3.7998C3.26937 15.7012 2.76081 15.4903 2.38574 15.1152C2.01067 14.7402 1.7998 14.2316 1.7998 13.7012V4.70117H1.2998C1.03459 4.70117 0.78031 4.59574 0.592773 4.4082C0.405237 4.22067 0.299805 3.96639 0.299805 3.70117V2.70117C0.299805 2.43596 0.405237 2.18168 0.592773 1.99414C0.78031 1.8066 1.03459 1.70117 1.2998 1.70117H4.7998C4.7998 1.43596 4.90524 1.18168 5.09277 0.994141C5.28031 0.806604 5.53459 0.701172 5.7998 0.701172H7.7998ZM2.7998 4.75977V13.7012C2.7998 13.9664 2.90524 14.2207 3.09277 14.4082C3.28031 14.5957 3.53459 14.7012 3.7998 14.7012H9.7998C10.065 14.7012 10.3193 14.5957 10.5068 14.4082C10.6944 14.2207 10.7998 13.9664 10.7998 13.7012V4.75977L10.6816 4.70117H2.91797L2.7998 4.75977ZM4.2998 6.20117C4.43241 6.20117 4.55955 6.25389 4.65332 6.34766C4.74709 6.44142 4.7998 6.56856 4.7998 6.70117V12.7012C4.7998 12.8338 4.74709 12.9609 4.65332 13.0547C4.55955 13.1485 4.43241 13.2012 4.2998 13.2012C4.1672 13.2012 4.04006 13.1485 3.94629 13.0547C3.85252 12.9609 3.7998 12.8338 3.7998 12.7012V6.70117C3.7998 6.56856 3.85252 6.44142 3.94629 6.34766C4.04006 6.25389 4.1672 6.20117 4.2998 6.20117ZM6.7998 6.20117C6.93241 6.20117 7.05955 6.25389 7.15332 6.34766C7.24709 6.44142 7.2998 6.56856 7.2998 6.70117V12.7012C7.2998 12.8338 7.24709 12.9609 7.15332 13.0547C7.05955 13.1485 6.93241 13.2012 6.7998 13.2012C6.6672 13.2012 6.54006 13.1485 6.44629 13.0547C6.35252 12.9609 6.2998 12.8338 6.2998 12.7012V6.70117C6.2998 6.56856 6.35252 6.44142 6.44629 6.34766C6.54006 6.25389 6.6672 6.20117 6.7998 6.20117ZM9.2998 6.20117C9.43241 6.20117 9.55955 6.25389 9.65332 6.34766C9.74709 6.44142 9.7998 6.56856 9.7998 6.70117V12.7012C9.7998 12.8338 9.74709 12.9609 9.65332 13.0547C9.55955 13.1485 9.43241 13.2012 9.2998 13.2012C9.1672 13.2012 9.04006 13.1485 8.94629 13.0547C8.85252 12.9609 8.7998 12.8338 8.7998 12.7012V6.70117C8.7998 6.56856 8.85252 6.44142 8.94629 6.34766C9.04006 6.25389 9.1672 6.20117 9.2998 6.20117ZM1.2998 3.70117H12.2998V2.70117H1.2998V3.70117Z" fill="#808080"/></svg>Remove file</button>
+                    <div class="category-wrapper">
+                    <p>File Type</p>
+                    ${createCategorySelect()}
+                    </div>
+                </div>
+            `;
+            fileGrid.insertAdjacentHTML('beforeend', fileCardHTML);
+        });
+        $(fileGrid).find('.file-type-select').select2({ minimumResultsForSearch: Infinity });
+    };
+
+    const handleFileSelection = (selectedFiles) => {
+        if (selectedFiles.length === 0) return;
+
+        if (getComputedStyle(emptyView).display !== 'none') {
+            emptyView.style.display = 'none';
+            filesView.style.display = 'block';
+            fileGrid.innerHTML = '';
+        }
+
+        Array.from(selectedFiles).forEach(file => {
+            const fileName = file.name;
+            const fileSize = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            // ОНОВЛЕНО: Використовуємо нову функцію
+            const fileCardHTML = `
+                <div class="file-card">
+                    <p class="file-name">${fileName}</p>
+                    <div class="file-icon">${createFileIconSVG(fileExtension)}</div>
+                    <p class="file-size">${fileSize}</p>
+                    <button class="remove-file-btn"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.7998 0.701172C8.06502 0.701172 8.3193 0.806604 8.50684 0.994141C8.69437 1.18168 8.7998 1.43596 8.7998 1.70117H12.2998C12.565 1.70117 12.8193 1.8066 13.0068 1.99414C13.1944 2.18168 13.2998 2.43596 13.2998 2.70117V3.70117C13.2998 3.96639 13.1944 4.22067 13.0068 4.4082C12.8193 4.59574 12.565 4.70117 12.2998 4.70117H11.7998V13.7012C11.7998 14.2316 11.5889 14.7402 11.2139 15.1152C10.8388 15.4903 10.3302 15.7012 9.7998 15.7012H3.7998C3.26937 15.7012 2.76081 15.4903 2.38574 15.1152C2.01067 14.7402 1.7998 14.2316 1.7998 13.7012V4.70117H1.2998C1.03459 4.70117 0.78031 4.59574 0.592773 4.4082C0.405237 4.22067 0.299805 3.96639 0.299805 3.70117V2.70117C0.299805 2.43596 0.405237 2.18168 0.592773 1.99414C0.78031 1.8066 1.03459 1.70117 1.2998 1.70117H4.7998C4.7998 1.43596 4.90524 1.18168 5.09277 0.994141C5.28031 0.806604 5.53459 0.701172 5.7998 0.701172H7.7998ZM2.7998 4.75977V13.7012C2.7998 13.9664 2.90524 14.2207 3.09277 14.4082C3.28031 14.5957 3.53459 14.7012 3.7998 14.7012H9.7998C10.065 14.7012 10.3193 14.5957 10.5068 14.4082C10.6944 14.2207 10.7998 13.9664 10.7998 13.7012V4.75977L10.6816 4.70117H2.91797L2.7998 4.75977ZM4.2998 6.20117C4.43241 6.20117 4.55955 6.25389 4.65332 6.34766C4.74709 6.44142 4.7998 6.56856 4.7998 6.70117V12.7012C4.7998 12.8338 4.74709 12.9609 4.65332 13.0547C4.55955 13.1485 4.43241 13.2012 4.2998 13.2012C4.1672 13.2012 4.04006 13.1485 3.94629 13.0547C3.85252 12.9609 3.7998 12.8338 3.7998 12.7012V6.70117C3.7998 6.56856 3.85252 6.44142 3.94629 6.34766C4.04006 6.25389 4.1672 6.20117 4.2998 6.20117ZM6.7998 6.20117C6.93241 6.20117 7.05955 6.25389 7.15332 6.34766C7.24709 6.44142 7.2998 6.56856 7.2998 6.70117V12.7012C7.2998 12.8338 7.24709 12.9609 7.15332 13.0547C7.05955 13.1485 6.93241 13.2012 6.7998 13.2012C6.6672 13.2012 6.54006 13.1485 6.44629 13.0547C6.35252 12.9609 6.2998 12.8338 6.2998 12.7012V6.70117C6.2998 6.56856 6.35252 6.44142 6.44629 6.34766C6.54006 6.25389 6.6672 6.20117 6.7998 6.20117ZM9.2998 6.20117C9.43241 6.20117 9.55955 6.25389 9.65332 6.34766C9.74709 6.44142 9.7998 6.56856 9.7998 6.70117V12.7012C9.7998 12.8338 9.74709 12.9609 9.65332 13.0547C9.55955 13.1485 9.43241 13.2012 9.2998 13.2012C9.1672 13.2012 9.04006 13.1485 8.94629 13.0547C8.85252 12.9609 8.7998 12.8338 8.7998 12.7012V6.70117C8.7998 6.56856 8.85252 6.44142 8.94629 6.34766C9.04006 6.25389 9.1672 6.20117 9.2998 6.20117ZM1.2998 3.70117H12.2998V2.70117H1.2998V3.70117Z" fill="#808080"/></svg>Remove file</button>
+                    <div class="category-wrapper">
+                    <p>File Type</p>
+                    ${createCategorySelect()}
+                    </div>
+                </div>
+            `;
+            fileGrid.insertAdjacentHTML('beforeend', fileCardHTML);
+        });
+
+        $(fileGrid).find('.file-type-select:not(.select2-hidden-accessible)').select2({
+            minimumResultsForSearch: Infinity
+        });
+        fileInput.value = '';
+    };
+    
+    // ... (решта коду залишається без змін: openUploadPopup, closeUploadPopup, обробники подій)
+    const openUploadPopup = (showDemoFiles = false) => {
+        uploadPopup.classList.add('active');
+        uploadOverlay.classList.add('active');
+        if (showDemoFiles) {
+            emptyView.style.display = 'none';
+            filesView.style.display = 'block';
+            renderDemoFiles();
+        } else {
+            emptyView.style.display = 'block';
+            filesView.style.display = 'none';
+            fileGrid.innerHTML = ''; 
+        }
+    };
+
+    const closeUploadPopup = () => {
+        uploadPopup.classList.remove('active');
+        uploadOverlay.classList.remove('active');
+    };
+
+    addFileBtn1.addEventListener('click', () => openUploadPopup(false));
+    addFileBtn2.addEventListener('click', () => openUploadPopup(true));
+    closeUploadBtn.addEventListener('click', closeUploadPopup);
+    
+    dragDropArea.addEventListener('click', () => fileInput.click());
+    browseBtn.addEventListener('click', () => fileInput.click());
+    addMoreBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+        handleFileSelection(e.target.files);
+    });
+    
+    function setupDragAndDrop(element) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            element.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        element.addEventListener('dragenter', () => element.classList.add('drag-over'));
+        element.addEventListener('dragleave', () => element.classList.remove('drag-over'));
+        element.addEventListener('drop', (e) => {
+            element.classList.remove('drag-over');
+            handleFileSelection(e.dataTransfer.files);
+        });
+    }
+
+    setupDragAndDrop(dragDropArea);
+    setupDragAndDrop(filesView);
+
+    fileGrid.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-file-btn')) {
+            e.target.closest('.file-card').remove();
+            if (fileGrid.children.length === 0) {
+                 emptyView.style.display = 'block';
+                 filesView.style.display = 'none';
+            }
+        }
+    });
+});
