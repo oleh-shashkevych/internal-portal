@@ -303,3 +303,171 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Получаем необходимые элементы для работы с документами
+    const documentsList = document.querySelector('.documents-inner__list');
+    if (!documentsList) return;
+
+    // Получаем элементы для попапа удаления
+    const deletePopup = document.getElementById('delete-confirm-popup');
+    const overlay = document.getElementById('delete-confirm-overlay');
+    const closeDeleteBtn = document.getElementById('close-delete-popup-btn');
+    const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+
+    let itemToDelete = null;
+
+    // Список категорий для выпадающего списка
+    const categories = [
+        "Applications",
+        "Bank Statements",
+        "EIDL Files",
+        "Financials",
+        "Funding Contracts",
+        "Other",
+        "Recorded Calls",
+        "Salesforce"
+    ];
+
+    // --- Логика редактирования ---
+    const handleEditClick = (item) => {
+        if (item.classList.contains('active')) return; 
+        item.classList.add('active');
+
+        const infoContainer = item.querySelector('.documents-inner__item-info');
+        const p_element = infoContainer.querySelector('p');
+        const ul_element = infoContainer.querySelector('ul');
+
+        p_element.style.display = 'none';
+        
+        const currentName = p_element.textContent.trim();
+        const currentCategory = ul_element.querySelector('li:nth-child(3)').textContent.trim();
+
+        const editWrapper = document.createElement('div');
+        editWrapper.className = 'edit-fields-wrapper';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.className = 'edit-input';
+        nameInput.value = currentName;
+        nameInput.maxLength = 250;
+        
+        const categorySelect = document.createElement('select');
+        categorySelect.className = 'edit-select';
+        
+        let isCategorySet = false;
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            if (cat === currentCategory) {
+                option.selected = true;
+                isCategorySet = true;
+            }
+            categorySelect.appendChild(option);
+        });
+
+        if (!isCategorySet) {
+             categorySelect.value = "Other";
+        }
+
+        editWrapper.appendChild(nameInput);
+        editWrapper.appendChild(categorySelect);
+
+        infoContainer.insertBefore(editWrapper, ul_element);
+        
+        $(categorySelect).select2({
+            width: '100%',
+            minimumResultsForSearch: Infinity,
+            dropdownParent: $(infoContainer) 
+        });
+    };
+    
+    // --- Логика сохранения ---
+    const handleSaveClick = (item) => {
+        const infoContainer = item.querySelector('.documents-inner__item-info');
+        const editWrapper = infoContainer.querySelector('.edit-fields-wrapper');
+        const nameInput = editWrapper.querySelector('.edit-input');
+        const $categorySelect = $(editWrapper.querySelector('.edit-select'));
+
+        let isValid = true;
+
+        if (!nameInput.value.trim()) {
+            nameInput.classList.add('invalid');
+            isValid = false;
+        } else {
+            nameInput.classList.remove('invalid');
+        }
+
+        if (!$categorySelect.val()) {
+            $categorySelect.next('.select2-container').addClass('invalid');
+            isValid = false;
+        } else {
+            $categorySelect.next('.select2-container').removeClass('invalid');
+        }
+
+        if (!isValid) {
+            return;
+        }
+        
+        // Обновляем только название
+        const p_element = infoContainer.querySelector('p');
+        p_element.textContent = nameInput.value;
+        p_element.style.display = 'block';
+
+        // Строка, обновляющая категорию в списке, УДАЛЕНА
+        
+        $categorySelect.select2('destroy');
+        editWrapper.remove();
+        
+        item.classList.remove('active');
+        
+    };
+
+    // --- Логика удаления ---
+    const handleDeleteClick = (item) => {
+        itemToDelete = item;
+        item.classList.add('deleting');
+        overlay.classList.add('active');
+        deletePopup.classList.add('active');
+    };
+
+    const closeDeletePopup = () => {
+        if (itemToDelete) {
+            itemToDelete.classList.remove('deleting');
+            itemToDelete = null;
+        }
+        overlay.classList.remove('active');
+        deletePopup.classList.remove('active');
+    };
+
+    const confirmDeletion = () => {
+        if (itemToDelete) {
+            itemToDelete.remove();
+        }
+        closeDeletePopup();
+    };
+
+    // --- Главный обработчик событий ---
+    documentsList.addEventListener('click', (e) => {
+        const button = e.target.closest('.documents-inner__item-button');
+        if (!button) return;
+
+        const item = e.target.closest('.documents-inner__item');
+        if (!item) return;
+
+        e.preventDefault();
+
+        if (button.classList.contains('edit')) {
+            handleEditClick(item);
+        } else if (button.classList.contains('save')) {
+            handleSaveClick(item);
+        } else if (button.classList.contains('delete')) {
+            handleDeleteClick(item);
+        }
+    });
+    
+    // Обработчики для попапа удаления
+    if (closeDeleteBtn) closeDeleteBtn.addEventListener('click', closeDeletePopup);
+    if (confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', confirmDeletion);
+});
