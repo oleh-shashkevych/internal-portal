@@ -1343,3 +1343,238 @@
 .file-card .select2-container--default .select2-selection--single .select2-selection__arrow b {
 	opacity: 0;
 }
+
+/* --- Загальні стилі для кнопки та контейнера --- */
+.user-button {
+    border: 1px solid #D0D3D0;
+	background: #fff;
+	padding: 9px 15px;
+	font-size: 15px;
+	text-transform: capitalize;
+	cursor: pointer;
+	position: relative;
+	color: #7B7B7B;
+	font-family: 'Urbanist';
+	min-width: 227px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 9px;
+	line-height: 18px;
+	border-radius: 3px;
+	font-weight: 600;
+}
+
+.user-button:hover {
+    border: 1px solid #d3d3d3;
+    background: #ececec;
+    box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
+}
+
+.user-button.active {
+    border: 1px solid #d3d3d3;
+    background: #ececec;
+    box-shadow: 0px 4px 1px 0px rgba(0, 0, 0, 0.06) inset;
+}
+
+#applications_userWrapper {
+    position: relative;
+    margin-bottom: 10px; /* Додаємо відступ знизу */
+}
+
+/* --- Стилі випадаючого списку --- */
+.custom_dropdown {
+    position: fixed; /* Змінено з absolute на fixed */
+    top: 50%;        /* Центрування по вертикалі */
+    left: 50%;       /* Центрування по горизонталі */
+    transform: translate(-50%, -50%); /* Точна центровка */
+    background: #fff;
+    width: 280px;    /* Можна задати фіксовану ширину */
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    box-shadow: 0px 7px 20px 0px rgba(35, 35, 35, 0.15);
+    z-index: 999;
+    display: none;
+}
+
+.custom_dropdown.active {
+    display: block;
+}
+
+.custom_dropdown li {
+    color: #071c0c;
+    font-family: "Sofia Pro";
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: 13px;
+    gap: 7px;
+    text-align: left;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+.custom_dropdown li:hover {
+    background-color: #e6e5e5;
+}
+
+/* --- Пошук у списку --- */
+.dropdown_search-wrapper {
+    border-radius: 3px 3px 0px 0px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 10px;
+}
+
+.dropdown_search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-radius: 3px;
+    border: 1px solid #232323;
+    height: 25px;
+    padding: 0 7px 0 10px;
+}
+
+.dropdown_search-wrapper input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+}
+
+.dropdown_search-wrapper input::placeholder {
+    color: #808080;
+    font-family: "Sofia Pro";
+    font-size: 13px;
+}
+
+/* --- Чекбокс та кнопки --- */
+.custom_checkbox {
+    border-radius: 3px;
+    border: 1px solid #c6c6c6;
+    background: #fff;
+    flex-shrink: 0;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom_checkbox.checked {
+    background: #159c2a;
+    border: 1px solid #159c2a;
+}
+
+.custom_dropdown-users {
+    max-height: 370px;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.custom_dropdown-btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 17px 10px;
+    border-radius: 0px 0px 3px 3px;
+    border-top: 1px solid #eee;
+    background: #fff;
+    font-family: "proxima_novasemibold";
+    font-size: 13px;
+}
+
+.custom_dropdown-apply, .custom_dropdown-cancel {
+    width: 75px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.custom_dropdown-apply {
+    color: #fff;
+    background: #159c2a;
+}
+
+.custom_dropdown-cancel {
+    color: #232323;
+    border: 1px solid #159c2a;
+    background: #fff;
+}
+
+.custom_dropdown-apply:hover, .custom_dropdown-cancel:hover {
+    transform: scale(0.95);
+    transition: transform 0.2s;
+}
+
+/* --- Відображення обраних користувачів --- */
+.applications_selected-users {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap; /* Дозволяє переносити плашки на новий рядок */
+    min-height: 27px; /* Мінімальна висота, щоб контейнер не зникав */
+}
+
+.applications_selected-users.empty {
+    display: none;
+}
+
+.applications_selected-user {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-family: "Sofia Pro-L";
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 3px;
+    background: #159c2a;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.selected-user-name {
+    font-size: 13px;
+    margin-left: 5px;
+    font-family: "Sofia Pro-M";
+}
+
+.remove-icon {
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.employee-count {
+    color: #159c2a;
+    font-family: "Sofia Pro-M";
+}
+
+.custom_dropdown .no-users-found {
+    text-align: center;
+    color: red;
+    justify-content: center;
+}
+
+/* --- Оверлей --- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998; /* Нижче, ніж дропдаун */
+    display: none;
+}
+
+.overlay.open {
+    display: block;
+}

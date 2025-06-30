@@ -1553,7 +1553,42 @@
 							<div class="documents">
 								<div class="documents-inner">
 									<div class="documents-inner__top">
-										<span>Signed Contract</span>
+										<div class="applications_filter-container">
+											<div id="applications_userWrapper">
+												<button class="user-button" id="applications_userButton">
+													<div>Signed Contract</div>
+													<svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M1.10168 0.677855C1.13383 0.645623 1.17203 0.62005 1.21408 0.602602C1.25613 0.585153 1.30121 0.576172 1.34673 0.576172C1.39226 0.576172 1.43734 0.585153 1.47939 0.602602C1.52144 0.62005 1.55963 0.645623 1.59178 0.677855L5.50009 4.58686L9.4084 0.677855C9.44058 0.645675 9.47878 0.620148 9.52083 0.602733C9.56288 0.585317 9.60794 0.576353 9.65345 0.576353C9.69896 0.576353 9.74402 0.585317 9.78607 0.602733C9.82811 0.620148 9.86632 0.645675 9.8985 0.677855C9.93068 0.710036 9.9562 0.748239 9.97362 0.790284C9.99104 0.83233 10 0.877394 10 0.922904C10 0.968413 9.99104 1.01348 9.97362 1.05552C9.9562 1.09757 9.93068 1.13577 9.8985 1.16795L5.74514 5.32131C5.71299 5.35354 5.67479 5.37912 5.63274 5.39656C5.59069 5.41401 5.54562 5.42299 5.50009 5.42299C5.45456 5.42299 5.40949 5.41401 5.36744 5.39656C5.32539 5.37912 5.28719 5.35354 5.25504 5.32131L1.10168 1.16795C1.06945 1.1358 1.04388 1.09761 1.02643 1.05556C1.00898 1.01351 1 0.96843 1 0.922904C1 0.877378 1.00898 0.832299 1.02643 0.79025C1.04388 0.7482 1.06945 0.710006 1.10168 0.677855Z" fill="#636864" stroke="#636864" stroke-width="0.4"/>
+													</svg>
+												</button>
+												<div class="custom_dropdown" id="applications_userDropdown">
+													<div id="applications_userList">
+														<div class="dropdown_search-wrapper">
+															<div class="dropdown_search">
+																<input type="text" placeholder="Search">
+																<svg class="revenue_dropdown-searchBTN" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+																	<path opacity="0.15" d="M12 6.5C12 9.53754 9.53754 12 6.5 12C3.46243 12 1 9.53754 1 6.5C1 3.46243 3.46243 1 6.5 1C9.53754 1 12 3.46243 12 6.5Z" fill="#232323"></path>
+																	<path d="M13 13L10.0376 10.0376M11.5882 6.29412C11.5882 3.37025 9.21795 1 6.29412 1C3.37025 1 1 3.37025 1 6.29412C1 9.21795 3.37025 11.5882 6.29412 11.5882C9.21795 11.5882 11.5882 9.21795 11.5882 6.29412Z" stroke="#232323" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"></path>
+																</svg>
+															</div>
+														</div>
+														<ul class="custom_dropdown-users">
+															</ul>
+														<div class="custom_dropdown-btns">
+															<button class="custom_dropdown-apply" id="applications_userDropdown-apply">
+																Apply
+															</button>
+															<button class="custom_dropdown-cancel" id="applications_userDropdown-cancel">
+																Cancel
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="applications_selected-users empty" id="applicationsSelectedUsers"></div>
+										</div>
+
+										<div class="overlay"></div>
 										<div class="documents-inner__top-buttons-wrapper" style="display: flex; gap: 10px;">
 											<button type="button" class="documents-inner__button" id="addDocumentFile">
 												<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -647,3 +647,179 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.querySelector(".overlay");
+
+    // Функція для ініціалізації логіки випадаючого списку
+    function initApplicationsBlock() {
+        const applicationsSection = document.querySelector('.applications_filter-container');
+        if (!applicationsSection) return;
+
+        // Селектори для випадаючого меню
+        const userButton = document.getElementById("applications_userButton");
+        const userDropdown = document.getElementById("applications_userDropdown");
+        const applyBtn = userDropdown.querySelector("#applications_userDropdown-apply");
+        const cancelBtn = userDropdown.querySelector("#applications_userDropdown-cancel");
+        const ul = userDropdown.querySelector("ul.custom_dropdown-users");
+        const searchInput = userDropdown.querySelector(".dropdown_search input");
+        const selectedUsersContainer = document.getElementById("applicationsSelectedUsers");
+
+        if (!userButton || !userDropdown || !ul || !selectedUsersContainer || !applyBtn || !cancelBtn) {
+            console.error("Essential dropdown elements are missing!");
+            return;
+        }
+
+        // Множина для зберігання імен обраних категорій
+        let selectedCategories = new Set();
+        
+        // --- 1. НОВІ ДАНІ ---
+        const categories = [
+            "Applications", "Bank Statements", "EIDL Files", "Financials",
+            "Funding Contracts", "Other", "Recorded Calls", "Salesforce"
+        ];
+        // --------------------
+
+        // Створюємо елементи для сортування (якщо вони ще не існують)
+        if (!ul.querySelector('.sort-item')) {
+            const sortLi1 = document.createElement('li');
+            sortLi1.innerHTML = `Sort A-Z`;
+            sortLi1.classList.add('sort-item');
+            sortLi1.addEventListener("click", () => sortCategories((a, b) => a.getAttribute("data-category").localeCompare(b.getAttribute("data-category"))));
+
+            const sortLi2 = document.createElement('li');
+            sortLi2.innerHTML = `Sort Z-A`;
+            sortLi2.classList.add('sort-item');
+            sortLi2.addEventListener("click", () => sortCategories((a, b) => b.getAttribute("data-category").localeCompare(a.getAttribute("data-category"))));
+
+            ul.prepend(sortLi2);
+            ul.prepend(sortLi1);
+        }
+
+        const noItemsLi = document.createElement("li");
+        noItemsLi.textContent = "no categories found";
+        noItemsLi.classList.add("no-items-found");
+        noItemsLi.style.display = "none";
+        ul.appendChild(noItemsLi);
+        
+        // --- 2. Зберігаємо логіку мульти-селекту ---
+        categories.forEach((name) => {
+            const li = document.createElement("li");
+            li.setAttribute("data-category", name);
+            li.innerHTML = `
+              <div class="custom_checkbox">
+                <svg width="11" height="8" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.94558 0.255056C9.11838 0.089653 9.34834 -0.00178848 9.58693 2.65108e-05C9.82551 0.0018415 10.0541 0.0967713 10.2244 0.264784C10.3947 0.432797 10.4934 0.660752 10.4997 0.900549C10.506 1.14034 10.4194 1.37323 10.2582 1.55005L5.36357 7.70436C5.2794 7.79551 5.17782 7.86865 5.0649 7.91942C4.95198 7.97018 4.83003 7.99754 4.70636 7.99984C4.58268 8.00214 4.45981 7.97935 4.3451 7.93282C4.23038 7.88629 4.12618 7.81698 4.03872 7.72903L0.792827 4.46564C0.702435 4.38096 0.629933 4.27884 0.579648 4.16537C0.529362 4.05191 0.502323 3.92942 0.500143 3.80522C0.497964 3.68102 0.520688 3.55765 0.566961 3.44248C0.613234 3.3273 0.682108 3.22267 0.769473 3.13483C0.856838 3.047 0.960905 2.97775 1.07547 2.93123C1.19003 2.88471 1.31273 2.86186 1.43627 2.86405C1.5598 2.86624 1.68163 2.89343 1.79449 2.94398C1.90734 2.99454 2.00892 3.06743 2.09315 3.15831L4.66189 5.73967L8.92227 0.28219L8.94558 0.255056Z" fill="white"/></svg>
+              </div>
+              ${name}
+            `;
+            ul.appendChild(li);
+
+            li.addEventListener("click", (evt) => {
+                evt.stopPropagation();
+                li.querySelector(".custom_checkbox").classList.toggle("checked");
+            });
+        });
+
+        // Пошук
+        searchInput.addEventListener("input", function () {
+            const query = this.value.toLowerCase();
+            const categoryLis = ul.querySelectorAll("li[data-category]");
+            let visibleCount = 0;
+            categoryLis.forEach(li => {
+                const isVisible = li.getAttribute("data-category").toLowerCase().includes(query);
+                li.style.display = isVisible ? "" : "none";
+                if(isVisible) visibleCount++;
+            });
+            noItemsLi.style.display = visibleCount === 0 ? "block" : "none";
+        });
+        
+        // Сортування
+        function sortCategories(compareFn) {
+            const categoryLis = Array.from(ul.querySelectorAll("li[data-category]"));
+            categoryLis.sort(compareFn);
+            categoryLis.forEach(li => ul.appendChild(li)); // Re-append to sort
+        }
+        
+        // --- 3. Оновлюємо функцію рендерингу обраних елементів ---
+        function renderSelectedCategories() {
+            selectedUsersContainer.innerHTML = "";
+            selectedUsersContainer.classList.toggle('empty', selectedCategories.size === 0);
+
+            selectedCategories.forEach(name => {
+                const div = document.createElement("div");
+                div.classList.add("applications_selected-user");
+                div.innerHTML = `
+                  <span>Category:</span>
+                  <span class="selected-user-name">${name}</span>
+                  <span class="remove-icon" style="cursor: pointer;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="7" height="7" viewBox="0 0 7 7" fill="none"><path d="M7 0.6125L6.3875 0L3.5 2.8875L0.6125 0L0 0.6125L2.8875 3.5L0 6.3875L0.6125 7L3.5 4.1125L6.3875 7L7 6.3875L4.1125 3.5L7 0.6125Z" fill="white"/></svg>
+                  </span>`;
+                
+                div.querySelector('.remove-icon').addEventListener("click", () => {
+                    selectedCategories.delete(name);
+                    const li = ul.querySelector(`li[data-category="${name}"]`);
+                    if (li) li.querySelector(".custom_checkbox").classList.remove("checked");
+                    renderSelectedCategories();
+                    updateButtonText();
+                });
+                selectedUsersContainer.appendChild(div);
+            });
+        }
+
+        // --- 4. Змінюємо текст кнопки ---
+        function updateButtonText() {
+            const count = selectedCategories.size;
+            const textDiv = userButton.querySelector("div");
+            textDiv.innerHTML = (count > 0) ? `Filter by Category <span class="employee-count">(${count})</span>` : "Filter by Category";
+        }
+
+        function closeDropdown() {
+            userDropdown.classList.remove("active");
+            userButton.classList.remove("active");
+            if (overlay) overlay.classList.remove("open");
+        }
+
+        // Кнопка APPLY
+        applyBtn.addEventListener("click", function () {
+            selectedCategories.clear();
+            const categoryLis = ul.querySelectorAll("li[data-category]");
+            categoryLis.forEach(li => {
+                if (li.querySelector(".custom_checkbox").classList.contains("checked")) {
+                    selectedCategories.add(li.getAttribute("data-category"));
+                }
+            });
+            renderSelectedCategories();
+            updateButtonText();
+            closeDropdown();
+        });
+        
+        // Кнопка CANCEL
+        cancelBtn.addEventListener("click", function () {
+             const categoryLis = ul.querySelectorAll("li[data-category]");
+             categoryLis.forEach(li => {
+                const name = li.getAttribute("data-category");
+                li.querySelector(".custom_checkbox").classList.toggle("checked", selectedCategories.has(name));
+             });
+            closeDropdown();
+        });
+
+        // Відкриття / закриття дропдауна
+        userButton.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const isActive = userDropdown.classList.toggle("active");
+            userButton.classList.toggle("active", isActive);
+            if (overlay) overlay.classList.toggle("open", isActive);
+        });
+        
+        // Глобальний обробник для закриття
+        document.addEventListener('click', function(event) {
+            const isClickInside = userButton.contains(event.target) || userDropdown.contains(event.target);
+            if (!isClickInside) {
+                closeDropdown();
+            }
+        });
+    }
+
+    // Запускаємо ініціалізацію
+    initApplicationsBlock();
+});
