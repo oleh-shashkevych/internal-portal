@@ -1498,7 +1498,7 @@
 .history-email__content-header span {
 	background-color: #F9F9F9;
 	color: #232323B2;
-	font-size: 11px;
+	font-size: 13px;
 	line-height: 20px;
 	font-weight: 500;
 	font-family: 'Urbanist';
@@ -1534,7 +1534,7 @@
 
 .history-email__item-header span, .history-email__item-header div {
     font-family: 'urbanist';
-    font-size: 11px;
+    font-size: 13px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1546,7 +1546,7 @@
 }
 
 .history-email__item-header div span {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: 500;
 	color: #232323;
 }
@@ -1600,11 +1600,11 @@
 
 .history-email__item-info {
     margin-bottom: 10px;
-  font-family: 'source_code';
-  font-size: 10px;
-  display: grid;
-  grid-template-columns: 50px 1fr;
-  gap: 5px;
+	font-family: 'source_code';
+	font-size: 14px;
+	display: grid;
+	grid-template-columns: 70px 1fr;
+	gap: 5px;
 }
 
 .history-email__item-info:last-child {
@@ -1641,8 +1641,8 @@
 
 .history-email__item-body p {
 	margin-bottom: 10px;
-	font-size: 11px;
-	line-height: 15px;
+	font-size: 13px;
+	line-height: 17px;
 	color: #232323;
 	font-family: 'Urbanist';
 	font-weight: 400;
@@ -1663,7 +1663,7 @@
     tab-size: 0;
     -moz-tab-size: 0;
     font-family: 'source_code';
-    font-size: 10px;
+    font-size: 12px;
 	font-weight: 400;
 	color: #232323;
 }
@@ -1734,19 +1734,18 @@
 
 .details-preview-content {
     font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    line-height: 15px;
+    font-size: 14px;
+    line-height: 17px;
     color: #232323;
     flex-grow: 1;
     overflow-y: auto;
     scrollbar-width: none;
-	max-height: 350px;
+	max-height: 340px;
 	padding: 20px 25px;
 	background-color: #fff;
-	margin: 10px 10px 0;
+	margin: 10px;
 	border: 1px solid #E8E9E8;
-	border-bottom: 0;
-	border-radius: 3px 3px 0 0;
+	border-radius: 3px;
 }
 
 .details-preview-content p:not(:last-child) {
@@ -1758,10 +1757,20 @@
     text-decoration: underline;
 }
 
+#newMessagePopup .tox-tinymce {
+	margin: 10px;
+	border: 1px solid #E8E9E8;
+	border-radius: 3px;
+}
+
+#newMessagePopup .tox .tox-statusbar {
+	display: none;
+}
+
 #message-edit-content {
     font-family: 'Urbanist', sans-serif;
-	font-size: 11px;
-	line-height: 15px;
+	font-size: 14px;
+	line-height: 17px;
 	color: #232323;
 	flex-grow: 1;
 	overflow-y: auto;
@@ -1779,12 +1788,7 @@
 }
 
 #message-edit-content ~ .char-counter-wrapper {
-	position: absolute;
-	bottom: 0;
-	left: 35px;
-	right: 35px;
-	background: #fff;
-	padding-bottom: 10px;
+	padding: 0 0 10px 10px;
 }
 
 .details-checklist {

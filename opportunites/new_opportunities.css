@@ -842,11 +842,13 @@
 	background-color: #8B928C1A;
 }
 
-.documents-inner__item-button.delete:hover {
+.documents-inner__item-button.delete:hover,
+.documents-inner__item.deleting .documents-inner__item-button.delete {
 	background-color: #FB2B41;
 }
 
-.documents-inner__item-button.delete:hover svg path {
+.documents-inner__item-button.delete:hover svg path,
+.documents-inner__item.deleting .documents-inner__item-button.delete svg path {
 	fill: #fff;
 }
 
@@ -929,7 +931,7 @@
 /* Состояние элемента при удалении */
 .documents-inner__item.deleting {
     background-color: rgba(251, 43, 65, 0.1);
-    border-color: #FB2B41;
+    border-color: rgba(251, 43, 65, 0.1);
 }
 
 /* Стили для поля ввода имени */
@@ -1066,6 +1068,10 @@
 #confirm-delete-btn:hover {
 	background-color: #F05363DB;
 	border-color: #F05363DB;
+}
+
+#confirm-delete-btn:active {
+	color: #fff;
 }
 
 /* new_opportunities.css */
@@ -1272,6 +1278,7 @@
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
+	margin-top: auto;
 }
 .remove-file-btn:hover {
     background-color: #FB2B41;

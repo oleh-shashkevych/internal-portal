@@ -606,9 +606,15 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadOverlay.classList.remove('active');
     };
 
-    addFileBtn1.addEventListener('click', () => openUploadPopup(false));
-    addFileBtn2.addEventListener('click', () => openUploadPopup(true));
-    closeUploadBtn.addEventListener('click', closeUploadPopup);
+    if (addFileBtn1) {
+        addFileBtn1.addEventListener('click', () => openUploadPopup(false));
+    }
+    if (addFileBtn2) {
+        addFileBtn2.addEventListener('click', () => openUploadPopup(true));
+    }
+    if (closeUploadBtn) {
+        closeUploadBtn.addEventListener('click', closeUploadPopup);
+    }
     
     dragDropArea.addEventListener('click', () => fileInput.click());
     browseBtn.addEventListener('click', () => fileInput.click());

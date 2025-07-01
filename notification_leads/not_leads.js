@@ -683,216 +683,164 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // --- NEW MESSAGE POPUP LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Start of New/Modified Code ---
-
     const newMessagePopup = document.getElementById('newMessagePopup');
     if (!newMessagePopup) return;
 
-    // Elements
+    // --- Элементы ---
     const sendMailButton = document.getElementById('sendMailButton');
     const messageForm = document.getElementById('newMessageForm');
     const messageToSelect = $('#messageTo');
     const messageTemplateSelect = $('#messageTemplate');
     const messageSubjectInput = document.getElementById('messageSubject');
     const messagePreviewContent = document.getElementById('message-preview-content');
-    const messageEditContent = document.getElementById('message-edit-content');
+    const messageEditContent = document.getElementById('message-edit-content'); // Наш textarea
     const editMessageBtn = document.getElementById('edit-message-btn');
     const saveMessageBtn = document.getElementById('save-message-btn');
     const messageDetailsCounter = document.getElementById('messageDetailsCounter');
     
-    // Template Data
-    const emailTemplates = {
-        'capital_options': {
-            subject: 'Still looking at capital options?',
-            body: `<p>Hello Edwin,</p><p>This is a follow-up on your capital options. We have several programs that might be a great fit for your business needs.</p><p>Please let us know if you'd like to schedule a brief call to discuss.</p><p>Underwriting Department<br>Fundshop</p><p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s) and may contain privileged information and may be legally protected from disclosure. If you are not the intended recipient of this message or their agent, or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and any attachments. If you are not the intended recipient, you are hereby notified that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</p><p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>`
-        },
-        'one_place': {
-            subject: 'One place. All your options.',
-            body: `<p>Hello Edwin,</p><p>Just a reminder that Fundshop is your one-stop solution for all business funding needs. We provide a streamlined process to get you the capital you require.</p><p>Please don’t hesitate to contact us if you have any questions.</p><p>Underwriting Department<br>Fundshop</p><p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s) and may contain privileged information and may be legally protected from disclosure. If you are not the intended recipient of this message or their agent, or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and any attachments. If you are not the intended recipient, you are hereby notified that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</p><p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>`
-        },
-        'run_business': {
-            subject: 'You run your business. We’ll handle the funding.',
-            body: `<p>Hello Edwin,</p><p>Focus on what you do best – running your business. Let us handle the complexities of securing the funding you need to grow.</p><p>We've reviewed your file and have some excellent options ready for you.</p><p>Underwriting Department<br>Fundshop</p><p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s) and may contain privileged information and may be legally protected from disclosure. If you are not the intended recipient of this message or their agent, or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and any attachments. If you are not the intended recipient, you are hereby notified that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</p><p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>`
-        },
-        'default': {
-            subject: '',
-            body: `<p>Hello Edwin,</p><p>Please verify your account to start your funding journey.</p><p>Please don’t hesitate to contact us if you have any questions regarding any of the documents we need.</p><p>Underwriting Department<br>Fundshop</p><p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s) and may contain privileged information and may be legally protected from disclosure. If you are not the intended recipient of this message or their agent, or if this message has been addressed to you in error, please immediately alert the sender by reply email and then delete this message and any attachments. If you are not the intended recipient, you are hereby notified that any use, dissemination, copying, or storage of this message or its attachments is strictly prohibited.</p><p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>`
+    // Переменная для хранения исходного HTML
+    let initialEditorContent = '';
+
+    // --- Инициализация TinyMCE ---
+    tinymce.init({
+        selector: '#message-edit-content',
+        plugins: 'lists link image charmap preview anchor searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table directionality emoticons help',
+        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        height: 350,
+        menubar: false,
+        setup: function (editor) {
+            editor.on('init', (e) => {
+                // Прячем редактор при инициализации
+                e.target.getContainer().style.display = 'none';
+                // Сохраняем исходный контент после инициализации редактора
+                initialEditorContent = e.target.getContent();
+            });
+            editor.on('input', () => updateCharacterCounter());
         }
-    };
+    });
 
-    /**
-     * Resets the New Message popup to its default state.
-     */
+    // --- Функции для управления попапом ---
     function resetNewMessagePopup() {
-        // Reset form fields
         messageForm.reset();
-        // messageToSelect.val(null).trigger('change');
+        messageToSelect.val(["jblanchard@mail.com", "evarmoore@mail.com"]).trigger('change');
         messageTemplateSelect.val(null).trigger('change');
+        
+        // Восстанавливаем исходный контент
+        messagePreviewContent.innerHTML = initialEditorContent;
+        const editor = tinymce.get('message-edit-content');
+        if (editor) {
+            editor.setContent(initialEditorContent);
+            editor.hide();
+        }
 
-        // Reset the details/preview area to default
-        messagePreviewContent.innerHTML = emailTemplates.default.body;
-        messageEditContent.value = messagePreviewContent.innerText;
+        updateCharacterCounter();
         
-        // Reset counters
-        updateCharacterCounter('messageSubject', 'messageSubjectCounter');
-        updateCharacterCounter('message-edit-content', 'messageDetailsCounter');
-        
-        // Reset view to preview mode
         messagePreviewContent.style.display = 'block';
         editMessageBtn.style.display = 'block';
-        messageEditContent.style.display = 'none';
         saveMessageBtn.style.display = 'none';
         messageDetailsCounter.style.display = 'none';
 
-        // Clear all validation styles
         newMessagePopup.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
     }
 
-    // General popup logic
     function openPopup(popup) {
         if (popup) {
             popup.classList.add('active');
-            const overlay = document.getElementById('popupOverlay');
-            if (overlay) overlay.classList.add('active');
+            document.getElementById('popupOverlay')?.classList.add('active');
             document.body.classList.add('noscroll');
         }
     }
 
     function closeAllPopups() {
         document.querySelectorAll('.popup.active').forEach(p => p.classList.remove('active'));
-        const overlay = document.getElementById('popupOverlay');
-        if (overlay) overlay.classList.remove('active');
+        document.getElementById('popupOverlay')?.classList.remove('active');
         document.body.classList.remove('noscroll');
-        
-        // Call the reset function when any popup closes
         resetNewMessagePopup();
     }
     
-    // Setup close buttons for all popups
-    document.querySelectorAll('.js-popup-close').forEach(btn => {
-        btn.addEventListener('click', closeAllPopups);
-    });
+    document.querySelectorAll('.js-popup-close').forEach(btn => btn.addEventListener('click', closeAllPopups));
+
+    // --- Логика счетчиков и кнопок ---
+    function updateCharacterCounter() {
+        // Обновляем счетчик для темы
+        const subjectCounter = document.getElementById('messageSubjectCounter');
+        if (messageSubjectInput && subjectCounter) {
+            const maxLength = parseInt(messageSubjectInput.getAttribute('maxlength'), 10);
+            subjectCounter.textContent = `${maxLength - messageSubjectInput.value.length} characters left`;
+        }
+        // Обновляем счетчик для редактора
+        const editor = tinymce.get('message-edit-content');
+        if (editor && messageDetailsCounter) {
+            const maxLength = 1000; // max length для textarea
+            const currentLength = editor.getContent({ format: 'text' }).length;
+            messageDetailsCounter.textContent = `${maxLength - currentLength} characters left`;
+        }
+    }
     
-    // Character counter setup
-    function updateCharacterCounter(textareaId, counterId) {
-        const textarea = document.getElementById(textareaId);
-        const counter = document.getElementById(counterId);
-
-        if (textarea && counter) {
-            const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
-            const currentLength = textarea.value.length;
-            const remaining = maxLength - currentLength;
-            counter.textContent = `${remaining} characters left`;
-        }
-    }
-
-    function attachCharacterCounter(textareaId, counterId) {
-        const textarea = document.getElementById(textareaId);
-        if (textarea) {
-            textarea.addEventListener('input', () => updateCharacterCounter(textareaId, counterId));
-            updateCharacterCounter(textareaId, counterId); // Initial update
-        }
-    }
-
-    // New Message Popup specific logic
     if (sendMailButton) {
         sendMailButton.addEventListener('click', () => {
-            resetNewMessagePopup(); // Reset before opening
+            resetNewMessagePopup();
             openPopup(newMessagePopup);
         });
     }
 
-    // Initialize Select2
+    // --- Инициализация Select2 ---
     messageToSelect.select2({
         placeholder: "Select emails...",
+        tags: true,
         tokenSeparators: [',', ' '],
         dropdownParent: $('#newMessagePopup')
     });
-
+    // Селект шаблонов теперь ни на что не влияет, просто оставляем его для вида
     messageTemplateSelect.select2({
         placeholder: "Select a template",
+        allowClear: true,
         minimumResultsForSearch: Infinity,
         dropdownParent: $('#newMessagePopup')
     });
 
-    // Template selection handler
-    messageTemplateSelect.on('change', function() {
-        const selectedTemplateKey = $(this).val();
-        const template = emailTemplates[selectedTemplateKey] || emailTemplates.default;
-        
-        messageSubjectInput.value = template.subject;
-        messagePreviewContent.innerHTML = template.body;
-        messageEditContent.value = messagePreviewContent.innerText;
-        
-        updateCharacterCounter('messageSubject', 'messageSubjectCounter');
-        updateCharacterCounter('message-edit-content', 'messageDetailsCounter');
-
-        // Reset edit mode
-        messagePreviewContent.style.display = 'block';
-        messageEditContent.style.display = 'none';
-        messageDetailsCounter.style.display = 'none';
-        editMessageBtn.style.display = 'block';
-        saveMessageBtn.style.display = 'none';
-        messagePreviewContent.closest('.form-group').classList.remove('invalid');
-    });
-
-    // Edit/Save button handlers
+    // --- Обработчики кнопок Edit/Save ---
     editMessageBtn.addEventListener('click', () => {
-        messageEditContent.value = messagePreviewContent.innerText;
-        
+        const editor = tinymce.get('message-edit-content');
+        if (!editor) return;
+
         messagePreviewContent.style.display = 'none';
         editMessageBtn.style.display = 'none';
         
-        messageEditContent.style.display = 'block';
+        editor.show();
         saveMessageBtn.style.display = 'block';
         messageDetailsCounter.style.display = 'block';
-        
-        updateCharacterCounter('message-edit-content', 'messageDetailsCounter');
-        messageEditContent.focus();
+        editor.focus();
     });
 
     saveMessageBtn.addEventListener('click', () => {
-        const editedText = messageEditContent.value.trim();
-        const formGroup = messageEditContent.closest('.form-group');
+        const editor = tinymce.get('message-edit-content');
+        if (!editor) return;
 
-        if (editedText === '') {
-            formGroup.classList.add('invalid');
-            return;
-        }
-
-        formGroup.classList.remove('invalid');
-        messagePreviewContent.innerText = editedText;
+        messagePreviewContent.innerHTML = editor.getContent();
 
         messagePreviewContent.style.display = 'block';
         editMessageBtn.style.display = 'block';
         
-        messageEditContent.style.display = 'none';
+        editor.hide();
         saveMessageBtn.style.display = 'none';
         messageDetailsCounter.style.display = 'none';
     });
 
-    // Form validation
+    // --- Валидация и отправка формы ---
     function validateNewMessageForm(form) {
         let isValid = true;
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
 
-        const requiredFields = form.querySelectorAll('[required]');
-        requiredFields.forEach(field => {
-            const group = field.closest('.form-group');
-            if (group) {
-                let isEmpty = false;
-                if ($(field).hasClass('select2-field-multiple')) {
-                    isEmpty = $(field).val() === null || $(field).val().length === 0;
-                } else if (!field.value || field.value.trim() === '') {
-                    isEmpty = true;
-                }
-                
-                if (isEmpty) {
-                    group.classList.add('invalid');
-                    isValid = false;
-                }
-            }
-        });
+        if (messageToSelect.val() === null || messageToSelect.val().length === 0) {
+            messageToSelect.next('.select2-container').closest('.form-group').addClass('invalid');
+            isValid = false;
+        }
+        
+        if (!messageSubjectInput.value.trim()) {
+            messageSubjectInput.closest('.form-group').addClass('invalid');
+            isValid = false;
+        }
         return isValid;
     }
 
@@ -900,14 +848,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         if (validateNewMessageForm(this)) {
             console.log('Form is valid. Sending...');
-            closeAllPopups(); // This will also trigger the reset
+            const editorContent = tinymce.get('message-edit-content').getContent();
+            console.log('Email Body:', editorContent);
+            closeAllPopups();
         } else {
             console.log('Form is invalid.');
         }
     });
-
-    // Init character counters
-    attachCharacterCounter('messageSubject', 'messageSubjectCounter');
-    attachCharacterCounter('message-edit-content', 'messageDetailsCounter');
     
+    messageSubjectInput.addEventListener('input', updateCharacterCounter);
 });

@@ -47,6 +47,7 @@
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="../assets/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
 	<!--script-->
 
 	<!--styles-->
@@ -1347,7 +1348,7 @@
 										</div>
 									</div>
 									<div class="tabs-content__item" id="auto-fu-tab">
-										<div class="history-email">
+										<div class="history-email open">
 											<div class="history-email__header">
 												<div class="history-email__title-wrapper">
 													<h2 class="history-email__title">History Email</h2>
@@ -3292,8 +3293,9 @@
 					</div>
 					<div class="form-group">
 						<label for="messageTemplate">Choose a template:</label>
-						<select id="messageTemplate" name="template" required class="select2-field" style="width: 100%;">
-							<option></option> <option value="capital_options">Still looking at capital options?</option>
+						<select id="messageTemplate" name="template" class="select2-field" style="width: 100%;">
+							<option></option> 
+							<option value="capital_options">Still looking at capital options?</option>
 							<option value="one_place">One place. All your options.</option>
 							<option value="run_business">You run your business. We’ll handle the funding.</option>
 						</select>
@@ -3311,47 +3313,60 @@
 						<label class="details-label">Details:</label>
 						<div id="details-preview-container" class="details-preview-container">
 							<button type="button" id="edit-message-btn" class="details-edit-btn" title="Edit">
-								<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M0.608433 14.9881L3.32313 15C3.32405 15 3.32497 15 3.32588 15C3.488 15 3.64339 14.9356 3.75814 14.8206L14.8211 3.73894C14.9357 3.62416 15 3.46836 15 3.30597C15 3.14359 14.9355 2.98794 14.8209 2.87315L12.1302 0.179218C11.8915 -0.0596884 11.5047 -0.0598414 11.266 0.179371L0.189165 11.2748C0.0751801 11.389 0.0107008 11.5437 0.0102424 11.7052L5.18315e-06 14.3734C-0.00136997 14.7115 0.271063 14.9865 0.608433 14.9881ZM11.6983 1.47782L13.5245 3.30613L11.0532 5.78166L9.22727 3.95306L11.6983 1.47782ZM1.23153 11.9622L8.36291 4.81869L10.1887 6.64745L3.07377 13.7746L1.22465 13.7663L1.23153 11.9622Z" fill="#838C85"/>
-								</svg>
+								<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.608433 14.9881L3.32313 15C3.32405 15 3.32497 15 3.32588 15C3.488 15 3.64339 14.9356 3.75814 14.8206L14.8211 3.73894C14.9357 3.62416 15 3.46836 15 3.30597C15 3.14359 14.9355 2.98794 14.8209 2.87315L12.1302 0.179218C11.8915 -0.0596884 11.5047 -0.0598414 11.266 0.179371L0.189165 11.2748C0.0751801 11.389 0.0107008 11.5437 0.0102424 11.7052L5.18315e-06 14.3734C-0.00136997 14.7115 0.271063 14.9865 0.608433 14.9881ZM11.6983 1.47782L13.5245 3.30613L11.0532 5.78166L9.22727 3.95306L11.6983 1.47782ZM1.23153 11.9622L8.36291 4.81869L10.1887 6.64745L3.07377 13.7746L1.22465 13.7663L1.23153 11.9622Z" fill="#838C85"/></svg>
 							</button>
 							<button type="button" id="save-message-btn" class="details-edit-btn" title="Save" style="display: none;">
-								<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M8.94558 0.755056C9.11838 0.589653 9.34834 0.498212 9.58693 0.500027C9.82551 0.501842 10.0541 0.596771 10.2244 0.764784C10.3947 0.932797 10.4934 1.16075 10.4997 1.40055C10.506 1.64034 10.4194 1.87323 10.2582 2.05005L5.36357 8.20436C5.2794 8.29551 5.17782 8.36865 5.0649 8.41942C4.95198 8.47018 4.83003 8.49754 4.70636 8.49984C4.58268 8.50214 4.45981 8.47935 4.3451 8.43282C4.23038 8.38629 4.12618 8.31698 4.03872 8.22903L0.792827 4.96564C0.702435 4.88096 0.629933 4.77884 0.579648 4.66537C0.529362 4.55191 0.502323 4.42942 0.500143 4.30522C0.497964 4.18102 0.520688 4.05765 0.566961 3.94248C0.613234 3.8273 0.682108 3.72267 0.769473 3.63483C0.856838 3.547 0.960905 3.47775 1.07547 3.43123C1.19003 3.38471 1.31273 3.36186 1.43627 3.36405C1.5598 3.36624 1.68163 3.39343 1.79449 3.44398C1.90734 3.49454 2.00892 3.56743 2.09315 3.65831L4.66189 6.23967L8.92227 0.78219L8.94558 0.755056Z" fill="#838C85"/>
-								</svg>
+								<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.94558 0.755056C9.11838 0.589653 9.34834 0.498212 9.58693 0.500027C9.82551 0.501842 10.0541 0.596771 10.2244 0.764784C10.3947 0.932797 10.4934 1.16075 10.4997 1.40055C10.506 1.64034 10.4194 1.87323 10.2582 2.05005L5.36357 8.20436C5.2794 8.29551 5.17782 8.36865 5.0649 8.41942C4.95198 8.47018 4.83003 8.49754 4.70636 8.49984C4.58268 8.50214 4.45981 8.47935 4.3451 8.43282C4.23038 8.38629 4.12618 8.31698 4.03872 8.22903L0.792827 4.96564C0.702435 4.88096 0.629933 4.77884 0.579648 4.66537C0.529362 4.55191 0.502323 4.42942 0.500143 4.30522C0.497964 4.18102 0.520688 4.05765 0.566961 3.94248C0.613234 3.8273 0.682108 3.72267 0.769473 3.63483C0.856838 3.547 0.960905 3.47775 1.07547 3.43123C1.19003 3.38471 1.31273 3.36186 1.43627 3.36405C1.5598 3.36624 1.68163 3.39343 1.79449 3.44398C1.90734 3.49454 2.00892 3.56743 2.09315 3.65831L4.66189 6.23967L8.92227 0.78219L8.94558 0.755056Z" fill="#838C85"/></svg>
 							</button>
 							<div class="form-group">
 								<div id="message-preview-content" class="details-preview-content">
-									</div>
-								<textarea id="message-edit-content" name="details" maxlength="1000" style="display: none;"></textarea>
+									<p>Hello Edwin,</p>
+									<p>Please verify your account to start your funding journey.</p>
+									<p>Please don’t hesitate to contact us if you have any questions regarding any of the documents we need.</p>
+									<p>Underwriting Department<br>Fundshop</p>
+									<p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s)...</p>
+									<p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>
+									<ul style="list-style: none; padding: 6px 0 0 0; margin-top: 15px; border-top: 1px solid #E8E9E8;">
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiMyOEIwMjgiLz48cGF0aCBkPSJNMTAuOTQ1NiA0LjI1NTA2QzExLjExODQgNC4wODk2NSAxMS4zNDgzIDMuOTk4MjEgMTEuNTg2OSAzLjgwMDAzQzExLjgyNTUgNC4wMDE4NCAxMi4wNTQxIDQuMDk2NzcgMTIuMjI0NCA0LjI2NDc4QzEyLjM5NDcgNC40MzI4IDEyLjQ5MzQgNC42NjA3NSAxMi40OTk3IDQuOTAwNTVDMTIuNTA2IDUuMTQwMzQgMTIuNDE5NCA1LjM3MzIzIDEyLjI1ODIgNS41NTAwNUw3LjM2MzU3IDExLjcwNDRDNy4yNzk0IDExLjc5NTUgNy4xNzc4MiAxMS44Njg2IDcuMDY0OSAxMS45MTk0QzYuOTUxOTggMTEuOTcwMiA2LjgzMDAzIDExLjk5NzUgNi43MDYzNiAxMS45OTk4QzYuNTgyNjggMTIuMDAyMSA2LjQ1OTgxIDExLjk3OTMgNi4zNDUxIDExLjkzMjhDNy4yMzAzOCAxMS44ODYzIDYuMTI2MTggMTEuODE3IDYuMDM4NzIgMTEuNzI5TDIuNzkyODMgOC40NjU2NEMyLjcwMjQzIDguMzgwOTYgMi42Mjk5MyA4LjI3ODg0IDIuNTc5NjUgOC4xNjUzN0MyLjUyOTM2IDguMDUxOTEgMi41MDIzMiA3LjkyOTQyIDIuNTAwMTQgNy44MDUyMkMyLjQ5Nzk2IDcuNjgxMDIgMi41MjA2OSA3LjU1Nzc1IDIuNTY2OTYgNy40NDI0OEMyLjYxMzIzIDcuMzI3MyAyLjY4MjExIDcuMjIyNjcgMi43Njk0NyA3LjEzNDgzQzIuODU2ODQgNy4wNDcgMi45NjA5IDYuOTc3NzUgMy4wNzU0NyA2LjkzMTIzQzMuMTkwMDMgNi44ODQ3MSAzLjMxMjczIDYuODYxODYgMy40MzYyNyA2Ljg2NDA1QzMuNTU5OCA2Ljg2NjI0IDMuNjgxNjMgNi44OTM0MyAzLjc5NDQ5IDYuOTQzOThDMy45MDczNCA2Ljk5NDU0IDQuMDA4OTIgNy4wNjc0MyA0LjA5MzE1IDcuMTU4MzFMNi42NjE4OSA5LjczOTY3TDEwLjkyMjMgNC4yODIxOUwxMC45NDU2IDQuMjU1MDZaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Application</span>
+										</li>
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiMyOEIwMjgiLz48cGF0aCBkPSJNMTAuOTQ1NiA0LjI1NTA2QzExLjExODQgNC4wODk2NSAxMS4zNDgzIDMuOTk4MjEgMTEuNTg2OSAzLjgwMDAzQzExLjgyNTUgNC4wMDE4NCAxMi4wNTQxIDQuMDk2NzcgMTIuMjI0NCA0LjI2NDc4QzEyLjM5NDcgNC40MzI4IDEyLjQ5MzQgNC42NjA3NSAxMi40OTk3IDQuOTAwNTVDMTIuNTA2IDUuMTQwMzQgMTIuNDE5NCA1LjM3MzIzIDEyLjI1ODIgNS41NTAwNUw3LjM2MzU3IDExLjcwNDRDNy4yNzk0IDExLjc5NTUgNy4xNzc4MiAxMS44Njg2IDcuMDY0OSAxMS45MTk0QzYuOTUxOTggMTEuOTcwMiA2LjgzMDAzIDExLjk5NzUgNi43MDYzNiAxMS45OTk4QzYuNTgyNjggMTIuMDAyMSA2LjQ1OTgxIDExLjk3OTMgNi4zNDUxIDExLjkzMjhDNy4yMzAzOCAxMS44ODYzIDYuMTI2MTggMTEuODE3IDYuMDM4NzIgMTEuNzI5TDIuNzkyODMgOC40NjU2NEMyLjcwMjQzIDguMzgwOTYgMi42Mjk5MyA4LjI3ODg0IDIuNTc5NjUgOC4xNjUzN0MyLjUyOTM2IDguMDUxOTEgMi41MDIzMiA3LjkyOTQyIDIuNTAwMTQgNy44MDUyMkMyLjQ5Nzk2IDcuNjgxMDIgMi41MjA2OSA3LjU1Nzc1IDIuNTY2OTYgNy40NDI0OEMyLjYxMzIzIDcuMzI3MyAyLjY4MjExIDcuMjIyNjcgMi43Njk0NyA3LjEzNDgzQzIuODU2ODQgNy4wNDcgMi45NjA5IDYuOTc3NzUgMy4wNzU0NyA2LjkzMTIzQzMuMTkwMDMgNi44ODQ3MSAzLjMxMjczIDYuODYxODYgMy40MzYyNyA2Ljg2NDA1QzMuNTU5OCA2Ljg2NjI0IDMuNjgxNjMgNi44OTM0MyAzLjc5NDQ5IDYuOTQzOThDMy45MDczNCA2Ljk5NDU0IDQuMDA4OTIgNy4wNjc0MyA0LjA5MzE1IDcuMTU4MzFMNi42NjE4OSA5LjczOTY3TDEwLjkyMjMgNC4yODIxOUwxMC45NDU2IDQuMjU1MDZaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Photo ID</span>
+										</li>
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiNFNDRGNUUiLz48cGF0aCBkPSJNNCA1LjVMMTAuNTUzOCAxMS4wNTM4IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTEwLjU1MzggNS41TDUgMTEuMDUzOCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Bank Statements</span>
+										</li>
+									</ul>
+								</div>
+								<textarea id="message-edit-content" name="details" maxlength="1000" style="display: none;">
+									<p>Hello Edwin,</p>
+									<p>Please verify your account to start your funding journey.</p>
+									<p>Please don’t hesitate to contact us if you have any questions regarding any of the documents we need.</p>
+									<p>Underwriting Department<br>Fundshop</p>
+									<p>NON-DISCLOSURE NOTICE: The contents of this email message and any attachments are intended solely for the addressee(s)...</p>
+									<p>If you no longer wish to receive our emails, please click here to Unsubscribe</p>
+									<ul style="list-style: none; padding: 6px 0 0 0; margin-top: 15px; border-top: 1px solid #E8E9E8;">
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiMyOEIwMjgiLz48cGF0aCBkPSJNMTAuOTQ1NiA0LjI1NTA2QzExLjExODQgNC4wODk2NSAxMS4zNDgzIDMuOTk4MjEgMTEuNTg2OSAzLjgwMDAzQzExLjgyNTUgNC4wMDE4NCAxMi4wNTQxIDQuMDk2NzcgMTIuMjI0NCA0LjI2NDc4QzEyLjM5NDcgNC40MzI4IDEyLjQ5MzQgNC42NjA3NSAxMi40OTk3IDQuOTAwNTVDMTIuNTA2IDUuMTQwMzQgMTIuNDE5NCA1LjM3MzIzIDEyLjI1ODIgNS41NTAwNUw3LjM2MzU3IDExLjcwNDRDNy4yNzk0IDExLjc5NTUgNy4xNzc4MiAxMS44Njg2IDcuMDY0OSAxMS45MTk0QzYuOTUxOTggMTEuOTcwMiA2LjgzMDAzIDExLjk5NzUgNi43MDYzNiAxMS45OTk4QzYuNTgyNjggMTIuMDAyMSA2LjQ1OTgxIDExLjk3OTMgNi4zNDUxIDExLjkzMjhDNy4yMzAzOCAxMS44ODYzIDYuMTI2MTggMTEuODE3IDYuMDM4NzIgMTEuNzI5TDIuNzkyODMgOC40NjU2NEMyLjcwMjQzIDguMzgwOTYgMi42Mjk5MyA4LjI3ODg0IDIuNTc5NjUgOC4xNjUzN0MyLjUyOTM2IDguMDUxOTEgMi41MDIzMiA3LjkyOTQyIDIuNTAwMTQgNy44MDUyMkMyLjQ5Nzk2IDcuNjgxMDIgMi41MjA2OSA3LjU1Nzc1IDIuNTY2OTYgNy40NDI0OEMyLjYxMzIzIDcuMzI3MyAyLjY4MjExIDcuMjIyNjcgMi43Njk0NyA3LjEzNDgzQzIuODU2ODQgNy4wNDcgMi45NjA5IDYuOTc3NzUgMy4wNzU0NyA2LjkzMTIzQzMuMTkwMDMgNi44ODQ3MSAzLjMxMjczIDYuODYxODYgMy40MzYyNyA2Ljg2NDA1QzMuNTU5OCA2Ljg2NjI0IDMuNjgxNjMgNi44OTM0MyAzLjc5NDQ5IDYuOTQzOThDMy45MDczNCA2Ljk5NDU0IDQuMDA4OTIgNy4wNjc0MyA0LjA5MzE1IDcuMTU4MzFMNi42NjE4OSA5LjczOTY3TDEwLjkyMjMgNC4yODIxOUwxMC45NDU2IDQuMjU1MDZaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Application</span>
+										</li>
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiMyOEIwMjgiLz48cGF0aCBkPSJNMTAuOTQ1NiA0LjI1NTA2QzExLjExODQgNC4wODk2NSAxMS4zNDgzIDMuOTk4MjEgMTEuNTg2OSAzLjgwMDAzQzExLjgyNTUgNC4wMDE4NCAxMi4wNTQxIDQuMDk2NzcgMTIuMjI0NCA0LjI2NDc4QzEyLjM5NDcgNC40MzI4IDEyLjQ5MzQgNC42NjA3NSAxMi40OTk3IDQuOTAwNTVDMTIuNTA2IDUuMTQwMzQgMTIuNDE5NCA1LjM3MzIzIDEyLjI1ODIgNS41NTAwNUw3LjM2MzU3IDExLjcwNDRDNy4yNzk0IDExLjc5NTUgNy4xNzc4MiAxMS44Njg2IDcuMDY0OSAxMS45MTk0QzYuOTUxOTggMTEuOTcwMiA2LjgzMDAzIDExLjk5NzUgNi43MDYzNiAxMS45OTk4QzYuNTgyNjggMTIuMDAyMSA2LjQ1OTgxIDExLjk3OTMgNi4zNDUxIDExLjkzMjhDNy4yMzAzOCAxMS44ODYzIDYuMTI2MTggMTEuODE3IDYuMDM4NzIgMTEuNzI5TDIuNzkyODMgOC40NjU2NEMyLjcwMjQzIDguMzgwOTYgMi42Mjk5MyA4LjI3ODg0IDIuNTc5NjUgOC4xNjUzN0MyLjUyOTM2IDguMDUxOTEgMi41MDIzMiA3LjkyOTQyIDIuNTAwMTQgNy44MDUyMkMyLjQ5Nzk2IDcuNjgxMDIgMi41MjA2OSA3LjU1Nzc1IDIuNTY2OTYgNy40NDI0OEMyLjYxMzIzIDcuMzI3MyAyLjY4MjExIDcuMjIyNjcgMi43Njk0NyA3LjEzNDgzQzIuODU2ODQgNy4wNDcgMi45NjA5IDYuOTc3NzUgMy4wNzU0NyA2LjkzMTIzQzMuMTkwMDMgNi44ODQ3MSAzLjMxMjczIDYuODYxODYgMy40MzYyNyA2Ljg2NDA1QzMuNTU5OCA2Ljg2NjI0IDMuNjgxNjMgNi44OTM0MyAzLjc5NDQ5IDYuOTQzOThDMy45MDczNCA2Ljk5NDU0IDQuMDA4OTIgNy4wNjc0MyA0LjA5MzE1IDcuMTU4MzFMNi42NjE4OSA5LjczOTY3TDEwLjkyMjMgNC4yODIxOUwxMC45NDU2IDQuMjU1MDZaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Photo ID</span>
+										</li>
+										<li style="display: flex; align-items: center; gap: 10px; font-size: 12px; line-height: 14px; font-weight: 500; color: #232323; padding: 7.5px 0;">
+											<img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNSAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB5PSIwLjUiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgcng9IjMiIGZpbGw9IiNFNDRGNUUiLz48cGF0aCBkPSJNNCA1LjVMMTAuNTUzOCAxMS4wNTM4IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTEwLjU1MzggNS41TDUgMTEuMDUzOCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==" alt="" style="width: 15px; height: 15px; vertical-align: middle;">
+											<span style="vertical-align: middle; margin-left: 10px;">Bank Statements</span>
+										</li>
+									</ul>
+								</textarea>
 								<div class="char-counter-wrapper">
 									<span id="messageDetailsCounter" class="char-counter" style="display: none;">1000 characters left</span>
 								</div>
 							</div>
-							<ul class="details-checklist">
-								<li class="checklist-item">
-								<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect y="0.5" width="15" height="15" rx="3" fill="#28B028"/>
-									<path d="M10.9456 4.25506C11.1184 4.08965 11.3483 3.99821 11.5869 4.00003C11.8255 4.00184 12.0541 4.09677 12.2244 4.26478C12.3947 4.4328 12.4934 4.66075 12.4997 4.90055C12.506 5.14034 12.4194 5.37323 12.2582 5.55005L7.36357 11.7044C7.2794 11.7955 7.17782 11.8686 7.0649 11.9194C6.95198 11.9702 6.83003 11.9975 6.70636 11.9998C6.58268 12.0021 6.45981 11.9793 6.3451 11.9328C6.23038 11.8863 6.12618 11.817 6.03872 11.729L2.79283 8.46564C2.70243 8.38096 2.62993 8.27884 2.57965 8.16537C2.52936 8.05191 2.50232 7.92942 2.50014 7.80522C2.49796 7.68102 2.52069 7.55765 2.56696 7.44248C2.61323 7.3273 2.68211 7.22267 2.76947 7.13483C2.85684 7.047 2.9609 6.97775 3.07547 6.93123C3.19003 6.88471 3.31273 6.86186 3.43627 6.86405C3.5598 6.86624 3.68163 6.89343 3.79449 6.94398C3.90734 6.99454 4.00892 7.06743 4.09315 7.15831L6.66189 9.73967L10.9223 4.28219L10.9456 4.25506Z" fill="white"/>
-								</svg>
-								Application
-								</li>
-								<li class="checklist-item">
-								<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect y="0.5" width="15" height="15" rx="3" fill="#28B028"/>
-									<path d="M10.9456 4.25506C11.1184 4.08965 11.3483 3.99821 11.5869 4.00003C11.8255 4.00184 12.0541 4.09677 12.2244 4.26478C12.3947 4.4328 12.4934 4.66075 12.4997 4.90055C12.506 5.14034 12.4194 5.37323 12.2582 5.55005L7.36357 11.7044C7.2794 11.7955 7.17782 11.8686 7.0649 11.9194C6.95198 11.9702 6.83003 11.9975 6.70636 11.9998C6.58268 12.0021 6.45981 11.9793 6.3451 11.9328C6.23038 11.8863 6.12618 11.817 6.03872 11.729L2.79283 8.46564C2.70243 8.38096 2.62993 8.27884 2.57965 8.16537C2.52936 8.05191 2.50232 7.92942 2.50014 7.80522C2.49796 7.68102 2.52069 7.55765 2.56696 7.44248C2.61323 7.3273 2.68211 7.22267 2.76947 7.13483C2.85684 7.047 2.9609 6.97775 3.07547 6.93123C3.19003 6.88471 3.31273 6.86186 3.43627 6.86405C3.5598 6.86624 3.68163 6.89343 3.79449 6.94398C3.90734 6.99454 4.00892 7.06743 4.09315 7.15831L6.66189 9.73967L10.9223 4.28219L10.9456 4.25506Z" fill="white"/>
-								</svg>
-								Photo ID
-								</li>
-								<li class="checklist-item">
-								<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect y="0.5" width="15" height="15" rx="3" fill="#E44F5E"/>
-									<path d="M5 5.5L10.5538 11.0538" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-									<path d="M10.5538 5.5L5 11.0538" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
-								Bank Statements
-								</li>
-							</ul>
 						</div>
 					</div>
 				</div>
