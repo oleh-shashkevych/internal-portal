@@ -151,164 +151,165 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Pre-approvals popup functionality
 document.addEventListener('DOMContentLoaded', () => {
-	const popup = document.getElementById('approvalPopup');
-	const trigger = document.getElementById('pre-approvals-popup');
-	const closeBtn = popup?.querySelector('[data-close="approvalPopup"]');
-	const popupApprovalOverlay = document.getElementById('popupOverlay');
-	const form = document.getElementById('approvalForm');
+    const popup = document.getElementById('approvalPopup');
+    const trigger = document.getElementById('pre-approvals-popup');
+    const closeBtn = popup?.querySelector('[data-close="approvalPopup"]');
+    const popupApprovalOverlay = document.getElementById('popupOverlay');
+    const form = document.getElementById('approvalForm');
 
-	const programType = document.getElementById('approvalProgramType');
-	const amount = document.getElementById('approvalAmount');
-	const lender = document.getElementById('approvalLender');
+    // Эти переменные теперь будут ссылаться на элементы в "approvalPopup"
+    const programType = document.getElementById('approvalProgramType');
+    const amount = document.getElementById('approvalAmount');
+    const lender = document.getElementById('approvalLender');
 
-	trigger?.addEventListener('click', openPopup);
-	closeBtn?.addEventListener('click', closePopup);
+    trigger?.addEventListener('click', openPopup);
+    closeBtn?.addEventListener('click', closePopup);
 
-	function openPopup() {
-		popup?.classList.add('active');
-		popupApprovalOverlay?.classList.add('active');
-		document.body.classList.add('noscroll');
-		form?.reset();
-		clearValidation();
-	}
+    function openPopup() {
+        popup?.classList.add('active');
+        popupApprovalOverlay?.classList.add('active');
+        document.body.classList.add('noscroll');
+        form?.reset();
+        clearValidation();
+    }
 
-	function closePopup() {
-		popup?.classList.remove('active');
-		popupApprovalOverlay?.classList.remove('active');
-		document.body.classList.remove('noscroll');
-		clearValidation();
-	}
+    function closePopup() {
+        popup?.classList.remove('active');
+        popupApprovalOverlay?.classList.remove('active');
+        document.body.classList.remove('noscroll');
+        clearValidation();
+    }
 
-	amount?.addEventListener('input', () => {
-		if (!amount) return;
-	
-		const rawValue = amount.value;
-		const oldCursor = amount.selectionStart;
-	
-		// Залишаємо лише цифри та крапку
-		const cleaned = rawValue.replace(/[^\d.]/g, '');
-	
-		let [intPart, decimalPart] = cleaned.split('.');
-		intPart = intPart || '0';
-		intPart = intPart.replace(/^0+/, '') || '0';
-	
-		if (decimalPart !== undefined) {
-			decimalPart = decimalPart.substring(0, 2);
-		} else {
-			decimalPart = '';
-		}
-	
-		const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		let formatted = formattedInt;
-	
-		if (cleaned.includes('.')) {
-			formatted += '.' + decimalPart;
-		} else {
-			formatted += '.00';
-		}
-	
-		// Визначаємо кількість символів зліва від курсора у сирому значенні
-		const leftPartRaw = rawValue.slice(0, oldCursor);
-		const cleanedLeftPart = leftPartRaw.replace(/[^\d.]/g, '');
-	
-		// Визначаємо нову позицію курсора після форматування
-		let newCursor = formatted.length;
-		let cleanIndex = 0;
-		for (let i = 0, count = 0; i < formatted.length && count < cleanedLeftPart.length; i++) {
-			if (/\d|\./.test(formatted[i])) {
-				count++;
-				cleanIndex = i + 1;
-			}
-		}
-		newCursor = cleanIndex;
-	
-		// Применяем формат
-		amount.value = formatted;
-		amount.setSelectionRange(newCursor, newCursor);
-	});	
+    amount?.addEventListener('input', () => {
+        if (!amount) return;
+    
+        const rawValue = amount.value;
+        const oldCursor = amount.selectionStart;
+    
+        // Залишаємо лише цифри та крапку
+        const cleaned = rawValue.replace(/[^\d.]/g, '');
+    
+        let [intPart, decimalPart] = cleaned.split('.');
+        intPart = intPart || '0';
+        intPart = intPart.replace(/^0+/, '') || '0';
+    
+        if (decimalPart !== undefined) {
+            decimalPart = decimalPart.substring(0, 2);
+        } else {
+            decimalPart = '';
+        }
+    
+        const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        let formatted = formattedInt;
+    
+        if (cleaned.includes('.')) {
+            formatted += '.' + decimalPart;
+        } else {
+            formatted += '.00';
+        }
+    
+        // Визначаємо кількість символів зліва від курсора у сирому значенні
+        const leftPartRaw = rawValue.slice(0, oldCursor);
+        const cleanedLeftPart = leftPartRaw.replace(/[^\d.]/g, '');
+    
+        // Визначаємо нову позицію курсора після форматування
+        let newCursor = formatted.length;
+        let cleanIndex = 0;
+        for (let i = 0, count = 0; i < formatted.length && count < cleanedLeftPart.length; i++) {
+            if (/\d|\./.test(formatted[i])) {
+                count++;
+                cleanIndex = i + 1;
+            }
+        }
+        newCursor = cleanIndex;
+    
+        // Применяем формат
+        amount.value = formatted;
+        amount.setSelectionRange(newCursor, newCursor);
+    }); 
 
-	function formatAmount(value) {
-		const raw = value.replace(/[^\d.]/g, '');
-		let [intPart, decimalPart] = raw.split('.');
-	
-		intPart = intPart.replace(/^0+/, '') || '0';
-	
-		// Ограничиваем decimalPart двумя символами и дополняем до двух знаков
-		if (decimalPart === undefined) {
-			decimalPart = '00';
-		} else if (decimalPart.length === 1) {
-			decimalPart = decimalPart + '0';
-		} else {
-			decimalPart = decimalPart.substring(0, 2);
-		}
-	
-		intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	
-		return `${intPart}.${decimalPart}`;
-	}	
+    function formatAmount(value) {
+        const raw = value.replace(/[^\d.]/g, '');
+        let [intPart, decimalPart] = raw.split('.');
+    
+        intPart = intPart.replace(/^0+/, '') || '0';
+    
+        // Ограничиваем decimalPart двумя символами и дополняем до двух знаков
+        if (decimalPart === undefined) {
+            decimalPart = '00';
+        } else if (decimalPart.length === 1) {
+            decimalPart = decimalPart + '0';
+        } else {
+            decimalPart = decimalPart.substring(0, 2);
+        }
+    
+        intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    
+        return `${intPart}.${decimalPart}`;
+    }   
 
-	form?.querySelectorAll('input, select, textarea').forEach(field => {
-		field.addEventListener('input', () => {
-			const group = field.closest('.form-group');
-			if (group?.classList.contains('invalid')) {
-				group.classList.remove('invalid');
-			}
-		});
-		field.addEventListener('change', () => {
-			const group = field.closest('.form-group');
-			if (group?.classList.contains('invalid')) {
-				group.classList.remove('invalid');
-			}
-		});
-	});
+    form?.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('input', () => {
+            const group = field.closest('.form-group');
+            if (group?.classList.contains('invalid')) {
+                group.classList.remove('invalid');
+            }
+        });
+        field.addEventListener('change', () => {
+            const group = field.closest('.form-group');
+            if (group?.classList.contains('invalid')) {
+                group.classList.remove('invalid');
+            }
+        });
+    });
 
-	form?.addEventListener('submit', e => {
-		e.preventDefault();
-		const isValid = validateFields();
-		if (isValid) {
-			console.log('Form is valid! Submitting...');
-			closePopup();
-		} else {
-			console.log('Form validation failed.');
-		}
-	});
+    form?.addEventListener('submit', e => {
+        e.preventDefault();
+        const isValid = validateFields();
+        if (isValid) {
+            console.log('Form is valid! Submitting...');
+            closePopup();
+        } else {
+            console.log('Form validation failed.');
+        }
+    });
 
-	function validateFields() {
-		let valid = true;
-		clearValidation();
+    function validateFields() {
+        let valid = true;
+        clearValidation();
 
-		if (!programType?.value) {
-			markInvalid(programType);
-			valid = false;
-		}
+        if (!programType?.value) {
+            markInvalid(programType);
+            valid = false;
+        }
 
-		const amountValue = amount?.value.replace(/,/g, '');
-		if (!amountValue || isNaN(parseFloat(amountValue)) || parseFloat(amountValue) <= 0) {
-			markInvalid(amount);
-			valid = false;
-		}
+        const amountValue = amount?.value.replace(/,/g, '');
+        if (!amountValue || isNaN(parseFloat(amountValue)) || parseFloat(amountValue) <= 0) {
+            markInvalid(amount);
+            valid = false;
+        }
 
-		if (!lender?.value) {
-			markInvalid(lender);
-			valid = false;
-		}
+        if (!lender?.value) {
+            markInvalid(lender);
+            valid = false;
+        }
 
-		return valid;
-	}
+        return valid;
+    }
 
-	function markInvalid(el) {
-		const formGroup = el?.closest('.form-group');
-		if (formGroup) {
-			formGroup.classList.add('invalid');
-		}
-	}
+    function markInvalid(el) {
+        const formGroup = el?.closest('.form-group');
+        if (formGroup) {
+            formGroup.classList.add('invalid');
+        }
+    }
 
-	function clearValidation() {
-		const invalidGroups = popup?.querySelectorAll('.form-group.invalid');
-		invalidGroups?.forEach(group => {
-			group.classList.remove('invalid');
-		});
-	}	
+    function clearValidation() {
+        const invalidGroups = popup?.querySelectorAll('.form-group.invalid');
+        invalidGroups?.forEach(group => {
+            group.classList.remove('invalid');
+        });
+    }   
 });
 
 // Pre-approvals edit popup functionality
@@ -338,10 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Сбрасываем классы ошибок при закрытии попапа
         resetFormErrors();
-		// Убираем выделение строки
-		tableBody.querySelectorAll('.not-leads-approvals__row.focused').forEach(row => {
-			row.classList.remove('focused');
-		});
+        // Убираем выделение строки
+        tableBody.querySelectorAll('.not-leads-approvals__row.focused').forEach(row => {
+            row.classList.remove('focused');
+        });
 
     }
 
@@ -370,6 +371,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const formStatus = editForm.querySelector('#editStatus');
         const formAmount = editForm.querySelector('#editAmount');
         const formPreapprovalId = editForm.querySelector('#editPreapprovalId');
+        // Обновленные ссылки для Program Type и Sub-Lenders в editPopup
+        const formProgramType = editForm.querySelector('#editApprovalProgramType'); 
+        const formLender = editForm.querySelector('#editApprovalLender'); 
+
 
         if (formAmount) formAmount.value = amountValue;
         if (formPreapprovalId) formPreapprovalId.value = rowId;
@@ -384,12 +389,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+        // Установка значений для Program Type и Sub-Lenders в editPopup
+        if (formProgramType) {
+            // Предполагаем, что Program Type не отображается в таблице,
+            // поэтому мы не можем получить его из `row`.
+            // Если вы хотите, чтобы это поле также заполнялось,
+            // вам нужно будет хранить его данные в `data-атрибутах` строки таблицы,
+            // или получать их из другого источника.
+            // Например, если Program Type для preapproval-1 это 'sba_bolt':
+            // formProgramType.value = 'sba_bolt';
+            // formProgramType.dispatchEvent(new Event('change')); // Для Select2 или пользовательских обработчиков
+        }
+        if (formLender) {
+            const lenderEl = row.querySelector('[data-field="lender"]');
+            const lenderText = lenderEl ? lenderEl.textContent.trim() : '';
+            // Находим option по тексту или значению
+            for (let option of formLender.options) {
+                if (option.value === lenderText || option.text === lenderText) {
+                    option.selected = true;
+                    break;
+                }
+            }
+        }
 
-		tableBody.querySelectorAll('.not-leads-approvals__row.focused').forEach(row => {
-			row.classList.remove('focused');
-		});
 
-		row.classList.add('focused');
+        tableBody.querySelectorAll('.not-leads-approvals__row.focused').forEach(row => {
+            row.classList.remove('focused');
+        });
+
+        row.classList.add('focused');
 
         openPopup(editPopup);
     });
@@ -408,7 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const rowId = updatedData.preapprovalId;
 
         // Сначала проверим заполненность обязательных полей
-        const requiredFields = ['editAmount', 'editStatus', 'approvalProgramType', 'approvalLender'];
+        // Используем новые, уникальные ID для полей в editPopup
+        const requiredFields = ['editAmount', 'editStatus', 'editApprovalProgramType', 'editApprovalLender'];
         let isValid = true;
 
         requiredFields.forEach(fieldId => {
@@ -433,8 +462,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (rowToUpdate) {
             const statusContainerEl = rowToUpdate.querySelector('[data-field="status"]');
             const amountEl = rowToUpdate.querySelector('[data-field="amount"]');
+            const lenderEl = rowToUpdate.querySelector('[data-field="lender"]'); // Добавляем для обновления Sub-Lender
 
             if (amountEl) amountEl.textContent = updatedData.amount;
+            if (lenderEl) lenderEl.textContent = updatedData.subLender; // Обновляем текст Sub-Lender
 
             if (statusContainerEl) {
                 const selectedStatusText = updatedData.status;
