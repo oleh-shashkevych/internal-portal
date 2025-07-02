@@ -720,8 +720,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Элементы ---
     const sendMailButton = document.getElementById('sendMailButton');
     const messageForm = document.getElementById('newMessageForm');
-    const messageToSelect = $('#messageTo');
-    const messageTemplateSelect = $('#messageTemplate');
+    const messageToSelect = $('#messageTo'); // Это jQuery-объект
+    const messageTemplateSelect = $('#messageTemplate'); // Это jQuery-объект
     const messageSubjectInput = document.getElementById('messageSubject');
     const messagePreviewContent = document.getElementById('message-preview-content');
     const messageEditContent = document.getElementById('message-edit-content'); // Наш textarea
@@ -754,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetNewMessagePopup() {
         messageForm.reset();
         messageToSelect.val(["jblanchard@mail.com", "evarmoore@mail.com"]).trigger('change');
-        messageTemplateSelect.val(null).trigger('change');
+        messageTemplateSelect.val(null).trigger('change'); // Убедитесь, что плейсхолдер выбран
         
         // Восстанавливаем исходный контент
         messagePreviewContent.innerHTML = initialEditorContent;
@@ -863,13 +863,27 @@ document.addEventListener('DOMContentLoaded', () => {
         let isValid = true;
         form.querySelectorAll('.form-group.invalid').forEach(el => el.classList.remove('invalid'));
 
+        // Валидация для Select2 (messageToSelect)
+        const messageToSelectContainer = messageToSelect.next('.select2-container')[0]; 
         if (messageToSelect.val() === null || messageToSelect.val().length === 0) {
-            messageToSelect.next('.select2-container').closest('.form-group').addClass('invalid');
+            if (messageToSelectContainer) {
+                messageToSelectContainer.closest('.form-group').classList.add('invalid');
+            }
             isValid = false;
         }
         
+        // **Новая валидация для messageTemplateSelect**
+        const messageTemplateSelectContainer = messageTemplateSelect.next('.select2-container')[0];
+        if (messageTemplateSelect.val() === null || messageTemplateSelect.val() === '') {
+            if (messageTemplateSelectContainer) {
+                messageTemplateSelectContainer.closest('.form-group').classList.add('invalid');
+            }
+            isValid = false;
+        }
+
+        // Валидация для messageSubjectInput
         if (!messageSubjectInput.value.trim()) {
-            messageSubjectInput.closest('.form-group').addClass('invalid');
+            messageSubjectInput.closest('.form-group').classList.add('invalid');
             isValid = false;
         }
         return isValid;
