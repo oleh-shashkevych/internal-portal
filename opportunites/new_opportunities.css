@@ -124,6 +124,7 @@
 	font-family: 'proxima_nova';
 	font-size: 15px;
 	line-height: 20px;
+	cursor: pointer;
 }
 
 .follow_up_table-item:hover {
