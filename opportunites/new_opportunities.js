@@ -617,7 +617,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     dragDropArea.addEventListener('click', () => fileInput.click());
-    browseBtn.addEventListener('click', () => fileInput.click());
+    browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Це зупинить спливання події
+        fileInput.click();
+    });
     addMoreBtn.addEventListener('click', () => fileInput.click());
 
     fileInput.addEventListener('change', (e) => {
@@ -625,6 +628,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     function setupDragAndDrop(element) {
+        let dragCounter = 0; // Лічильник для вкладених подій drag-n-drop
+
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             element.addEventListener(eventName, (e) => {
                 e.preventDefault();
@@ -632,9 +637,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        element.addEventListener('dragenter', () => element.classList.add('drag-over'));
-        element.addEventListener('dragleave', () => element.classList.remove('drag-over'));
+        element.addEventListener('dragenter', (e) => {
+            dragCounter++;
+            element.classList.add('drag-over');
+        });
+
+        element.addEventListener('dragleave', (e) => {
+            dragCounter--;
+            if (dragCounter === 0) {
+                element.classList.remove('drag-over');
+            }
+        });
+
         element.addEventListener('drop', (e) => {
+            dragCounter = 0; // Скидаємо лічильник
             element.classList.remove('drag-over');
             handleFileSelection(e.dataTransfer.files);
         });
@@ -644,14 +660,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDragAndDrop(filesView);
 
     fileGrid.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-file-btn')) {
+        if (e.target.closest('.remove-file-btn')) { // Виправлено для роботи з SVG всередині кнопки
             e.target.closest('.file-card').remove();
             if (fileGrid.children.length === 0) {
                  emptyView.style.display = 'block';
                  filesView.style.display = 'none';
             }
         }
-    });
+    }); 
 });
 
 document.addEventListener("DOMContentLoaded", function () {
