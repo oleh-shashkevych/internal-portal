@@ -818,8 +818,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Инициализация Select2 ---
     messageToSelect.select2({
         placeholder: "Select emails...",
-        tags: true,
-        tokenSeparators: [',', ' '],
         dropdownParent: $('#newMessagePopup')
     });
     // Селект шаблонов теперь ни на что не влияет, просто оставляем его для вида
