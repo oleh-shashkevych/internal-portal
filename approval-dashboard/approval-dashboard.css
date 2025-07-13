@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ==========================================================================
+   approval-amount Section Styles
+   ========================================================================== */
+
+.approval-amount {
+	background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #EEEEEE;
+	font-family: 'Urbanist', sans-serif;
+}
+
+/* --- approval-amount Header --- */
+
+.approval-amount__header {
+	padding: 16px 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px; /* Space between title and stats */
+	border-bottom: 1px solid #EEEEEE;
+}
+
+.approval-amount__title {
+    font-size: 18px;
+	line-height: 22px;
+    font-weight: 600;
+    color: #232323;
+}
+
+.approval-amount__body {
+	padding: 24px;
+}
+
+.approval-amount__stats {
+    display: flex;
+    gap: 55px;
+	align-items: flex-start;
+	justify-content: flex-start;
+	margin-bottom: 24px;
+}
+
+.approval-amount__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+	gap: 5px;
+}
+
+.approval-amount__item .green {
+	color: #159C2A;
+}
+
+.approval-amount__label {
+    font-size: 16px;
+	line-height: 19px;
+    color: #071C0C;
+	text-transform: capitalize;
+}
+
+.approval-amount__value {
+    font-size: 24px;
+	line-height: 29px;
+    font-weight: 700;
+    color: #1B1B1B;
+}
+
+.approval-amount__option {
+	color: #646564;
+	font-size: 12px;
+	line-height: 14px;
+}
+
+/* --- Chart Container --- */
+
+.approval-amount__chart_container {
+    width: 100%;
+    height: 350px; /* Define a fixed height for the chart container */
+    position: relative;
+}
+
+/* Ensure canvas takes full width and height of its container */
+#approvalApprovalAmountChart {
+    width: 100% !important;
+    height: 100% !important;
+}
