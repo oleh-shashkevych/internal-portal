@@ -496,28 +496,66 @@
                         </div>
 
                         <div class="approval">
-                            <div class="approval-amount">
-                                <div class="approval-amount__header">
-                                    <h2 class="approval-amount__title">Funded Amount</h2>
-                                </div>
-                                <div class="approval-amount__body">
-                                    <div class="approval-amount__stats">
-                                        <div class="approval-amount__item">
-                                            <span class="approval-amount__label">Contracts concluded</span>
-                                            <span class="approval-amount__value green">$2.5M</span>
-                                            <span class="approval-amount__option">Last 12 months <span class="green">+5%</span></span>
+                            <div class="approval-grid">
+                                <div class="approval-amount">
+                                    <div class="approval-amount__header">
+                                        <h2 class="approval-amount__title">Goal chart</h2>
+                                    </div>
+                                    <div class="approval-amount__graphs">
+                                        <div class="approval-amount__graph">
+                                            <div class="progress-circle" id="monthly-goal-circle" style="--fill-color: #159C2A;">
+                                                <span class="progress-circle__value" id="monthly-goal-value">$0k</span>
+                                            </div>
+                                            <div class="goal-item__details">
+                                                <span class="goal-item__label">Monthly goal</span>
+                                                <span class="goal-item__full-value" id="monthly-goal-full-value"></span>
+                                            </div>
                                         </div>
-                                        <div class="approval-amount__item">
-                                            <span class="approval-amount__label">Total Contracts</span>
-                                            <span class="approval-amount__value green">24</span>
+
+                                        <div class="approval-amount__graph">
+                                            <div class="progress-circle" id="amount-funded-circle" style="--fill-color: #54BE59;">
+                                                <span class="progress-circle__value" id="amount-funded-value">$0k</span>
+                                            </div>
+                                            <div class="goal-item__details">
+                                                <span class="goal-item__label">Amount Funded</span>
+                                                <span class="goal-item__full-value color-green" id="amount-funded-full-value"></span>
+                                            </div>
                                         </div>
-                                        <div class="approval-amount__item">
-                                            <span class="approval-amount__label">Total Value</span>
-                                            <span class="approval-amount__value">$2.5M</span>
+
+                                        <div class="approval-amount__graph">
+                                            <div class="progress-circle" id="previous-total-circle" style="--fill-color: #ABE1AA;">
+                                                <span class="progress-circle__value" id="previous-total-value">$0k</span>
+                                            </div>
+                                            <div class="goal-item__details">
+                                                <span class="goal-item__label">Previous Total</span>
+                                                <span class="goal-item__full-value" id="previous-total-full-value"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="approval-amount__chart_container">
-                                        <canvas id="approvalApprovalAmountChart"></canvas>
+                                </div>
+                                <div class="approval-amount">
+                                    <div class="approval-amount__header">
+                                        <h2 class="approval-amount__title">Funded Amount</h2>
+                                    </div>
+                                    <div class="approval-amount__body">
+                                        <div class="approval-amount__stats">
+                                            <div class="approval-amount__item">
+                                                <span class="approval-amount__label">Contracts concluded</span>
+                                                <span class="approval-amount__value color-green">$2.5M</span>
+                                                <span class="approval-amount__option">Last 12 months <span class="color-green">+5%</span></span>
+                                            </div>
+                                            <div class="approval-amount__item">
+                                                <span class="approval-amount__label">Total Contracts</span>
+                                                <span class="approval-amount__value color-green">24</span>
+                                            </div>
+                                            <div class="approval-amount__item">
+                                                <span class="approval-amount__label">Total Value</span>
+                                                <span class="approval-amount__value">$2.5M</span>
+                                            </div>
+                                        </div>
+                                        <div class="approval-amount__chart_container">
+                                            <canvas id="approvalApprovalAmountChart"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

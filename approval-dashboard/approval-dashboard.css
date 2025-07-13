@@ -1,5 +1,101 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
+.color-green {
+	color: #159C2A !important;
+}
+
+.approval {
+	font-family: 'Urbanist', sans-serif;
+}
+
+.approval-grid {
+	display: grid;
+	grid-template-columns: 284px 1fr;
+	gap: 24px;
+	margin-bottom: 24px;
+}
+
+/* ==========================================================================
+   Goal Chart (HTML/CSS Conic Gradient Version)
+   ========================================================================== */
+
+/* Реєструємо кастомну властивість для анімації */
+@property --p {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.approval-amount__graphs {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+	flex-direction: column;
+}
+
+.approval-amount__graph {
+	display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 26px;
+    padding: 37px 24px;
+}
+
+.progress-circle {
+	position: relative;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    
+    /* Створення кругової шкали за допомогою градієнта */
+    background: conic-gradient(from 180deg, var(--fill-color, #159C2A) calc(var(--p, 0) * 1%), #F2F2F2 0);
+    
+    /* Анімація заповнення */
+    transition: --p 1.5s ease-in-out;
+}
+
+/* Створюємо отвір в центрі, щоб вийшов "бублик" */
+.progress-circle::before {
+    content: '';
+    display: block;
+    width: 75%;
+    height: 75%;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.progress-circle__value {
+	position: absolute;
+    font-size: 16px;
+    font-weight: 500;
+    color: #232323;
+}
+
+/* Додаткові стилі для тексту під колами */
+.goal-item__details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; /* Невелика відстань між назвою та повною сумою */
+}
+
+.goal-item__full-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #232323;
+    line-height: 29px;
+}
+
+.goal-item__label {
+	font-size: 16px;
+    line-height: 19px;
+    font-weight: 400;
+    color: #232323;
+	text-transform: capitalize;
+}
+
 /* ==========================================================================
    approval-amount Section Styles
    ========================================================================== */
@@ -8,7 +104,6 @@
 	background-color: #fff;
     border-radius: 3px;
     border: 1px solid #EEEEEE;
-	font-family: 'Urbanist', sans-serif;
 }
 
 /* --- approval-amount Header --- */
@@ -46,10 +141,6 @@
     flex-direction: column;
     align-items: flex-start;
 	gap: 5px;
-}
-
-.approval-amount__item .green {
-	color: #159C2A;
 }
 
 .approval-amount__label {

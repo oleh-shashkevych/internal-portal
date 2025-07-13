@@ -167,3 +167,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// ==========================================================================
+// Goal Chart (Approval Amount) Animation
+// ==========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+    // Перевіряємо, чи існує хоча б один елемент, щоб запускати логіку
+    const goalChartContainer = document.querySelector('.approval-amount__graphs');
+    if (goalChartContainer) {
+        const goalsData = [{
+            label: 'monthly-goal',
+            currentValue: 840610,
+            maxValue: 1000000
+        }, {
+            label: 'amount-funded',
+            currentValue: 940000,
+            maxValue: 1000000
+        }, {
+            label: 'previous-total',
+            currentValue: 910000,
+            maxValue: 1000000
+        }];
+
+        // Анімація для скороченого значення (напр. $841k)
+        function animateShortValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentValue = Math.floor(progress * (end - start) + start);
+                const shortValue = Math.round(currentValue / 1000);
+                element.textContent = `$${shortValue}k`;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // НОВА ФУНКЦІЯ: Анімація для повного значення (напр. $840,610)
+        function animateFullValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentValue = Math.floor(progress * (end - start) + start);
+                // Форматуємо число як валюту без копійок
+                element.textContent = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(currentValue);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function runGoalAnimations() {
+            goalsData.forEach(goal => {
+                const circleElement = document.getElementById(`${goal.label}-circle`);
+                const valueElement = document.getElementById(`${goal.label}-value`);
+                const fullValueElement = document.getElementById(`${goal.label}-full-value`);
+
+                if (circleElement && valueElement && fullValueElement) {
+                    const percentage = (goal.currentValue / goal.maxValue) * 100;
+                    circleElement.style.setProperty('--p', percentage);
+                    
+                    // Запускаємо анімацію для обох значень
+                    animateShortValue(valueElement, 0, goal.currentValue, 1500);
+                    animateFullValue(fullValueElement, 0, goal.currentValue, 1500); // <-- ОСЬ ТУТ ЗМІНА
+                }
+            });
+        }
+
+        setTimeout(runGoalAnimations, 1000);
+    }
+});
