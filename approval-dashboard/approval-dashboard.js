@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================================================
-    // ЧАСТИНА 1: Лінійний графік (Код, який ти надав - не змінено)
+    // ЧАСТИНА 1: Лінійний графік 
     // ==========================================================================
     const linearChartCtx = document.getElementById('approvalApprovalAmountChart');
     if (linearChartCtx) {
-        const MAX_CHART_VALUE = 1000000;
+        const MAX_CHART_VALUE = 500000; 
         const MONTHLY_DATA = {
             labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            data: [250000, 600000, 300000, 450000, 500000, 840610, 280000, 180000, 950000, 880000, 980000, 250000]
+            data: [250000, 480000, 300000, 450000, 190000, 440610, 280000, 180000, 95000, 280000, 398000, 250000]
         };
         new Chart(linearChartCtx, {
             type: 'line',
@@ -49,18 +49,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         enabled: false,
                         position: 'nearest',
                         external: function(context) {
+                            // --- ЗМІНЕНО: Повністю оновлена логіка тултіпа ---
                             let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                            // Створення елемента при першому рендері
                             if (!tooltipEl) {
                                 tooltipEl = document.createElement('div');
                                 tooltipEl.id = 'chartjs-tooltip';
+                                tooltipEl.style.opacity = 0;
+                                tooltipEl.style.pointerEvents = 'none';
+                                tooltipEl.style.position = 'absolute';
+                                tooltipEl.style.background = '#fff';
+                                tooltipEl.style.borderRadius = '3px';
+                                tooltipEl.style.color = '#1B1B1B';
+                                tooltipEl.style.border = '1px solid #E8E9E8';
+                                tooltipEl.style.padding = '8px';
+                                tooltipEl.style.fontFamily = 'Urbanist, sans-serif';
+                                tooltipEl.style.textAlign = 'left';
                                 tooltipEl.innerHTML = '<table></table>';
                                 document.body.appendChild(tooltipEl);
                             }
+
                             const tooltipModel = context.tooltip;
+
+                            // Сховати, якщо немає тултіпа
                             if (tooltipModel.opacity === 0) {
                                 tooltipEl.style.opacity = 0;
                                 return;
                             }
+
+                            // Встановлення тексту
                             if (tooltipModel.body) {
                                 let innerHtml = '<thead>';
                                 tooltipModel.title.forEach(function(title) {
@@ -74,29 +92,33 @@ document.addEventListener('DOMContentLoaded', () => {
                                 innerHtml += '</tbody>';
                                 tooltipEl.querySelector('table').innerHTML = innerHtml;
                             }
-                            const canvasRect = context.chart.canvas.getBoundingClientRect();
-                            let newX = canvasRect.left + window.scrollX + context.tooltip.caretX + 15;
-                            let newY = canvasRect.top + window.scrollY + context.tooltip.caretY;
-                            if (newX + tooltipEl.offsetWidth > window.innerWidth) {
-                                newX = canvasRect.left + window.scrollX + context.tooltip.caretX - tooltipEl.offsetWidth - 15;
+
+                            const { chart } = context;
+                            const canvasRect = chart.canvas.getBoundingClientRect();
+                            const tooltipHeight = tooltipEl.offsetHeight;
+                            const tooltipWidth = tooltipEl.offsetWidth;
+
+                            // Встановлюємо перехід (transition) залежно від стану
+                            if (tooltipEl.style.opacity !== '1') {
+                                // Перша поява: тільки анімація прозорості
+                                tooltipEl.style.transition = 'opacity 0.2s ease';
+                            } else {
+                                // Наступні переміщення: плавна зміна позиції та прозорості
+                                tooltipEl.style.transition = 'opacity 0.2s ease, top 0.2s ease, left 0.2s ease';
                             }
-                            if (newY - tooltipEl.offsetHeight / 2 < 0) {
-                                newY = tooltipEl.offsetHeight / 2;
+
+                            // Розрахунок позиції, щоб тултіп не виходив за межі вікна
+                            let newX = canvasRect.left + window.scrollX + tooltipModel.caretX + 15;
+                            let newY = canvasRect.top + window.scrollY + tooltipModel.caretY - (tooltipHeight / 2);
+
+                            if (newX + tooltipWidth > document.documentElement.clientWidth) {
+                                newX = canvasRect.left + window.scrollX + tooltipModel.caretX - tooltipWidth - 15;
                             }
+                            
+                            // Застосування позиції
+                            tooltipEl.style.left = newX + 'px';
+                            tooltipEl.style.top = newY + 'px';
                             tooltipEl.style.opacity = 1;
-                            tooltipEl.style.position = 'absolute';
-                            tooltipEl.style.left = `${newX}px`;
-                            tooltipEl.style.top = `${newY}px`;
-                            tooltipEl.style.transform = 'translateY(0)';
-                            tooltipEl.style.background = '#fff';
-                            tooltipEl.style.borderRadius = '3px';
-                            tooltipEl.style.color = '#1B1B1B';
-                            tooltipEl.style.border = '1px solid #E8E9E8';
-                            tooltipEl.style.padding = '8px';
-                            tooltipEl.style.pointerEvents = 'none';
-                            tooltipEl.style.transition = 'all .3s ease';
-                            tooltipEl.style.fontFamily = 'Urbanist, sans-serif';
-                            tooltipEl.style.textAlign = 'left';
                         }
                     }
                 },
@@ -106,12 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         max: MAX_CHART_VALUE,
                         border: { display: false },
                         ticks: {
-                            stepSize: 250000,
+                            stepSize: 100000, 
                             color: '#1B1B1B',
                             font: { family: 'Urbanist', size: 12, weight: '300' },
                             padding: 10,
                             callback: function(value) {
-                                if (value === 1000000) return '1M';
+                                if (value === 500000) return '500K';
                                 if (value > 0) return `${value/1000}K`;
                                 return '0';
                             }
@@ -139,11 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // ЧАСТИНА 2: Goal Chart (Код, який ти надав - не змінено)
+    // ЧАСТИНА 2: Goal Chart 
     // ==========================================================================
     const goalChartContainer = document.querySelector('.approval-amount__graphs');
     if (goalChartContainer) {
-        const goalsData = [{ label: 'monthly-goal', currentValue: 840610, maxValue: 1000000 }, { label: 'amount-funded', currentValue: 940000, maxValue: 1000000 }, { label: 'previous-total', currentValue: 910000, maxValue: 1000000 }];
+        const goalsData = [{ label: 'monthly-goal', currentValue: 440610.37, maxValue: 500000 }, { label: 'amount-funded', currentValue: 480000, maxValue: 500000 }, { label: 'previous-total', currentValue: 460000, maxValue: 500000 }];
         function animateShortValue(element, start, end, duration) {
             let startTimestamp = null;
             const step = (timestamp) => {
@@ -160,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const currentValue = Math.floor(progress * (end - start) + start);
-                element.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(currentValue);
+                const currentValue = progress * (end - start) + start;
+                element.textContent = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(currentValue);
                 if (progress < 1) window.requestAnimationFrame(step);
             };
             window.requestAnimationFrame(step);
@@ -183,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // ЧАСТИНА 3: Kanban Board (ІНТЕГРОВАНО ЛІЧИЛЬНИКИ І КЛАС EMPTY)
+    // ЧАСТИНА 3: Kanban Board
     // ==========================================================================
     const kanbanWrapper = document.querySelector('.kanban-board-wrapper');
     if (kanbanWrapper) {
@@ -194,11 +216,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let dropSucceeded = false;
         let scrollInterval = null;
 
-        // --- НОВІ ФУНКЦІЇ ДЛЯ ОНОВЛЕННЯ ІНТЕРФЕЙСУ ---
         const updateCountersForColumn = (columnElement) => {
             if (!columnElement) return;
 
-            // Оновлення суми та кількості в заголовку колонки
             const headerValueEl = columnElement.querySelector('.kanban-column__header-info-value');
             const headerDealsEl = columnElement.querySelector('.kanban-column__header-info-deals');
             const allCardsInColumn = columnElement.querySelectorAll('.kanban-card');
@@ -219,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 headerDealsEl.textContent = `${allCardsInColumn.length} deals`;
             }
 
-            // Оновлення лічильників у кожному блоці статусу
             const statusBlocks = columnElement.querySelectorAll('.status-block');
             statusBlocks.forEach(block => {
                 const titleSpan = block.querySelector('.status-block__header-title span');
@@ -229,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (titleSpan) {
                     titleSpan.textContent = `(${cardCount})`;
                 }
-                // Додавання/видалення класу 'empty'
                 if (cardCount === 0) {
                     cardsContainer.classList.add('empty');
                 } else {
@@ -238,10 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // --- Ініціалізація лічильників при завантаженні ---
         kanbanWrapper.querySelectorAll('.kanban-column').forEach(updateCountersForColumn);
 
-        // --- Основна логіка Drag & Drop (яку ми не чіпаємо) ---
         const startScroll = (dir) => {
             if (scrollInterval) return;
             scrollInterval = setInterval(() => kanbanWrapper.scrollBy({ left: dir * 15, behavior: 'smooth' }), 50);
@@ -330,7 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 dropSucceeded = true;
                 
-                // --- ОНОВЛЕННЯ ЛІЧИЛЬНИКІВ ПІСЛЯ ДРОПУ ---
                 updateCountersForColumn(sourceInfo.sourceColumn);
                 if (sourceInfo.sourceColumn !== targetColumn) {
                     updateCountersForColumn(targetColumn);
