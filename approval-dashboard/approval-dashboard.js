@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         max: MAX_CHART_VALUE,
                         border: { display: false },
                         ticks: {
-                            stepSize: 100000, 
+                            stepSize: 50000, 
                             color: '#1B1B1B',
                             font: { family: 'Urbanist', size: 12, weight: '300' },
                             padding: 10,
@@ -281,6 +281,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             console.log('--- Drag Start ---', {cardId: sourceInfo.cardId, userId: sourceInfo.userId, statusId: sourceInfo.statusId});
 
+            // ================== ПОЧАТОК ЗМІН ==================
+            // 1. Створюємо повний клон картки, який будемо використовувати як картинку для перетягування.
+            const clone = draggedCard.cloneNode(true);
+            clone.id = 'drag-ghost'; // Додаємо ID, щоб потім легко його знайти та видалити.
+            clone.style.position = 'absolute';
+            clone.style.top = '-9999px'; // Ховаємо клон за межами екрана.
+            clone.style.width = `${draggedCard.offsetWidth}px`; // Задаємо клону таку ж ширину, як в оригіналу.
+            document.body.appendChild(clone);
+
+            // 2. Встановлюємо наш клон як зображення, що перетягується.
+            // e.offsetX та e.offsetY допомагають позиціонувати зображення відносно курсора так, як воно було при кліку.
+            e.dataTransfer.setDragImage(clone, e.offsetX, e.offsetY);
+            // =================== КІНЕЦЬ ЗМІН ===================
+
+            // Залишаємо setTimeout, щоб плавно приховати оригінальну картку і показати placeholder.
             setTimeout(() => {
                 placeholder = document.createElement('div');
                 placeholder.className = 'placeholder';
@@ -296,6 +311,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         kanbanWrapper.addEventListener('dragend', (e) => {
             if (!draggedCard) return;
+
+            // ================== ПОЧАТОК ЗМІН ==================
+            // Прибираємо клон, який ми створили на dragstart.
+            const ghost = document.getElementById('drag-ghost');
+            if (ghost) {
+                ghost.remove();
+            }
+            // =================== КІНЕЦЬ ЗМІН ===================
 
             if (!dropSucceeded && placeholder) {
                 placeholder.parentElement.replaceChild(draggedCard, placeholder);
