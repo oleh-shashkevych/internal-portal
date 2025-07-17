@@ -421,9 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const handleMouseMove = (e) => {
                     const cardRect = card.getBoundingClientRect();
-                    const mouseY = e.clientY - cardRect.top;
-                    const draggableArea = card.querySelector('.kanban-card__title');
-                    if (draggableArea && e.target.closest('.kanban-card__title')) {
+                    const isTopHalf = e.clientY < cardRect.top + cardRect.height / 2;
+
+                    if (isTopHalf) {
                          card.draggable = true;
                          card.style.cursor = 'grab';
                     } else {
@@ -431,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
                          card.style.cursor = 'default';
                     }
                 };
+                
                 card.addEventListener('mouseenter', () => card.addEventListener('mousemove', handleMouseMove));
                 card.addEventListener('mouseleave', () => {
                     card.removeEventListener('mousemove', handleMouseMove);
@@ -446,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let placeholder = null;
         let sourceInfo = {};
         let dropSucceeded = false;
+        let isSameSpotDrop = false;
         let scrollInterval = null;
 
         const startScroll = (dir) => {
@@ -469,20 +471,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             draggedCard = card;
-            
             const sourceColumn = draggedCard.closest('.kanban-column');
             const sourceStatusBlock = draggedCard.closest('.status-block');
-            
+
             sourceInfo = {
                 cardId: draggedCard.dataset.cardId,
                 userId: sourceColumn.dataset.userId,
-                statusId: sourceStatusBlock.dataset.statusId
+                statusId: sourceStatusBlock.dataset.statusId,
+                sourceColumn: sourceColumn,
+                sourceStatusBlock: sourceStatusBlock 
             };
             
-            console.log('--- Drag Start ---', sourceInfo);
+            console.log('--- Drag Start ---', {
+                cardId: sourceInfo.cardId,
+                userId: sourceInfo.userId,
+                statusId: sourceInfo.statusId
+            });
 
             draggedCard.style.cursor = 'grabbing';
             dropSucceeded = false;
+            isSameSpotDrop = false;
             
             const clone = draggedCard.cloneNode(true);
             clone.id = 'drag-ghost';
@@ -499,9 +507,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 draggedCard.parentElement.insertBefore(placeholder, draggedCard);
                 draggedCard.classList.add('is-dragging');
                 kanbanWrapper.classList.add('is-dragging');
-                if (sourceInfo.sourceStatusBlock) {
-                    sourceInfo.sourceStatusBlock.classList.add('is-dragging');
+                
+                const sourceCardsContainer = sourceInfo.sourceStatusBlock.querySelector('.status-block__cards');
+                if (sourceCardsContainer) {
+                    sourceCardsContainer.classList.add('dragging');
                 }
+
             }, 0);
         });
 
@@ -509,8 +520,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!draggedCard) return;
             const ghost = document.getElementById('drag-ghost');
             if (ghost) ghost.remove();
+
             if (!dropSucceeded && placeholder) {
                 placeholder.parentElement.replaceChild(draggedCard, placeholder);
+                
+                if (!isSameSpotDrop) {
+                    console.log('--- Card Returned ---', {
+                        cardId: sourceInfo.cardId,
+                        userId: sourceInfo.userId,
+                        statusId: sourceInfo.statusId
+                    });
+                }
+
             } else {
                 placeholder?.remove();
             }
@@ -519,6 +540,13 @@ document.addEventListener('DOMContentLoaded', () => {
             kanbanWrapper.classList.remove('is-dragging');
             document.querySelectorAll('.is-over').forEach(el => el.classList.remove('is-over'));
             
+            if (sourceInfo.sourceStatusBlock) {
+                const sourceCardsContainer = sourceInfo.sourceStatusBlock.querySelector('.status-block__cards');
+                if (sourceCardsContainer) {
+                    sourceCardsContainer.classList.remove('dragging');
+                }
+            }
+
             stopScroll();
             draggedCard = null;
             placeholder = null;
@@ -541,12 +569,24 @@ document.addEventListener('DOMContentLoaded', () => {
         kanbanWrapper.addEventListener('drop', (e) => {
             e.preventDefault();
             const targetContainer = e.target.closest('.status-block__cards');
+            
             if (targetContainer && draggedCard) {
+                const sourceContainer = sourceInfo.sourceStatusBlock.querySelector('.status-block__cards');
+
+                if (targetContainer === sourceContainer) {
+                    isSameSpotDrop = true;
+                    return;
+                }
+
                 const targetColumn = targetContainer.closest('.kanban-column');
                 const targetStatusBlock = targetContainer.closest('.status-block');
                 
                 const dropData = {
-                    previous: sourceInfo,
+                    previous: {
+                        cardId: sourceInfo.cardId,
+                        userId: sourceInfo.userId,
+                        statusId: sourceInfo.statusId
+                    },
                     current: {
                         cardId: draggedCard.dataset.cardId,
                         userId: targetColumn.dataset.userId,
@@ -568,7 +608,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         kanbanWrapper.addEventListener('click', (e) => {
             const star = e.target.closest('.star');
-            const cardTitle = e.target.closest('.kanban-card__title');
 
             if (star) {
                 const starsContainer = star.parentElement;
@@ -585,14 +624,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     rating: newRating,
                 };
                 console.log('--- Rating Changed ---', cardInfo);
-            } else if (cardTitle) {
-                const card = cardTitle.closest('.kanban-card');
-                const cardInfo = {
-                    cardId: card.dataset.cardId,
-                    userId: card.closest('.kanban-column').dataset.userId,
-                    statusId: card.closest('.status-block').dataset.statusId,
-                };
-                console.log('--- Card Clicked ---', cardInfo);
+            } else {
+                const card = e.target.closest('.kanban-card');
+                if (card) {
+                    const cardRect = card.getBoundingClientRect();
+                    const isTopHalf = e.clientY < cardRect.top + card.offsetHeight / 2;
+
+                    if (isTopHalf) {
+                        const cardInfo = {
+                            cardId: card.dataset.cardId,
+                            userId: card.closest('.kanban-column').dataset.userId,
+                            statusId: card.closest('.status-block').dataset.statusId,
+                        };
+                        console.log('--- Card Clicked ---', cardInfo);
+                    }
+                }
             }
         });
     }

@@ -485,6 +485,11 @@
 	display: none;
 }
 
+.status-block__cards.dragging .placeholder,
+.status-block__cards.dragging::after {
+    display: none !important;
+}
+
 /* Стиль для картки, яку тягнуть */
 .status-block--approved .kanban-card.is-dragging {
 	background-color: #F5EEB3;
