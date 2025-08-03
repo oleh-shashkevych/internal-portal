@@ -24,16 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 maxValue: 500000
             }],
             statsData: {
-                concluded: {
-                    value: 2500000,
-                    count: 24,
-                    optionPercent: 5,
-                },
-                killed: {
-                    value: 1500000,
-                    count: 12,
-                    optionPercent: -5,
-                }
+                concluded: { value: 2500000, count: 24, optionPercent: 5, },
+                killed: { value: 1500000, count: 12, optionPercent: -5, }
             }
         },
         referral: {
@@ -56,21 +48,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 maxValue: 300000
             }],
             statsData: {
-                concluded: {
-                    value: 1800000,
-                    count: 18,
-                    optionPercent: -2,
-                },
-                killed: {
-                    value: 850000,
-                    count: 7,
-                    optionPercent: 3,
-                }
+                concluded: { value: 1800000, count: 18, optionPercent: -2, },
+                killed: { value: 850000, count: 7, optionPercent: 3, }
             }
         }
     };
 
+    const usersChartData = {
+        direct: {
+            maxValue: 500000,
+            users: [
+                { name: 'Emily', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg', goalAmount: 60000, earnedAmount: 46000, units: 7 },
+                { name: 'Michael', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg', goalAmount: 100000, earnedAmount: 45000, units: 10 },
+                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 50000, earnedAmount: 52000, units: 5 },
+                { name: 'James', avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg', goalAmount: 85000, earnedAmount: 100000, units: 20 },
+                { name: 'Sophia', avatarUrl: 'https://randomuser.me/api/portraits/women/5.jpg', goalAmount: 80000, earnedAmount: 28000, units: 7 },
+                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 20000, earnedAmount: 1500, units: 2 },
+                { name: 'Filip', avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg', goalAmount: 480000, earnedAmount: 280000, units: 9 },
+                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 80000, earnedAmount: 93000, units: 7 },
+                { name: 'Emma', avatarUrl: 'https://randomuser.me/api/portraits/women/9.jpg', goalAmount: 50000, earnedAmount: 58000, units: 7 },
+                { name: 'Eliot', avatarUrl: 'https://randomuser.me/api/portraits/men/10.jpg', goalAmount: 35000, earnedAmount: 5000, units: 8 },
+                { name: 'Chloe', avatarUrl: 'https://randomuser.me/api/portraits/women/11.jpg', goalAmount: 120000, earnedAmount: 125000, units: 15 },
+                { name: 'Lucas', avatarUrl: 'https://randomuser.me/api/portraits/men/12.jpg', goalAmount: 70000, earnedAmount: 30000, units: 6 },
+                { name: 'Mia', avatarUrl: 'https://randomuser.me/api/portraits/women/13.jpg', goalAmount: 200000, earnedAmount: 0, units: 22 },
+                { name: 'Noah', avatarUrl: 'https://randomuser.me/api/portraits/men/14.jpg', goalAmount: 150000, earnedAmount: 150000, units: 18 },
+                { name: 'Ava', avatarUrl: 'https://randomuser.me/api/portraits/women/15.jpg', goalAmount: 95000, earnedAmount: 2000, units: 3 },
+            ]
+        },
+        referral: {
+             maxValue: 300000,
+             users: [
+                { name: 'Jacob', avatarUrl: 'https://randomuser.me/api/portraits/men/21.jpg', goalAmount: 50000, earnedAmount: 55000, units: 8 },
+                { name: 'Isabella', avatarUrl: 'https://randomuser.me/api/portraits/women/22.jpg', goalAmount: 70000, earnedAmount: 40000, units: 12 },
+                { name: 'Ethan', avatarUrl: 'https://randomuser.me/api/portraits/men/23.jpg', goalAmount: 40000, earnedAmount: 32000, units: 4 },
+                { name: 'Sophie', avatarUrl: 'https://randomuser.me/api/portraits/women/24.jpg', goalAmount: 90000, earnedAmount: 110000, units: 21 },
+                { name: 'Alexander', avatarUrl: 'https://randomuser.me/api/portraits/men/25.jpg', goalAmount: 60000, earnedAmount: 15000, units: 5 },
+                { name: 'Harper', avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg', goalAmount: 15000, earnedAmount: 0, units: 1 },
+                { name: 'William', avatarUrl: 'https://randomuser.me/api/portraits/men/27.jpg', goalAmount: 100000, earnedAmount: 1000, units: 9 },
+                { name: 'Evelyn', avatarUrl: 'https://randomuser.me/api/portraits/women/28.jpg', goalAmount: 75000, earnedAmount: 80000, units: 11 },
+             ]
+        }
+    };
+
     let linearChart;
+    let currentDataType = 'direct';
 
     // ==========================================================================
     // ЧАСТИНА 1: Лінійний графік
@@ -693,6 +714,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         runGoalAnimations(data.goalsData);
         updateStatsBlock(data.statsData);
+
+        if (!usersChartContainer.classList.contains('hidden')) {
+            renderUsersChart(usersChartData[type]);
+            setTimeout(updateUserChartNavButtonsState, 150);
+        }
+        
         document.querySelectorAll('.kanban-set').forEach(board => {
             board.classList.add('hidden');
         });
@@ -702,38 +729,174 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    const switchButtons = document.querySelectorAll('.approval__switch-btn');
+    const switchButtons = document.querySelectorAll('.approval__switch-btn[data-type]');
     switchButtons.forEach(button => {
         button.addEventListener('click', () => {
             switchButtons.forEach(btn => btn.classList.remove('approval__switch-btn--active'));
             button.classList.add('approval__switch-btn--active');
-            const dataType = button.dataset.type;
-            updateDashboard(dataType);
+            currentDataType = button.dataset.type;
+            updateDashboard(currentDataType);
         });
     });
 
     // ==========================================================================
-    // ЧАСТИНА 5: Логіка скролу для Kanban-дошки (ADDED)
+    // ОНОВЛЕНА ЧАСТИНА: РЕНДЕР ТА ЛОГІКА ГІСТОГРАМИ КОРИСТУВАЧІВ
+    // ==========================================================================
+    const lineChartContainer = document.getElementById('lineChartContainer');
+    const usersChartContainer = document.getElementById('usersChartContainer');
+    const toggleLineChartBtn = document.getElementById('toggleLineChart');
+    const toggleUsersChartBtn = document.getElementById('toggleUsersChart');
+    const usersChartNav = document.getElementById('users-chart-nav');
+    
+    const formatCurrencyFull = (value) => new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+
+    function renderUsersChart(data) {
+        usersChartContainer.innerHTML = '';
+    
+        if (!data || !data.users || data.users.length === 0) {
+            usersChartContainer.innerHTML = `<div class="users-chart__no-data">No Data</div>`;
+            return;
+        }
+    
+        const yAxisEl = document.createElement('div');
+        yAxisEl.className = 'users-chart__yaxis';
+    
+        const scrollWrapper = document.createElement('div');
+        scrollWrapper.className = 'users-chart__scroll-wrapper';
+        
+        const gridEl = document.createElement('div');
+        gridEl.className = 'users-chart__grid';
+        
+        const barsEl = document.createElement('div');
+        barsEl.className = 'users-chart__bars';
+        
+        const step = 50000;
+        const numLabels = (data.maxValue / step) + 1;
+        for (let i = numLabels - 1; i >= 0; i--) {
+            const value = i * step;
+            const label = document.createElement('div');
+            label.className = 'users-chart__yaxis-label';
+            if (value === data.maxValue) label.textContent = `${value / 1000}K`;
+            else if (value > 0) label.textContent = `${value / 1000}K`;
+            else label.textContent = '0';
+
+            yAxisEl.appendChild(label);
+            
+            const gridLine = document.createElement('div');
+            gridLine.className = 'users-chart__grid-line';
+            gridEl.appendChild(gridLine);
+        }
+    
+        data.users.forEach(user => {
+            const userBar = document.createElement('div');
+            userBar.className = 'user-bar';
+    
+            const meetsGoal = user.earnedAmount >= user.goalAmount;
+            const earnedPercent = (user.earnedAmount / data.maxValue) * 100;
+            const goalPercent = (user.goalAmount / data.maxValue) * 100;
+    
+            const infoAmount = meetsGoal ? user.earnedAmount : user.goalAmount;
+            const earnedBarClass = `user-bar__earned-bar ${meetsGoal ? 'user-bar__earned-bar--above' : 'user-bar__earned-bar--below'}`;
+            const infoAmountDisplay = meetsGoal 
+                ? `<span class="user-bar__info-amount" style="color: #159C2A;">${formatCurrencyFull(user.earnedAmount)}</span>` 
+                : `<span class="user-bar__info-amount" style="color: #232323;">${formatCurrencyFull(user.goalAmount)}</span>`;
+
+            let progressHTML;
+
+            if (meetsGoal) {
+                progressHTML = `
+                    <div class="user-bar__progress" style="height: ${earnedPercent}%;">
+                         <div class="${earnedBarClass}" style="height: 100%;"></div>
+                    </div>
+                `;
+            } else {
+                const relativeEarnedHeight = user.goalAmount > 0 ? (user.earnedAmount / user.goalAmount) * 100 : 0;
+                progressHTML = `
+                    <div class="user-bar__progress" style="height: ${goalPercent}%;">
+                        <div class="user-bar__goal-bar"></div>
+                        <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;">
+                            <span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            userBar.innerHTML = `
+                <div class="user-bar__visuals">
+                    <div class="user-bar__info">
+                        ${infoAmountDisplay}
+                        <span class="user-bar__info-units">${user.units} units</span>
+                    </div>
+                    <img src="${user.avatarUrl}" alt="${user.name}" class="user-bar__avatar">
+                    ${progressHTML}
+                </div>
+                <span class="user-bar__name">${user.name}</span>
+            `;
+            
+            barsEl.appendChild(userBar);
+        });
+        
+        scrollWrapper.appendChild(gridEl);
+        scrollWrapper.appendChild(barsEl);
+        usersChartContainer.appendChild(yAxisEl);
+        usersChartContainer.appendChild(scrollWrapper);
+    
+        const newScrollWrapper = usersChartContainer.querySelector('.users-chart__scroll-wrapper');
+        if (newScrollWrapper) {
+            newScrollWrapper.addEventListener('scroll', updateUserChartNavButtonsState);
+        }
+    }
+    
+    function toggleChartView(view) {
+        if (view === 'line') {
+            lineChartContainer.classList.remove('hidden');
+            usersChartContainer.classList.add('hidden');
+            usersChartNav.classList.add('hidden');
+            toggleLineChartBtn.classList.add('approval__switch-btn--active');
+            toggleUsersChartBtn.classList.remove('approval__switch-btn--active');
+        } else {
+            lineChartContainer.classList.add('hidden');
+            usersChartContainer.classList.remove('hidden');
+            usersChartNav.classList.remove('hidden');
+            toggleLineChartBtn.classList.remove('approval__switch-btn--active');
+            toggleUsersChartBtn.classList.add('approval__switch-btn--active');
+            renderUsersChart(usersChartData[currentDataType]);
+            updateUserChartNavButtonsState();
+        }
+    }
+    
+    toggleChartView('line'); 
+
+    toggleLineChartBtn.addEventListener('click', () => toggleChartView('line'));
+    toggleUsersChartBtn.addEventListener('click', () => toggleChartView('users'));
+    
+    // ==========================================================================
+    // Логіка скролу для Kanban-дошки 
     // ==========================================================================
     const kanbanScrollWrapper = document.querySelector('.kanban-board-wrapper');
-    const prevButton = document.getElementById('kanban-scroll-prev');
-    const nextButton = document.getElementById('kanban-scroll-next');
+    const kanbanPrevButton = document.getElementById('kanban-scroll-prev');
+    const kanbanNextButton = document.getElementById('kanban-scroll-next');
 
-    if (kanbanScrollWrapper && prevButton && nextButton) {
-        const updateNavButtonsState = () => {
+    if (kanbanScrollWrapper && kanbanPrevButton && kanbanNextButton) {
+        const updateKanbanNavButtonsState = () => {
             const activeBoard = kanbanScrollWrapper.querySelector('.kanban-set:not(.hidden)');
             if (!activeBoard) {
-                prevButton.disabled = true;
-                nextButton.disabled = true;
+                kanbanPrevButton.disabled = true;
+                kanbanNextButton.disabled = true;
                 return;
             }
             const scrollLeft = kanbanScrollWrapper.scrollLeft;
             const scrollWidth = activeBoard.scrollWidth;
             const clientWidth = kanbanScrollWrapper.clientWidth;
-            prevButton.disabled = scrollLeft < 1;
-            nextButton.disabled = scrollLeft + clientWidth >= scrollWidth - 1;
+            kanbanPrevButton.disabled = scrollLeft < 1;
+            kanbanNextButton.disabled = scrollLeft + clientWidth >= scrollWidth - 1;
         };
-        const handleScroll = (direction) => {
+        const handleKanbanScroll = (direction) => {
             const activeBoard = kanbanScrollWrapper.querySelector('.kanban-set:not(.hidden)');
             const firstColumn = activeBoard ? activeBoard.querySelector('.kanban-column') : null;
             if (!firstColumn) return;
@@ -743,16 +906,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 behavior: 'smooth'
             });
         };
-        prevButton.addEventListener('click', () => handleScroll(-1));
-        nextButton.addEventListener('click', () => handleScroll(1));
-        kanbanScrollWrapper.addEventListener('scroll', updateNavButtonsState);
-        const switchButtonsAll = document.querySelectorAll('.approval__switch-btn');
-        switchButtonsAll.forEach(button => {
+        kanbanPrevButton.addEventListener('click', () => handleKanbanScroll(-1));
+        kanbanNextButton.addEventListener('click', () => handleKanbanScroll(1));
+        kanbanScrollWrapper.addEventListener('scroll', updateKanbanNavButtonsState);
+        switchButtons.forEach(button => {
             button.addEventListener('click', () => {
                 kanbanScrollWrapper.scrollLeft = 0;
-                setTimeout(updateNavButtonsState, 100);
+                setTimeout(updateKanbanNavButtonsState, 100);
             });
         });
-        updateNavButtonsState();
+        updateKanbanNavButtonsState();
     }
+    
+    // ==========================================================================
+    // Логіка скролу для Гістограми користувачів
+    // ==========================================================================
+    const usersChartPrevButton = document.getElementById('users-chart-scroll-prev');
+    const usersChartNextButton = document.getElementById('users-chart-scroll-next');
+    
+    const updateUserChartNavButtonsState = () => {
+        const scrollWrapper = usersChartContainer.querySelector('.users-chart__scroll-wrapper');
+        if (usersChartContainer.classList.contains('hidden') || !scrollWrapper) {
+            if (usersChartPrevButton) usersChartPrevButton.disabled = true;
+            if (usersChartNextButton) usersChartNextButton.disabled = true;
+            return;
+        }
+        const scrollLeft = scrollWrapper.scrollLeft;
+        const scrollWidth = scrollWrapper.scrollWidth;
+        const clientWidth = scrollWrapper.clientWidth;
+        usersChartPrevButton.disabled = scrollLeft < 1;
+        usersChartNextButton.disabled = scrollLeft + clientWidth >= scrollWidth - 1;
+    };
+    
+    const handleUsersChartScroll = (direction) => {
+        const scrollWrapper = usersChartContainer.querySelector('.users-chart__scroll-wrapper');
+        if (!scrollWrapper) return;
+        const scrollAmount = 300; 
+        scrollWrapper.scrollBy({
+            left: scrollAmount * direction,
+            behavior: 'smooth'
+        });
+    };
+    
+    usersChartPrevButton.addEventListener('click', () => handleUsersChartScroll(-1));
+    usersChartNextButton.addEventListener('click', () => handleUsersChartScroll(1));
 });

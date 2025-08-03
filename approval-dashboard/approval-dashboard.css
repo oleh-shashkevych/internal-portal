@@ -123,6 +123,41 @@
     align-items: center;
     gap: 16px; /* Space between title and stats */
 	border-bottom: 1px solid #EEEEEE;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.approval-amount__header-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.approval-amount__header-nav .approval__switch-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+.approval-amount__header-nav .approval__switch-btn svg path {
+    stroke: #808080;
+    transition: stroke .2s ease-in-out;
+}
+
+.approval-amount__header-nav .approval__switch-btn:hover {
+    background-color: #159C2A80;
+}
+
+.approval-amount__header-nav .approval__switch-btn:hover svg path {
+    stroke: #fff;
+}
+
+.approval-amount__header-nav .approval__switch-btn--active svg path,
+.approval-amount__header-nav .approval__switch-btn--active:hover svg path {
+    stroke: #fff;
 }
 
 .approval-amount__header--date {
@@ -192,6 +227,214 @@
 #approvalApprovalAmountChart {
     width: 100% !important;
     height: 100% !important;
+}
+
+/* ==========================================================================
+   Users Bar Chart
+   ========================================================================== */
+
+.users-chart__container {
+    display: flex;
+    width: 100%;
+    height: 350px; /* Same as line chart container */
+    position: relative;
+}
+
+.users-chart__no-data {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #808080;
+    font-size: 18px;
+    background-color: #f8f9fa;
+    border-radius: 3px;
+}
+
+.users-chart__yaxis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-right: 15px;
+    flex-shrink: 0;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 12px;
+    color: #1B1B1B;
+    font-weight: 300;
+    text-align: right;
+}
+
+.users-chart__yaxis-label {
+    position: relative;
+    top: -7px; 
+}
+
+.approval-grid > .approval-amount {
+    min-width: 0;
+}
+
+.users-chart__scroll-wrapper {
+    flex-grow: 1;
+    overflow-x: auto;
+    position: relative;
+    min-width: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.users-chart__scroll-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.users-chart__grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.users-chart__grid-line {
+    width: 100%;
+    height: 1px;
+    background-color: #EEEEEE;
+}
+
+.users-chart__grid-line:last-child {
+    background-color: transparent;
+}
+
+
+.users-chart__bars {
+    display: flex;
+    gap: 16px;
+    height: 100%;
+    padding: 0 10px;
+    align-items: flex-end;
+    position: relative;
+    z-index: 2;
+}
+
+.user-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 80px;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.user-bar__visuals {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.user-bar__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #EEEEEE;
+    object-fit: cover;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+}
+
+.user-bar__info {
+    position: absolute;
+    top: -58px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    padding: 5px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 5;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.user-bar__info-amount {
+    font-weight: 700;
+    font-size: 14px;
+    color: #159C2A;
+}
+
+.user-bar__info-units {
+    font-size: 12px;
+    color: #8B928C;
+}
+
+.user-bar__progress {
+    width: 60px;
+    position: absolute;
+    bottom: 0;
+    border-radius: 3px 3px 0 0;
+    overflow: hidden;
+}
+
+.user-bar__earned-amount-label {
+    position: absolute;
+    top: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 2px;
+    z-index: 3;
+}
+
+.user-bar__goal-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #E8F6EA;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.user-bar__earned-bar {
+    width: 100%;
+    min-height: 20px; /* Minimum height for label visibility */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.user-bar__earned-bar--above {
+    background-color: #159C2A;
+}
+
+.user-bar__earned-bar--below {
+    background-color: #D04437;
+}
+
+.user-bar__name {
+    font-size: 14px;
+    color: #232323;
+    white-space: nowrap;
+    font-family: 'Urbanist', sans-serif;
 }
 
 /* ==========================================================================

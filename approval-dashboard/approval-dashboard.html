@@ -543,6 +543,35 @@
                                 <div class="approval-amount">
                                     <div class="approval-amount__header">
                                         <h2 class="approval-amount__title">Funded Amount</h2>
+                                        <div class="approval-amount__header-nav">
+                                            <div class="approval__switch">
+                                                <button class="approval__switch-btn approval__switch-btn--active" id="toggleLineChart" type="button" data-view="line">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M3 20.25V3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M19.5 20.25H3.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M6.75 17.25L11.25 12.75L15 16.5L21 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="approval__switch-btn" id="toggleUsersChart" type="button" data-view="users">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="kanban-nav hidden" id="users-chart-nav">
+                                                <button class="kanban-nav__btn" id="users-chart-scroll-prev" type="button">
+                                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M7 13L1 7L7 1" stroke="#646564" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="kanban-nav__btn" id="users-chart-scroll-next" type="button">
+                                                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M1 13L7 7L1 1" stroke="#646564" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="approval-amount__body">
                                         <div class="approval-amount__stats">
@@ -573,9 +602,10 @@
                                                 <span class="approval-amount__value" id="stats-killed-total-value">$1,500,000.00</span>
                                             </div>
                                         </div>
-                                        <div class="approval-amount__chart_container">
+                                        <div class="approval-amount__chart_container" id="lineChartContainer">
                                             <canvas id="approvalApprovalAmountChart"></canvas>
                                         </div>
+                                        <div class="users-chart__container hidden" id="usersChartContainer"></div>
                                     </div>
                                 </div>
                             </div>
