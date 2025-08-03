@@ -58,40 +58,41 @@ document.addEventListener('DOMContentLoaded', () => {
         direct: {
             maxValue: 500000,
             users: [
-                { name: 'Emily', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg', goalAmount: 60000, earnedAmount: 46000, units: 7 },
-                { name: 'Michael', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg', goalAmount: 100000, earnedAmount: 45000, units: 10 },
-                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 50000, earnedAmount: 52000, units: 5 },
-                { name: 'James', avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg', goalAmount: 85000, earnedAmount: 100000, units: 20 },
-                { name: 'Sophia', avatarUrl: 'https://randomuser.me/api/portraits/women/5.jpg', goalAmount: 80000, earnedAmount: 28000, units: 7 },
-                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 20000, earnedAmount: 1500, units: 2 },
-                { name: 'Filip', avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg', goalAmount: 480000, earnedAmount: 280000, units: 9 },
-                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 80000, earnedAmount: 93000, units: 7 },
-                { name: 'Emma', avatarUrl: 'https://randomuser.me/api/portraits/women/9.jpg', goalAmount: 50000, earnedAmount: 58000, units: 7 },
-                { name: 'Eliot', avatarUrl: 'https://randomuser.me/api/portraits/men/10.jpg', goalAmount: 35000, earnedAmount: 5000, units: 8 },
-                { name: 'Chloe', avatarUrl: 'https://randomuser.me/api/portraits/women/11.jpg', goalAmount: 120000, earnedAmount: 125000, units: 15 },
-                { name: 'Lucas', avatarUrl: 'https://randomuser.me/api/portraits/men/12.jpg', goalAmount: 70000, earnedAmount: 30000, units: 6 },
-                { name: 'Mia', avatarUrl: 'https://randomuser.me/api/portraits/women/13.jpg', goalAmount: 200000, earnedAmount: 0, units: 22 },
-                { name: 'Noah', avatarUrl: 'https://randomuser.me/api/portraits/men/14.jpg', goalAmount: 150000, earnedAmount: 150000, units: 18 },
-                { name: 'Ava', avatarUrl: 'https://randomuser.me/api/portraits/women/15.jpg', goalAmount: 95000, earnedAmount: 2000, units: 3 },
+                { name: 'Emily', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg', goalAmount: 260000, earnedAmount: 110000, units: 7 },
+                { name: 'Michael', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg', goalAmount: 400000, earnedAmount: 150000, units: 10 },
+                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 250000, earnedAmount: 280000, units: 5 },
+                { name: 'James', avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg', goalAmount: 385000, earnedAmount: 410000, units: 20 },
+                { name: 'Sophia', avatarUrl: 'https://randomuser.me/api/portraits/women/5.jpg', goalAmount: 320000, earnedAmount: 120000, units: 7 },
+                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 120000, earnedAmount: 20000, units: 2 },
+                { name: 'Filip', avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg', goalAmount: 480000, earnedAmount: 380000, units: 9 },
+                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 300000, earnedAmount: 340000, units: 7 },
+                { name: 'Emma', avatarUrl: 'https://randomuser.me/api/portraits/women/9.jpg', goalAmount: 250000, earnedAmount: 290000, units: 7 },
+                { name: 'Eliot', avatarUrl: 'https://randomuser.me/api/portraits/men/10.jpg', goalAmount: 180000, earnedAmount: 60000, units: 8 },
+                { name: 'Chloe', avatarUrl: 'https://randomuser.me/api/portraits/women/11.jpg', goalAmount: 420000, earnedAmount: 450000, units: 15 },
+                { name: 'Lucas', avatarUrl: 'https://randomuser.me/api/portraits/men/12.jpg', goalAmount: 370000, earnedAmount: 130000, units: 6 },
+                { name: 'Mia', avatarUrl: 'https://randomuser.me/api/portraits/women/13.jpg', goalAmount: 450000, earnedAmount: 80000, units: 22 },
+                { name: 'Noah', avatarUrl: 'https://randomuser.me/api/portraits/men/14.jpg', goalAmount: 400000, earnedAmount: 400000, units: 18 },
+                { name: 'Ava', avatarUrl: 'https://randomuser.me/api/portraits/women/15.jpg', goalAmount: 350000, earnedAmount: 90000, units: 3 },
             ]
         },
         referral: {
-             maxValue: 300000,
-             users: [
-                { name: 'Jacob', avatarUrl: 'https://randomuser.me/api/portraits/men/21.jpg', goalAmount: 50000, earnedAmount: 55000, units: 8 },
-                { name: 'Isabella', avatarUrl: 'https://randomuser.me/api/portraits/women/22.jpg', goalAmount: 70000, earnedAmount: 40000, units: 12 },
-                { name: 'Ethan', avatarUrl: 'https://randomuser.me/api/portraits/men/23.jpg', goalAmount: 40000, earnedAmount: 32000, units: 4 },
-                { name: 'Sophie', avatarUrl: 'https://randomuser.me/api/portraits/women/24.jpg', goalAmount: 90000, earnedAmount: 110000, units: 21 },
-                { name: 'Alexander', avatarUrl: 'https://randomuser.me/api/portraits/men/25.jpg', goalAmount: 60000, earnedAmount: 15000, units: 5 },
-                { name: 'Harper', avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg', goalAmount: 15000, earnedAmount: 0, units: 1 },
-                { name: 'William', avatarUrl: 'https://randomuser.me/api/portraits/men/27.jpg', goalAmount: 100000, earnedAmount: 1000, units: 9 },
-                { name: 'Evelyn', avatarUrl: 'https://randomuser.me/api/portraits/women/28.jpg', goalAmount: 75000, earnedAmount: 80000, units: 11 },
-             ]
+            maxValue: 300000,
+            users: [
+                { name: 'Jacob', avatarUrl: 'https://randomuser.me/api/portraits/men/21.jpg', goalAmount: 200000, earnedAmount: 220000, units: 8 },
+                { name: 'Isabella', avatarUrl: 'https://randomuser.me/api/portraits/women/22.jpg', goalAmount: 250000, earnedAmount: 140000, units: 12 },
+                { name: 'Ethan', avatarUrl: 'https://randomuser.me/api/portraits/men/23.jpg', goalAmount: 180000, earnedAmount: 100000, units: 4 },
+                { name: 'Sophie', avatarUrl: 'https://randomuser.me/api/portraits/women/24.jpg', goalAmount: 240000, earnedAmount: 270000, units: 21 },
+                { name: 'Alexander', avatarUrl: 'https://randomuser.me/api/portraits/men/25.jpg', goalAmount: 260000, earnedAmount: 110000, units: 5 },
+                { name: 'Harper', avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg', goalAmount: 100000, earnedAmount: 40000, units: 1 },
+                { name: 'William', avatarUrl: 'https://randomuser.me/api/portraits/men/27.jpg', goalAmount: 280000, earnedAmount: 120000, units: 9 },
+                { name: 'Evelyn', avatarUrl: 'https://randomuser.me/api/portraits/women/28.jpg', goalAmount: 220000, earnedAmount: 240000, units: 11 },
+            ]
         }
     };
 
     let linearChart;
     let currentDataType = 'direct';
+    let userChartResizeObserver; // <-- Новая переменная для ResizeObserver
 
     // ==========================================================================
     // ЧАСТИНА 1: Лінійний графік
@@ -755,17 +756,47 @@ document.addEventListener('DOMContentLoaded', () => {
         maximumFractionDigits: 2
     }).format(value);
 
+    // 🔥 НОВА ФУНКЦІЯ: Адаптує ширину стовпчиків
+    function adjustUserChartLayout() {
+        if (usersChartContainer.classList.contains('hidden') || !usersChartContainer.hasChildNodes()) {
+            return;
+        }
+
+        const scrollWrapper = usersChartContainer.querySelector('.users-chart__scroll-wrapper');
+        const barsEl = usersChartContainer.querySelector('.users-chart__bars');
+        const gridEl = usersChartContainer.querySelector('.users-chart__grid');
+
+        if (!scrollWrapper || !barsEl || !gridEl) return;
+
+        const availableWidth = scrollWrapper.clientWidth;
+        const userBarWidth = 125; // Минимальная ширина одного столбца
+        const numUsers = usersChartData[currentDataType].users.length;
+        const naturalContentWidth = numUsers * userBarWidth;
+
+        barsEl.classList.remove('users-chart__bars--stretch');
+
+        if (naturalContentWidth < availableWidth) {
+            barsEl.classList.add('users-chart__bars--stretch');
+            gridEl.style.width = '100%';
+        } else {
+            gridEl.style.width = `${naturalContentWidth}px`;
+        }
+        
+        updateUserChartNavButtonsState();
+    }
+
+
     function renderUsersChart(data) {
         usersChartContainer.innerHTML = '';
-    
+
         if (!data || !data.users || data.users.length === 0) {
             usersChartContainer.innerHTML = `<div class="users-chart__no-data">No Data</div>`;
             return;
         }
-    
+
         const yAxisEl = document.createElement('div');
         yAxisEl.className = 'users-chart__yaxis';
-    
+
         const scrollWrapper = document.createElement('div');
         scrollWrapper.className = 'users-chart__scroll-wrapper';
         
@@ -791,49 +822,42 @@ document.addEventListener('DOMContentLoaded', () => {
             gridLine.className = 'users-chart__grid-line';
             gridEl.appendChild(gridLine);
         }
-    
+
         data.users.forEach(user => {
             const userBar = document.createElement('div');
             userBar.className = 'user-bar';
-    
+
             const meetsGoal = user.earnedAmount >= user.goalAmount;
             const earnedPercent = (user.earnedAmount / data.maxValue) * 100;
             const goalPercent = (user.goalAmount / data.maxValue) * 100;
-    
-            const infoAmount = meetsGoal ? user.earnedAmount : user.goalAmount;
             const earnedBarClass = `user-bar__earned-bar ${meetsGoal ? 'user-bar__earned-bar--above' : 'user-bar__earned-bar--below'}`;
-            const infoAmountDisplay = meetsGoal 
-                ? `<span class="user-bar__info-amount" style="color: #159C2A;">${formatCurrencyFull(user.earnedAmount)}</span>` 
-                : `<span class="user-bar__info-amount" style="color: #232323;">${formatCurrencyFull(user.goalAmount)}</span>`;
-
-            let progressHTML;
-
+            const earnedAmountLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>`;
+            
+            let barFillHTML = '';
             if (meetsGoal) {
-                progressHTML = `
-                    <div class="user-bar__progress" style="height: ${earnedPercent}%;">
-                         <div class="${earnedBarClass}" style="height: 100%;"></div>
-                    </div>
-                `;
+                barFillHTML = `<div class="${earnedBarClass}" style="height: 100%;"></div>`;
             } else {
                 const relativeEarnedHeight = user.goalAmount > 0 ? (user.earnedAmount / user.goalAmount) * 100 : 0;
-                progressHTML = `
-                    <div class="user-bar__progress" style="height: ${goalPercent}%;">
-                        <div class="user-bar__goal-bar"></div>
-                        <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;">
-                            <span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>
-                        </div>
-                    </div>
+                barFillHTML = `
+                    <div class="user-bar__goal-bar"></div>
+                    <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;"></div>
                 `;
             }
+            
+            const progressHeight = meetsGoal ? earnedPercent : goalPercent;
 
             userBar.innerHTML = `
                 <div class="user-bar__visuals">
-                    <div class="user-bar__info">
-                        ${infoAmountDisplay}
-                        <span class="user-bar__info-units">${user.units} units</span>
+                    <div class="user-bar__progress" style="height: ${progressHeight}%;">
+                        ${barFillHTML}
+                        <div class="user-bar__avatar-wrapper">
+                            <img src="${user.avatarUrl}" alt="${user.name}" class="user-bar__avatar">
+                            <div class="user-bar__labels">
+                                ${earnedAmountLabelHTML}
+                                <span class="user-bar__info-units">${user.units} units</span>
+                            </div>
+                        </div>
                     </div>
-                    <img src="${user.avatarUrl}" alt="${user.name}" class="user-bar__avatar">
-                    ${progressHTML}
                 </div>
                 <span class="user-bar__name">${user.name}</span>
             `;
@@ -845,7 +869,9 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollWrapper.appendChild(barsEl);
         usersChartContainer.appendChild(yAxisEl);
         usersChartContainer.appendChild(scrollWrapper);
-    
+
+        requestAnimationFrame(adjustUserChartLayout);
+
         const newScrollWrapper = usersChartContainer.querySelector('.users-chart__scroll-wrapper');
         if (newScrollWrapper) {
             newScrollWrapper.addEventListener('scroll', updateUserChartNavButtonsState);
@@ -853,6 +879,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function toggleChartView(view) {
+        if (userChartResizeObserver) {
+            userChartResizeObserver.disconnect(); // <-- Зупиняємо спостереження
+        }
+
         if (view === 'line') {
             lineChartContainer.classList.remove('hidden');
             usersChartContainer.classList.add('hidden');
@@ -866,7 +896,18 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleLineChartBtn.classList.remove('approval__switch-btn--active');
             toggleUsersChartBtn.classList.add('approval__switch-btn--active');
             renderUsersChart(usersChartData[currentDataType]);
-            updateUserChartNavButtonsState();
+            
+            // 🔥 НОВЕ: Створюємо і запускаємо ResizeObserver
+            userChartResizeObserver = new ResizeObserver(entries => {
+                // Використовуємо requestAnimationFrame для уникнення помилки "ResizeObserver loop limit exceeded"
+                window.requestAnimationFrame(() => {
+                    if (!Array.isArray(entries) || !entries.length) {
+                        return;
+                    }
+                    adjustUserChartLayout();
+                });
+            });
+            userChartResizeObserver.observe(usersChartContainer);
         }
     }
     
