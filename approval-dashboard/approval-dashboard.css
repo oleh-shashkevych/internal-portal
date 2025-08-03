@@ -150,6 +150,7 @@
 	align-items: flex-start;
 	justify-content: flex-start;
 	margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
 .approval-amount__item {
