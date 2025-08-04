@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
             users: [
                 { name: 'Emily', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg', goalAmount: 260000, earnedAmount: 110000, units: 7 },
                 { name: 'Michael', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg', goalAmount: 400000, earnedAmount: 150000, units: 10 },
-                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 250000, earnedAmount: 280000, units: 5 },
+                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 250000, earnedAmount: 310000, units: 5 },
                 { name: 'James', avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg', goalAmount: 385000, earnedAmount: 410000, units: 20 },
                 { name: 'Sophia', avatarUrl: 'https://randomuser.me/api/portraits/women/5.jpg', goalAmount: 320000, earnedAmount: 120000, units: 7 },
-                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 120000, earnedAmount: 20000, units: 2 },
+                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 150000, earnedAmount: 0, units: 2 },
                 { name: 'Filip', avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg', goalAmount: 480000, earnedAmount: 380000, units: 9 },
-                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 300000, earnedAmount: 340000, units: 7 },
+                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 300000, earnedAmount: 600000, units: 7 },
                 { name: 'Emma', avatarUrl: 'https://randomuser.me/api/portraits/women/9.jpg', goalAmount: 250000, earnedAmount: 290000, units: 7 },
                 { name: 'Eliot', avatarUrl: 'https://randomuser.me/api/portraits/men/10.jpg', goalAmount: 180000, earnedAmount: 60000, units: 8 },
                 { name: 'Chloe', avatarUrl: 'https://randomuser.me/api/portraits/women/11.jpg', goalAmount: 420000, earnedAmount: 450000, units: 15 },
@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: 'Alexander', avatarUrl: 'https://randomuser.me/api/portraits/men/25.jpg', goalAmount: 260000, earnedAmount: 110000, units: 5 },
                 { name: 'Harper', avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg', goalAmount: 100000, earnedAmount: 40000, units: 1 },
                 { name: 'William', avatarUrl: 'https://randomuser.me/api/portraits/men/27.jpg', goalAmount: 280000, earnedAmount: 120000, units: 9 },
-                { name: 'Evelyn', avatarUrl: 'https://randomuser.me/api/portraits/women/28.jpg', goalAmount: 220000, earnedAmount: 240000, units: 11 },
             ]
         }
     };
@@ -769,7 +768,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!scrollWrapper || !barsEl || !gridEl) return;
 
         const availableWidth = scrollWrapper.clientWidth;
-        const userBarWidth = 125; // Минимальная ширина одного столбца
+        const userBarWidth = 150; // Минимальная ширина одного столбца
         const numUsers = usersChartData[currentDataType].users.length;
         const naturalContentWidth = numUsers * userBarWidth;
 
@@ -830,17 +829,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const meetsGoal = user.earnedAmount >= user.goalAmount;
             const earnedPercent = (user.earnedAmount / data.maxValue) * 100;
             const goalPercent = (user.goalAmount / data.maxValue) * 100;
-            const earnedBarClass = `user-bar__earned-bar ${meetsGoal ? 'user-bar__earned-bar--above' : 'user-bar__earned-bar--below'}`;
-            const earnedAmountLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>`;
             
+            const earnedBarClass = `user-bar__earned-bar ${meetsGoal ? 'user-bar__earned-bar--above' : 'user-bar__earned-bar--below'}`;
+            
+            let topLabelHTML = '';
             let barFillHTML = '';
+            
             if (meetsGoal) {
+                topLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>`;
                 barFillHTML = `<div class="${earnedBarClass}" style="height: 100%;"></div>`;
             } else {
                 const relativeEarnedHeight = user.goalAmount > 0 ? (user.earnedAmount / user.goalAmount) * 100 : 0;
+                topLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.goalAmount)}</span>`;
                 barFillHTML = `
                     <div class="user-bar__goal-bar"></div>
-                    <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;"></div>
+                    <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;">
+                        <span class="user-bar__earned-amount-label user-bar__earned-amount-label--on-bar">${formatCurrencyFull(user.earnedAmount)}</span>
+                    </div>
                 `;
             }
             
@@ -853,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="user-bar__avatar-wrapper">
                             <img src="${user.avatarUrl}" alt="${user.name}" class="user-bar__avatar">
                             <div class="user-bar__labels">
-                                ${earnedAmountLabelHTML}
+                                ${topLabelHTML}
                                 <span class="user-bar__info-units">${user.units} units</span>
                             </div>
                         </div>
@@ -880,8 +885,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function toggleChartView(view) {
         if (userChartResizeObserver) {
-            userChartResizeObserver.disconnect(); // <-- Зупиняємо спостереження
+            userChartResizeObserver.disconnect();
         }
+        
+        const statsBlock = document.querySelector('.approval-amount__stats');
 
         if (view === 'line') {
             lineChartContainer.classList.remove('hidden');
@@ -889,17 +896,18 @@ document.addEventListener('DOMContentLoaded', () => {
             usersChartNav.classList.add('hidden');
             toggleLineChartBtn.classList.add('approval__switch-btn--active');
             toggleUsersChartBtn.classList.remove('approval__switch-btn--active');
+            if (statsBlock) statsBlock.classList.remove('hidden'); // ✨ ЗМІНА: Показати статистику
         } else {
             lineChartContainer.classList.add('hidden');
             usersChartContainer.classList.remove('hidden');
             usersChartNav.classList.remove('hidden');
             toggleLineChartBtn.classList.remove('approval__switch-btn--active');
             toggleUsersChartBtn.classList.add('approval__switch-btn--active');
+            if (statsBlock) statsBlock.classList.add('hidden'); // ✨ ЗМІНА: Сховати статистику
+            
             renderUsersChart(usersChartData[currentDataType]);
             
-            // 🔥 НОВЕ: Створюємо і запускаємо ResizeObserver
             userChartResizeObserver = new ResizeObserver(entries => {
-                // Використовуємо requestAnimationFrame для уникнення помилки "ResizeObserver loop limit exceeded"
                 window.requestAnimationFrame(() => {
                     if (!Array.isArray(entries) || !entries.length) {
                         return;

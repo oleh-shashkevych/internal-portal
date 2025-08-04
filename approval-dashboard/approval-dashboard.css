@@ -236,7 +236,7 @@
 .users-chart__container {
     display: flex;
     width: 100%;
-    height: 350px; /* Same as line chart container */
+    height: calc(350px + 96px); /* Same as line chart container */
     position: relative;
 }
 
@@ -264,7 +264,7 @@
     font-weight: 300;
     text-align: right;
     /* Добавлено для отступа под именами */
-    padding: 17px 10px 29px;
+    padding: 21px 10px 29px;
 }
 
 .users-chart__yaxis-label {
@@ -283,7 +283,7 @@
     min-width: 0;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 17px 0 29px;
+    padding: 21px 0 29px;
 }
 .users-chart__scroll-wrapper::-webkit-scrollbar {
     display: none;
@@ -302,7 +302,7 @@
     z-index: 1;
     /* Добавлено для отступа под именами и нижней линии */
     padding-bottom: 25px;
-    padding: 17px 0 29px 0;
+    padding: 21px 0 29px 0;
 }
 
 .users-chart__grid-line {
@@ -357,7 +357,7 @@
     flex-shrink: 0;
     height: 100%;
     /* Изменена минимальная ширина */
-    width: 125px;
+    width: 150px;
     padding: 0 35px 0;
     position: relative; /* Необходимо для вертикальной линии */
 }
@@ -387,7 +387,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -15px);
+    transform: translate(-50%, -20px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -395,8 +395,8 @@
 }
 
 .user-bar__avatar {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 1px solid #fff;
     object-fit: cover;
@@ -432,7 +432,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 2px;
     font-family: 'Urbanist', sans-serif;
     color: #2D7939;
     white-space: nowrap;
@@ -446,7 +446,7 @@
 }
 
 .user-bar__info-units {
-    font-size: 9px;
+    font-size: 11px;
     font-weight: 500;
     line-height: 1;
 }
@@ -463,13 +463,21 @@
 
 .user-bar__earned-amount-label {
     position: static;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     width: auto;
     text-align: center;
     padding: 0;
     line-height: 1;
     letter-spacing: -.02em;
+}
+
+.user-bar__earned-amount-label--on-bar {
+    position: absolute;
+    left: 50%;
+    top: 6px;
+    transform: translateX(-50%);
+    color: #fff;
 }
 
 .user-bar__goal-bar {
@@ -479,16 +487,16 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    border-radius: 3px 3px 0 0; /* Added radius here */
+    border-radius: 0; /* Added radius here */
 }
 
 .user-bar__earned-bar {
     width: 100%;
-    min-height: 0;
+    min-height: 1px;
     position: absolute;
     bottom: 0;
     left: 0;
-    border-radius: 3px 3px 0 0; /* Added radius here */
+    border-radius: 0; /* Added radius here */
 }
 
 .user-bar__earned-bar--above {
