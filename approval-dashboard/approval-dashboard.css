@@ -147,10 +147,6 @@
     transition: stroke .2s ease-in-out;
 }
 
-.approval-amount__header-nav .approval__switch-btn:hover {
-    background-color: #159C2A80;
-}
-
 .approval-amount__header-nav .approval__switch-btn:hover svg path {
     stroke: #fff;
 }
@@ -343,10 +339,6 @@
 }
 
 /* Новый класс для растягивания колонок */
-.users-chart__bars--stretch .user-bar {
-    flex: 1;
-    width: auto;
-}
 
 .user-bar {
     display: flex;
@@ -360,6 +352,10 @@
     width: 150px;
     padding: 0 35px 0;
     position: relative; /* Необходимо для вертикальной линии */
+}
+
+.user-bar--empty {
+    pointer-events: none; /* Чтобы на пустые колонки нельзя было кликнуть */
 }
 
 .user-bar:not(:last-child)::after {
@@ -483,7 +479,7 @@
 .user-bar__goal-bar {
     width: 100%;
     height: 100%;
-    background-color: #E8F6EA;
+    background-color: #0D661A1A;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -500,11 +496,11 @@
 }
 
 .user-bar__earned-bar--above {
-    background-color: #159C2A;
+    background-color: #36B349;
 }
 
 .user-bar__earned-bar--below {
-    background-color: #D04437;
+    background-color: #FF2E2E;
 }
 
 .user-bar__name {

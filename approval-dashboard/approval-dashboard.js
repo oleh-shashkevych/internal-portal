@@ -81,10 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: 'Jacob', avatarUrl: 'https://randomuser.me/api/portraits/men/21.jpg', goalAmount: 200000, earnedAmount: 220000, units: 8 },
                 { name: 'Isabella', avatarUrl: 'https://randomuser.me/api/portraits/women/22.jpg', goalAmount: 250000, earnedAmount: 140000, units: 12 },
                 { name: 'Ethan', avatarUrl: 'https://randomuser.me/api/portraits/men/23.jpg', goalAmount: 180000, earnedAmount: 100000, units: 4 },
-                { name: 'Sophie', avatarUrl: 'https://randomuser.me/api/portraits/women/24.jpg', goalAmount: 240000, earnedAmount: 270000, units: 21 },
-                { name: 'Alexander', avatarUrl: 'https://randomuser.me/api/portraits/men/25.jpg', goalAmount: 260000, earnedAmount: 110000, units: 5 },
-                { name: 'Harper', avatarUrl: 'https://randomuser.me/api/portraits/women/26.jpg', goalAmount: 100000, earnedAmount: 40000, units: 1 },
-                { name: 'William', avatarUrl: 'https://randomuser.me/api/portraits/men/27.jpg', goalAmount: 280000, earnedAmount: 120000, units: 9 },
+                
             ]
         }
     };
@@ -732,6 +729,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchButtons = document.querySelectorAll('.approval__switch-btn[data-type]');
     switchButtons.forEach(button => {
         button.addEventListener('click', () => {
+            // 1. Заблокировать возможность нажатия активной кнопки
+            if (button.classList.contains('approval__switch-btn--active')) {
+                return; // Ничего не делать, если кнопка уже активна
+            }
+
             switchButtons.forEach(btn => btn.classList.remove('approval__switch-btn--active'));
             button.classList.add('approval__switch-btn--active');
             currentDataType = button.dataset.type;
@@ -767,20 +769,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!scrollWrapper || !barsEl || !gridEl) return;
 
+        // Удаляем предыдущие пустые колонки для корректной перерисовки при ресайзе
+        barsEl.querySelectorAll('.user-bar--empty').forEach(el => el.remove());
+
         const availableWidth = scrollWrapper.clientWidth;
-        const userBarWidth = 150; // Минимальная ширина одного столбца
-        const numUsers = usersChartData[currentDataType].users.length;
+        const userBarWidth = 150; // Фиксированная ширина колонки
+        const numUsers = barsEl.querySelectorAll('.user-bar:not(.user-bar--empty)').length;
         const naturalContentWidth = numUsers * userBarWidth;
 
-        barsEl.classList.remove('users-chart__bars--stretch');
+        let totalColumns = numUsers;
 
+        // Если контент пользователей занимает меньше места, чем доступно, добавляем пустые колонки
         if (naturalContentWidth < availableWidth) {
-            barsEl.classList.add('users-chart__bars--stretch');
-            gridEl.style.width = '100%';
-        } else {
-            gridEl.style.width = `${naturalContentWidth}px`;
+            const emptyColsToAdd = Math.floor((availableWidth - naturalContentWidth) / userBarWidth);
+            if (emptyColsToAdd > 0) {
+                for (let i = 0; i < emptyColsToAdd; i++) {
+                    const emptyBar = document.createElement('div');
+                    emptyBar.className = 'user-bar user-bar--empty';
+                    barsEl.appendChild(emptyBar);
+                }
+                totalColumns += emptyColsToAdd;
+            }
         }
         
+        // Устанавливаем ширину сетки, чтобы горизонтальные линии покрывали все колонки
+        const finalWidth = Math.max(naturalContentWidth, totalColumns * userBarWidth);
+        gridEl.style.width = `${finalWidth}px`;
+
         updateUserChartNavButtonsState();
     }
 
