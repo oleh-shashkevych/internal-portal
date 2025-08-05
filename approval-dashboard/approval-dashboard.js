@@ -58,29 +58,29 @@ document.addEventListener('DOMContentLoaded', () => {
         direct: {
             maxValue: 500000,
             users: [
-                { name: 'Emily', avatarUrl: 'https://randomuser.me/api/portraits/women/1.jpg', goalAmount: 260000, earnedAmount: 110000, units: 7 },
-                { name: 'Michael', avatarUrl: 'https://randomuser.me/api/portraits/men/2.jpg', goalAmount: 400000, earnedAmount: 150000, units: 10 },
-                { name: 'Olivia', avatarUrl: 'https://randomuser.me/api/portraits/women/3.jpg', goalAmount: 250000, earnedAmount: 310000, units: 5 },
-                { name: 'James', avatarUrl: 'https://randomuser.me/api/portraits/men/4.jpg', goalAmount: 385000, earnedAmount: 410000, units: 20 },
-                { name: 'Sophia', avatarUrl: 'https://randomuser.me/api/portraits/women/5.jpg', goalAmount: 320000, earnedAmount: 120000, units: 7 },
-                { name: 'Damon', avatarUrl: 'https://randomuser.me/api/portraits/men/6.jpg', goalAmount: 150000, earnedAmount: 0, units: 2 },
-                { name: 'Filip', avatarUrl: 'https://randomuser.me/api/portraits/men/7.jpg', goalAmount: 480000, earnedAmount: 380000, units: 9 },
-                { name: 'Patrick', avatarUrl: 'https://randomuser.me/api/portraits/men/8.jpg', goalAmount: 300000, earnedAmount: 600000, units: 7 },
-                { name: 'Emma', avatarUrl: 'https://randomuser.me/api/portraits/women/9.jpg', goalAmount: 250000, earnedAmount: 290000, units: 7 },
-                { name: 'Eliot', avatarUrl: 'https://randomuser.me/api/portraits/men/10.jpg', goalAmount: 180000, earnedAmount: 60000, units: 8 },
-                { name: 'Chloe', avatarUrl: 'https://randomuser.me/api/portraits/women/11.jpg', goalAmount: 420000, earnedAmount: 450000, units: 15 },
-                { name: 'Lucas', avatarUrl: 'https://randomuser.me/api/portraits/men/12.jpg', goalAmount: 370000, earnedAmount: 130000, units: 6 },
-                { name: 'Mia', avatarUrl: 'https://randomuser.me/api/portraits/women/13.jpg', goalAmount: 450000, earnedAmount: 80000, units: 22 },
-                { name: 'Noah', avatarUrl: 'https://randomuser.me/api/portraits/men/14.jpg', goalAmount: 400000, earnedAmount: 400000, units: 18 },
-                { name: 'Ava', avatarUrl: 'https://randomuser.me/api/portraits/women/15.jpg', goalAmount: 350000, earnedAmount: 90000, units: 3 },
+                { name: 'Michael', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 260000, earnedAmount: 110000, units: 7 },
+                { name: 'Emily', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 400000, earnedAmount: 150000, units: 10 },
+                { name: 'Olivia', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 250000, earnedAmount: 310000, units: 5 },
+                { name: 'James', avatarUrl: '../assets/images/kanban-4.jpg', goalAmount: 385000, earnedAmount: 410000, units: 20 },
+                { name: 'Damon', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 320000, earnedAmount: 120000, units: 7 },
+                { name: 'Sophia', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 150000, earnedAmount: 0, units: 2 },
+                { name: 'Filip', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 480000, earnedAmount: 380000, units: 9 },
+                { name: 'Patrick', avatarUrl: '../assets/images/kanban-4.jpg', goalAmount: 300000, earnedAmount: 600000, units: 7 },
+                { name: 'Eliot', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 250000, earnedAmount: 290000, units: 7 },
+                { name: 'Emma', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 180000, earnedAmount: 60000, units: 8 },
+                { name: 'Cho', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 420000, earnedAmount: 450000, units: 15 },
+                { name: 'Lucas', avatarUrl: '../assets/images/kanban-4.jpg', goalAmount: 370000, earnedAmount: 130000, units: 6 },
+                { name: 'Noah', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 450000, earnedAmount: 80000, units: 22 },
+                { name: 'Mia', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 400000, earnedAmount: 400000, units: 18 },
+                { name: 'Ava', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 350000, earnedAmount: 90000, units: 3 },
             ]
         },
         referral: {
             maxValue: 300000,
             users: [
-                { name: 'Jacob', avatarUrl: 'https://randomuser.me/api/portraits/men/21.jpg', goalAmount: 200000, earnedAmount: 220000, units: 8 },
-                { name: 'Isabella', avatarUrl: 'https://randomuser.me/api/portraits/women/22.jpg', goalAmount: 250000, earnedAmount: 140000, units: 12 },
-                { name: 'Ethan', avatarUrl: 'https://randomuser.me/api/portraits/men/23.jpg', goalAmount: 180000, earnedAmount: 100000, units: 4 },
+                { name: 'Jacob', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 200000, earnedAmount: 220000, units: 8 },
+                { name: 'Isabella', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 250000, earnedAmount: 140000, units: 12 },
+                { name: 'Ethan', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 180000, earnedAmount: 100000, units: 4 },
                 
             ]
         }
@@ -729,9 +729,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchButtons = document.querySelectorAll('.approval__switch-btn[data-type]');
     switchButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // 1. Заблокировать возможность нажатия активной кнопки
             if (button.classList.contains('approval__switch-btn--active')) {
-                return; // Ничего не делать, если кнопка уже активна
+                return;
             }
 
             switchButtons.forEach(btn => btn.classList.remove('approval__switch-btn--active'));
