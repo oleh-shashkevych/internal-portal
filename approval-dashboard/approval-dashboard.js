@@ -843,26 +843,48 @@ document.addEventListener('DOMContentLoaded', () => {
             const meetsGoal = user.earnedAmount >= user.goalAmount;
             const earnedPercent = (user.earnedAmount / data.maxValue) * 100;
             const goalPercent = (user.goalAmount / data.maxValue) * 100;
-            
             const earnedBarClass = `user-bar__earned-bar ${meetsGoal ? 'user-bar__earned-bar--above' : 'user-bar__earned-bar--below'}`;
-            
-            let topLabelHTML = '';
+
             let barFillHTML = '';
-            
+            let avatarContentHTML = ''; // Содержимое, которое идет рядом с аватаром
+
             if (meetsGoal) {
-                topLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>`;
+                // --- ЛОГИКА, ЕСЛИ ЦЕЛЬ ДОСТИГНУТА (остается как есть) ---
+                const topLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.earnedAmount)}</span>`;
                 barFillHTML = `<div class="${earnedBarClass}" style="height: 100%;"></div>`;
+                
+                // Формируем блок с лейблами
+                avatarContentHTML = `
+                    <div class="user-bar__labels">
+                        ${topLabelHTML}
+                        <span class="user-bar__info-units">${user.units} units</span>
+                    </div>
+                `;
             } else {
+                // --- НОВАЯ ЛОГИКА, ЕСЛИ ЦЕЛЬ НЕ ДОСТИГНУТА ---
                 const relativeEarnedHeight = user.goalAmount > 0 ? (user.earnedAmount / user.goalAmount) * 100 : 0;
-                topLabelHTML = `<span class="user-bar__earned-amount-label">${formatCurrencyFull(user.goalAmount)}</span>`;
+                
+                let earnedBarContent = '';
+                // 3. Если сумма не нулевая, выводим ее и юниты внутри бара
+                if (user.earnedAmount > 0) {
+                    earnedBarContent = `
+                        <div class="user-bar__earned-content">
+                            <span class="user-bar__earned-amount-label user-bar__earned-amount-label--on-bar">${formatCurrencyFull(user.earnedAmount)}</span>
+                            <span class="user-bar__info-units user-bar__info-units--on-bar">${user.units} units</span>
+                        </div>
+                    `;
+                }
+                // Если earnedAmount = 0, earnedBarContent останется пустым, и ничего не выведется.
+
                 barFillHTML = `
                     <div class="user-bar__goal-bar"></div>
                     <div class="${earnedBarClass}" style="height: ${relativeEarnedHeight}%;">
-                        <span class="user-bar__earned-amount-label user-bar__earned-amount-label--on-bar">${formatCurrencyFull(user.earnedAmount)}</span>
+                        ${earnedBarContent}
                     </div>
                 `;
+                // 2. avatarContentHTML остается пустым, так как .user-bar__labels не нужен
             }
-            
+
             const progressHeight = meetsGoal ? earnedPercent : goalPercent;
 
             userBar.innerHTML = `
@@ -871,10 +893,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${barFillHTML}
                         <div class="user-bar__avatar-wrapper">
                             <img src="${user.avatarUrl}" alt="${user.name}" class="user-bar__avatar">
-                            <div class="user-bar__labels">
-                                ${topLabelHTML}
-                                <span class="user-bar__info-units">${user.units} units</span>
-                            </div>
+                            ${avatarContentHTML}
                         </div>
                     </div>
                 </div>
