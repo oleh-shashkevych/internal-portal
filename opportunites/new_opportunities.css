@@ -1586,3 +1586,115 @@
 .overlay.open {
     display: block;
 }
+
+/* === Contacts Roles Block (Final Update) === */
+.contacts_roles-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.contacts_roles-title {
+    font-family: 'proxima_novasemibold';
+    font-size: 20px;
+    color: #232323;
+}
+
+.contacts_roles-add_btn {
+    border-radius: 5px;
+    background: #159c2a;
+    color: #fff;
+    border: 1px solid transparent;
+    font-family: 'proxima_nova';
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contacts_roles-add_btn:hover {
+    border: 1px solid #159c2a;
+    background: transparent;
+    color: #159c2a;
+}
+.contacts_roles-add_btn:hover svg path {
+    fill: #159c2a;
+}
+
+.contacts_roles-table {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    font-family: 'proxima_nova';
+}
+
+.contacts_roles-table--header,
+.contacts_roles-table--row {
+    display: grid;
+    /* --- ИЗМЕНЕНИЕ: Новая структура колонок --- */
+    grid-template-columns: 1.5fr 0.4fr 1fr 1.2fr 1.8fr 1.2fr 1fr 2fr 80px;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.contacts_roles-table--body .contacts_roles-table--row:last-child {
+    border-bottom: none;
+}
+
+.contacts_roles-table--header {
+    background: #f9f9f9;
+}
+
+.contacts_roles-table--header > div,
+.contacts_roles-table--row > div {
+    padding: 12px 15px;
+}
+
+
+.contacts_roles-table--header > div {
+    color: rgba(35, 35, 35, 0.8);
+    font-family: 'proxima_nova';
+    font-weight: normal;
+    font-size: 15px;
+    text-transform: capitalize;
+}
+
+.contacts_roles-table--row {
+    color: rgba(35, 35, 35, 0.9);
+    font-size: 14px;
+}
+
+.contacts_roles-table--row:hover {
+    background-color: #E8F6EA;
+}
+
+.contacts_roles-table--row .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    background: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn:hover {
+    background: #e0e0e0;
+}
+
+.action-btn.delete-btn:hover {
+    background: #ffdddd;
+}
+
+.action-btn.delete-btn:hover svg path {
+    fill: #EC0202;
+}
