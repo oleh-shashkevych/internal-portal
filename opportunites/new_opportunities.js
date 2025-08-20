@@ -845,3 +845,345 @@ document.addEventListener("DOMContentLoaded", function () {
     // Запускаємо ініціалізацію
     initApplicationsBlock();
 });
+
+// === Contact Roles Logic ===
+document.addEventListener('DOMContentLoaded', () => {
+    const contactModalOverlay = document.getElementById('contactModalOverlay');
+    const contactModal = document.getElementById('contactModal');
+    const deleteModalOverlay = document.getElementById('deleteModalOverlay');
+    const deleteModal = document.getElementById('deleteModal');
+    const closeDeleteModalBtn = document.getElementById('closeDeleteModal');
+    
+    const addContactBtn = document.querySelector('.contacts_roles-add_btn');
+    const closeContactModalBtn = document.getElementById('closeContactModal');
+    const contactForm = document.getElementById('contactForm');
+    const contactModalTitle = document.getElementById('contactModalTitle');
+    const tableBody = document.querySelector('.contacts_roles-table--body');
+
+    let rowToEdit = null;
+    let rowToDelete = null;
+
+    // --- Functions to Create/Update Table Rows ---
+    
+    const createActionButtonsHTML = () => {
+        return `
+            <button class="action-btn edit-btn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z" fill="#8B928C"/></svg>
+            </button>
+            <button class="action-btn delete-btn">
+                <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.1543 0.683594C7.7925 0.683594 8.3142 1.20463 8.31445 1.84277V3.35156H12V4.42285H10.5352V11.3799C10.5352 12.4467 9.66835 13.3143 8.60156 13.3145H2.95117C1.88419 13.3145 1.0166 12.4468 1.0166 11.3799V4.4209H0V3.35059H3.24219V1.84277C3.24244 1.20472 3.76329 0.683749 4.40137 0.683594H7.1543ZM2.08984 11.3789C2.08984 11.8549 2.47644 12.2422 2.95312 12.2422H8.60156C9.07738 12.242 9.46484 11.8555 9.46484 11.3789V4.4209H2.08984V11.3789ZM5.20117 10.2676H4.12988V6.33203H5.20117V10.2676ZM7.64648 10.2676H6.57617V6.33203H7.64648V10.2676ZM4.40137 1.75391C4.35149 1.75406 4.31274 1.79292 4.3125 1.84277V3.35059H7.24414V1.84277C7.2439 1.79282 7.20432 1.75391 7.1543 1.75391H4.40137Z" fill="#8B928C"/></svg>
+            </button>
+        `;
+    };
+    
+    const formatAddressCell = (data) => {
+        const addressForDisplay = `${data.address}, ${data.city}, ${data.state} ${data.zip}`;
+        const addressForUrl = `${data.address}, ${data.city}, ${data.state}`;
+        const urlEncodedAddress = encodeURIComponent(addressForUrl);
+        const mapsLink = `https://www.google.com/maps/search/?api=1&query=$${urlEncodedAddress}`;
+        return { displayText: addressForDisplay, href: mapsLink };
+    };
+    
+    const reformatDateForDisplay = (dateString) => {
+        if (!dateString) return '';
+        const [year, month, day] = dateString.split('-');
+        return `${month}/${day}/${year}`;
+    };
+
+    const reformatDateForValue = (dateString) => {
+        if (!dateString) return '';
+        const [month, day, year] = dateString.split('/');
+        return `${year}-${month}-${day}`;
+    };
+
+    const reformatDateForStorage = (dateString) => {
+        if (!dateString || !dateString.includes('/')) return dateString;
+        const [month, day, year] = dateString.split('/');
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    };
+
+    const updateTableRow = (row, data) => {
+        row.dataset.address = data.address;
+        row.dataset.city = data.city;
+        row.dataset.state = data.state;
+        row.dataset.zip = data.zip;
+
+        const addressInfo = formatAddressCell(data);
+
+        row.children[0].textContent = data.fullName;
+        row.children[1].textContent = data.ownership;
+        row.children[2].textContent = data.role;
+        row.children[3].textContent = data.phone;
+        row.children[4].textContent = data.email;
+        row.children[5].textContent = data.ssn;
+        row.children[6].textContent = reformatDateForDisplay(data.dob);
+        const addressAnchor = row.children[7].querySelector('a');
+        addressAnchor.textContent = addressInfo.displayText;
+        addressAnchor.href = addressInfo.href;
+    };
+
+    const addTableRow = (data) => {
+        const row = document.createElement('div');
+        row.className = 'contacts_roles-table--row';
+        
+        row.dataset.address = data.address;
+        row.dataset.city = data.city;
+        row.dataset.state = data.state;
+        row.dataset.zip = data.zip;
+
+        const addressInfo = formatAddressCell(data);
+
+        row.innerHTML = `
+            <div>${data.fullName}</div>
+            <div>${data.ownership}</div>
+            <div>${data.role}</div>
+            <div>${data.phone}</div>
+            <div>${data.email}</div>
+            <div>${data.ssn}</div>
+            <div>${reformatDateForDisplay(data.dob)}</div>
+            <div class="address-cell"><a href="${addressInfo.href}" target="_blank">${addressInfo.displayText}</a></div>
+            <div class="actions">${createActionButtonsHTML()}</div>
+        `;
+        tableBody.appendChild(row);
+    };
+
+    const populateFormWithRowData = (row) => {
+        contactForm.elements.fullName.value = row.children[0].textContent;
+        contactForm.elements.ownership.value = row.children[1].textContent;
+        contactForm.elements.role.value = row.children[2].textContent;
+        contactForm.elements.phone.value = row.children[3].textContent;
+        contactForm.elements.email.value = row.children[4].textContent;
+        contactForm.elements.ssn.value = row.children[5].textContent;
+        contactForm.elements.dob.value = row.children[6].textContent.trim();
+        contactForm.elements.address.value = row.dataset.address || '';
+        contactForm.elements.city.value = row.dataset.city || '';
+        contactForm.elements.state.value = row.dataset.state || '';
+        contactForm.elements.zipCode.value = row.dataset.zip || '';
+    };
+
+    const openModal = (modal, overlay) => {
+        modal.style.display = 'flex';
+        overlay.style.display = 'block';
+    };
+
+    const closeModal = (modal, overlay) => {
+        modal.style.display = 'none';
+        overlay.style.display = 'none';
+        if (rowToDelete) {
+            rowToDelete.classList.remove('highlight-delete');
+            rowToDelete = null;
+        }
+        rowToEdit = null;
+        resetForm();
+    };
+    
+    // --- Form Masks & Date Logic ---
+    $('#ssn').inputmask('999-99-9999', { placeholder: '___-__-____' });
+    $('#phone').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
+    $('#zipCode').inputmask('99999', { placeholder: '_____' });
+    
+    const dobInput = document.getElementById('dob');
+
+    function autoFormatDate(e) {
+        let input = e.target;
+
+        setSuccess(input);
+
+        let value = input.value.replace(/\D/g, '');
+        if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2);
+        }
+        if (value.length > 5) {
+            value = value.substring(0, 5) + '/' + value.substring(5, 9);
+        }
+        input.value = value;
+    }
+
+    dobInput.addEventListener('input', autoFormatDate);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 16);
+
+    const dateWrappers = document.querySelectorAll(".date-input-wrapper");
+    dateWrappers.forEach(wrapper => {
+        flatpickr(wrapper, {
+            wrap: true,
+            allowInput: true,
+            dateFormat: "m/d/Y",
+            maxDate: maxDate,
+            appendTo: wrapper,
+            allowInvalidPreload: true
+        });
+    });
+
+    $('#ownership').on('input', function() {
+        let value = parseInt($(this).val(), 10);
+        if (value > 100) $(this).val(100);
+        if (value < 0) $(this).val(0);
+    });
+    
+    // --- Form Validation & Submission ---
+    const setError = (element, message) => {
+        const formGroup = element.closest('.form-group');
+        if (formGroup) {
+            const errorDisplay = formGroup.querySelector('.error-message');
+            if (errorDisplay) errorDisplay.innerText = message;
+            element.classList.add('error');
+        }
+    };
+
+    const setSuccess = (element) => {
+        const formGroup = element.closest('.form-group');
+        if (formGroup) {
+            const errorDisplay = formGroup.querySelector('.error-message');
+            if (errorDisplay) errorDisplay.innerText = '';
+            element.classList.remove('error');
+        }
+    };
+    
+    const clearAllValidationErrors = () => {
+        contactForm.querySelectorAll('.form-group').forEach(group => {
+            const field = group.querySelector('input, select');
+            if (field) setSuccess(field);
+        });
+    };
+
+    const resetForm = () => {
+        contactForm.reset();
+        clearAllValidationErrors();
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        const fields = contactForm.elements;
+        
+        for (let field of fields) {
+            const fieldWrapper = field.closest('.form-group');
+            if (!fieldWrapper || field.type === 'button') continue;
+
+            if (field.required && !field.value.trim()) {
+                setError(field, 'This field is required.');
+                isValid = false;
+                continue; 
+            }
+
+            if (['ssn', 'phone'].includes(field.id) && field.value.trim()) {
+                if (!$(`#${field.id}`).inputmask("isComplete")) {
+                    setError(field, 'Please fill in the complete value.');
+                    isValid = false;
+                }
+            }
+
+            if (field.type === 'email' && field.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value)) {
+                setError(field, 'Please enter a valid email address.');
+                isValid = false;
+            }
+            
+            if (field.id === 'dob' && field.value.trim()) {
+                const dateRegex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}$/;
+                if (!dateRegex.test(field.value)) {
+                    setError(field, 'Please use MM/DD/YYYY format.');
+                    isValid = false;
+                }
+            }
+        }
+        return isValid;
+    };
+    
+    // --- Event Listeners ---
+    const openAddModal = () => {
+        contactModalTitle.textContent = 'Add Contact';
+        rowToEdit = null;
+        resetForm();
+        openModal(contactModal, contactModalOverlay);
+    };
+
+    const openEditModal = (row) => {
+        contactModalTitle.textContent = 'Edit Contact';
+        rowToEdit = row;
+        resetForm(); 
+        populateFormWithRowData(rowToEdit);
+        openModal(contactModal, contactModalOverlay);
+    }
+
+    addContactBtn.addEventListener('click', openAddModal);
+
+    if (tableBody) {
+        tableBody.addEventListener('click', (e) => {
+            const editBtn = e.target.closest('.edit-btn');
+            const deleteBtn = e.target.closest('.delete-btn');
+
+            if (editBtn) {
+                const row = editBtn.closest('.contacts_roles-table--row');
+                openEditModal(row);
+            }
+
+            if (deleteBtn) {
+                rowToDelete = deleteBtn.closest('.contacts_roles-table--row');
+                rowToDelete.classList.add('highlight-delete');
+                openModal(deleteModal, deleteModalOverlay);
+            }
+        });
+    }
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        clearAllValidationErrors();
+        
+        if (validateForm()) {
+            const contactData = {
+                fullName: contactForm.elements.fullName.value,
+                ownership: contactForm.elements.ownership.value,
+                role: contactForm.elements.role.value,
+                phone: contactForm.elements.phone.value,
+                email: contactForm.elements.email.value,
+                ssn: contactForm.elements.ssn.value,
+                dob: reformatDateForStorage(contactForm.elements.dob.value),
+                address: contactForm.elements.address.value,
+                city: contactForm.elements.city.value,
+                state: contactForm.elements.state.value,
+                zip: contactForm.elements.zipCode.value
+            };
+            
+            if (rowToEdit) {
+                updateTableRow(rowToEdit, contactData);
+            } else {
+                addTableRow(contactData);
+            }
+
+            closeModal(contactModal, contactModalOverlay);
+        }
+    });
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (rowToDelete) {
+            rowToDelete.remove();
+        }
+        closeModal(deleteModal, deleteModalOverlay);
+    });
+
+    if (closeContactModalBtn) {
+        closeContactModalBtn.addEventListener('click', () => closeModal(contactModal, contactModalOverlay));
+    }
+
+    if (closeDeleteModalBtn) {
+        closeDeleteModalBtn.addEventListener('click', () => closeModal(deleteModal, deleteModalOverlay));
+    }
+    
+    document.querySelectorAll('.contacts_roles-table--row').forEach(row => {
+        const addressLink = row.querySelector('.address-cell a');
+        if (addressLink) {
+             const addressData = {
+                 address: row.dataset.address || '',
+                 city: row.dataset.city || '',
+                 state: row.dataset.state || '',
+                 zip: row.dataset.zip || ''
+             };
+             const addressInfo = formatAddressCell(addressData);
+             addressLink.href = addressInfo.href;
+             if (addressData.address && addressData.city && addressData.state) {
+                addressLink.textContent = addressInfo.displayText;
+             }
+        }
+    });
+});

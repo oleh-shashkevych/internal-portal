@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Блок Follow Up */
+
 .follow_up_top {
 	display: flex;
 	align-items: center;
@@ -207,7 +207,7 @@
 	width: 12px;
 }
 
-/* Выпадающий список */
+
 .table-dropdown-wrapper {	
 	position: relative;
 }
@@ -375,7 +375,7 @@
 	justify-content: center;
 }
 
-/* Notifications */
+
 @keyframes bell-shake {
 	0%   { transform: rotate(0deg); }
 	20%  { transform: rotate(-15deg); }
@@ -561,7 +561,7 @@
 	color: #159C2A;
 }
 
-/* Popup */
+
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -571,14 +571,12 @@
     background-color: rgba(0, 0, 0, 0.4);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
     z-index: 1000;
 }
 
 .popup-overlay.active {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease;
 }
 
 .popup {
@@ -594,7 +592,6 @@
     max-width: 500px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
     z-index: 1001;
 }
 
@@ -602,7 +599,6 @@
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
-    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .popup-top {
@@ -651,12 +647,10 @@
     font-size: 12px;
     line-height: 15px;
     color: rgba(35, 35, 35, 0.8);
-    transition: color 0.2s ease;
 }
 
 .form-group label .required {
     color: rgba(35, 35, 35, 0.8);
-    transition: color 0.2s ease;
 }
 
 .form-group select,
@@ -670,7 +664,6 @@
     font-family: 'Urbanist', sans-serif;
     color: rgba(35, 35, 35, 0.8);
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
 }
 
 .form-group select {
@@ -724,7 +717,6 @@
     line-height: 19px;
     cursor: pointer;
     margin: 25px auto 0;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-apply:hover {
@@ -752,7 +744,7 @@
      color: #FF496B;
 }
 
-/* Documents block */
+
 .documents-inner {
 	font-family: 'Urbanist';
 	padding: 0 24px;
@@ -929,13 +921,13 @@
 	background-color: #636864;
 }
 
-/* Состояние элемента при удалении */
+
 .documents-inner__item.deleting {
     background-color: rgba(251, 43, 65, 0.1);
     border-color: rgba(251, 43, 65, 0.1);
 }
 
-/* Стили для поля ввода имени */
+
 .documents-inner__item-info .edit-input {
     width: 430px;
     padding: 8px;
@@ -949,13 +941,13 @@
     margin-bottom: 10px;
 }
 
-/* Стили для невалидных полей */
+
 .documents-inner__item-info .edit-input.invalid,
 .documents-inner__item-info .select2-container.invalid .select2-selection--single {
     border-color: #FF496B !important;
 }
 
-/* Стилизация контейнера Select2 */
+
 .documents-inner__item-info .select2-container {
     width: 260px !important;
     margin-bottom: 0;
@@ -1031,18 +1023,17 @@
 	color: #232323;
 	border-color: #D0D3D1;
 }
-/* Убираем анимацию появления для выпадающего списка Select2 */
+
 .select2-container--open .select2-dropdown {
     animation: none !important;
-    transition: none !important;
 }
 
-/* Скрываем оригинальное название в режиме редактирования */
+
 .documents-inner__item.active .documents-inner__item-info > p {
     display: none;
 }
 
-/* Контейнер для полей редактирования */
+
 .documents-inner__item-info .edit-fields-wrapper {
     display: flex;
 	flex-direction: row;
@@ -1075,9 +1066,9 @@
 	color: #fff;
 }
 
-/* new_opportunities.css */
 
-/* --- Upload Popup Styles --- */
+
+
 .upload-popup {
     max-width: 1640px;
     width: 85%;
@@ -1150,12 +1141,12 @@
 	height: 1px;
 	background-color: #D1D1D1;
 }
-/* --- Drag & Drop Highlight --- */
+
 .drag-drop-area.drag-over {
-    background-color: #e8f6ea; /* Світло-зелений фон */
-    border-color: #0d801f;   /* Темно-зелена рамка */
+    background-color: #e8f6ea; 
+    border-color: #0d801f;   
 }
-/* --- Drag & Drop Highlight on Files View --- */
+
 #files-selected-view {
     position: relative;
 }
@@ -1167,7 +1158,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(232, 246, 234, 0.95); /* Напівпрозорий світло-зелений */
+    background-color: rgba(232, 246, 234, 0.95); 
     border: 2px dashed #0d801f;
     border-radius: 10px;
     display: flex;
@@ -1178,7 +1169,7 @@
     font-weight: 600;
     font-family: 'Urbanist', sans-serif;
     z-index: 10;
-    pointer-events: none; /* Дозволяє подіям проходити "крізь" цей елемент */
+    pointer-events: none; 
 }
 .browse-files-btn {
     font-family: 'Urbanist', sans-serif;
@@ -1211,7 +1202,7 @@
     font-weight: 600;
 }
 
-/* Files Selected View */
+
 .file-grid {
     margin-bottom: 25px;
     max-height: 450px;
@@ -1315,7 +1306,7 @@
     font-size: 14px;
 }
 
-/* Select2 styles for upload popup */
+
 .file-card .select2-container {
     width: 100% !important;
 }
@@ -1352,7 +1343,7 @@
 	opacity: 0;
 }
 
-/* --- Загальні стилі для кнопки та контейнера --- */
+
 .user-button {
     border: 1px solid #D0D3D0;
 	background: #fff;
@@ -1387,17 +1378,17 @@
 
 #applications_userWrapper {
     position: relative;
-    margin-bottom: 10px; /* Додаємо відступ знизу */
+    margin-bottom: 10px; 
 }
 
-/* --- Стилі випадаючого списку --- */
+
 .custom_dropdown {
-    position: fixed; /* Змінено з absolute на fixed */
-    top: 50%;        /* Центрування по вертикалі */
-    left: 50%;       /* Центрування по горизонталі */
-    transform: translate(-50%, -50%); /* Точна центровка */
+    position: fixed; 
+    top: 50%;        
+    left: 50%;       
+    transform: translate(-50%, -50%); 
     background: #fff;
-    width: 280px;    /* Можна задати фіксовану ширину */
+    width: 280px;    
     border: 1px solid #d3d3d3;
     border-radius: 3px;
     box-shadow: 0px 7px 20px 0px rgba(35, 35, 35, 0.15);
@@ -1426,7 +1417,7 @@
     background-color: #e6e5e5;
 }
 
-/* --- Пошук у списку --- */
+
 .dropdown_search-wrapper {
     border-radius: 3px 3px 0px 0px;
     border-bottom: 1px solid #eee;
@@ -1459,7 +1450,7 @@
     font-size: 13px;
 }
 
-/* --- Чекбокс та кнопки --- */
+
 .custom_checkbox {
     border-radius: 3px;
     border: 1px solid #c6c6c6;
@@ -1520,16 +1511,15 @@
 
 .custom_dropdown-apply:hover, .custom_dropdown-cancel:hover {
     transform: scale(0.95);
-    transition: transform 0.2s;
 }
 
-/* --- Відображення обраних користувачів --- */
+
 .applications_selected-users {
     display: flex;
     align-items: center;
     gap: 7px;
-    flex-wrap: wrap; /* Дозволяє переносити плашки на новий рядок */
-    min-height: 27px; /* Мінімальна висота, щоб контейнер не зникав */
+    flex-wrap: wrap; 
+    min-height: 27px; 
 }
 
 .applications_selected-users.empty {
@@ -1571,7 +1561,7 @@
     justify-content: center;
 }
 
-/* --- Оверлей --- */
+
 .overlay {
     position: fixed;
     top: 0;
@@ -1579,7 +1569,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 998; /* Нижче, ніж дропдаун */
+    z-index: 998; 
     display: none;
 }
 
@@ -1587,7 +1577,7 @@
     display: block;
 }
 
-/* === Contacts Roles Block (Final Update) === */
+
 .contacts_roles-top {
     display: flex;
     justify-content: space-between;
@@ -1596,45 +1586,51 @@
 }
 
 .contacts_roles-title {
-    font-family: 'proxima_novasemibold';
+    font-family: 'Urbanist';
     font-size: 20px;
+	font-weight: 600;
     color: #232323;
 }
 
 .contacts_roles-add_btn {
-    border-radius: 5px;
-    background: #159c2a;
-    color: #fff;
-    border: 1px solid transparent;
-    font-family: 'proxima_nova';
-    font-weight: 500;
-    font-size: 14px;
-    padding: 10px 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    border-radius: 3px;
+	background: #159c2a;
+	color: #fff;
+	border: 1px solid transparent;
+	font-family: 'Urbanist';
+	font-weight: 500;
+	font-size: 16px;
+	padding: 10px 14px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	line-height: 18px;
+}
+
+.contacts_roles-add_btn svg {
+	width: 10px;
 }
 
 .contacts_roles-add_btn:hover {
-    border: 1px solid #159c2a;
-    background: transparent;
-    color: #159c2a;
+    background-color: #007E05;
+    border-color: #007E05;
+    color: #fff;
 }
 .contacts_roles-add_btn:hover svg path {
-    fill: #159c2a;
+    fill: #fff;
 }
 
 .contacts_roles-table {
     border: 1px solid #eee;
     border-radius: 3px;
-    font-family: 'proxima_nova';
+    font-family: 'Urbanist';
 }
 
 .contacts_roles-table--header,
 .contacts_roles-table--row {
     display: grid;
-    /* --- ИЗМЕНЕНИЕ: Новая структура колонок --- */
-    grid-template-columns: 1.5fr 0.4fr 1fr 1.2fr 1.8fr 1.2fr 1fr 2fr 80px;
+    
+    grid-template-columns: 1.3fr 0.4fr 1fr 1fr 1.45fr 1fr 1fr 2.7fr 80px;
     align-items: center;
     border-bottom: 1px solid #eee;
 }
@@ -1647,17 +1643,14 @@
     background: #f9f9f9;
 }
 
-.contacts_roles-table--header > div,
-.contacts_roles-table--row > div {
-    padding: 12px 15px;
-}
-
-
 .contacts_roles-table--header > div {
-    color: rgba(35, 35, 35, 0.8);
-    font-family: 'proxima_nova';
+	padding: 14px 10px;
+    color: #232323B2;
+    font-family: 'Urbanist';
     font-weight: normal;
-    font-size: 15px;
+    font-size: 11px;
+	line-height: 12px;
+	font-weight: 500;
     text-transform: capitalize;
 }
 
@@ -1667,7 +1660,19 @@
 }
 
 .contacts_roles-table--row:hover {
-    background-color: #E8F6EA;
+    background-color: #00800008;
+}
+
+.contacts_roles-table--row > div {
+    padding: 10px;
+    color: #232323;
+    font-family: 'Urbanist';
+    font-size: 11px;
+	line-height: 12px;
+	font-weight: 500;
+    text-transform: capitalize;
+	height: 100%;
+	align-content: center;
 }
 
 .contacts_roles-table--row .actions {
@@ -1677,24 +1682,290 @@
 }
 
 .action-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
-    background: #f0f0f0;
-    border: 1px solid #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 24px;
+	height: 24px;
+	border-radius: 3px;
+	background: #8B928C1A;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.action-btn:hover {
-    background: #e0e0e0;
+.action-btn svg {
+	width: 12px;
+}
+
+.action-btn.edit-btn:hover {
+    background: #0D801F;
+}
+
+.action-btn.edit-btn:hover svg path {
+    fill: #fff;
 }
 
 .action-btn.delete-btn:hover {
-    background: #ffdddd;
+    background: #DB1C10;
 }
 
 .action-btn.delete-btn:hover svg path {
-    fill: #EC0202;
+    fill: #fff;
+}
+
+
+.contact-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    display: none;
+}
+
+.contact-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 1051;
+    width: 90%;
+    max-width: 800px;
+    display: none;
+    flex-direction: column;
+}
+
+.contact-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.contact-modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+	line-height: 22px;
+    color: #232323;
+	font-weight: 600;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.contact-modal-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.contact-modal-body {
+    padding: 14px 24px 28px;
+}
+
+.contact-modal-body p {
+    text-align: center;
+    font-size: 1.2rem;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+}
+
+
+#ownership::-webkit-outer-spin-button,
+#ownership::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#ownership[type=number] {
+  -moz-appearance: textfield; 
+}
+
+.contact-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+	margin-bottom: 0;
+}
+
+.contact-modal .form-group label {
+    font-size: 14px;
+	color: #232323;
+	font-family: 'Urbanist', sans-serif;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.contact-modal .form-group > input,
+.contact-modal .form-group > select,
+.date-input-wrapper > input {
+    width: 100%;
+	padding: 12px 14px;
+	border: 1px solid #C4C4C4B2;
+	border-radius: 4px;
+	font-size: 16px;
+	font-family: 'Urbanist', sans-serif;
+	line-height: 19px;
+	color: #232323;
+	font-weight: 500;
+	background: #fff;
+}
+
+.contact-modal .form-group > select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3e%3cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23232323' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+
+  padding-right: 40px;
+}
+
+.contact-modal .form-group > input.error,
+.contact-modal .form-group > select.error,
+.date-input-wrapper > input.error {
+    border-color: #DB1C10;
+}
+
+.error-message {
+    color: #DB1C10;
+	font-size: 12px;
+	min-height: 14px;
+	position: absolute;
+	top: calc(100% + 5px);
+	font-weight: 500;
+	font-family: 'Urbanist';
+}
+
+.contact-modal-footer {
+    display: flex;
+	justify-content: center;
+	margin-top: 40px;
+}
+
+#deleteModal .contact-modal-footer {
+    justify-content: center;
+	margin-bottom: 28px;
+	margin-top: 0;
+}
+
+.btn-save, .btn-delete {
+    font-size: 16px;
+	line-height: 19px;
+	font-weight: 500;
+	font-family: 'Urbanist';
+	width: 160px;
+	height: 40px;
+	border-radius: 3px;
+}
+
+.btn-save {
+    background-color: #159C2A;
+	color: #fff;
+}
+
+.btn-save:hover {
+    background-color: #007E05;
+	color: #fff;
+}
+
+.btn-delete {
+    background-color: #FF0000;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+}
+
+.btn-delete:hover {
+    background-color: #FF3535;
+	color: #fff;
+}
+
+
+.contacts_roles-table--row.highlight-delete {
+    background-color: #f0f0f0;
+}
+
+
+.contacts_roles-add_btn:hover {
+    background-color: #007E05;
+    border-color: #007E05;
+}
+
+.action-btn.edit-btn:hover {
+    background-color: #159C2A;
+}
+.action-btn.edit-btn:hover svg path {
+    fill: #fff;
+}
+
+.action-btn.delete-btn:hover {
+    background-color: #DB1C10;
+}
+.action-btn.delete-btn:hover svg path {
+    fill: #fff;
+}
+
+.contacts_roles-table--row .address-cell a {
+    color: #159C2A;
+    text-decoration: underline;
+}
+
+.contact-modal .form-group input:not(.error):hover,
+.contact-modal .form-group select:not(.error):hover {
+    border-color: #159C2AE5; 
+	background-color: #F6FBF6;
+}
+
+
+.date-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
+#dob-display {
+    background-color: #fff; 
+    cursor: pointer; 
+}
+
+
+.date-input-wrapper { 
+    position: relative; 
+}
+.date-input-wrapper input { 
+    padding-right: 40px; 
+}
+.calendar-icon {
+    position: absolute; 
+    right: 5px; 
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer; 
+    padding: 5px;
+    background: transparent; 
+    border: none;
+}
+
+.date-input-wrapper {
+  position: relative; 
+}
+
+
+.date-input-wrapper .flatpickr-calendar {
+  top: 100%; 
+  left: 0;
+  margin-top: 4px; 
+  width: 100%; 
 }
