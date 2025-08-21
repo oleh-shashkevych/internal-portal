@@ -880,7 +880,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const addressForDisplay = `${data.address}, ${data.city}, ${data.state} ${data.zip}`;
         const addressForUrl = `${data.address}, ${data.city}, ${data.state}`;
         const urlEncodedAddress = encodeURIComponent(addressForUrl);
-        const mapsLink = `https://www.google.com/maps/search/?api=1&query=$${urlEncodedAddress}`;
+        const mapsLink = `https://www.google.com/maps?q=${urlEncodedAddress}`;
         return { displayText: addressForDisplay, href: mapsLink };
     };
     
