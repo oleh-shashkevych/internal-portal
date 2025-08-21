@@ -1620,17 +1620,23 @@
     fill: #fff;
 }
 
+.contacts_roles-table-wrapper {
+    overflow-x: auto; /* Adds horizontal scroll when needed */
+    width: 100%;
+}
+
 .contacts_roles-table {
     border: 1px solid #eee;
     border-radius: 3px;
     font-family: 'Urbanist';
+    min-width: 1024px; /* Minimum width for the table */
 }
 
 .contacts_roles-table--header,
 .contacts_roles-table--row {
     display: grid;
-    
-    grid-template-columns: 1.3fr 0.4fr 1fr 1fr 1.45fr 1fr 1fr 2.7fr 80px;
+    /* UPDATED: Adjusted column widths */
+    grid-template-columns: 1.2fr 0.5fr 1fr 1fr 1.5fr 1fr 1fr 1.8fr 80px;
     align-items: center;
     border-bottom: 1px solid #eee;
 }
@@ -1648,8 +1654,8 @@
     color: #232323B2;
     font-family: 'Urbanist';
     font-weight: normal;
-    font-size: 11px;
-	line-height: 12px;
+    font-size: 14px;
+	line-height: 16px;
 	font-weight: 500;
     text-transform: capitalize;
 }
@@ -1667,11 +1673,17 @@
     padding: 10px;
     color: #232323;
     font-family: 'Urbanist';
-    font-size: 11px;
-	line-height: 12px;
+    font-size: 13px;
+	line-height: 15px;
 	font-weight: 500;
 	height: 100%;
-	align-content: center;
+	display: flex; /* Using flex for vertical alignment */
+    align-items: center;
+}
+
+.contacts_roles-table--row .address-cell {
+    word-wrap: break-word; /* Allows long words to break and wrap */
+    word-break: break-all; /* Breaks words to prevent overflow */
 }
 
 .contacts_roles-table--row .actions {
@@ -1708,6 +1720,21 @@
 
 .action-btn.delete-btn:hover svg path {
     fill: #fff;
+}
+
+/* NEW: Wrapper for horizontal scroll */
+.contacts_roles-table-wrapper {
+    overflow-x: auto; /* Adds horizontal scroll when needed */
+    width: 100%;
+    /* Hides scrollbar for Firefox */
+    scrollbar-width: none;
+    /* Hides scrollbar for IE and Edge */
+    -ms-overflow-style: none;
+}
+
+/* Hides scrollbar for Chrome, Safari and Opera */
+.contacts_roles-table-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 

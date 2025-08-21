@@ -875,13 +875,16 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         `;
     };
-    
+
     const formatAddressCell = (data) => {
         const addressForDisplay = `${data.address}, ${data.city}, ${data.state} ${data.zip}`;
         const addressForUrl = `${data.address}, ${data.city}, ${data.state}`;
         const urlEncodedAddress = encodeURIComponent(addressForUrl);
         const mapsLink = `https://www.google.com/maps?q=${urlEncodedAddress}`;
-        return { displayText: addressForDisplay, href: mapsLink };
+        return { 
+            displayText: addressForDisplay, 
+            href: mapsLink 
+        };
     };
     
     const reformatDateForDisplay = (dateString) => {
@@ -948,7 +951,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const populateFormWithRowData = (row) => {
-        contactForm.elements.fullName.value = row.children[0].textContent;
+        const fullName = row.children[0].textContent.trim();
+        const nameParts = fullName.split(' ');
+        contactForm.elements.firstName.value = nameParts[0] || '';
+        contactForm.elements.lastName.value = nameParts.slice(1).join(' ') || '';
         contactForm.elements.ownership.value = row.children[1].textContent;
         contactForm.elements.role.value = row.children[2].textContent;
         contactForm.elements.phone.value = row.children[3].textContent;
@@ -1132,7 +1138,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (validateForm()) {
             const contactData = {
-                fullName: contactForm.elements.fullName.value,
+                firstName: contactForm.elements.firstName.value,
+                lastName: contactForm.elements.lastName.value,
+                fullName: `${contactForm.elements.firstName.value} ${contactForm.elements.lastName.value}`.trim(),
                 ownership: contactForm.elements.ownership.value,
                 role: contactForm.elements.role.value,
                 phone: contactForm.elements.phone.value,
