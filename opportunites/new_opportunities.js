@@ -893,12 +893,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${month}/${day}/${year}`;
     };
 
-    const reformatDateForValue = (dateString) => {
-        if (!dateString) return '';
-        const [month, day, year] = dateString.split('/');
-        return `${year}-${month}-${day}`;
-    };
-
     const reformatDateForStorage = (dateString) => {
         if (!dateString || !dateString.includes('/')) return dateString;
         const [month, day, year] = dateString.split('/');
@@ -914,13 +908,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const addressInfo = formatAddressCell(data);
 
         row.children[0].textContent = data.fullName;
-        row.children[1].textContent = data.ownership;
-        row.children[2].textContent = data.role;
-        row.children[3].textContent = data.phone;
-        row.children[4].textContent = data.email;
-        row.children[5].textContent = data.ssn;
-        row.children[6].textContent = reformatDateForDisplay(data.dob);
-        const addressAnchor = row.children[7].querySelector('a');
+        row.children[1].textContent = data.role;
+        row.children[2].textContent = data.ownership;
+        row.children[3].textContent = data.cell;
+        row.children[4].textContent = data.direct;
+        row.children[5].textContent = data.email;
+        row.children[6].textContent = data.ssn;
+        row.children[7].textContent = reformatDateForDisplay(data.dob);
+        const addressAnchor = row.children[8].querySelector('a');
         addressAnchor.textContent = addressInfo.displayText;
         addressAnchor.href = addressInfo.href;
     };
@@ -938,9 +933,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         row.innerHTML = `
             <div>${data.fullName}</div>
-            <div>${data.ownership}</div>
             <div>${data.role}</div>
-            <div>${data.phone}</div>
+            <div>${data.ownership}</div>
+            <div>${data.cell}</div>
+            <div>${data.direct}</div>
             <div>${data.email}</div>
             <div>${data.ssn}</div>
             <div>${reformatDateForDisplay(data.dob)}</div>
@@ -955,12 +951,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const nameParts = fullName.split(' ');
         contactForm.elements.firstName.value = nameParts[0] || '';
         contactForm.elements.lastName.value = nameParts.slice(1).join(' ') || '';
-        contactForm.elements.ownership.value = row.children[1].textContent;
-        contactForm.elements.role.value = row.children[2].textContent;
-        contactForm.elements.phone.value = row.children[3].textContent;
-        contactForm.elements.email.value = row.children[4].textContent;
-        contactForm.elements.ssn.value = row.children[5].textContent;
-        contactForm.elements.dob.value = row.children[6].textContent.trim();
+        contactForm.elements.role.value = row.children[1].textContent;
+        contactForm.elements.ownership.value = row.children[2].textContent;
+        contactForm.elements.cell.value = row.children[3].textContent;
+        contactForm.elements.direct.value = row.children[4].textContent;
+        contactForm.elements.email.value = row.children[5].textContent;
+        contactForm.elements.ssn.value = row.children[6].textContent;
+        contactForm.elements.dob.value = row.children[7].textContent.trim();
         contactForm.elements.address.value = row.dataset.address || '';
         contactForm.elements.city.value = row.dataset.city || '';
         contactForm.elements.state.value = row.dataset.state || '';
@@ -985,16 +982,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Form Masks & Date Logic ---
     $('#ssn').inputmask('999-99-9999', { placeholder: '___-__-____' });
-    $('#phone').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
+    $('#cell').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
+    $('#direct').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
     $('#zipCode').inputmask('99999', { placeholder: '_____' });
     
     const dobInput = document.getElementById('dob');
 
     function autoFormatDate(e) {
         let input = e.target;
-
         setSuccess(input);
-
         let value = input.value.replace(/\D/g, '');
         if (value.length > 2) {
             value = value.substring(0, 2) + '/' + value.substring(2);
@@ -1018,7 +1014,16 @@ document.addEventListener('DOMContentLoaded', () => {
             dateFormat: "m/d/Y",
             maxDate: maxDate,
             appendTo: wrapper,
-            allowInvalidPreload: true
+            allowInvalidPreload: true,
+            // --- ПОЧАТОК ОНОВЛЕНОГО КОДУ ---
+            onClose: function(selectedDates, dateStr, instance) {
+                // Перевіряємо, чи є вибрана дата і чи вона більша за максимальну
+                if (selectedDates.length > 0 && selectedDates[0] > instance.config.maxDate) {
+                    // Якщо так, встановлюємо дату на максимально допустиму
+                    instance.setDate(instance.config.maxDate, true);
+                }
+            }
+            // --- КІНЕЦЬ ОНОВЛЕНОГО КОДУ ---
         });
     });
 
@@ -1067,13 +1072,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const fieldWrapper = field.closest('.form-group');
             if (!fieldWrapper || field.type === 'button') continue;
 
+            setSuccess(field);
+
             if (field.required && !field.value.trim()) {
                 setError(field, 'This field is required.');
                 isValid = false;
                 continue; 
             }
 
-            if (['ssn', 'phone'].includes(field.id) && field.value.trim()) {
+            if (['ssn', 'cell', 'direct'].includes(field.id) && field.value.trim()) {
                 if (!$(`#${field.id}`).inputmask("isComplete")) {
                     setError(field, 'Please fill in the complete value.');
                     isValid = false;
@@ -1134,16 +1141,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        clearAllValidationErrors();
         
         if (validateForm()) {
             const contactData = {
                 firstName: contactForm.elements.firstName.value,
                 lastName: contactForm.elements.lastName.value,
                 fullName: `${contactForm.elements.firstName.value} ${contactForm.elements.lastName.value}`.trim(),
-                ownership: contactForm.elements.ownership.value,
                 role: contactForm.elements.role.value,
-                phone: contactForm.elements.phone.value,
+                ownership: contactForm.elements.ownership.value,
+                cell: contactForm.elements.cell.value,
+                direct: contactForm.elements.direct.value,
                 email: contactForm.elements.email.value,
                 ssn: contactForm.elements.ssn.value,
                 dob: reformatDateForStorage(contactForm.elements.dob.value),

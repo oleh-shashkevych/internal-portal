@@ -1635,8 +1635,7 @@
 .contacts_roles-table--header,
 .contacts_roles-table--row {
     display: grid;
-    /* UPDATED: Adjusted column widths */
-    grid-template-columns: 1.2fr 0.5fr 1fr 1fr 1.5fr 1fr 1fr 1.8fr 80px;
+    grid-template-columns: 1.2fr 1fr 0.5fr 1fr 1fr 1.5fr 1fr 1fr 1.8fr 80px;
     align-items: center;
     border-bottom: 1px solid #eee;
 }
@@ -1877,6 +1876,10 @@
 	margin-top: 40px;
 }
 
+#deleteModal {
+    max-width: 500px;
+}
+
 #deleteModal .contact-modal-footer {
     justify-content: center;
 	margin-bottom: 28px;
@@ -1943,8 +1946,11 @@
 }
 
 .contacts_roles-table--row .address-cell a {
+    color: #232323;
+}
+
+.contacts_roles-table--row .address-cell a:hover {
     color: #159C2A;
-    text-decoration: underline;
 }
 
 .contact-modal .form-group input:not(.error):hover,

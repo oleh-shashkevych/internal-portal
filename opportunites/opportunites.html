@@ -983,9 +983,10 @@
 									<div class="contacts_roles-table">
 										<div class="contacts_roles-table--header">
 											<div>Full Name</div>
-											<div>%</div>
 											<div>Role</div>
-											<div>Phone</div>
+											<div>%</div>
+											<div>Cell</div>
+											<div>Direct</div>
 											<div>Email</div>
 											<div>SSN</div>
 											<div>DOB</div>
@@ -995,9 +996,10 @@
 										<div class="contacts_roles-table--body">
 											<div class="contacts_roles-table--row" data-address="961 S. Heritage Rd." data-city="Miami" data-state="FL" data-zip="33172">
 												<div>Rep AP Financing</div>
-												<div>10</div>
 												<div>Manager</div>
+												<div>10</div>
 												<div>(421) 213-2353</div>
+												<div>(555) 213-2353</div>
 												<div>mail@mail.com</div>
 												<div>441-34-4352</div>
 												<div>12/05/2001</div>
@@ -1013,9 +1015,10 @@
 											</div>
 											<div class="contacts_roles-table--row" data-address="442 Greystone St." data-city="West Palm Beach" data-state="FL" data-zip="33415">
 												<div>Shawn Linn</div>
-												<div>33</div>
 												<div>Main Contact</div>
+												<div>33</div>
 												<div>(234) 153-5322</div>
+												<div>(555) 153-5322</div>
 												<div>shawn@limcoroofing.com</div>
 												<div>145-53-6452</div>
 												<div>03/22/1978</div>
@@ -1031,9 +1034,10 @@
 											</div>
 											<div class="contacts_roles-table--row" data-address="7452 West St." data-city="Riverview" data-state="FL" data-zip="33569">
 												<div>Shawn Linn</div>
-												<div>90</div>
 												<div>Main Contact</div>
+												<div>90</div>
 												<div>(462) 421-5244</div>
+												<div>(555) 421-5244</div>
 												<div>shawn@limcoroofing.com</div>
 												<div>615-73-5311</div>
 												<div>07/09/1990</div>
@@ -1049,9 +1053,10 @@
 											</div>
 											<div class="contacts_roles-table--row" data-address="12 Plumb Branch St." data-city="Orlando" data-state="FL" data-zip="32805">
 												<div>Shawn Linn</div>
-												<div>12</div>
 												<div>Main Contact</div>
+												<div>12</div>
 												<div>(677) 458-6372</div>
+												<div>(555) 458-6372</div>
 												<div>shawn@limcoroofing.com</div>
 												<div>627-63-6341</div>
 												<div>05/29/1967</div>
@@ -3307,14 +3312,20 @@
 						</div>
 
 						<div class="form-group">
-							<label for="ssn">SSN</label>
-							<input type="text" id="ssn" name="ssn" placeholder="000-00-0000" required>
+							<label for="cell">Cell</label>
+							<input type="text" id="cell" name="cell" placeholder="(000) 000-0000" required>
+							<div class="error-message"></div>
+						</div>
+						
+						<div class="form-group">
+							<label for="direct">Direct</label>
+							<input type="text" id="direct" name="direct" placeholder="(000) 000-0000" required>
 							<div class="error-message"></div>
 						</div>
 
 						<div class="form-group">
-							<label for="phone">Phone</label>
-							<input type="text" id="phone" name="phone" placeholder="(000) 000-0000" required>
+							<label for="ssn">SSN</label>
+							<input type="text" id="ssn" name="ssn" placeholder="000-00-0000" required>
 							<div class="error-message"></div>
 						</div>
 
