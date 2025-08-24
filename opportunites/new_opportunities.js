@@ -863,6 +863,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let rowToEdit = null;
     let rowToDelete = null;
 
+    // === ZIP Code Autofill Logic ===
+    const zipCodeInput = document.getElementById('zipCode');
+    const cityInput = document.getElementById('city');
+    const stateSelect = document.getElementById('state');
+
+    if (zipCodeInput && cityInput && stateSelect) {
+        zipCodeInput.addEventListener('input', async () => {
+            const zip = zipCodeInput.value.replace(/\D/g, '');
+
+            if (zip.length !== 5) {
+                cityInput.value = '';
+                stateSelect.value = '';
+                setSuccess(zipCodeInput);
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://zippopotam.us/us/${zip}`);
+                if (!response.ok) {
+                    throw new Error('Zip code not found');
+                }
+                
+                const data = await response.json();
+                
+                // Вдосконалена перевірка: переконуємося, що API повернув результат
+                if (data.places && data.places.length > 0) {
+                    const place = data.places[0];
+                    const city = place['place name'];
+                    const stateAbbr = place['state abbreviation'];
+
+                    cityInput.value = city;
+                    stateSelect.value = stateAbbr;
+                    
+                    setSuccess(zipCodeInput);
+                    setSuccess(cityInput);
+                    setSuccess(stateSelect);
+                } else {
+                    // Якщо API повернув 200, але без даних, вважаємо це помилкою
+                    throw new Error('Zip code data is empty');
+                }
+
+            } catch (error) {
+                cityInput.value = '';
+                stateSelect.value = '';
+                setError(zipCodeInput, 'Zip code not found. Please check and try again.');
+            }
+        });
+    }
+
     // --- Functions to Create/Update Table Rows ---
     
     const createActionButtonsHTML = () => {
@@ -984,7 +1033,50 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#ssn').inputmask('999-99-9999', { placeholder: '___-__-____' });
     $('#cell').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
     $('#direct').inputmask('(999) 999-9999', { placeholder: '(___) ___-____' });
-    $('#zipCode').inputmask('99999', { placeholder: '_____' });
+    $('#zipCode').inputmask('99999', {
+        placeholder: '_____',
+        oncomplete: async function() {
+            // 'this.value' тут посилається на значення поля вводу
+            const zip = this.value;
+            const zipCodeInput = this; // Отримуємо елемент для передачі в setError/setSuccess
+
+            try {
+                const response = await fetch(`https://zippopotam.us/us/${zip}`);
+                if (!response.ok) {
+                    throw new Error('Zip code not found');
+                }
+                
+                const data = await response.json();
+                
+                if (data.places && data.places.length > 0) {
+                    const place = data.places[0];
+                    const city = place['place name'];
+                    const stateAbbr = place['state abbreviation'];
+
+                    cityInput.value = city;
+                    stateSelect.value = stateAbbr;
+                    
+                    setSuccess(zipCodeInput);
+                    setSuccess(cityInput);
+                    setSuccess(stateSelect);
+                } else {
+                    throw new Error('Zip code data is empty');
+                }
+
+            } catch (error) {
+                cityInput.value = '';
+                stateSelect.value = '';
+                setError(zipCodeInput, 'Zip code not found. Please check and try again.');
+            }
+        },
+        oncleared: function() {
+            // Ця функція спрацює, коли поле буде очищено
+            const zipCodeInput = this;
+            cityInput.value = '';
+            stateSelect.value = '';
+            setSuccess(zipCodeInput);
+        }
+    });
     
     const dobInput = document.getElementById('dob');
 
@@ -1006,8 +1098,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 16);
 
-    // new_opportunities.js
-
     const dateWrappers = document.querySelectorAll(".date-input-wrapper");
     dateWrappers.forEach(wrapper => {
         flatpickr(wrapper, {
@@ -1017,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             maxDate: maxDate,
             appendTo: wrapper,
             allowInvalidPreload: true,
-            disableMobile: true, // <-- ДОДАЙТЕ ЦЕЙ РЯДОК
+            disableMobile: true,
             onClose: function(selectedDates, dateStr, instance) {
                 if (selectedDates.length > 0 && selectedDates[0] > instance.config.maxDate) {
                     instance.setDate(instance.config.maxDate, true);
