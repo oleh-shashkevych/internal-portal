@@ -1006,6 +1006,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxDate = new Date();
     maxDate.setFullYear(maxDate.getFullYear() - 16);
 
+    // new_opportunities.js
+
     const dateWrappers = document.querySelectorAll(".date-input-wrapper");
     dateWrappers.forEach(wrapper => {
         flatpickr(wrapper, {
@@ -1015,15 +1017,12 @@ document.addEventListener('DOMContentLoaded', () => {
             maxDate: maxDate,
             appendTo: wrapper,
             allowInvalidPreload: true,
-            // --- ПОЧАТОК ОНОВЛЕНОГО КОДУ ---
+            disableMobile: true, // <-- ДОДАЙТЕ ЦЕЙ РЯДОК
             onClose: function(selectedDates, dateStr, instance) {
-                // Перевіряємо, чи є вибрана дата і чи вона більша за максимальну
                 if (selectedDates.length > 0 && selectedDates[0] > instance.config.maxDate) {
-                    // Якщо так, встановлюємо дату на максимально допустиму
                     instance.setDate(instance.config.maxDate, true);
                 }
             }
-            // --- КІНЕЦЬ ОНОВЛЕНОГО КОДУ ---
         });
     });
 

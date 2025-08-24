@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
-
 .follow_up_top {
 	display: flex;
 	align-items: center;
@@ -2000,4 +1999,43 @@
   left: 0;
   margin-top: 4px; 
   width: 100%; 
+}
+
+@media (max-width: 768px) {
+  .contact-modal {
+    max-height: 90vh; /* Обмежуємо висоту модального вікна */
+  }
+
+  .contact-modal .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-modal-body {
+    overflow-y: auto; /* Додаємо вертикальну прокрутку для тіла модального вікна */
+    padding-right: 15px; /* Додаємо невеликий відступ, щоб скролбар не перекривав контент */
+  }
+
+  .flatpickr-days {
+    width: 100%;
+  }
+
+  .dayContainer {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+    .h-notifications__list {
+        left: unset;
+        right: 0;
+        transform: translateX(28%) scale(1);
+    }
+
+    .h-notifications__list.active {
+        left: unset;
+        right: 0;
+        transform: translateX(28%) scale(1);
+    }
 }
