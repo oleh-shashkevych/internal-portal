@@ -1169,7 +1169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 continue; 
             }
 
-            if (['ssn', 'cell', 'direct'].includes(field.id) && field.value.trim()) {
+            if (['ssn', 'cell', 'direct', 'zipCode'].includes(field.id) && field.value.trim()) {
                 if (!$(`#${field.id}`).inputmask("isComplete")) {
                     setError(field, 'Please fill in the complete value.');
                     isValid = false;
