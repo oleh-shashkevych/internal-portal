@@ -48,6 +48,7 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 17px 14px;
+	z-index: 2;
 }
 
 .progress-bar__btn:hover {
@@ -68,6 +69,8 @@
 	font-family: 'urbanist';
 	font-weight: 500;
 	text-align: center;
+	text-wrap: nowrap;
+	z-index: 2;
 }
 
 .progress-bar__item.active .progress-bar__title {
@@ -77,6 +80,122 @@
 
 .progress-bar__btn:hover ~ .progress-bar__title {
 	color: #159C2A;
+}
+
+/* Progress Bar Dropdown */
+.progress-bar__dropdown {
+    position: absolute;
+	top: -10px;
+	left: -10px;
+	background-color: #E8EFEA99;
+	box-shadow: 0px 1px 4px 0px #2323231A;
+	border-radius: 3px;
+	z-index: 1;
+	opacity: 0;
+	pointer-events: none;
+	right: -10px;
+	padding: 88px 10px 10px;
+}
+
+.progress-bar__dropdown::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-color: #fff;
+	border-radius: 3px;
+	z-index: 0;
+}
+
+.progress-bar__dropdown::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-color: #E8EFEA99;
+	border-radius: 3px;
+	z-index: 1;
+}
+
+.progress-bar__item.active:hover .progress-bar__dropdown {
+    opacity: 1;
+	pointer-events: auto;
+}
+
+.progress-bar__checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+	position: relative;
+	z-index: 2;
+}
+
+.progress-bar__checkbox {
+    display: flex;
+	align-items: center;
+	gap: 4px;
+	cursor: pointer;
+	font-size: 12px;
+	font-family: 'urbanist';
+	color: #232323;
+	font-weight: 500;
+	line-height: 14px;
+	text-transform: capitalize;
+	padding: 3px 4px;
+	border-radius: 3px;
+	background-color: transparent;
+}
+
+.progress-bar__checkbox:hover {
+	background-color: #E3EAE5;
+}
+
+.progress-bar__checkbox input {
+    display: none; /* Hide default checkbox */
+}
+
+.progress-bar__checkbox .checkbox-custom {
+    width: 15px;
+	height: 15px;
+	border: 1px solid #C6C6C6;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
+	flex-shrink: 0;
+}
+
+.progress-bar__checkbox .checkbox-custom::after {
+    content: '';
+    display: block;
+    width: 9px;
+    height: 7px;
+    background-image: url("data:image/svg+xml,%3Csvg width='9' height='7' viewBox='0 0 9 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.39102 0.5L3.27486 5.33237L1.54826 3.70468L1 4.29568L3.33828 6.5L8 1.02712L7.39102 0.5Z' fill='white' stroke='white' stroke-width='0.3'/%3E%3C/svg%3E%0A");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Checked state */
+.progress-bar__checkbox input:checked + .checkbox-custom {
+    background-color: #28B028;
+    border-color: #28B028;
+}
+
+.progress-bar__checkbox input:checked + .checkbox-custom::after {
+    opacity: 1;
+}
+
+.progress-bar__checkbox input:checked:hover + .checkbox-custom {
+    background-color: #28B028;
+    border-color: #28B028;
+}
+
+.progress-bar__checkbox .checkbox-label {
+    line-height: 1.2;
 }
 
 /* Tabs */

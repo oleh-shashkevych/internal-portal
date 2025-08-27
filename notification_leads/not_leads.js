@@ -42,23 +42,46 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', function () {
 	const progressItems = document.querySelectorAll('.progress-bar__item');
 
+    const deactivateCheckboxes = (item) => {
+        item.querySelectorAll('.progress-bar__checklist input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    };
+
 	progressItems.forEach((item, index) => {
 		const btn = item.querySelector('.progress-bar__btn');
 
 		btn.addEventListener('click', () => {
 			const isActive = item.classList.contains('active');
+            // This checks if all items before and including the current one are active, and all after are not.
+            // Essentially, it checks if the clicked item is the last one in the active sequence.
+			const isLastActive = [...progressItems].every((itm, i) => i <= index ? itm.classList.contains('active') : !itm.classList.contains('active'));
 
-			if (isActive && [...progressItems].every((itm, i) => i <= index ? itm.classList.contains('active') : !itm.classList.contains('active'))) {
-				// Если клик по последнему активному — сбросить все правее
-				progressItems.forEach((itm, idx) => {
-					itm.classList.toggle('active', idx < index);
-				});
+            let activateUptoIndex;
+
+			if (isActive && isLastActive) {
+                // If the user clicks the last active step, it should be deactivated.
+                // The new end of the active sequence is the one before it.
+				activateUptoIndex = index - 1;
 			} else {
-				// Иначе установить active до нажатого включительно
-				progressItems.forEach((itm, idx) => {
-					itm.classList.toggle('active', idx <= index);
-				});
+                // If the user clicks an inactive step, or an active step that isn't the last one,
+                // activate all steps up to and including the clicked one.
+				activateUptoIndex = index;
 			}
+
+            progressItems.forEach((itm, idx) => {
+                const shouldBeActive = idx <= activateUptoIndex;
+                const isCurrentlyActive = itm.classList.contains('active');
+
+                if (isCurrentlyActive && !shouldBeActive) {
+                    // This item is being deactivated
+                    itm.classList.remove('active');
+                    deactivateCheckboxes(itm);
+                } else if (!isCurrentlyActive && shouldBeActive) {
+                    // This item is being activated
+                    itm.classList.add('active');
+                }
+            });
 		});
 	});
 });
