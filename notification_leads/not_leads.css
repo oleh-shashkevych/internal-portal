@@ -3,7 +3,7 @@
 /* Progress Bar */
 .progress-bar {
 	display: grid;
-	grid-template-columns: repeat(7, 1fr);
+	grid-template-columns: repeat(9, 1fr);
 }
 
 .progress-bar__item {

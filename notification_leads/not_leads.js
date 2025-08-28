@@ -45,8 +45,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const deactivateCheckboxes = (item) => {
         item.querySelectorAll('.progress-bar__checklist input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = false;
+            // Remove the 'checked_prog' class from the parent element
+            if (checkbox.parentElement) {
+                checkbox.parentElement.classList.remove('checked_prog');
+            }
         });
     };
+
+    // Add event listeners to all checkboxes inside the progress bar
+    const allCheckboxes = document.querySelectorAll('.progress-bar__checklist input[type="checkbox"]');
+    allCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (event) => {
+            const parent = event.target.parentElement;
+            if (parent) {
+                if (event.target.checked) {
+                    parent.classList.add('checked_prog');
+                } else {
+                    parent.classList.remove('checked_prog');
+                }
+            }
+        });
+    });
 
 	progressItems.forEach((item, index) => {
 		const btn = item.querySelector('.progress-bar__btn');
