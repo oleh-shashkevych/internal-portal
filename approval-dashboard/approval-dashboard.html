@@ -558,6 +558,14 @@
                                                         <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                     </svg>
                                                 </button>
+                                                <button class="approval__switch-btn" id="toggleTableChart" type="button" data-view="table">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M15.3438 18.3438C17.3969 16.2906 17.3969 12.9594 15.3438 10.9062L13.0938 8.65625C11.0406 6.60312 7.70938 6.60312 5.65625 8.65625C3.60312 10.7094 3.60312 14.0406 5.65625 16.0938L7.40625 17.8438" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M8.65625 5.65625C6.60312 7.70938 6.60312 11.0406 8.65625 13.0938L10.9062 15.3438C12.9594 17.3969 16.2906 17.3969 18.3438 15.3438C20.3969 13.2906 20.3969 9.95938 18.3438 7.90625L16.5938 6.15625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M6.75 17.25C7.57843 17.25 8.25 16.5784 8.25 15.75C8.25 14.9216 7.57843 14.25 6.75 14.25C5.92157 14.25 5.25 14.9216 5.25 15.75C5.25 16.5784 5.92157 17.25 6.75 17.25Z" fill="currentColor"/>
+                                                        <path d="M17.25 8.25C18.0784 8.25 18.75 7.57843 18.75 6.75C18.75 5.92157 18.0784 5.25 17.25 5.25C16.4216 5.25 15.75 5.92157 15.75 6.75C15.75 7.57843 16.4216 8.25 17.25 8.25Z" fill="currentColor"/>
+                                                    </svg>
+                                                </button>
                                             </div>
                                             <div class="kanban-nav hidden" id="users-chart-nav">
                                                 <button class="kanban-nav__btn" id="users-chart-scroll-prev" type="button">
@@ -606,6 +614,7 @@
                                             <canvas id="approvalApprovalAmountChart"></canvas>
                                         </div>
                                         <div class="users-chart__container hidden" id="usersChartContainer"></div>
+                                        <div class="approval-table__container hidden" id="tableContainer"></div>
                                     </div>
                                 </div>
                             </div>
@@ -4168,7 +4177,21 @@
         </div>
     </div>
 
-    <div id="overlay" class="overlay"></div>
+    <div class="popup-overlay" id="popupOverlay"></div>
+
+    <div class="popup" id="approvalPopup">
+        <div class="popup-top">
+            <h2>Approval Details</h2>
+            <button type="button" class="popup-close js-popup-close">
+                <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.43774 15.6456C1.1839 15.8994 0.772346 15.8994 0.518506 15.6456C0.264665 15.3917 0.264665 14.9802 0.518506 14.7263L6.74483 8.5L0.518506 2.27368C0.264665 2.01984 0.264665 1.60828 0.518506 1.35444C0.772346 1.1006 1.1839 1.1006 1.43774 1.35444L7.66406 7.58076L13.8904 1.35444C14.1442 1.1006 14.5558 1.1006 14.8096 1.35444C15.0635 1.60828 15.0635 2.01984 14.8096 2.27368L8.5833 8.5L14.8096 14.7263C15.0635 14.9802 15.0635 15.3917 14.8096 15.6456C14.5558 15.8994 14.1442 15.8994 13.8904 15.6456L7.66406 9.41924L1.43774 15.6456Z" fill="#232323"/>
+                </svg>
+            </button>
+        </div>
+        <div class="popup-body">
+            <p>Details will be shown here...</p>
+        </div>
+    </div>
 
     <script src="../script.js"></script>
     <script src="./approval-dashboard.js"></script>

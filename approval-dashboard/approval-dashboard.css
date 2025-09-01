@@ -990,3 +990,182 @@
 .kanban-nav__btn:disabled:hover {
     background-color: #fff;
 }
+
+/* ==========================================================================
+   Approval Table Styles
+   ========================================================================== */
+
+.approval-table__container {
+    width: 100%;
+    height: calc(350px + 96px); /* Same as other chart containers */
+    position: relative;
+    font-family: 'Urbanist', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+.approval-table {
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    height: 100%;
+    border-radius: 3px;
+    border-bottom: 1px solid #d3d3d3; /* Match target style */
+}
+
+.table__header, .table__footer, .table__row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    align-items: center;
+    border-top: 1px solid #d3d3d3; /* Match target style */
+}
+
+.table__row:hover {
+    background: linear-gradient(0deg,
+			rgba(241, 249, 242, 0.7) 0%,
+			rgba(241, 249, 242, 0.7) 100%),
+		#fff;
+}
+
+.table__header {
+    font-weight: 600; /* Similar to Sofia Pro-M */
+    font-size: 16px; /* Match target style */
+    color: #232323; /* Match target style */
+    background-color: #f9f9f9; /* Match target style */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-top: none; /* Header should not have a top border */
+}
+
+.table__body {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #159C2A #f1f1f1;
+}
+.table__body::-webkit-scrollbar {
+    width: 6px;
+}
+.table__body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.table__body::-webkit-scrollbar-thumb {
+    background: #159C2A;
+    border-radius: 3px;
+}
+
+.table__footer {
+    font-weight: 700;
+    font-size: 16px;
+    background-color: #f9f9f9; /* Match target style */
+    border-bottom: none;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+}
+
+.table__cell {
+    padding: 15px; /* Match target style */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px; /* Match target style */
+    line-height: 1.2; /* Adjust line-height for new font size */
+    color: #232323; /* Match target style */
+}
+
+.table__header .table__cell {
+    text-transform: capitalize;
+}
+
+.table__cell--clickable {
+    color: #232323;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.table__cell--clickable:hover {
+    color: #159C2A;
+}
+
+.table__footer .table__cell {
+    font-size: 16px; /* Match target style */
+    font-weight: 700;
+    color: #232323; /* Match target style */
+}
+
+/* ==========================================================================
+   Popup Styles
+   ========================================================================== */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+    z-index: 1000;
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: #fff;
+    padding: 15px 20px 30px;
+    border-radius: 3px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+    z-index: 1001;
+}
+
+.popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.popup-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.popup h2 {
+    font-size: 24px;
+    font-family: 'Urbanist', sans-serif;
+    color: #232323;
+    font-weight: 500;
+    text-transform: capitalize;
+    margin: 0;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: auto;
+}

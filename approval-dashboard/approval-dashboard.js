@@ -81,18 +81,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: 'Jacob', avatarUrl: '../assets/images/kanban-1.jpg', goalAmount: 200000, earnedAmount: 220000, units: 8 },
                 { name: 'Isabella', avatarUrl: '../assets/images/kanban-2.jpg', goalAmount: 250000, earnedAmount: 140000, units: 12 },
                 { name: 'Ethan', avatarUrl: '../assets/images/kanban-3.jpg', goalAmount: 180000, earnedAmount: 100000, units: 4 },
-                
             ]
         }
+    };
+    
+    const tableData = {
+        direct: [
+            { id: 1, representative: 'Michael', totalVol: 188880.84, numOfApprovals: 47, avgSize: 4018.74, contractsSigned: { units: 23, perc: 48.94 }, numOfFunded: { units: 15, perc: 65.22 }, approvedToFunded: { perc: 31.91 } },
+            { id: 2, representative: 'Emily', totalVol: 278675.25, numOfApprovals: 15, avgSize: 18578.35, contractsSigned: { units: 10, perc: 66.67 }, numOfFunded: { units: 7, perc: 70.00 }, approvedToFunded: { perc: 46.67 } },
+            { id: 3, representative: 'Olivia', totalVol: 95532.77, numOfApprovals: 28, avgSize: 3411.88, contractsSigned: { units: 5, perc: 17.86 }, numOfFunded: { units: 2, perc: 40.00 }, approvedToFunded: { perc: 7.14 } },
+            { id: 4, representative: 'James', totalVol: 245671.13, numOfApprovals: 4, avgSize: 61417.78, contractsSigned: { units: 3, perc: 75.00 }, numOfFunded: { units: 1, perc: 33.33 }, approvedToFunded: { perc: 25.00 } },
+            { id: 5, representative: 'Damon', totalVol: 150049.21, numOfApprovals: 33, avgSize: 4546.95, contractsSigned: { units: 21, perc: 63.64 }, numOfFunded: { units: 18, perc: 85.71 }, approvedToFunded: { perc: 54.55 } },
+            { id: 6, representative: 'Sophia', totalVol: 68912.45, numOfApprovals: 51, avgSize: 1351.22, contractsSigned: { units: 45, perc: 88.24 }, numOfFunded: { units: 20, perc: 44.44 }, approvedToFunded: { perc: 39.22 } },
+            { id: 7, representative: 'Filip', totalVol: 298450.96, numOfApprovals: 12, avgSize: 24870.91, contractsSigned: { units: 8, perc: 66.67 }, numOfFunded: { units: 3, perc: 37.50 }, approvedToFunded: { perc: 25.00 } },
+            { id: 8, representative: 'Patrick', totalVol: 175231.54, numOfApprovals: 42, avgSize: 4172.18, contractsSigned: { units: 15, perc: 35.71 }, numOfFunded: { units: 1, perc: 6.67 }, approvedToFunded: { perc: 2.38 } },
+            { id: 9, representative: 'Eliot', totalVol: 220101.33, numOfApprovals: 22, avgSize: 10004.61, contractsSigned: { units: 1, perc: 4.55 }, numOfFunded: { units: 0, perc: 0.00 }, approvedToFunded: { perc: 0.00 } },
+            { id: 10, representative: 'Emma', totalVol: 59881.18, numOfApprovals: 38, avgSize: 1575.82, contractsSigned: { units: 30, perc: 78.95 }, numOfFunded: { units: 25, perc: 83.33 }, approvedToFunded: { perc: 65.79 } },
+            { id: 11, representative: 'Cho', totalVol: 199420.57, numOfApprovals: 7, avgSize: 28488.65, contractsSigned: { units: 5, perc: 71.43 }, numOfFunded: { units: 4, perc: 80.00 }, approvedToFunded: { perc: 57.14 } },
+            { id: 12, representative: 'Lucas', totalVol: 123456.78, numOfApprovals: 25, avgSize: 4938.27, contractsSigned: { units: 18, perc: 72.00 }, numOfFunded: { units: 9, perc: 50.00 }, approvedToFunded: { perc: 36.00 } },
+            { id: 13, representative: 'Noah', totalVol: 88765.43, numOfApprovals: 45, avgSize: 1972.56, contractsSigned: { units: 20, perc: 44.44 }, numOfFunded: { units: 11, perc: 55.00 }, approvedToFunded: { perc: 24.44 } },
+            { id: 14, representative: 'Mia', totalVol: 265432.10, numOfApprovals: 18, avgSize: 14746.23, contractsSigned: { units: 12, perc: 66.67 }, numOfFunded: { units: 10, perc: 83.33 }, approvedToFunded: { perc: 55.56 } },
+            { id: 15, representative: 'Ava', totalVol: 112233.44, numOfApprovals: 30, avgSize: 3741.11, contractsSigned: { units: 25, perc: 83.33 }, numOfFunded: { units: 15, perc: 60.00 }, approvedToFunded: { perc: 50.00 } },
+            { id: 16, representative: 'John', totalVol: 175231.54, numOfApprovals: 42, avgSize: 4172.18, contractsSigned: { units: 15, perc: 35.71 }, numOfFunded: { units: 1, perc: 6.67 }, approvedToFunded: { perc: 2.38 } },
+            { id: 17, representative: 'Brenda', totalVol: 220101.33, numOfApprovals: 22, avgSize: 10004.61, contractsSigned: { units: 1, perc: 4.55 }, numOfFunded: { units: 0, perc: 0.00 }, approvedToFunded: { perc: 0.00 } },
+            { id: 18, representative: 'Linda', totalVol: 59881.18, numOfApprovals: 38, avgSize: 1575.82, contractsSigned: { units: 30, perc: 78.95 }, numOfFunded: { units: 25, perc: 83.33 }, approvedToFunded: { perc: 65.79 } },
+            { id: 19, representative: 'Stefania', totalVol: 199420.57, numOfApprovals: 7, avgSize: 28488.65, contractsSigned: { units: 5, perc: 71.43 }, numOfFunded: { units: 4, perc: 80.00 }, approvedToFunded: { perc: 57.14 } },
+            { id: 20, representative: 'Bob', totalVol: 123456.78, numOfApprovals: 25, avgSize: 4938.27, contractsSigned: { units: 18, perc: 72.00 }, numOfFunded: { units: 9, perc: 50.00 }, approvedToFunded: { perc: 36.00 } },
+        ],
+        referral: [
+            { id: 1, representative: 'Jacob', totalVol: 150049.21, numOfApprovals: 33, avgSize: 4546.95, contractsSigned: { units: 21, perc: 63.64 }, numOfFunded: { units: 18, perc: 85.71 }, approvedToFunded: { perc: 54.55 } },
+            { id: 2, representative: 'Isabella', totalVol: 68912.45, numOfApprovals: 51, avgSize: 1351.22, contractsSigned: { units: 45, perc: 88.24 }, numOfFunded: { units: 20, perc: 44.44 }, approvedToFunded: { perc: 39.22 } },
+            { id: 3, representative: 'Ethan', totalVol: 298450.96, numOfApprovals: 12, avgSize: 24870.91, contractsSigned: { units: 8, perc: 66.67 }, numOfFunded: { units: 3, perc: 37.50 }, approvedToFunded: { perc: 25.00 } },
+        ]
     };
 
     let linearChart;
     let currentDataType = 'direct';
-    let userChartResizeObserver; // <-- Новая переменная для ResizeObserver
+    let userChartResizeObserver;
 
-    // ==========================================================================
-    // ЧАСТИНА 1: Лінійний графік
-    // ==========================================================================
     const linearChartCtx = document.getElementById('approvalApprovalAmountChart');
     if (linearChartCtx) {
         const MAX_CHART_VALUE = 500000;
@@ -712,9 +738,12 @@ document.addEventListener('DOMContentLoaded', () => {
         runGoalAnimations(data.goalsData);
         updateStatsBlock(data.statsData);
 
-        if (!usersChartContainer.classList.contains('hidden')) {
+        const currentView = document.querySelector('.approval__switch-btn[data-view].approval__switch-btn--active').dataset.view;
+        if (currentView === 'users') {
             renderUsersChart(usersChartData[type]);
             setTimeout(updateUserChartNavButtonsState, 150);
+        } else if (currentView === 'table') {
+            renderApprovalTable(tableData[type]);
         }
         
         document.querySelectorAll('.kanban-set').forEach(board => {
@@ -748,6 +777,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleLineChartBtn = document.getElementById('toggleLineChart');
     const toggleUsersChartBtn = document.getElementById('toggleUsersChart');
     const usersChartNav = document.getElementById('users-chart-nav');
+
+    const toggleTableChartBtn = document.getElementById('toggleTableChart');
+    const tableContainer = document.getElementById('tableContainer');
     
     const formatCurrencyFull = (value) => new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -915,40 +947,127 @@ document.addEventListener('DOMContentLoaded', () => {
             newScrollWrapper.addEventListener('scroll', updateUserChartNavButtonsState);
         }
     }
+
+    function renderApprovalTable(data) {
+        tableContainer.innerHTML = '';
+        if (!data || data.length === 0) {
+            tableContainer.innerHTML = `<div class="users-chart__no-data">No Data</div>`;
+            return;
+        }
+
+        const formatCurrency = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+        const getPercentColorClass = (perc) => perc >= 50 ? 'color-green' : 'color-red';
+
+        const table = document.createElement('div');
+        table.className = 'approval-table';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'table__header';
+        const columns = ['Representative', 'Total Vol', '# of Approvals', 'Avg Size', '# of Signed', '# of Funded', 'Approved : Funded'];
+        columns.forEach(col => {
+            const cell = document.createElement('div');
+            cell.className = 'table__cell';
+            cell.textContent = col;
+            header.appendChild(cell);
+        });
+        table.appendChild(header);
+
+        // Body
+        const body = document.createElement('div');
+        body.className = 'table__body';
+
+        const totals = {
+            totalVol: 0,
+            numOfApprovals: 0,
+            contractsSigned: 0,
+            numOfFunded: 0,
+        };
+
+        data.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'table__row';
+
+            // Update totals
+            totals.totalVol += item.totalVol;
+            totals.numOfApprovals += item.numOfApprovals;
+            totals.contractsSigned += item.contractsSigned.units;
+            totals.numOfFunded += item.numOfFunded.units;
+
+            row.innerHTML = `
+                <div class="table__cell">${item.representative}</div>
+                <div class="table__cell">${formatCurrency(item.totalVol)}</div>
+                <div class="table__cell"><a href="#" class="table__cell--clickable" data-id="${item.id}">${item.numOfApprovals}</a></div>
+                <div class="table__cell">${formatCurrency(item.avgSize)}</div>
+                <div class="table__cell">${item.contractsSigned.units} (<span class="${getPercentColorClass(item.contractsSigned.perc)}">${item.contractsSigned.perc.toFixed(2)}%</span>)</div>
+                <div class="table__cell">${item.numOfFunded.units} (<span class="${getPercentColorClass(item.numOfFunded.perc)}">${item.numOfFunded.perc.toFixed(2)}%</span>)</div>
+                <div class="table__cell"><span class="${getPercentColorClass(item.approvedToFunded.perc)}">${item.approvedToFunded.perc.toFixed(2)}%</span></div>
+            `;
+            body.appendChild(row);
+        });
+        table.appendChild(body);
+
+        // Footer
+        const footer = document.createElement('div');
+        footer.className = 'table__footer';
+
+        const totalAvgSize = totals.numOfApprovals > 0 ? totals.totalVol / totals.numOfApprovals : 0;
+        const totalContractsPerc = totals.numOfApprovals > 0 ? (totals.contractsSigned / totals.numOfApprovals) * 100 : 0;
+        const totalFundedPerc = totals.contractsSigned > 0 ? (totals.numOfFunded / totals.contractsSigned) * 100 : 0;
+        const totalApprovalsToFundedPerc = totals.numOfApprovals > 0 ? (totals.numOfFunded / totals.numOfApprovals) * 100 : 0;
+
+        footer.innerHTML = `
+            <div class="table__cell">Total</div>
+            <div class="table__cell">${formatCurrency(totals.totalVol)}</div>
+            <div class="table__cell">${totals.numOfApprovals}</div>
+            <div class="table__cell">${formatCurrency(totalAvgSize)}</div>
+            <div class="table__cell">${totals.contractsSigned} (<span class="${getPercentColorClass(totalContractsPerc)}">${totalContractsPerc.toFixed(2)}%</span>)</div>
+            <div class="table__cell">${totals.numOfFunded} (<span class="${getPercentColorClass(totalFundedPerc)}">${totalFundedPerc.toFixed(2)}%</span>)</div>
+            <div class="table__cell"><span class="${getPercentColorClass(totalApprovalsToFundedPerc)}">${totalApprovalsToFundedPerc.toFixed(2)}%</span></div>
+        `;
+        table.appendChild(footer);
+
+        tableContainer.appendChild(table);
+    }
     
     function toggleChartView(view) {
         if (userChartResizeObserver) {
             userChartResizeObserver.disconnect();
         }
-        
+
         const statsBlock = document.querySelector('.approval-amount__stats');
+        const allContainers = [lineChartContainer, usersChartContainer, tableContainer];
+        const allNavs = [usersChartNav];
+        const allButtons = [toggleLineChartBtn, toggleUsersChartBtn, toggleTableChartBtn];
+
+        allContainers.forEach(c => c.classList.add('hidden'));
+        allNavs.forEach(n => n.classList.add('hidden'));
+        allButtons.forEach(b => b.classList.remove('approval__switch-btn--active'));
 
         if (view === 'line') {
             lineChartContainer.classList.remove('hidden');
-            usersChartContainer.classList.add('hidden');
-            usersChartNav.classList.add('hidden');
             toggleLineChartBtn.classList.add('approval__switch-btn--active');
-            toggleUsersChartBtn.classList.remove('approval__switch-btn--active');
-            if (statsBlock) statsBlock.classList.remove('hidden'); // ✨ ЗМІНА: Показати статистику
-        } else {
-            lineChartContainer.classList.add('hidden');
+            if (statsBlock) statsBlock.classList.remove('hidden');
+        } else if (view === 'users') {
             usersChartContainer.classList.remove('hidden');
             usersChartNav.classList.remove('hidden');
-            toggleLineChartBtn.classList.remove('approval__switch-btn--active');
             toggleUsersChartBtn.classList.add('approval__switch-btn--active');
-            if (statsBlock) statsBlock.classList.add('hidden'); // ✨ ЗМІНА: Сховати статистику
+            if (statsBlock) statsBlock.classList.add('hidden');
             
             renderUsersChart(usersChartData[currentDataType]);
             
             userChartResizeObserver = new ResizeObserver(entries => {
                 window.requestAnimationFrame(() => {
-                    if (!Array.isArray(entries) || !entries.length) {
-                        return;
-                    }
+                    if (!Array.isArray(entries) || !entries.length) return;
                     adjustUserChartLayout();
                 });
             });
             userChartResizeObserver.observe(usersChartContainer);
+        } else if (view === 'table') {
+            tableContainer.classList.remove('hidden');
+            toggleTableChartBtn.classList.add('approval__switch-btn--active');
+            if (statsBlock) statsBlock.classList.add('hidden');
+            renderApprovalTable(tableData[currentDataType]);
         }
     }
     
@@ -956,6 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     toggleLineChartBtn.addEventListener('click', () => toggleChartView('line'));
     toggleUsersChartBtn.addEventListener('click', () => toggleChartView('users'));
+    toggleTableChartBtn.addEventListener('click', () => toggleChartView('table'));
     
     // ==========================================================================
     // Логіка скролу для Kanban-дошки 
@@ -1032,4 +1152,33 @@ document.addEventListener('DOMContentLoaded', () => {
     
     usersChartPrevButton.addEventListener('click', () => handleUsersChartScroll(-1));
     usersChartNextButton.addEventListener('click', () => handleUsersChartScroll(1));
+
+    // Popup Logic
+    const popupOverlay = document.getElementById('popupOverlay');
+    const approvalPopup = document.getElementById('approvalPopup');
+    const popupCloseBtn = approvalPopup ? approvalPopup.querySelector('.js-popup-close') : null;
+
+    if (popupOverlay && approvalPopup && popupCloseBtn) {
+        
+        const openPopup = () => {
+            popupOverlay.classList.add('active');
+            approvalPopup.classList.add('active');
+        };
+
+        const closePopup = () => {
+            popupOverlay.classList.remove('active');
+            approvalPopup.classList.remove('active');
+        };
+
+        tableContainer.addEventListener('click', (e) => {
+            if (e.target.closest('.table__cell--clickable')) {
+                e.preventDefault();
+                const dealId = e.target.dataset.id;
+                console.log(`Opening popup for deal #${dealId}`);
+                openPopup();
+            }
+        });
+
+        popupCloseBtn.addEventListener('click', closePopup);
+    }
 });
