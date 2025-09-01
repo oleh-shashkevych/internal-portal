@@ -1021,6 +1021,10 @@
     border-top: 1px solid #d3d3d3; /* Match target style */
 }
 
+.table__row {
+    padding: 12px 15px;
+}
+
 .table__row:hover {
     background: linear-gradient(0deg,
 			rgba(241, 249, 242, 0.7) 0%,
@@ -1037,6 +1041,7 @@
     top: 0;
     z-index: 2;
     border-top: none; /* Header should not have a top border */
+    padding: 15px;
 }
 
 .table__body {
@@ -1063,20 +1068,21 @@
     position: sticky;
     bottom: 0;
     z-index: 2;
+    padding: 15px;
 }
 
 .table__cell {
-    padding: 15px; /* Match target style */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 16px; /* Match target style */
-    line-height: 1.2; /* Adjust line-height for new font size */
-    color: #232323; /* Match target style */
+    white-space: normal; /* Позволяет перенос текста */
+    word-break: break-all; /* Принудительно переносит длинные строки, включая числа */
+    font-size: 16px;
+    line-height: 1.2;
+    color: #232323;
+    text-align: left;
 }
 
 .table__header .table__cell {
     text-transform: capitalize;
+    /* word-break: normal;  */
 }
 
 .table__cell--clickable {
