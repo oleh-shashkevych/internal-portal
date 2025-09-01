@@ -1041,7 +1041,7 @@
     top: 0;
     z-index: 2;
     border-top: none; /* Header should not have a top border */
-    padding: 15px;
+    padding: 15px 25px 15px 15px;
 }
 
 .table__body {
@@ -1068,7 +1068,7 @@
     position: sticky;
     bottom: 0;
     z-index: 2;
-    padding: 15px;
+    padding: 15px 25px 15px 15px;
 }
 
 .table__cell {
@@ -1082,7 +1082,7 @@
 
 .table__header .table__cell {
     text-transform: capitalize;
-    /* word-break: normal;  */
+    word-break: normal; 
 }
 
 .table__cell--clickable {
@@ -1100,6 +1100,12 @@
     font-size: 16px; /* Match target style */
     font-weight: 700;
     color: #232323; /* Match target style */
+}
+
+@media (max-width: 1024px) {
+    .table__header .table__cell {
+        word-break: break-all; 
+    }
 }
 
 /* ==========================================================================
