@@ -1102,6 +1102,22 @@
     color: #232323; /* Match target style */
 }
 
+.table__cell--approvals {
+    cursor: pointer;
+}
+
+.table__row--active,
+.table__row--active:hover {
+    background: #E8F6EA !important;
+}
+
+.table__cell--clickable {
+    color: #232323;
+    /* cursor: pointer; - видалено, бо тепер це в table__cell--approvals */
+    text-decoration: none;
+    font-weight: 500;
+}
+
 @media (max-width: 1024px) {
     .table__header .table__cell {
         word-break: break-all; 

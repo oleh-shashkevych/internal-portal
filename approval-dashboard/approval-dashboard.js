@@ -956,6 +956,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formatCurrency = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+        // Змінено форматування відсотків
         const getPercentColorClass = (perc) => perc >= 50 ? 'color-green' : 'color-red';
 
         const table = document.createElement('div');
@@ -987,21 +988,26 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach(item => {
             const row = document.createElement('div');
             row.className = 'table__row';
+            row.dataset.id = item.id; // Додаємо ID до рядка для ідентифікації
 
             // Update totals
             totals.totalVol += item.totalVol;
             totals.numOfApprovals += item.numOfApprovals;
             totals.contractsSigned += item.contractsSigned.units;
             totals.numOfFunded += item.numOfFunded.units;
+            
+            // Додано генерацію випадкової літери
+            const randomInitial = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            const representativeName = `${item.representative} ${randomInitial}.`;
 
             row.innerHTML = `
-                <div class="table__cell">${item.representative}</div>
+                <div class="table__cell">${representativeName}</div>
                 <div class="table__cell">${formatCurrency(item.totalVol)}</div>
-                <div class="table__cell"><a href="#" class="table__cell--clickable" data-id="${item.id}">${item.numOfApprovals}</a></div>
+                <div class="table__cell table__cell--approvals">${item.numOfApprovals}</div>
                 <div class="table__cell">${formatCurrency(item.avgSize)}</div>
-                <div class="table__cell">${item.contractsSigned.units} (<span class="${getPercentColorClass(item.contractsSigned.perc)}">${item.contractsSigned.perc.toFixed(2)}%</span>)</div>
-                <div class="table__cell">${item.numOfFunded.units} (<span class="${getPercentColorClass(item.numOfFunded.perc)}">${item.numOfFunded.perc.toFixed(2)}%</span>)</div>
-                <div class="table__cell"><span class="${getPercentColorClass(item.approvedToFunded.perc)}">${item.approvedToFunded.perc.toFixed(2)}%</span></div>
+                <div class="table__cell">${item.contractsSigned.units} (<span class="${getPercentColorClass(item.contractsSigned.perc)}">${item.contractsSigned.perc.toFixed(0)}%</span>)</div>
+                <div class="table__cell">${item.numOfFunded.units} (<span class="${getPercentColorClass(item.numOfFunded.perc)}">${item.numOfFunded.perc.toFixed(0)}%</span>)</div>
+                <div class="table__cell"><span class="${getPercentColorClass(item.approvedToFunded.perc)}">${item.approvedToFunded.perc.toFixed(0)}%</span></div>
             `;
             body.appendChild(row);
         });
@@ -1021,9 +1027,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="table__cell">${formatCurrency(totals.totalVol)}</div>
             <div class="table__cell">${totals.numOfApprovals}</div>
             <div class="table__cell">${formatCurrency(totalAvgSize)}</div>
-            <div class="table__cell">${totals.contractsSigned} (<span class="${getPercentColorClass(totalContractsPerc)}">${totalContractsPerc.toFixed(2)}%</span>)</div>
-            <div class="table__cell">${totals.numOfFunded} (<span class="${getPercentColorClass(totalFundedPerc)}">${totalFundedPerc.toFixed(2)}%</span>)</div>
-            <div class="table__cell"><span class="${getPercentColorClass(totalApprovalsToFundedPerc)}">${totalApprovalsToFundedPerc.toFixed(2)}%</span></div>
+            <div class="table__cell">${totals.contractsSigned} (<span class="${getPercentColorClass(totalContractsPerc)}">${totalContractsPerc.toFixed(0)}%</span>)</div>
+            <div class="table__cell">${totals.numOfFunded} (<span class="${getPercentColorClass(totalFundedPerc)}">${totalFundedPerc.toFixed(0)}%</span>)</div>
+            <div class="table__cell"><span class="${getPercentColorClass(totalApprovalsToFundedPerc)}">${totalApprovalsToFundedPerc.toFixed(0)}%</span></div>
         `;
         table.appendChild(footer);
 
@@ -1160,22 +1166,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (popupOverlay && approvalPopup && popupCloseBtn) {
         
-        const openPopup = () => {
+        const openPopup = (row) => {
+            // Видаляємо активний клас з попереднього рядка
+            const currentActive = document.querySelector('.table__row--active');
+            if (currentActive) {
+                currentActive.classList.remove('table__row--active');
+            }
+            // Додаємо активний клас до поточного рядка
+            row.classList.add('table__row--active');
+
             popupOverlay.classList.add('active');
             approvalPopup.classList.add('active');
         };
 
         const closePopup = () => {
+             // Видаляємо активний клас при закритті
+            const currentActive = document.querySelector('.table__row--active');
+            if (currentActive) {
+                currentActive.classList.remove('table__row--active');
+            }
             popupOverlay.classList.remove('active');
             approvalPopup.classList.remove('active');
         };
 
         tableContainer.addEventListener('click', (e) => {
-            if (e.target.closest('.table__cell--clickable')) {
-                e.preventDefault();
-                const dealId = e.target.dataset.id;
+            // Змінено селектор для кліку на всю ячейку
+            const approvalCell = e.target.closest('.table__cell--approvals');
+            if (approvalCell) {
+                const row = approvalCell.closest('.table__row');
+                const dealId = row.dataset.id;
                 console.log(`Opening popup for deal #${dealId}`);
-                openPopup();
+                openPopup(row);
             }
         });
 
