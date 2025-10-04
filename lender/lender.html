@@ -746,356 +746,264 @@
 
 							<div class="lender-content">
 								<div class="lender-content__item lender-content__item--lender" style="display: none;">
-									<div class="info-block">
+									<div class="info-block" data-block-name="lenderInfo">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Lender Info</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions">
+												</div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Lender Name</span>
-												<span class="info-block__value">ABC Capital Funding</span>
+												<span class="info-block__value" data-field="lenderName" data-type="text" data-maxlength="200" data-required="true">ABC Capital Funding</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Active</span>
-												<span class="info-block__value">
-													<div class="info-block__value-radio">
-														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/>
-															<path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/>
-														</svg>
-														Yes
+												<span class="info-block__value" data-field="active" data-type="select-icon" data-options='{"yes":"Yes", "no":"No"}'>
+													<div class="info-block__value-radio" data-value="yes">
+														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg> Yes
 													</div>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Tier</span>
-												<span class="info-block__value">
-													<div class="info-block__value-check info-block__value-check--c">
-														<div class="square"></div>
-													Tier 3
-													</div>
+												<span class="info-block__value" data-field="tier" data-type="select-tier" data-options='{"tier1": "Tier 1", "tier2": "Tier 2", "tier3": "Tier 3", "tier4": "Tier 4"}'>
+													<div class="info-block__value-check info-block__value-check--c" data-value="tier3"><div class="square"></div>Tier 3</div>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Sub Tier</span>
-												<span class="info-block__value">
-													<div class="info-block__value-check info-block__value-check--a">
-														<div class="square"></div>
-													A
-													</div>
+												<span class="info-block__value" data-field="subTier" data-type="select-tier" data-options='{"a": "A", "b": "B", "c": "C", "d": "D"}'>
+													<div class="info-block__value-check info-block__value-check--a" data-value="a"><div class="square"></div>A</div>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Programs</span>
-												<span class="info-block__value-list">AR Financing, Equipment Financing, Purchase Order/Invoice Factoring, Reverse</span>
+												<span class="info-block__value-list" data-field="programs" data-type="select2" data-required="true" data-options='["AR Financing", "Equipment Financing", "Purchase Order/Invoice Factoring", "Reverse", "LOC", "CC Split", "MCA", "TProg", "Commercial Mortgages"]'>AR Financing, Equipment Financing, Purchase Order/Invoice Factoring, Reverse</span>
+											</div>
+											<div class="info-block__row">
+												<span class="info-block__label">Notes</span>
+												<span class="info-block__value" data-field="notes" data-type="textarea" data-maxlength="500">Some notes here about the lender.</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="portalInfo">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Online Portal Information</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Portal Submission</span>
-												<span class="info-block__value">
-													<div class="info-block__value-radio">
-														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/>
-															<path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/>
-														</svg>
-														Yes
+												<span class="info-block__value" data-field="portalSubmission" data-type="select-icon" data-options='{"":"---", "yes":"Yes", "no":"No"}'>
+													<div class="info-block__value-radio" data-value="yes">
+														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg> Yes
 													</div>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Website</span>
-												<span class="info-block__value">
+												<span class="info-block__value" data-field="website" data-type="text" data-maxlength="200">
 													<a href="https://portal.abccapital.com" target="_blank">https://portal.abccapital.com</a>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Username</span>
-												<span class="info-block__value">abccapital</span>
+												<span class="info-block__value" data-field="username" data-type="text" data-maxlength="100">abccapital</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Password</span>
-												<span class="info-block__value">PortalR@b37$</span>
+												<span class="info-block__value" data-field="password" data-type="text" data-maxlength="100">PortalR@b37$</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Additional Questions</span>
-												<span class="info-block__value">Bank statements required (last 3-6 months)</span>
+												<span class="info-block__value" data-field="additionalQuestions" data-type="textarea" data-maxlength="500">Bank statements required (last 3-6 months)</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="stabilityCriteria">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Business Stability Criteria</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Time in Business</span>
-												<span class="info-block__value">6+ months</span>
+												<span class="info-block__value" data-field="timeInBusiness" data-type="text" data-maxlength="50">6+ months</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Min Mos Deposits</span>
-												<span class="info-block__value">5</span>
+												<span class="info-block__value" data-field="minMosDeposits" data-type="text" data-maxlength="50">5</span>
 											</div>
 											<div class="info-block__row">
-												<span class="info-block__label">Max Mos Deposits</span>
-												<span class="info-block__value">Unlimited</span>
+												<span class="info-block__label">Min Deposit Volume</span>
+												<span class="info-block__value" data-field="minDepositVolume" data-type="text" data-maxlength="50">10000</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Avg Daily Balances</span>
-												<span class="info-block__value">$2,500+</span>
+												<span class="info-block__value" data-field="avgDailyBalances" data-type="text" data-maxlength="50">$2,500+</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">NSFs</span>
-												<span class="info-block__value">< 6 per month</span>
+												<span class="info-block__value" data-field="nsfs" data-type="text" data-maxlength="50">&lt; 6 per month</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Ownership %</span>
-												<span class="info-block__value">51%+</span>
+												<span class="info-block__value" data-field="ownership" data-type="number" data-max="100">51</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Positions</span>
-												<span class="info-block__value">1st to 3rd allowed</span>
+												<span class="info-block__value" data-field="positions" data-type="text" data-maxlength="100">1st to 3rd allowed</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="creditCriteria">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Credit Criteria</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Min FICO</span>
-												<span class="info-block__value">550</span>
+												<span class="info-block__value" data-field="minFico" data-type="text" data-maxlength="100">550</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Hard Credit Pull</span>
-												<span class="info-block__value">No (Soft only)</span>
+												<span class="info-block__value" data-field="hardCreditPull" data-type="text" data-maxlength="100">No (Soft only)</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Judgements</span>
-												<span class="info-block__value">Allowed if satisfied</span>
+												<span class="info-block__value" data-field="judgements" data-type="textarea" data-maxlength="500">Allowed if satisfied</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Bankruptcies</span>
-												<span class="info-block__value">Discharged OK (older than 2 years)</span>
+												<span class="info-block__value" data-field="bankruptcies" data-type="textarea" data-maxlength="500">Discharged OK (older than 2 years)</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Tax Liens</span>
-												<span class="info-block__value">Must have payment plan</span>
+												<span class="info-block__value" data-field="taxLiens" data-type="textarea" data-maxlength="500">Must have payment plan</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="approvals">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Approvals</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Max Funding</span>
-												<span class="info-block__value">$500,000</span>
+												<span class="info-block__value" data-field="maxFunding" data-type="text" data-maxlength="100">$500,000</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Term</span>
-												<span class="info-block__value">6–18 months</span>
+												<span class="info-block__value" data-field="term" data-type="text" data-maxlength="100">6–18 months</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Retention</span>
-												<span class="info-block__value">20% holdback</span>
+												<span class="info-block__value" data-field="retention" data-type="select-icon" data-options='{"":"---", "yes":"Yes", "no":"No"}'>---</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Weekly</span>
-												<span class="info-block__value">Yes (weekly payback option available)</span>
+												<span class="info-block__value" data-field="weekly" data-type="select-icon" data-options='{"":"---", "yes":"Yes", "no":"No"}'>
+													<div class="info-block__value-radio" data-value="yes">
+														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg> Yes
+													</div>
+												</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="fundingInfo">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Funding Information</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Early Pay Discounts</span>
-												<span class="info-block__value">10–20%</span>
+												<span class="info-block__value" data-field="earlyPayDiscounts" data-type="textarea" data-maxlength="1500">10–20%</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Max Upsell</span>
-												<span class="info-block__value">1.35 factor rate</span>
+												<span class="info-block__value" data-field="maxUpsell" data-type="text" data-maxlength="100">1.35 factor rate</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Net Rule</span>
-												<span class="info-block__value">1.20 minimum</span>
+												<span class="info-block__value" data-field="netRule" data-type="text" data-maxlength="100">1.20 minimum</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Whitelabel</span>
-												<span class="info-block__value">
-													<div class="info-block__value-radio">
-														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/>
-															<path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/>
-														</svg>
-														Yes
+												<span class="info-block__value" data-field="whitelabel" data-type="select-icon" data-options='{"":"---", "yes":"Yes", "no":"No"}'>
+													<div class="info-block__value-radio" data-value="yes">
+														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg> Yes
 													</div>
 												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Fees</span>
-												<span class="info-block__value">2–5% origination</span>
+												<span class="info-block__value" data-field="fees" data-type="textarea" data-maxlength="500">2–5% origination</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Monthly Bonus</span>
-												<span class="info-block__value">Tiered based on volume</span>
+												<span class="info-block__value" data-field="monthlyBonus" data-type="textarea" data-maxlength="500">Tiered based on volume</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="renewalInfo">
 										<div class="info-block__header">
-											<h2 class="info-block__title">Renewal Information:</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<h2 class="info-block__title">Renewal Information</h2>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body">
 											<div class="info-block__row">
 												<span class="info-block__label">Renewal Eligibility</span>
-												<span class="info-block__value">50% paid down</span>
+												<span class="info-block__value" data-field="renewalEligibility" data-type="text" data-maxlength="4">50%</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Renewal Commission</span>
-												<span class="info-block__value">Full commission on renewals</span>
-											</div>
-											<div class="info-block__row">
-												<span class="info-block__label">Portal Tracking</span>
-												<span class="info-block__value">
-													<div class="info-block__value-radio">
-														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/>
-															<path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/>
-														</svg>
-														Yes
-													</div>
-												</span>
+												<span class="info-block__value" data-field="renewalCommission" data-type="text" data-maxlength="100">Full commission on renewals</span>
 											</div>
 										</div>
 									</div>
-									<div class="info-block">
+
+									<div class="info-block" data-block-name="industryRequirements">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Industry Requirements</h2>
-											<button class="info-block__edit-btn">
-												<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/>
-												</svg>
-												Edit
-											</button>
+											<div class="info-block__actions"></div>
 										</div>
 										<div class="info-block__body info-block__body--lists">
-											<div class="info-list">
-												<h3 class="info-list__title">Preferred Industries</h3>
-												<div class="info-list__items">
-													<span class="info-list__item">Real Estate</span>
-													<span class="info-list__item">Manufacturing</span>
-													<span class="info-list__item">Logistics & Transportation</span>
-													<span class="info-list__item">Hospitality & Tourism</span>
-													<span class="info-list__item">Restaurants</span>
-													<span class="info-list__item">Technology</span>
-													<span class="info-list__item info-list__item--active">Finance</span>
+											<div class="criteria-list-container">
+												<div class="info-list" data-criteria-name="Preferred Industries" data-items='["Real Estate", "Manufacturing", "Logistics & Transportation", "Hospitality & Tourism", "Restaurants", "Technology", "Finance"]'>
+													<h3 class="info-list__title">Preferred Industries</h3>
+													<div class="info-list__items">
+														<span class="info-list__item">Real Estate</span>
+														<span class="info-list__item">Manufacturing</span>
+														<span class="info-list__item">Logistics & Transportation</span>
+														<span class="info-list__item">Hospitality & Tourism</span>
+														<span class="info-list__item">Restaurants</span>
+														<span class="info-list__item">Technology</span>
+														<span class="info-list__item info-list__item--active">Finance</span>
+														<button class="criteria-edit-btn" style="display:none;">Edit</button>
+													</div>
 												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Restricted Industries</h3>
-												<div class="info-list__items">
-													<span class="info-list__item">Adult Entertainment</span>
-													<span class="info-list__item">Gambling & Betting</span>
-													<span class="info-list__item">Payday Lending</span>
-													<span class="info-list__item">Pyramid Schemes</span>
-													<span class="info-list__item">Tobacco & Vaping Products</span>
-													<span class="info-list__item">Political Organizations</span>
-													<span class="info-list__item info-list__item--active">Cannabis</span>
-												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Restricted States</h3>
-												<div class="info-list__items">
-													<span class="info-list__item">Alaska</span>
-													<span class="info-list__item">Hawaii</span>
-													<span class="info-list__item">New York</span>
-													<span class="info-list__item">New Jersey</span>
-													<span class="info-list__item">California</span>
-													<span class="info-list__item">Utah</span>
-													<span class="info-list__item info-list__item--active">Wyoming</span>
-												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Property Management</h3>
-												<div class="info-list__items">
-													<span class="info-list__item">Residential Property Management</span>
-													<span class="info-list__item">Commercial Property Management</span>
-													<span class="info-list__item">Industrial Property Management</span>
-													<span class="info-list__item">Mixed-Use Properties</span>
-													<span class="info-list__item">Short-Term Rentals</span>
-													<span class="info-list__item">HOA / Condominium Association Management</span>
-													<span class="info-list__item info-list__item--active">Student Housing</span>
-												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Law Firms</h3>
-												<div class="info-list__items">
-													<span class="info-list__item info-list__item--active">Allowed</span>
-												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Trucking</h3>
-												<div class="info-list__items">
-													<span class="info-list__item info-list__item--active">Allowed with 12+ months TIB</span>
-												</div>
-											</div>
-											<div class="info-list">
-												<h3 class="info-list__title">Used Auto</h3>
-												<div class="info-list__items">
-													<span class="info-list__item info-list__item--active">Allowed with dealer license</span>
+												<div class="info-list" data-criteria-name="Restricted Industries" data-items='["Adult Entertainment", "Gambling & Betting", "Payday Lending", "Pyramid Schemes", "Tobacco & Vaping Products", "Political Organizations", "Cannabis"]'>
+													<h3 class="info-list__title">Restricted Industries</h3>
+													<div class="info-list__items">
+														<span class="info-list__item">Adult Entertainment</span>
+														<span class="info-list__item">Gambling & Betting</span>
+														<span class="info-list__item">Payday Lending</span>
+														<span class="info-list__item">Pyramid Schemes</span>
+														<span class="info-list__item">Tobacco & Vaping Products</span>
+														<span class="info-list__item">Political Organizations</span>
+														<span class="info-list__item info-list__item--active">Cannabis</span>
+														<button class="criteria-edit-btn" style="display:none;">Edit</button>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -1236,7 +1144,7 @@
 											<div class="submissions-table__cell">Shared With</div>
 										</div>
 										<div class="submissions-table__body">
-											<div class="submissions-table__row">
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">08/04/2025 10:07 AM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1280,8 +1188,8 @@
 														<div class="submissions-table__avatar">IT</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">08/04/2025 10:40 AM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1325,8 +1233,8 @@
 														<div class="submissions-table__avatar">DP</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1345,8 +1253,8 @@
 														<div class="submissions-table__avatar">EJ</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1402,8 +1310,8 @@
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1434,8 +1342,8 @@
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1454,8 +1362,8 @@
 														<div class="submissions-table__avatar">CD</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1498,8 +1406,8 @@
 														<div class="submissions-table__avatar">DP</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1555,8 +1463,8 @@
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1574,8 +1482,8 @@
 														<div class="submissions-table__avatar">RC</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 07:27 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions</div>
 												<div class="submissions-table__cell">
@@ -1593,7 +1501,7 @@
 														<div class="submissions-table__avatar">NM</div>
 													</div>
 												</div>
-											</div>
+											</a>
 										</div>
 										<div class="submissions-table__footer">
 											<div class="submissions-table__cell submissions-table__cell--total-label">TOTAL</div>
@@ -1710,7 +1618,7 @@
 											<div class="submissions-table__cell">Shared With</div>
 										</div>
 										<div class="submissions-table__body">
-											<div class="submissions-table__row">
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">04/08/2025 10:37 AM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1726,8 +1634,8 @@
 														<div class="submissions-table__avatar">IT</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">04/08/2025 10:40 AM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #3</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1743,8 +1651,8 @@
 														<div class="submissions-table__avatar">DP</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1760,8 +1668,8 @@
 														<div class="submissions-table__avatar">EJ</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #4</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1782,8 +1690,8 @@
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1800,8 +1708,8 @@
 															</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1817,8 +1725,8 @@
 														<div class="submissions-table__avatar">CD</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #4</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1833,8 +1741,8 @@
 														<div class="submissions-table__avatar">DP</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #5</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1851,8 +1759,8 @@
 															</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1867,8 +1775,8 @@
 														<div class="submissions-table__avatar">RC</div>
 													</div>
 												</div>
-											</div>
-											<div class="submissions-table__row">
+											</a>
+											<a href="#" class="submissions-table__row">
 												<div class="submissions-table__cell">03/17/2025 19:37 PM</div>
 												<div class="submissions-table__cell">Fundshop Submissions #1</div>
 												<div class="submissions-table__cell">Lender Name</div>
@@ -1883,7 +1791,7 @@
 														<div class="submissions-table__avatar">NM</div>
 													</div>
 												</div>
-											</div>
+											</a>
 										</div>
 										<div class="submissions-table__footer submissions-table__footer--funded">
 											<div class="submissions-table__cell submissions-table__cell--total-label">TOTAL</div>
@@ -1923,6 +1831,42 @@
 		<div class="filter-popup__actions">
 			<button class="filter-popup__button filter-popup__button--apply" id="filter-apply-btn">Apply</button>
 			<button class="filter-popup__button filter-popup__button--reset" id="filter-reset-btn">Reset</button>
+		</div>
+	</div>
+
+	<div class="popup-overlay" id="criteriaPopupOverlay"></div>
+
+	<div class="popup criteria-popup" id="criteriaPopup">
+		<div class="popup-top">
+			<h2 id="criteriaPopupTitle">New Criteria</h2>
+			<button type="button" class="popup-close js-criteria-popup-close" aria-label="Close popup">
+				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M13.8906 0.854492C14.1445 0.600946 14.5558 0.60075 14.8096 0.854492C15.0632 1.10825 15.0631 1.51962 14.8096 1.77344L8.58301 7.99902L14.8096 14.2256C15.0632 14.4793 15.0631 14.8917 14.8096 15.1455C14.5558 15.3989 14.1444 15.399 13.8906 15.1455L7.66406 8.91895L1.43848 15.1455C1.18468 15.3993 0.772408 15.3992 0.518555 15.1455C0.264714 14.8917 0.264714 14.4794 0.518555 14.2256L6.74414 7.99902L0.518555 1.77344C0.26494 1.51972 0.265139 1.10833 0.518555 0.854492C0.77242 0.600946 1.18473 0.60075 1.43848 0.854492L7.66406 7.08008L13.8906 0.854492Z" fill="#232323"/>
+					<path d="M13.8906 0.854492L13.714 0.677605L13.7139 0.677702L13.8906 0.854492ZM14.8096 0.854492L14.9864 0.67777L14.9863 0.677715L14.8096 0.854492ZM14.8096 1.77344L14.9863 1.95023L14.9865 1.9501L14.8096 1.77344ZM8.58301 7.99902L8.40625 7.82223C8.35935 7.86912 8.33301 7.93271 8.33301 7.99901C8.333 8.06532 8.35934 8.12891 8.40623 8.1758L8.58301 7.99902ZM14.8096 14.2256L14.9864 14.0489L14.9863 14.0488L14.8096 14.2256ZM14.8096 15.1455L14.9862 15.3224L14.9865 15.3222L14.8096 15.1455ZM13.8906 15.1455L13.7138 15.3223L13.7139 15.3224L13.8906 15.1455ZM7.66406 8.91895L7.84084 8.74217C7.79395 8.69528 7.73036 8.66894 7.66405 8.66895C7.59774 8.66895 7.53415 8.69529 7.48727 8.74218L7.66406 8.91895ZM1.43848 15.1455L1.61525 15.3223L1.61527 15.3223L1.43848 15.1455ZM0.518555 15.1455L0.341778 15.3223L0.341833 15.3223L0.518555 15.1455ZM0.518555 14.2256L0.695331 14.4024L0.695345 14.4023L0.518555 14.2256ZM6.74414 7.99902L6.92093 8.17579C7.01855 8.07815 7.01854 7.91987 6.92092 7.82225L6.74414 7.99902ZM0.518555 1.77344L0.341742 1.95018L0.341778 1.95021L0.518555 1.77344ZM0.518555 0.854492L0.341889 0.677604L0.34163 0.677864L0.518555 0.854492ZM7.66406 7.08008L7.48729 7.25686C7.58491 7.35448 7.74319 7.35449 7.84083 7.25687L7.66406 7.08008ZM13.8906 0.854492L14.0673 1.03138C14.2237 0.875207 14.4768 0.875268 14.6328 1.03127L14.8096 0.854492L14.9863 0.677715C14.6349 0.326232 14.0653 0.326686 13.714 0.677605L13.8906 0.854492ZM14.8096 0.854492L14.6327 1.03121C14.7887 1.18729 14.7888 1.44051 14.6327 1.59677L14.8096 1.77344L14.9865 1.9501C15.3374 1.59874 15.3376 1.0292 14.9864 0.67777L14.8096 0.854492ZM14.8096 1.77344L14.6328 1.59665L8.40625 7.82223L8.58301 7.99902L8.75977 8.17581L14.9863 1.95023L14.8096 1.77344ZM8.58301 7.99902L8.40623 8.1758L14.6328 14.4024L14.8096 14.2256L14.9863 14.0488L8.75978 7.82225L8.58301 7.99902ZM14.8096 14.2256L14.6327 14.4023C14.7887 14.5584 14.7888 14.8126 14.6327 14.9688L14.8096 15.1455L14.9865 15.3222C15.3374 14.9708 15.3376 14.4003 14.9864 14.0489L14.8096 14.2256ZM14.8096 15.1455L14.6329 14.9686C14.4767 15.1246 14.2234 15.1245 14.0673 14.9686L13.8906 15.1455L13.7139 15.3224C14.0653 15.6734 14.6349 15.6732 14.9862 15.3224L14.8096 15.1455ZM13.8906 15.1455L14.0674 14.9687L7.84084 8.74217L7.66406 8.91895L7.48729 9.09572L13.7138 15.3223L13.8906 15.1455ZM7.66406 8.91895L7.48727 8.74218L1.26169 14.9687L1.43848 15.1455L1.61527 15.3223L7.84085 9.09571L7.66406 8.91895ZM1.43848 15.1455L1.2617 14.9687C1.10559 15.1248 0.851565 15.1249 0.695276 14.9687L0.518555 15.1455L0.341833 15.3223C0.69325 15.6735 1.26378 15.6738 1.61525 15.3223L1.43848 15.1455ZM0.518555 15.1455L0.695331 14.9687C0.539122 14.8125 0.539122 14.5586 0.695331 14.4024L0.518555 14.2256L0.341778 14.0488C-0.00969386 14.4003 -0.00969386 14.9708 0.341778 15.3223L0.518555 15.1455ZM0.518555 14.2256L0.695345 14.4023L6.92093 8.17579L6.74414 7.99902L6.56735 7.82226L0.341764 14.0488L0.518555 14.2256ZM6.74414 7.99902L6.92092 7.82225L0.695331 1.59666L0.518555 1.77344L0.341778 1.95021L6.56736 8.1758L6.74414 7.99902ZM0.518555 1.77344L0.695367 1.5967C0.539448 1.44071 0.539385 1.18748 0.695479 1.03112L0.518555 0.854492L0.34163 0.677864C-0.0091078 1.02919 -0.0095678 1.59873 0.341742 1.95018L0.518555 1.77344ZM0.518555 0.854492L0.69522 1.03138C0.85159 0.875207 1.1057 0.875268 1.2617 1.03127L1.43848 0.854492L1.61525 0.677715C1.26377 0.326231 0.693249 0.326686 0.341889 0.677604L0.518555 0.854492ZM1.43848 0.854492L1.2617 1.03127L7.48729 7.25686L7.66406 7.08008L7.84084 6.9033L1.61525 0.677715L1.43848 0.854492ZM7.66406 7.08008L7.84083 7.25687L14.0674 1.03128L13.8906 0.854492L13.7139 0.677702L7.4873 6.90329L7.66406 7.08008Z" fill="#232323"/>
+				</svg>
+			</button>
+		</div>
+		<div class="criteria-popup-form">
+			<div class="form-group">
+				<label for="criteriaName">Name:</label>
+				<input type="text" id="criteriaName" name="criteriaName" maxlength="250">
+			</div>
+			<div id="criteriaItemsContainer">
+				<div class="form-group item-group">
+					<label for="criteriaItem1">Items:</label>
+					<textarea id="criteriaItem1" name="criteriaItem[]" class="resizable-textarea" maxlength="500"></textarea>
+					</div>
+			</div>
+			<button type="button" id="addCriteriaItem" class="add-item-btn">
+				<svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M5.6239 4.3761V0H4.3761V4.3761H0V5.6239H4.3761V10H5.6239V5.6239H10V4.3761H5.6239Z" fill="#0D661A"/>
+				</svg>
+				Add Another Item
+			</button>
+		</div>
+		<div class="popup-actions">
+			<button type="button" id="saveCriteria" class="popup-save-btn">Save Criteria</button>
+			<button type="button" class="popup-cancel-btn js-criteria-popup-close">Cancel</button>
 		</div>
 	</div>
 	
