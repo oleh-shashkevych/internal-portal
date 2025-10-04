@@ -505,18 +505,18 @@
 
 /* Main Content */
 .lender-main {
-	padding: 13px 13px 17px;
-	border: 1px solid #EEEEEE;
-	background-color: #FFFFFF;
-	border-radius: 3px;
 	font-family: 'Urbanist', sans-serif;
 }
 
 .lender-tabs {
-	display: flex;
-	align-items: center;
-	gap: 40px;
-	margin-bottom: 30px;
+	padding: 13px 13px 0;
+    border: 1px solid #EEEEEE;
+    border-bottom: none;
+    background-color: #FFFFFF;
+    border-radius: 3px 3px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 40px;
 }
 
 .lender-tabs__button {
@@ -541,6 +541,15 @@
 
 .lender-tabs__button.active {
 	border-bottom: 1px solid #159C2A;
+}
+
+.lender-content__item--submissions,
+.lender-content__item--funded {
+	background-color: #fff;
+    padding: 30px 13px 17px;
+    border: 1px solid #eee;
+    border-top: none;
+    border-radius: 0 0 3px 3px;
 }
 
 /* --- Стили для таблицы submissions-table (БЭМ + Grid) --- */
@@ -827,6 +836,178 @@
 
 #go_home-mob {
 	display: none;
+}
+
+/* --- Lender Info Tab Styles --- */
+.lender-content__item--lender .info-block:first-child {
+	border-top: none;
+	border-radius: 0 0 3px 3px;
+	padding-top: 21px;
+}
+
+.info-block {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 3px;
+	margin-bottom: 15px;
+	padding: 14px 14px 21px;
+}
+
+.info-block__header {
+    padding: 17px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+	margin-bottom: 15px;
+}
+
+.info-block__title {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 600;
+    color: #232323;
+}
+
+.info-block__edit-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+    background-color: #23232321;
+    color: #808080;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 7px;
+    cursor: pointer;
+    font-size: 14px;
+	line-height: 20px;
+    font-weight: 500;
+	height: 24px;
+}
+
+.info-block__body {
+	display: grid;
+    gap: 15px;
+}
+
+.info-block__row {
+	display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: center;
+}
+
+.info-block__label {
+	color: #808080;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.info-block__value,
+.info-block__value-list {
+	font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #000;
+}
+
+.info-block__value-radio,
+.info-block__value-check {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 7px;
+	color: #2D2D2D;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+}
+
+.info-block__value-check .square {
+	width: 10px;
+	height: 10px;
+	border: 3px solid #eee;
+	background-color: #fff;
+}
+
+.info-block__value-check--a .square {
+	border-color: #159C2A;
+}
+
+.info-block__value-check--b .square {
+	border-color: #EB9B00;
+}
+
+.info-block__value-check--c .square {
+	border-color: #1A41A2;
+}
+
+.info-block__value-check--d .square {
+	border-color: #DB1C10;
+}
+
+.info-block__value-radio svg {
+	width: 13px;
+}
+
+.info-block__value a {
+    color: #0461A0;
+    text-decoration: underline;
+}
+
+.info-block__value a:hover {
+    color: #0461A0;
+    text-decoration: underline;
+}
+
+/* --- Стили для блока Industry Requirements --- */
+.info-block__body--lists {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.info-list {
+	padding: 15px 0;
+	border-bottom: 1px solid #EEEEEE;
+}
+
+.info-list:first-child {
+	padding-top: 0;
+}
+
+.info-list:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.info-list__title {
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 400;
+	color: #808080;
+	margin: 0 0 15px 0;
+}
+
+.info-list__items {
+	display: flex;
+    flex-direction: column;
+    border: 1px solid #C4C4C4B2;
+    border-radius: 3px;
+    padding: 7px;
+}
+
+.info-list__item {
+	font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #000;
+    padding: 5px 7px;
+	border-radius: 3px;
+}
+
+.info-list__item--active {
+	background-color: #F6FBF6;
 }
 
 /* Responsive Styles */
