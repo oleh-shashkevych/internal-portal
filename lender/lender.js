@@ -1,11 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- ОБЩАЯ ЛОГИКА СТРАНИЦЫ (БУРГЕР, ПАНЕЛИ И Т.Д.) ---
+    // ==========================================================================
+    // 1. GENERAL UI HANDLERS (SIDEBAR & TABS)
+    // ==========================================================================
+
     const burger = document.getElementById('burger');
     const closeBurger = document.getElementById('close_burger');
     const sideBar = document.querySelector('.left_cp_bar');
     const overlay = document.querySelector('.overlay');
+    const tabsContainer = document.querySelector('.lender-tabs');
+    const tabButtons = document.querySelectorAll('.lender-tabs__button');
+    const contentItems = document.querySelectorAll('.lender-content__item');
 
+    // --- Mobile Sidebar (Burger Menu) ---
     if (burger && closeBurger && sideBar && overlay) {
         burger.addEventListener('click', () => {
             sideBar.style.transform = 'translateX(0)';
@@ -18,10 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const tabsContainer = document.querySelector('.lender-tabs');
-    const tabButtons = document.querySelectorAll('.lender-tabs__button');
-    const contentItems = document.querySelectorAll('.lender-content__item');
-
+    // --- Tab Navigation ---
     if (tabsContainer) {
         tabsContainer.addEventListener('click', function(event) {
             const clickedButton = event.target.closest('.lender-tabs__button');
@@ -38,17 +42,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // --- LENDER INFO TAB LOGIC ---
+    // ==========================================================================
+    // 2. LENDER INFO TAB "EDIT-IN-PLACE" FEATURE
+    // ==========================================================================
+    
     const lenderInfoTab = document.querySelector('.lender-content__item--lender');
-    let currentlyEditingBlock = null;
+    let currentlyEditingBlock = null; // State to track which info block is being edited
 
-    // --- UTILITY FUNCTIONS ---
+    // --- Helper Templates & Constants ---
     const iconTemplates = {
         yes: '<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg>',
         no: '<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#DB1C10"/><path d="M9.01831 5.01831L4.43237 9.60424" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M4.43237 5.01831L9.01831 9.60424" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>'
     };
     const tierClasses = { tier1: 'a', tier2: 'b', tier3: 'c', tier4: 'd', a: 'a', b: 'b', c: 'c', d: 'd' };
 
+    // --- Utility Functions for Field Creation and Formatting ---
+
+    /**
+     * Creates a form field element based on data attributes.
+     * @param {HTMLElement} element - The original element displaying the value.
+     * @returns {HTMLElement} The created form field (input, select, textarea).
+     */
     function createField(element) {
         const type = element.dataset.type || 'text';
         const name = element.dataset.field;
@@ -107,14 +121,36 @@ document.addEventListener('DOMContentLoaded', () => {
         return field;
     }
 
+    /**
+     * Formatter for Select2 to display tier options with colored squares.
+     */
+    const formatTier = (state) => {
+        if (!state.id) return state.text;
+        const tierClass = tierClasses[state.id.toLowerCase()] || 'a';
+        return $(`<span><span class="select2-option-icon tier-${tierClass}"><div class="square"></div></span>${state.text}</span>`);
+    };
+
+    /**
+     * Formatter for Select2 to display options with Yes/No icons.
+     */
+    const formatIcon = (state) => {
+        if (!state.id) return state.text;
+        const iconHTML = iconTemplates[state.id.toLowerCase()] || '';
+        return $(`<span><span class="select2-option-icon">${iconHTML}</span>${state.text}</span>`);
+    };
+
+    /**
+     * Toggles the action buttons between Edit, and Save/Cancel states.
+     * @param {HTMLElement} actionsContainer - The container for the buttons.
+     * @param {boolean} toEditMode - True to show Save/Cancel, false to show Edit.
+     */
     function toggleActionButtons(actionsContainer, toEditMode) {
         actionsContainer.innerHTML = '';
         if (toEditMode) {
              const blockName = actionsContainer.closest('.info-block').dataset.blockName;
              if (blockName === 'industryRequirements') {
                 actionsContainer.innerHTML = `
-                    <button class="add-new-criteria-btn">
-                    <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.6239 4.8761V0.5H4.3761V4.8761H0V6.1239H4.3761V10.5H5.6239V6.1239H10V4.8761H5.6239Z" fill="white"/></svg>Add New Criteria</button>
+                    <button class="add-new-criteria-btn"><svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.6239 4.8761V0.5H4.3761V4.8761H0V6.1239H4.3761V10.5H5.6239V6.1239H10V4.8761H5.6239Z" fill="white"/></svg>Add New Criteria</button>
                     <button class="info-block__cancel-btn"><svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.375L9.125 0.5L5 4.625L0.875 0.5L0 1.375L4.125 5.5L0 9.625L0.875 10.5L5 6.375L9.125 10.5L10 9.625L5.875 5.5L10 1.375Z" fill="#232323"/></svg>Cancel</button>
                     <button class="info-block__save-btn"><svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.57687 7.22823L0.919266 3.70585L0 4.59134L4.57683 9L13 0.885489L12.0807 0L4.57687 7.22823Z" fill="white"/></svg>Save</button>
                 `;
@@ -126,29 +162,20 @@ document.addEventListener('DOMContentLoaded', () => {
              }
         } else {
             actionsContainer.innerHTML = `
-                <button class="info-block__edit-btn">
-                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>
-                    Edit
-                </button>
+                <button class="info-block__edit-btn"><svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>Edit</button>
             `;
         }
     }
-    
-    const formatTier = (state) => {
-        if (!state.id) return state.text;
-        const tierClass = tierClasses[state.id.toLowerCase()] || 'a';
-        return $(`<span><span class="select2-option-icon tier-${tierClass}"><div class="square"></div></span>${state.text}</span>`);
-    };
 
-    const formatIcon = (state) => {
-        if (!state.id) return state.text;
-        const iconHTML = iconTemplates[state.id.toLowerCase()] || '';
-        return $(`<span><span class="select2-option-icon">${iconHTML}</span>${state.text}</span>`);
-    };
+    // --- Core Edit/View Mode Functions ---
 
+    /**
+     * Switches a given info block to its editing state.
+     * @param {HTMLElement} block - The .info-block element to edit.
+     */
     function switchToEditMode(block) {
         if (currentlyEditingBlock && currentlyEditingBlock !== block) {
-            switchToViewMode(currentlyEditingBlock, false);
+            switchToViewMode(currentlyEditingBlock, false); // Cancel any other ongoing edit
         }
 
         currentlyEditingBlock = block;
@@ -168,6 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewElement.innerHTML = '';
                 viewElement.appendChild(field);
     
+                // Initialize Select2 for specific field types
                 if (viewElement.dataset.type === 'select2') {
                     $(field).select2({ width: '100%' });
                 }
@@ -181,6 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Switches a given info block back to its display state.
+     * @param {HTMLElement} block - The .info-block element.
+     * @param {boolean} shouldSave - If true, save changes; if false, discard them.
+     */
     function switchToViewMode(block, shouldSave) {
         const actionsContainer = block.querySelector('.info-block__actions');
         let dataToSave = {};
@@ -191,7 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
             block.classList.remove('is-editing');
             block.querySelectorAll('.criteria-edit-btn').forEach(btn => btn.style.display = 'none');
             if (shouldSave) {
-                console.log("Сохранение блока Industry Requirements (если необходимо).");
+                // Logic to save industry requirements would go here.
+                console.log("Saving Industry Requirements block (if needed).");
             }
         } else {
             if (shouldSave) {
@@ -214,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
     
                 if (!isValid) {
-                    alert('Пожалуйста, заполните все обязательные поля.');
+                    alert('Please fill in all required fields.');
                     return; 
                 }
     
@@ -226,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 
-                console.log('Данные для отправки:', dataToSave);
+                console.log('Data to be sent:', dataToSave);
             }
     
             const fields = block.querySelectorAll('[data-field]');
@@ -269,8 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
         currentlyEditingBlock = null;
     }
 
-    // --- ГЛАВНЫЙ ОБРАБОТЧИК СОБЫТИЙ ---
+    // --- Main Event Listener for Lender Info Tab ---
     if (lenderInfoTab) {
+        // Initialize all blocks to view mode
         lenderInfoTab.querySelectorAll('.info-block').forEach(block => {
             const actions = block.querySelector('.info-block__actions');
             if (actions) {
@@ -300,23 +335,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Обработчики для кнопок внутри Industry Requirements
             const addNewBtn = event.target.closest('.add-new-criteria-btn');
             if(addNewBtn) {
-                openCriteriaPopup(); // Открываем для создания
+                openCriteriaPopup();
                 return;
             }
 
             const editCriteriaBtn = event.target.closest('.criteria-edit-btn');
             if (editCriteriaBtn) {
                 const criteriaBlock = editCriteriaBtn.closest('.info-list');
-                openCriteriaPopup(criteriaBlock); // Открываем для редактирования
+                openCriteriaPopup(criteriaBlock);
                 return;
             }
         });
     }
 
-    // --- ЛОГИКА POPUP ДЛЯ КРИТЕРИЕВ ---
+    // ==========================================================================
+    // 4. INDUSTRY REQUIREMENTS CRITERIA POPUP FEATURE
+    // ==========================================================================
+    
+    // --- Popup Element Selectors ---
     const criteriaPopup = document.getElementById('criteriaPopup');
     const criteriaPopupOverlay = document.getElementById('criteriaPopupOverlay');
     const criteriaPopupTitle = document.getElementById('criteriaPopupTitle');
@@ -327,13 +365,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeCriteriaPopupBtns = document.querySelectorAll('.js-criteria-popup-close');
     const criteriaListContainer = document.querySelector('.criteria-list-container');
 
+    // --- Popup State ---
     let itemCounter = 1;
-    let editingCriteriaElement = null; // Храним ссылку на редактируемый элемент
+    let editingCriteriaElement = null;
 
+    /**
+     * Opens the criteria popup for either adding new or editing existing criteria.
+     * @param {HTMLElement|null} criteriaBlock - The .info-list element to edit, or null for new.
+     */
     function openCriteriaPopup(criteriaBlock = null) {
         resetCriteriaPopup();
         if (criteriaBlock) {
-            // Режим редактирования
+            // Editing existing criteria
             editingCriteriaElement = criteriaBlock;
             criteriaPopupTitle.textContent = "Edit Criteria";
             const name = criteriaBlock.dataset.criteriaName;
@@ -341,8 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             criteriaNameInput.value = name;
             
-            // Заполняем поля Items
-            itemsContainer.innerHTML = ''; // Очищаем контейнер
+            itemsContainer.innerHTML = '';
             itemCounter = 0;
             items.forEach(itemText => {
                 itemCounter++;
@@ -357,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 itemsContainer.appendChild(newItem);
             });
         } else {
-            // Режим добавления
+            // Adding a new criteria
             editingCriteriaElement = null;
         }
 
@@ -365,11 +407,17 @@ document.addEventListener('DOMContentLoaded', () => {
         criteriaPopupOverlay.classList.add('active');
     }
 
+    /**
+     * Closes the criteria popup.
+     */
     function closeCriteriaPopup() {
         criteriaPopup.classList.remove('active');
         criteriaPopupOverlay.classList.remove('active');
     }
 
+    /**
+     * Resets the criteria popup form to its default state.
+     */
     function resetCriteriaPopup() {
         criteriaPopupTitle.textContent = "New Criteria";
         criteriaNameInput.value = '';
@@ -385,7 +433,10 @@ document.addEventListener('DOMContentLoaded', () => {
         itemsContainer.querySelector('textarea').classList.remove('invalid');
     }
     
-    // Функция создания нового блока критерия в DOM
+    /**
+     * Adds a new criteria block to the DOM.
+     * @param {object} data - The criteria data {name, items}.
+     */
     function addCriteriaToDOM(data) {
         const newCriteria = document.createElement('div');
         newCriteria.className = 'info-list';
@@ -404,7 +455,11 @@ document.addEventListener('DOMContentLoaded', () => {
         criteriaListContainer.appendChild(newCriteria);
     }
 
-    // Функция обновления существующего блока критерия в DOM
+    /**
+     * Updates an existing criteria block in the DOM.
+     * @param {HTMLElement} element - The .info-list element to update.
+     * @param {object} data - The new criteria data {name, items}.
+     */
     function updateCriteriaInDOM(element, data) {
         element.dataset.criteriaName = data.name;
         element.dataset.items = JSON.stringify(data.items);
@@ -412,17 +467,17 @@ document.addEventListener('DOMContentLoaded', () => {
         element.querySelector('.info-list__title').textContent = data.name;
 
         const itemsWrapper = element.querySelector('.info-list__items');
-        // Удаляем все старые items, но оставляем кнопку Edit
+        // Remove old items, but keep the Edit button
         while(itemsWrapper.firstElementChild && itemsWrapper.firstElementChild.tagName !== 'BUTTON') {
             itemsWrapper.removeChild(itemsWrapper.firstElementChild);
         }
 
         let itemsHTML = data.items.map(item => `<span class="info-list__item">${item}</span>`).join('');
-        // Вставляем новые items перед кнопкой "Edit"
+        // Insert new items before the Edit button
         itemsWrapper.insertAdjacentHTML('afterbegin', itemsHTML);
     }
 
-
+    // --- Criteria Popup Event Listeners ---
     addCriteriaItemBtn.addEventListener('click', () => {
         itemCounter++;
         const newItem = document.createElement('div');
@@ -436,8 +491,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     itemsContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-item-btn')) {
-            e.target.parentElement.remove();
+        const deleteBtn = e.target.closest('.delete-item-btn');
+        if (deleteBtn) {
+            deleteBtn.closest('.item-group').remove();
         }
     });
 
@@ -460,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!isValid) {
-            alert('Поля Name и первый Item обязательны для заполнения.');
+            alert('Name and the first Item fields are required.');
             return;
         }
         
@@ -476,15 +532,12 @@ document.addEventListener('DOMContentLoaded', () => {
             name: name,
             items: items
         };
-
-        // BREAKPOINT
-        console.log("Данные критерия для отправки:", criteriaData);
+        
+        console.log("Criteria data to be sent:", criteriaData);
         
         if (editingCriteriaElement) {
-            // Если редактируем, обновляем существующий
             updateCriteriaInDOM(editingCriteriaElement, criteriaData);
         } else {
-            // Если добавляем, создаем новый
             addCriteriaToDOM(criteriaData);
         }
         
@@ -494,5 +547,29 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCriteriaPopupBtns.forEach(btn => btn.addEventListener('click', closeCriteriaPopup));
     criteriaPopupOverlay.addEventListener('click', closeCriteriaPopup);
 
-    const filterPopup = document.getElementById('filter-popup');
+    // ==========================================================================
+    // 5. INTERACTIVE LISTS (for Industry Requirements)
+    // ==========================================================================
+    
+    if (lenderInfoTab) {
+        // Use event delegation on the parent container
+        lenderInfoTab.addEventListener('click', function(event) {
+            const clickedItem = event.target.closest('.info-list__item');
+
+            // Proceed only if an item within a list was clicked
+            if (clickedItem && clickedItem.closest('.info-list__items')) {
+                const parentList = clickedItem.parentElement;
+                const currentlyActive = parentList.querySelector('.info-list__item--active');
+
+                // Remove active class from the previous item if it exists
+                if (currentlyActive) {
+                    currentlyActive.classList.remove('info-list__item--active');
+                }
+
+                // Add active class to the clicked item
+                clickedItem.classList.add('info-list__item--active');
+            }
+        });
+    }
+
 });
