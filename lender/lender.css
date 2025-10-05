@@ -859,9 +859,9 @@
 	margin-top: -1px;
 }
 
-.info-list__item--active {
+/* .info-list__item--active {
 	background-color: #F6FBF6;
-}
+} */
 
 /* ==========================================================================
    8. Edit Mode for Info Blocks
@@ -996,7 +996,7 @@
    9. Component: Submissions Table
    ========================================================================== */
 .submissions-table {
-	font-size: 12px;
+	font-size: 14px;
 	color: #232323;
 	overflow-x: auto;
 	border: 1px solid #eee;
@@ -1008,7 +1008,7 @@
 .submissions-table__row,
 .submissions-table__footer {
 	display: grid;
-	grid-template-columns: 1.5fr 2.1fr 1.5fr 1.5fr 1.2fr 0.8fr 4.1fr 1.7fr 1fr;
+	grid-template-columns: 1.5fr 2.1fr 1.5fr 1.5fr 1.5fr 0.8fr 4.1fr 1.7fr 1fr;
 	align-items: center;
 	gap: 0;
 	padding: 0;
@@ -1055,7 +1055,7 @@
 	padding: 5px 8px;
 	border-radius: 3px;
 	font-weight: 600;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1;
 	text-transform: uppercase;
 	text-align: center;
@@ -1095,7 +1095,7 @@
 	font-weight: 700;
 	color: #232323;
 	background-color: #f9f9f9;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 700;
 }
 
@@ -1309,7 +1309,6 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	transform: translateY(-1px);
 }
 
 .info-block .select2-option-icon .square {

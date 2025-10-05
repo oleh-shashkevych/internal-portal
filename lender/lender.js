@@ -775,9 +775,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 6. CLOSE SELECT2 ON SCROLL (WORKAROUND FOR JUMPING DROPDOWN)
     // ==========================================================================
-    window.addEventListener('scroll', () => {
+    window.addEventListener('scroll', (event) => {
+        
+        const scrollTarget = event.target;
+        if ($(scrollTarget).closest('.select2-dropdown').length > 0) {
+            
+            return;
+        }
+
+        
         $('.select2-hidden-accessible').each(function() {
-            $(this).select2('close');
+            
+            if ($(this).data('select2') && $(this).data('select2').isOpen()) {
+                $(this).select2('close');
+            }
         });
-    }, true);
+    }, true); 
 });
