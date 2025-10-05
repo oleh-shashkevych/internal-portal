@@ -1293,7 +1293,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	padding-top: 1px;
+	/* padding-top: 1px; */
 }
 
 .info-block .select2-results__option,

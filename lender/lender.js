@@ -480,12 +480,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         const options = JSON.parse(viewElement.dataset.options || '{}');
                         const text = newValue ? options[newValue] : '---';
                         const iconHTML = iconTemplates[newValue] || '';
-                        displayHTML = `<div class="info-block__value-radio" data-value="${newValue}">${iconHTML} ${text}</div>`;
+                        displayHTML = `<span class="info-block__value-radio" data-value="${newValue}">${iconHTML} ${text}</span>`;
                     } else if (fieldType === 'select-tier') {
                         const options = JSON.parse(viewElement.dataset.options || '{}');
                         const text = newValue ? options[newValue] : '---';
                         const tierClass = tierClasses[newValue] || '';
-                        displayHTML = `<div class="info-block__value-check info-block__value-check--${tierClass}" data-value="${newValue}"><div class="square"></div>${text}</div>`;
+                        displayHTML = `<span class="info-block__value-check info-block__value-check--${tierClass}" data-value="${newValue}"><span class="square"></span>${text}</span>`;
                     } else if (Array.isArray(newValue)) {
                         displayHTML = newValue.join(', ');
                     } else {
