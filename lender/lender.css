@@ -288,6 +288,14 @@
 	height: auto;
 }
 
+.error-message {
+    color: #E2493F; /* Колір такий самий, як у рамки .invalid */
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    font-weight: 500;
+}
+
 /* Filter Popup */
 .filter-popup {
 	max-width: 220px;
@@ -646,14 +654,14 @@
 	position: absolute;
 	top: -9px;
 	right: -11px;
-	background-color: #f9f9f9;
+	background-color: #fff;
 	border-bottom: 1px solid rgba(196, 196, 196, 0.7);
 	transform: rotate(45deg);
 }
 
 .info-title {
 	color: #232222E5;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 400;
 	line-height: 15px;
 	text-transform: uppercase;
@@ -722,7 +730,7 @@
 }
 
 .info-block__title {
-	font-size: 18px;
+	font-size: 20px;
 	line-height: 22px;
 	font-weight: 600;
 	color: #232323;
@@ -742,14 +750,14 @@
 
 .info-block__label {
 	color: #808080;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-weight: 400;
 }
 
 .info-block__value,
 .info-block__value-list {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #000;
@@ -762,7 +770,7 @@
 	justify-content: flex-start;
 	gap: 7px;
 	color: #2D2D2D;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-weight: 500;
 }
@@ -825,7 +833,7 @@
 }
 
 .info-list__title {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-weight: 400;
 	color: #808080;
@@ -841,7 +849,7 @@
 }
 
 .info-list__item {
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #000;
@@ -849,7 +857,6 @@
 	border-radius: 3px;
 	border: 1px solid transparent;
 	margin-top: -1px;
-	cursor: pointer;
 }
 
 .info-list__item--active {
@@ -923,7 +930,7 @@
 	padding: 4px 13px;
 	border: 1px solid #C4C4C4B2;
 	border-radius: 3px;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 20px;
 	font-family: 'Urbanist', sans-serif;
 	box-sizing: border-box;
@@ -980,11 +987,16 @@
 	color: #fff;
 }
 
+.select2-container,
+.select2-container * {
+	transition: unset !important;
+}
+
 /* ==========================================================================
    9. Component: Submissions Table
    ========================================================================== */
 .submissions-table {
-	font-size: 11px;
+	font-size: 12px;
 	color: #232323;
 	overflow-x: auto;
 	border: 1px solid #eee;
@@ -1000,6 +1012,7 @@
 	align-items: center;
 	gap: 0;
 	padding: 0;
+	min-width: 1200px
 }
 
 .submissions-table__row:hover {
@@ -1021,11 +1034,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	white-space: nowrap;
+	white-space: normal;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	min-width: 0;
-	height: 40px;
+	min-height: 40px;
 }
 
 .submissions-table__icon {
@@ -1042,7 +1055,7 @@
 	padding: 5px 8px;
 	border-radius: 3px;
 	font-weight: 600;
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 1;
 	text-transform: uppercase;
 	text-align: center;
@@ -1082,7 +1095,7 @@
 	font-weight: 700;
 	color: #232323;
 	background-color: #f9f9f9;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 700;
 }
 
@@ -1271,7 +1284,7 @@
 .select2-container--default .select2-selection--single .select2-selection__rendered {
 	padding-left: 13px;
 	color: #2D2D2D;
-	font-size: 14px;
+	font-size: 16px;
 	line-height: 28px;
 	font-weight: 500;
 }
@@ -1359,7 +1372,7 @@
 .select2-results__option {
 	padding: 5px 7px;
 	color: #232323;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 20px;
 	font-weight: 500;
 	border-radius: 3px;
@@ -1371,7 +1384,7 @@
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-	background-color: #fff;
+	background-color: #fafafa;
 	color: #232323;
 }
 
@@ -1426,7 +1439,7 @@
 	border: 1px solid #159C2A;
 	background-color: #F6FBF6;
 	color: #0D661A;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 20px;
 	font-weight: 500;
 	display: flex;

@@ -43,7 +43,176 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // ==========================================================================
-    // 2. LENDER INFO TAB "EDIT-IN-PLACE" FEATURE
+    // 2. SUBMISSIONS TABLE FILTER POPUP
+    // ==========================================================================
+    
+    const filterPopup = document.getElementById('filter-popup');
+    const popupOverlay = document.getElementById('popupOverlay');
+    const filterPopupList = document.getElementById('filter-popup-list');
+    const searchInput = document.getElementById('filter-search-input');
+    const applyBtn = document.getElementById('filter-apply-btn');
+    const resetBtn = document.getElementById('filter-reset-btn');
+    const filterButtons = document.querySelectorAll('.submissions-table__filter');
+
+    let activeFilters = {};
+    let currentColumnIndex = -1;
+    let currentTableBody = null;
+
+    const applyAllFilters = () => {
+        const activeContent = document.querySelector('.lender-content__item[style*="block"]');
+        if (!activeContent) return;
+        
+        const tableBody = activeContent.querySelector('.submissions-table__body');
+        if (!tableBody) return;
+
+        const rows = tableBody.querySelectorAll('.submissions-table__row');
+        
+        rows.forEach(row => {
+            let isRowVisible = true;
+
+            for (const colIndex in activeFilters) {
+                const selectedValues = activeFilters[colIndex];
+                if (selectedValues.length === 0) continue;
+
+                const cell = row.children[colIndex];
+                if (cell) {
+                    const content = cell.querySelector('.submissions-table__badge') || cell;
+                    const cellValue = content.textContent.trim();
+                    
+                    if (!selectedValues.includes(cellValue)) {
+                        isRowVisible = false;
+                        break; 
+                    }
+                }
+            }
+            row.style.display = isRowVisible ? 'grid' : 'none';
+        });
+    };
+
+    const openPopup = () => {
+        filterPopup.classList.add('active');
+        popupOverlay.classList.add('active');
+    };
+
+    const closePopup = () => {
+        filterPopup.classList.remove('active');
+        popupOverlay.classList.remove('active');
+        searchInput.value = ''; 
+    };
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            const headerCell = e.currentTarget.closest('.submissions-table__cell');
+            const table = e.currentTarget.closest('.submissions-table');
+            currentTableBody = table.querySelector('.submissions-table__body');
+
+            const headerCells = Array.from(headerCell.parentElement.children);
+            currentColumnIndex = headerCells.indexOf(headerCell);
+
+            const values = new Set();
+            const rows = currentTableBody.querySelectorAll('.submissions-table__row');
+
+            rows.forEach(row => {
+                const cell = row.children[currentColumnIndex];
+                if (cell) {
+                    const content = cell.querySelector('.submissions-table__badge') || cell;
+                    const value = content.textContent.trim();
+                    if (value && value !== '—') {
+                        values.add(value);
+                    }
+                }
+            });
+            
+            const previouslyChecked = activeFilters[currentColumnIndex] || [];
+            populatePopupList(Array.from(values).sort(), previouslyChecked);
+            openPopup();
+        });
+    });
+
+    const populatePopupList = (items, checkedItems) => {
+        filterPopupList.innerHTML = '';
+        items.forEach((item, index) => {
+            const listItem = document.createElement('div');
+            listItem.classList.add('filter-popup__item');
+
+            const label = document.createElement('label');
+            label.setAttribute('for', `filter-item-${index}`);
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `filter-item-${index}`;
+            checkbox.value = item;
+            if (checkedItems.includes(item)) {
+                checkbox.checked = true;
+            }
+
+            const customCheckbox = document.createElement('span');
+            customCheckbox.classList.add('custom-checkbox');
+            customCheckbox.innerHTML = `<svg width="9" height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.39102 1L3.27486 5.83237L1.54826 4.20468L1 4.79568L3.33828 7L8 1.52712L7.39102 1Z" fill="white" stroke="white" stroke-width="0.3"/></svg>`;
+
+            const labelText = document.createElement('span');
+            labelText.classList.add('filter-popup__label-text');
+            labelText.textContent = item;
+
+            label.appendChild(checkbox);
+            label.appendChild(customCheckbox);
+            label.appendChild(labelText);
+            listItem.appendChild(label);
+            filterPopupList.appendChild(listItem);
+        });
+    };
+    
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const items = filterPopupList.querySelectorAll('.filter-popup__item');
+        items.forEach(item => {
+            const label = item.querySelector('.filter-popup__label-text');
+            if (label.textContent.toLowerCase().includes(searchTerm)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    applyBtn.addEventListener('click', () => {
+        const selectedValues = Array.from(filterPopupList.querySelectorAll('input[type="checkbox"]:checked'))
+                                       .map(cb => cb.value);
+
+        const activeContent = document.querySelector('.lender-content__item[style*="block"]');
+        const filterButton = activeContent.querySelector(`.submissions-table__header .submissions-table__cell:nth-child(${currentColumnIndex + 1}) .submissions-table__filter`);
+
+        if (selectedValues.length > 0) {
+            activeFilters[currentColumnIndex] = selectedValues;
+            filterButton.classList.add('filtered');
+        } else {
+            delete activeFilters[currentColumnIndex];
+            filterButton.classList.remove('filtered');
+        }
+        
+        applyAllFilters();
+        closePopup();
+    });
+
+    resetBtn.addEventListener('click', () => {
+        const activeContent = document.querySelector('.lender-content__item[style*="block"]');
+        const filterButton = activeContent.querySelector(`.submissions-table__header .submissions-table__cell:nth-child(${currentColumnIndex + 1}) .submissions-table__filter`);
+        
+        if (activeFilters[currentColumnIndex]) {
+            delete activeFilters[currentColumnIndex];
+            if (filterButton) {
+                 filterButton.classList.remove('filtered');
+            }
+        }
+        
+        applyAllFilters();
+        closePopup();
+    });
+
+    // ==========================================================================
+    // 3. LENDER INFO TAB "EDIT-IN-PLACE" FEATURE
     // ==========================================================================
     
     const lenderInfoTab = document.querySelector('.lender-content__item--lender');
@@ -224,36 +393,62 @@ document.addEventListener('DOMContentLoaded', () => {
             block.classList.remove('is-editing');
             block.querySelectorAll('.criteria-edit-btn').forEach(btn => btn.style.display = 'none');
             if (shouldSave) {
-                // Logic to save industry requirements would go here.
                 console.log("Saving Industry Requirements block (if needed).");
             }
         } else {
             if (shouldSave) {
                 let isValid = true;
+                
+                // --- ЗМІНА 1: Очищуємо попередні повідомлення про помилки ---
+                block.querySelectorAll('.error-message').forEach(el => el.remove());
+
                 const fieldsToValidate = block.querySelectorAll('input, select, textarea');
                 fieldsToValidate.forEach(field => {
-                     field.classList.remove('invalid');
-                     const isSelect2 = field.multiple;
-                     
-                     if (field.required && !field.value) {
-                         isValid = false;
-                         field.classList.add('invalid');
-                     }
-                     if (isSelect2 && $(field).val().length === 0) {
-                         isValid = false;
-                         $(field).next('.select2-container').find('.select2-selection').addClass('invalid');
-                     } else if (isSelect2) {
-                         $(field).next('.select2-container').find('.select2-selection').removeClass('invalid');
-                     }
+                    // Спочатку скидаємо стилі помилок
+                    field.classList.remove('invalid');
+                    const select2Container = $(field).next('.select2-container');
+                    if (select2Container.length) {
+                        select2Container.find('.select2-selection').removeClass('invalid');
+                    }
+
+                    let isFieldInvalid = false;
+                    // Перевірка, чи поле є обов'язковим і порожнім
+                    if (field.required && !field.value) {
+                        isFieldInvalid = true;
+                    }
+                    // Окрема перевірка для select2 multiple
+                    if (field.multiple && $(field).val().length === 0 && field.required) {
+                        isFieldInvalid = true;
+                    }
+
+                    // --- ЗМІНА 2: Якщо поле не валідне, показуємо повідомлення під ним ---
+                    if (isFieldInvalid) {
+                        isValid = false;
+                        
+                        const errorMessage = document.createElement('span');
+                        errorMessage.className = 'error-message';
+                        errorMessage.textContent = 'This field is required.';
+
+                        if (select2Container.length) {
+                            // Для Select2 додаємо клас помилки до контейнера і повідомлення після нього
+                            select2Container.find('.select2-selection').addClass('invalid');
+                            select2Container.after(errorMessage);
+                        } else {
+                            // Для звичайних полів додаємо клас до самого поля і повідомлення після нього
+                            field.classList.add('invalid');
+                            field.after(errorMessage);
+                        }
+                    }
                 });
-    
+
+                // --- ЗМІНА 3: Видаляємо alert і просто зупиняємо збереження ---
                 if (!isValid) {
-                    alert('Please fill in all required fields.');
-                    return; 
+                    // alert('Please fill in all required fields.'); // ВИДАЛЕНО
+                    return; // Зупиняємо функцію, якщо є помилки
                 }
-    
+
                 fieldsToValidate.forEach(field => {
-                     if (field.multiple) {
+                    if (field.multiple) {
                         dataToSave[field.name] = $(field).val();
                     } else {
                         dataToSave[field.name] = field.value;
@@ -261,8 +456,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 
                 console.log('Data to be sent:', dataToSave);
+            } else { // Це гілка для кнопки "Cancel"
+                // Очищуємо будь-які повідомлення про помилки та класи при скасуванні
+                block.querySelectorAll('.error-message').forEach(el => el.remove());
+                block.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+                $(block).find('.select2-selection.invalid').removeClass('invalid');
             }
-    
+
             const fields = block.querySelectorAll('[data-field]');
             fields.forEach(viewElement => {
                 const select2Field = $(viewElement).find('.select2-hidden-accessible');
@@ -282,10 +482,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const iconHTML = iconTemplates[newValue] || '';
                         displayHTML = `<div class="info-block__value-radio" data-value="${newValue}">${iconHTML} ${text}</div>`;
                     } else if (fieldType === 'select-tier') {
-                         const options = JSON.parse(viewElement.dataset.options || '{}');
-                         const text = newValue ? options[newValue] : '---';
-                         const tierClass = tierClasses[newValue] || '';
-                         displayHTML = `<div class="info-block__value-check info-block__value-check--${tierClass}" data-value="${newValue}"><div class="square"></div>${text}</div>`;
+                        const options = JSON.parse(viewElement.dataset.options || '{}');
+                        const text = newValue ? options[newValue] : '---';
+                        const tierClass = tierClasses[newValue] || '';
+                        displayHTML = `<div class="info-block__value-check info-block__value-check--${tierClass}" data-value="${newValue}"><div class="square"></div>${text}</div>`;
                     } else if (Array.isArray(newValue)) {
                         displayHTML = newValue.join(', ');
                     } else {
@@ -452,7 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="criteria-edit-btn" style="display:inline-block;">Edit</button>
             </div>
         `;
-        criteriaListContainer.appendChild(newCriteria);
+        criteriaListContainer.prepend(newCriteria);
     }
 
     /**
@@ -500,7 +700,9 @@ document.addEventListener('DOMContentLoaded', () => {
     saveCriteriaBtn.addEventListener('click', () => {
         let isValid = true;
         const allPopupInputs = criteriaPopup.querySelectorAll('input, textarea');
+
         allPopupInputs.forEach(i => i.classList.remove('invalid'));
+        criteriaPopup.querySelectorAll('.error-message').forEach(el => el.remove());
 
         const name = criteriaNameInput.value.trim();
         const itemTextareas = itemsContainer.querySelectorAll('textarea');
@@ -508,15 +710,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (name === '') {
             isValid = false;
             criteriaNameInput.classList.add('invalid');
+            const errorMessage = document.createElement('span');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = 'This field is required.';
+            criteriaNameInput.after(errorMessage);
         }
 
         if (itemTextareas[0] && itemTextareas[0].value.trim() === '') {
             isValid = false;
             itemTextareas[0].classList.add('invalid');
+            const errorMessage = document.createElement('span');
+            errorMessage.className = 'error-message';
+            errorMessage.textContent = 'This field is required.';
+            itemTextareas[0].closest('.textarea-wrapper').after(errorMessage);
         }
 
         if (!isValid) {
-            alert('Name and the first Item fields are required.');
             return;
         }
         
@@ -545,31 +754,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     closeCriteriaPopupBtns.forEach(btn => btn.addEventListener('click', closeCriteriaPopup));
-    criteriaPopupOverlay.addEventListener('click', closeCriteriaPopup);
 
     // ==========================================================================
     // 5. INTERACTIVE LISTS (for Industry Requirements)
     // ==========================================================================
     
-    if (lenderInfoTab) {
-        // Use event delegation on the parent container
-        lenderInfoTab.addEventListener('click', function(event) {
-            const clickedItem = event.target.closest('.info-list__item');
+    const industryLists = document.querySelectorAll('.lender-content__item--lender .info-list');
 
-            // Proceed only if an item within a list was clicked
-            if (clickedItem && clickedItem.closest('.info-list__items')) {
-                const parentList = clickedItem.parentElement;
-                const currentlyActive = parentList.querySelector('.info-list__item--active');
+    industryLists.forEach(list => {
+        const items = list.querySelectorAll('.info-list__item');
 
-                // Remove active class from the previous item if it exists
-                if (currentlyActive) {
-                    currentlyActive.classList.remove('info-list__item--active');
-                }
+        if (items.length > 0) {
+            items.forEach(item => item.classList.remove('info-list__item--active'));
 
-                // Add active class to the clicked item
-                clickedItem.classList.add('info-list__item--active');
-            }
+            const lastItem = items[items.length - 1];
+            lastItem.classList.add('info-list__item--active');
+        }
+    });
+
+    // ==========================================================================
+    // 6. CLOSE SELECT2 ON SCROLL (WORKAROUND FOR JUMPING DROPDOWN)
+    // ==========================================================================
+    window.addEventListener('scroll', () => {
+        $('.select2-hidden-accessible').each(function() {
+            $(this).select2('close');
         });
-    }
-
+    }, true);
 });
