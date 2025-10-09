@@ -537,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize all blocks to view mode
         lenderInfoTab.querySelectorAll('.info-block').forEach(block => {
             const actions = block.querySelector('.info-block__actions');
-            if (actions) {
+            if (actions && block.dataset.blockName !== 'industryRequirements') {
                 toggleActionButtons(actions, false);
             }
         });
@@ -546,6 +546,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const editBtn = event.target.closest('.info-block__edit-btn');
             if (editBtn) {
                 const block = editBtn.closest('.info-block');
+                 if (block.dataset.blockName === 'industryRequirements') {
+                    return;
+                }
                 switchToEditMode(block);
                 return;
             }
@@ -580,7 +583,266 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================================================
-    // 4. INDUSTRY REQUIREMENTS CRITERIA POPUP FEATURE
+    // 4. NEW INDUSTRY REQUIREMENTS FEATURE
+    // ==========================================================================
+    const requirementData = {
+        "criteria": {
+            "123": {
+                "name": "Time in Business",
+                "data": ["1Y", "2Y", "5Y", "2M", "1M", "5M"]
+            },
+            "222": {
+                "name": "Monthly Revenue",
+                "data": [
+                    "$10,000-$15,000", "$15,000-$30,000", "$30,000-$60,000",
+                    "$60,000-$100,000", "$100,000-$200,000", "$200,000-$350,000",
+                    "$350,000-$500,000", "$500,000+"
+                ]
+            }
+        }
+    };
+
+    const addRequirementBtn = document.querySelector('.add-requirement-btn');
+    const addRequirementPopup = document.getElementById('addRequirementPopup');
+    const requirementNameDropdown = document.getElementById('requirementName');
+    const dependentRequirementContainer = document.getElementById('dependentRequirementContainer');
+    const dependentRequirementLabel = document.getElementById('dependentRequirementLabel');
+    let dependentRequirementDropdown = document.getElementById('dependentRequirement');
+
+    window.openAddRequirementPopup = () => {
+        populateRequirementNameDropdown();
+        addRequirementPopup.classList.add('active');
+        popupOverlay.classList.add('active');
+    };
+
+    const closeAddRequirementPopup = () => {
+        addRequirementPopup.classList.remove('active');
+        popupOverlay.classList.remove('active');
+        // Reset fields
+        requirementNameDropdown.innerHTML = '<option value=""></option>';
+        dependentRequirementContainer.style.display = 'none';
+        $('#dependentRequirement').select2('destroy').html('');
+    };
+
+    const populateRequirementNameDropdown = () => {
+        requirementNameDropdown.innerHTML = '<option value="" selected disabled>Select an option</option>';
+        for (const id in requirementData.criteria) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = requirementData.criteria[id].name;
+            requirementNameDropdown.appendChild(option);
+        }
+    };
+
+    window.updateDependentDropdown = (selectedId) => {
+        const selectedData = requirementData.criteria[selectedId];
+        if (!selectedData) {
+            dependentRequirementContainer.style.display = 'none';
+            return;
+        }
+
+        dependentRequirementLabel.textContent = selectedData.name;
+
+        // Destroy previous select2 instance if it exists
+        if ($('#dependentRequirement').data('select2')) {
+            $('#dependentRequirement').select2('destroy');
+        }
+
+        dependentRequirementDropdown.innerHTML = '';
+        selectedData.data.forEach(item => {
+            const option = new Option(item, item, false, false);
+            dependentRequirementDropdown.appendChild(option);
+        });
+
+        dependentRequirementContainer.style.display = 'block';
+
+        $(dependentRequirementDropdown).select2({
+            width: '100%',
+            closeOnSelect: false,
+            templateResult: formatCheckbox,
+        });
+    };
+
+    if (addRequirementBtn) {
+        addRequirementBtn.addEventListener('click', openAddRequirementPopup);
+    }
+
+    requirementNameDropdown.addEventListener('change', (e) => {
+        updateDependentDropdown(e.target.value);
+    });
+
+    document.getElementById('closeAddRequirementPopup').addEventListener('click', closeAddRequirementPopup);
+    document.getElementById('cancelAddRequirementBtn').addEventListener('click', closeAddRequirementPopup);
+    document.getElementById('addRequirementBtn').addEventListener('click', () => {
+        const nameDropdown = document.getElementById('requirementName');
+        const valueDropdown = document.getElementById('dependentRequirement');
+        const selectedGroupId = nameDropdown.value;
+        const selectedValues = $(valueDropdown).val();
+
+        // Clear previous errors
+        const existingError = addRequirementPopup.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        $(valueDropdown).next('.select2-container').find('.select2-selection').removeClass('invalid');
+
+        // Validation
+        if (selectedGroupId && (!selectedValues || selectedValues.length === 0)) {
+            const error = document.createElement('span');
+            error.className = 'error-message';
+            error.textContent = 'At least one option must be selected.';
+            $(valueDropdown).next('.select2-container').after(error);
+            $(valueDropdown).next('.select2-container').find('.select2-selection').addClass('invalid');
+            return;
+        }
+
+        // On success
+        const groupName = requirementData.criteria[selectedGroupId].name;
+
+        renderRequirementRow({
+            groupId: selectedGroupId,
+            groupName: groupName,
+            values: selectedValues
+        });
+
+        closeAddRequirementPopup();
+    });
+
+    const renderRequirementRow = (data) => {
+        const industryBlockBody = document.querySelector('[data-block-name="industryRequirements"] .info-block__body');
+
+        // Remove the empty state button if it exists
+        const addButton = industryBlockBody.querySelector('.add-requirement-btn');
+        if (addButton) {
+            addButton.parentElement.classList.remove('info-block__body--empty');
+            addButton.remove();
+        }
+
+        const row = document.createElement('div');
+        row.className = 'info-block__row';
+        row.dataset.groupId = data.groupId;
+        row.innerHTML = `
+            <span class="info-block__label">${data.groupName}</span>
+            <span class="info-block__value">${data.values.join(', ')}</span>
+            <div class="info-block__row-actions">
+                <button class="info-block__row-btn info-block__row-btn--edit">
+                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>
+                </button>
+                <button class="info-block__row-btn info-block__row-btn--delete">
+                    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.082 3.5H1.91797V2.33333H10.082V3.5ZM9.5 12.8333H2.5V4.66667H9.5V12.8333ZM11.25 4.66667H10.666V12.8333C10.666 13.4722 10.1389 14 9.5 14H2.5C1.86111 14 1.33398 13.4722 1.33398 12.8333V4.66667H0.75V3.5H3.08398V1.75C3.08398 1.425 3.35903 1.16667 3.66602 1.16667H8.33398C8.64097 1.16667 8.91602 1.425 8.91602 1.75V3.5H11.25V4.66667Z" fill="#808080"/></svg>
+                </button>
+            </div>
+        `;
+        industryBlockBody.appendChild(row);
+    };
+
+    let editingRowElement = null; // To keep track of the row being edited
+
+    const openAddRequirementPopup = (data = null) => {
+        populateRequirementNameDropdown();
+
+        if (data) { // Pre-populate for editing
+            editingRowElement = data.rowElement;
+            document.getElementById('addRequirementBtn').textContent = 'Save';
+
+            const nameDropdown = document.getElementById('requirementName');
+            nameDropdown.value = data.groupId;
+
+            // Manually trigger the dependent dropdown creation and population
+            updateDependentDropdown(data.groupId);
+
+            // Set the selected values in the multi-select dropdown
+            $(dependentRequirementDropdown).val(data.values).trigger('change');
+
+        } else { // Reset for adding
+            editingRowElement = null;
+            document.getElementById('addRequirementBtn').textContent = 'Add';
+        }
+
+        addRequirementPopup.classList.add('active');
+        popupOverlay.classList.add('active');
+    };
+
+    document.getElementById('addRequirementBtn').addEventListener('click', () => {
+        const nameDropdown = document.getElementById('requirementName');
+        const valueDropdown = document.getElementById('dependentRequirement');
+        const selectedGroupId = nameDropdown.value;
+        const selectedValues = $(valueDropdown).val();
+
+        // Clear previous errors
+        const existingError = addRequirementPopup.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        $(valueDropdown).next('.select2-container').find('.select2-selection').removeClass('invalid');
+
+        // Validation
+        if (selectedGroupId && (!selectedValues || selectedValues.length === 0)) {
+            const error = document.createElement('span');
+            error.className = 'error-message';
+            error.textContent = 'At least one option must be selected.';
+            $(valueDropdown).next('.select2-container').after(error);
+            $(valueDropdown).next('.select2-container').find('.select2-selection').addClass('invalid');
+            return;
+        }
+
+        // On success
+        const groupName = requirementData.criteria[selectedGroupId].name;
+        const data = {
+            groupId: selectedGroupId,
+            groupName: groupName,
+            values: selectedValues
+        };
+
+        if (editingRowElement) {
+            // Update existing row
+            editingRowElement.dataset.groupId = data.groupId;
+            editingRowElement.querySelector('.info-block__label').textContent = data.groupName;
+            editingRowElement.querySelector('.info-block__value').textContent = data.values.join(', ');
+        } else {
+            // Render new row
+            renderRequirementRow(data);
+        }
+
+        closeAddRequirementPopup();
+    });
+
+    document.querySelector('[data-block-name="industryRequirements"]').addEventListener('click', function(e) {
+        const deleteBtn = e.target.closest('.info-block__row-btn--delete');
+        const editBtn = e.target.closest('.info-block__row-btn--edit');
+
+        if (deleteBtn) {
+            debugger;
+            const row = deleteBtn.closest('.info-block__row');
+            const groupId = row.dataset.groupId;
+            const values = row.querySelector('.info-block__value').textContent.split(', ');
+
+            console.log("Deleting requirement:", {
+                groupId: groupId,
+                values: values
+            });
+
+            row.remove();
+        }
+
+        if (editBtn) {
+            const row = editBtn.closest('.info-block__row');
+            const groupId = row.dataset.groupId;
+            const groupName = row.querySelector('.info-block__label').textContent;
+            const values = row.querySelector('.info-block__value').textContent.split(', ');
+
+            openAddRequirementPopup({
+                rowElement: row,
+                groupId,
+                groupName,
+                values
+            });
+        }
+    });
+
+
+    // ==========================================================================
+    // 5. OLD INDUSTRY REQUIREMENTS CRITERIA POPUP FEATURE (to be deprecated)
     // ==========================================================================
     
     // --- Popup Element Selectors ---
