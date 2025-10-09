@@ -987,9 +987,25 @@
 									<div class="info-block" data-block-name="industryRequirements">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Industry Requirements</h2>
+											<div class="info-block__actions" style="display: none;"></div>
+										</div>
+										<div class="info-block__body info-block__body--lists">
+											<div id="new-criteria-container"></div>
+
+										</div>
+
+										<button type="button" id="show-add-requirement-popup" class="add-item-btn add-new-requirement-center-btn">
+											<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M10.8666 0V10.6667H0.199951V13.3333H10.8666V24H13.5333V13.3333H24.2V10.6667H13.5333V0H10.8666Z" fill="#159C2A"></path>
+											</svg>
+										</button>
+									</div>
+
+									<!-- <div class="info-block" data-block-name="industryRequirements">
+										<div class="info-block__header">
+											<h2 class="info-block__title">Industry Requirements</h2>
 											<div class="info-block__actions"></div>
 										</div>
-										<!--
 										<div class="info-block__body info-block__body--lists">
 											<div class="criteria-list-container">
 												<div class="info-list" data-criteria-name="Preferred Industries" data-items='["Real Estate", "Manufacturing", "Logistics & Transportation", "Hospitality & Tourism", "Restaurants", "Technology", "Finance"]'>
@@ -1020,15 +1036,7 @@
 												</div>
 											</div>
 										</div>
-										-->
-										<div class="info-block__body info-block__body--empty">
-											<button class="add-requirement-btn" onclick="openAddRequirementPopup()">
-												<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-													<path d="M8.6239 7.3761V0H7.3761V7.3761H0V8.6239H7.3761V16H8.6239V8.6239H16V7.3761H8.6239Z" fill="#0D661A"/>
-												</svg>
-											</button>
-										</div>
-									</div>
+									</div> -->
 								</div>
 								<div class="lender-content__item lender-content__item--documents" style="display: none;">
 
@@ -1891,28 +1899,29 @@
 		</div>
 	</div>
 
-	<div class="popup" id="addRequirementPopup">
+	<div class="popup-overlay" id="addEditRequirementOverlay"></div>
+	<div class="popup criteria-popup" id="addEditRequirementPopup">
 		<div class="popup-top">
-			<h2>Add (Edit) Requirements</h2>
-			<button type="button" class="popup-close" id="closeAddRequirementPopup" aria-label="Close popup">
+			<h2 id="addEditRequirementPopupTitle">Add Requirement</h2>
+			<button type="button" class="popup-close js-add-edit-requirement-close" aria-label="Close popup">
 				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M13.8906 0.854492C14.1445 0.600946 14.5558 0.60075 14.8096 0.854492C15.0632 1.10825 15.0631 1.51962 14.8096 1.77344L8.58301 7.99902L14.8096 14.2256C15.0632 14.4793 15.0631 14.8917 14.8096 15.1455C14.5558 15.3989 14.1444 15.399 13.8906 15.1455L7.66406 8.91895L1.43848 15.1455C1.18468 15.3993 0.772408 15.3992 0.518555 15.1455C0.264714 14.8917 0.264714 14.4794 0.518555 14.2256L6.74414 7.99902L0.518555 1.77344C0.26494 1.51972 0.265139 1.10833 0.518555 0.854492C0.77242 0.600946 1.18473 0.60075 1.43848 0.854492L7.66406 7.08008L13.8906 0.854492Z" fill="#232323"/>
 				</svg>
 			</button>
 		</div>
-		<div class="popup-form">
+		<div class="criteria-popup-form">
 			<div class="form-group">
-				<label for="requirementName">Select Name</label>
-				<select id="requirementName" name="requirementName" class="info-block__select"></select>
+				<label for="requirementNameSelect">Select Name</label>
+				<select id="requirementNameSelect" name="requirementName" class="info-block__select"></select>
 			</div>
-			<div id="dependentRequirementContainer" class="form-group" style="display: none;">
-				<label for="dependentRequirement" id="dependentRequirementLabel"></label>
-				<select id="dependentRequirement" name="dependentRequirement" class="info-block__select" multiple></select>
+			<div id="requirementValuesContainer" class="form-group" style="display: none;">
+				<label for="requirementValuesSelect"></label>
+				<select id="requirementValuesSelect" name="requirementValues" class="info-block__select" multiple="multiple"></select>
 			</div>
 		</div>
 		<div class="popup-actions">
+			<button type="button" class="popup-cancel-btn js-add-edit-requirement-close">Cancel</button>
 			<button type="button" id="addRequirementBtn" class="popup-save-btn">Add</button>
-			<button type="button" id="cancelAddRequirementBtn" class="popup-cancel-btn">Cancel</button>
 		</div>
 	</div>
 	
