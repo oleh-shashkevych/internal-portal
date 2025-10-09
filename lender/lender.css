@@ -1430,6 +1430,7 @@
 .select2-container .select2-selection--multiple .select2-selection__rendered {
 	display: inline-flex;
 	gap: 4px;
+	flex-wrap: wrap;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -1471,6 +1472,40 @@
 .select2-search.select2-search--inline {
 	display: inline-flex;
 	margin-left: 5px;
+}
+
+/* Styles for checkboxes in Select2 dropdown */
+.select2-results__option .select2-option__checkbox {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #C6C6C6;
+    border-radius: 3px;
+    margin-right: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: #fff;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.select2-results__option .select2-option__checkbox svg {
+	display: none;
+    width: 9px;
+    height: 8px;
+}
+
+.select2-results__option--selected .select2-option__checkbox {
+	background-color: #28B028;
+	border-color: #28B028;
+}
+
+.select2-results__option--selected .select2-option__checkbox svg {
+	display: block;
+}
+
+.select2-container--default .select2-selection--multiple {
+    transition: border-color 0.2s ease-in-out;
 }
 
 /* ==========================================================================

@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createField(element) {
         const type = element.dataset.type || 'text';
         const name = element.dataset.field;
-        const value = element.textContent.trim();
+        let value = element.textContent.trim(); // Get original text
         const maxlength = element.dataset.maxlength;
         const required = element.dataset.required === 'true';
         let field;
@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (element.dataset.max) field.max = element.dataset.max;
                 if (element.dataset.min) field.min = element.dataset.min || 0;
                 break;
-            case 'select2':
+            case 'select2-checkbox': // NEW and replaces old 'select2'
                 field = document.createElement('select');
                 field.className = 'info-block__select';
                 field.multiple = true;
@@ -267,20 +267,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'select-icon':
             case 'select-tier':
-                 field = document.createElement('select');
-                 field.className = `info-block__select js-${type}`;
-                 const selectOptions = JSON.parse(element.dataset.options || '{}');
-                 const currentSelectedValue = element.firstElementChild?.dataset.value;
-                 for(const val in selectOptions) {
-                     const optionEl = new Option(selectOptions[val], val, false, val === currentSelectedValue);
-                     field.add(optionEl);
-                 }
-                 break;
+                field = document.createElement('select');
+                field.className = `info-block__select js-${type}`;
+                const selectOptions = JSON.parse(element.dataset.options || '{}');
+                const currentSelectedValue = element.firstElementChild?.dataset.value;
+                for(const val in selectOptions) {
+                    const optionEl = new Option(selectOptions[val], val, false, val === currentSelectedValue);
+                    field.add(optionEl);
+                }
+                break;
             default:
                 field = document.createElement('input');
                 field.type = 'text';
                 field.className = 'info-block__input';
-                field.value = value;
+                // UPDATED: Handle prefix for minDepositVolume
+                if (name === 'minDepositVolume') {
+                    field.value = value.replace(/[$\s]/g, '');
+                } else {
+                    field.value = value;
+                }
         }
 
         field.id = name;
@@ -363,16 +368,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 const field = createField(viewElement);
                 viewElement.innerHTML = '';
                 viewElement.appendChild(field);
-    
-                // Initialize Select2 for specific field types
-                if (viewElement.dataset.type === 'select2') {
-                    $(field).select2({ width: '100%' });
+
+                // NEW: Input Mask for minDepositVolume
+                if (viewElement.dataset.field === 'minDepositVolume') {
+                    $(field).inputmask('decimal', {
+                        radixPoint: ".",
+                        groupSeparator: ",",
+                        autoGroup: true,
+                        digits: 2,
+                        digitsOptional: false,
+                        rightAlign: false,
+                        allowMinus: false,
+                        placeholder: '0'
+                    });
+                }
+
+                // UPDATED: Initialize Select2 for specific field types
+                if (viewElement.dataset.type === 'select2-checkbox') {
+                    $(field).select2({
+                        width: '100%',
+                        closeOnSelect: false, // Prevents dropdown from closing
+                        templateResult: formatCheckbox,
+                        templateSelection: (data) => data.text // Display only text in the selection area
+                    });
                 }
                 if (viewElement.dataset.type === 'select-tier') {
-                     $(field).select2({ width: '100%', templateResult: formatTier, templateSelection: formatTier, minimumResultsForSearch: Infinity });
+                    $(field).select2({ width: '100%', templateResult: formatTier, templateSelection: formatTier, minimumResultsForSearch: Infinity });
                 }
-                 if (viewElement.dataset.type === 'select-icon') {
-                     $(field).select2({ width: '100%', templateResult: formatIcon, templateSelection: formatIcon, minimumResultsForSearch: Infinity });
+                if (viewElement.dataset.type === 'select-icon') {
+                    $(field).select2({ width: '100%', templateResult: formatIcon, templateSelection: formatIcon, minimumResultsForSearch: Infinity });
                 }
             });
         }
@@ -489,7 +513,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (Array.isArray(newValue)) {
                         displayHTML = newValue.join(', ');
                     } else {
-                        displayHTML = newValue;
+                        // MODIFIED: Add dollar sign prefix for specific field
+                        if (fieldName === 'minDepositVolume' && newValue) {
+                            displayHTML = `$ ${newValue}`;
+                        } else {
+                            displayHTML = newValue;
+                        }
                     }
                     viewElement.innerHTML = displayHTML;
                 } else {
@@ -791,4 +820,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, true); 
+
+    /**
+     * Formatter for Select2 to display options with checkboxes.
+     */
+    const formatCheckbox = (state) => {
+        if (!state.id) return state.text;
+        const checkboxHTML = `
+            <span class="select2-option__checkbox">
+                <svg width="9" height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.39102 1L3.27486 5.83237L1.54826 4.20468L1 4.79568L3.33828 7L8 1.52712L7.39102 1Z" fill="white" stroke="white" stroke-width="0.3"/>
+                </svg>
+            </span>
+        `;
+        return $(`<span>${checkboxHTML}${state.text}</span>`);
+    };
 });

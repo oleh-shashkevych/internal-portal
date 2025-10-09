@@ -779,7 +779,7 @@
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Programs</span>
-												<span class="info-block__value-list" data-field="programs" data-type="select2" data-required="true" data-options='["AR Financing", "Equipment Financing", "Purchase Order/Invoice Factoring", "Reverse", "LOC", "CC Split", "MCA", "TProg", "Commercial Mortgages"]'>AR Financing, Equipment Financing, Purchase Order/Invoice Factoring, Reverse</span>
+												<span class="info-block__value-list" data-field="programs" data-type="select2-checkbox" data-required="true" data-options='["AR Financing", "Equipment Financing", "Purchase Order/Invoice Factoring", "Reverse", "LOC", "CC Split", "MCA", "TProg", "Commercial Mortgages"]'>AR Financing, Equipment Financing, Purchase Order/Invoice Factoring, Reverse</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Notes</span>
@@ -839,11 +839,11 @@
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Min Deposit Volume</span>
-												<span class="info-block__value" data-field="minDepositVolume" data-type="text" data-maxlength="50">10000</span>
+												<span class="info-block__value" data-field="minDepositVolume" data-type="text" data-maxlength="50">$ 10,000.00</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Avg Daily Balances</span>
-												<span class="info-block__value" data-field="avgDailyBalances" data-type="text" data-maxlength="50">$2,500+</span>
+												<span class="info-block__value" data-field="avgDailyBalances" data-type="text" data-maxlength="50">$ 2,500+</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">NSFs</span>
@@ -872,7 +872,11 @@
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Hard Credit Pull</span>
-												<span class="info-block__value" data-field="hardCreditPull" data-type="text" data-maxlength="100">No (Soft only)</span>
+												<span class="info-block__value" data-field="hardCreditPull" data-type="select-icon" data-options='{"yes":"Yes", "no":"No"}'>
+													<span class="info-block__value-radio" data-value="no">
+														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#DB1C10"/><path d="M9.01831 5.01831L4.43237 9.60424" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M4.43237 5.01831L9.01831 9.60424" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg> No
+													</span>
+												</span>
 											</div>
 											<div class="info-block__row">
 												<span class="info-block__label">Judgements</span>
@@ -885,6 +889,10 @@
 											<div class="info-block__row">
 												<span class="info-block__label">Tax Liens</span>
 												<span class="info-block__value" data-field="taxLiens" data-type="textarea" data-maxlength="500">Must have payment plan</span>
+											</div>
+											<div class="info-block__row">
+												<span class="info-block__label">Business Credit Reporting</span>
+												<span class="info-block__value-list" data-field="businessCreditReporting" data-type="select2-checkbox" data-options='["Dun & Bradstreet", "Experian", "TrunsUnion", "Equifax"]'>Dun & Bradstreet</span>
 											</div>
 										</div>
 									</div>
@@ -914,6 +922,10 @@
 														<svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="6.5" cy="7" r="6.5" fill="#159C2A"/><path d="M9.39102 4.5L5.27486 9.33237L3.54826 7.70468L3 8.29568L5.33828 10.5L10 5.02712L9.39102 4.5Z" fill="white" stroke="white" stroke-width="0.3"/></svg> Yes
 													</span>
 												</span>
+											</div>
+											<div class="info-block__row">
+												<span class="info-block__label">Repayment Structure</span>
+												<span class="info-block__value-list" data-field="repaymentStructure" data-type="select2-checkbox" data-options='["Daily", "Weekly", "Bi-Weekly", "Monthly"]'>Daily, Weekly</span>
 											</div>
 										</div>
 									</div>
