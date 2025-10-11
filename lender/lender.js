@@ -253,6 +253,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 field.value = parseInt(value, 10) || 0;
                 if (element.dataset.max) field.max = element.dataset.max;
                 if (element.dataset.min) field.min = element.dataset.min || 0;
+
+                // --- Доданий код для валідації в реальному часі ---
+                field.addEventListener('input', () => {
+                    const val = parseFloat(field.value);
+                    const max = parseFloat(field.max);
+                    const min = parseFloat(field.min);
+
+                    if (!isNaN(val)) {
+                        if (!isNaN(max) && val > max) {
+                            field.value = max;
+                        }
+                        if (!isNaN(min) && val < min) {
+                            field.value = min;
+                        }
+                    }
+                });
+                // --- Кінець доданого коду ---
                 break;
             case 'select2-checkbox': // NEW and replaces old 'select2'
                 field = document.createElement('select');
