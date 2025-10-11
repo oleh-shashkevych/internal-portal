@@ -466,6 +466,10 @@
 	margin-bottom: 15px;
 }
 
+.form-group span.select2 {
+	width: 100% !important;
+}
+
 .criteria-popup-form label {
 	display: block;
 	margin-bottom: 5px;
@@ -1598,6 +1602,134 @@
 
 .new-criteria-actions .delete-row-btn:hover svg path {
     fill: #E2493F;
+}
+
+/* ==========================================================================
+   (NEW) STYLES FOR INDUSTRIES BLOCKS
+   ========================================================================== */
+
+.industries-block .info-block__body {
+    display: block; /* Override grid layout */
+}
+
+.industries-block__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.industries-block__list-item {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #000;
+}
+
+.industries-block__placeholder {
+    font-size: 16px;
+    color: #808080;
+    text-align: center;
+    margin: 10px 0;
+    display: none; /* Hidden by default */
+}
+
+.industries-block--empty .industries-block__placeholder {
+    display: block;
+}
+
+.industries-block--empty .info-block__body {
+    display: none;
+}
+
+/* Styles for modified Industry Requirements block */
+.industry-requirement-group {
+    border: 1px solid #EEEEEE;
+    border-radius: 3px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.industry-requirement-group__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.industry-requirement-group__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #232323;
+}
+
+.industry-requirement-group .info-block__body {
+    padding-top: 0;
+}
+
+.industry-requirement-group .info-block__row:last-child {
+    padding-bottom: 0;
+}
+
+#add-criteria-group-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #D6F2D5;
+    padding: 0;
+    border: none;
+    margin: 0 auto; /* Зменшений відступ */
+    justify-content: center;
+}
+
+#add-criteria-group-btn svg {
+    width: 18px; /* Менший розмір іконки */
+    height: 18px;
+}
+
+#add-criteria-group-btn:hover {
+    background-color: #159C2A;
+}
+
+#add-criteria-group-btn:hover svg path {
+    fill: #fff;
+}
+
+.criteria-group {
+    border: 1px dashed #ddd;
+    padding: 15px;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.criteria-group__delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.criteria-group__delete-btn svg path {
+	fill: #FF0000;
+}
+
+.criteria-group__delete-btn:hover svg path {
+    fill: #FF3535;
+}
+
+.criteria-group__error {
+    color: #E2493F;
+    font-size: 12px;
+    margin-top: 10px;
+    font-weight: 500;
 }
 
 /* ==========================================================================

@@ -984,7 +984,52 @@
 										</div>
 									</div>
 
+									<div class="info-block industries-block" id="preferred-industries-block" data-type="preferred">
+										<div class="info-block__header">
+											<h2 class="info-block__title">Preferred Industries</h2>
+											<div class="info-block__actions">
+												<button class="info-block__edit-btn">
+													<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>Edit
+												</button>
+											</div>
+										</div>
+										<div class="info-block__body">
+											<div class="industries-block__list"></div>
+										</div>
+										<p class="industries-block__placeholder">No list</p>
+									</div>
+
+									<div class="info-block industries-block" id="restricted-industries-block" data-type="restricted">
+										<div class="info-block__header">
+											<h2 class="info-block__title">Restricted Industries</h2>
+											<div class="info-block__actions">
+												<button class="info-block__edit-btn">
+													<svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>Edit
+												</button>
+											</div>
+										</div>
+										<div class="info-block__body">
+											<div class="industries-block__list"></div>
+										</div>
+										<p class="industries-block__placeholder">No list</p>
+									</div>
+
+
 									<div class="info-block" data-block-name="industryRequirements">
+										<div class="info-block__header">
+											<h2 class="info-block__title">Industry Requirements</h2>
+										</div>
+										<div class="info-block__body info-block__body--lists" id="industry-requirements-container">
+											</div>
+
+										<button type="button" id="show-add-requirement-popup" class="add-item-btn add-new-requirement-center-btn">
+											<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M10.8666 0V10.6667H0.199951V13.3333H10.8666V24H13.5333V13.3333H24.2V10.6667H13.5333V0H10.8666Z" fill="#159C2A"></path>
+											</svg>
+										</button>
+									</div>
+
+									<!-- <div class="info-block" data-block-name="industryRequirements">
 										<div class="info-block__header">
 											<h2 class="info-block__title">Industry Requirements</h2>
 											<div class="info-block__actions" style="display: none;"></div>
@@ -999,7 +1044,7 @@
 												<path d="M10.8666 0V10.6667H0.199951V13.3333H10.8666V24H13.5333V13.3333H24.2V10.6667H13.5333V0H10.8666Z" fill="#159C2A"></path>
 											</svg>
 										</button>
-									</div>
+									</div> -->
 
 									<!-- <div class="info-block" data-block-name="industryRequirements">
 										<div class="info-block__header">
@@ -1863,7 +1908,59 @@
 		</div>
 	</div>
 
-	<div class="popup-overlay" id="criteriaPopupOverlay"></div>
+	<div class="popup-overlay" id="industries-popup-overlay"></div>
+	<div class="popup criteria-popup" id="industries-popup">
+		<div class="popup-top">
+			<h2 id="industries-popup-title">Edit Industries</h2>
+			<button type="button" class="popup-close js-industries-popup-close" aria-label="Close popup">
+				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M13.8906 0.854492C14.1445 0.600946 14.5558 0.60075 14.8096 0.854492C15.0632 1.10825 15.0631 1.51962 14.8096 1.77344L8.58301 7.99902L14.8096 14.2256C15.0632 14.4793 15.0631 14.8917 14.8096 15.1455C14.5558 15.3989 14.1444 15.399 13.8906 15.1455L7.66406 8.91895L1.43848 15.1455C1.18468 15.3993 0.772408 15.3992 0.518555 15.1455C0.264714 14.8917 0.264714 14.4794 0.518555 14.2256L6.74414 7.99902L0.518555 1.77344C0.26494 1.51972 0.265139 1.10833 0.518555 0.854492C0.77242 0.600946 1.18473 0.60075 1.43848 0.854492L7.66406 7.08008L13.8906 0.854492Z" fill="#232323"/>
+				</svg>
+			</button>
+		</div>
+		<div class="criteria-popup-form">
+			<div class="form-group">
+				<label for="industries-select">Industries</label>
+				<select id="industries-select" name="industries" class="info-block__select" multiple="multiple"></select>
+			</div>
+		</div>
+		<div class="popup-actions">
+			<button type="button" class="popup-cancel-btn js-industries-popup-close">Cancel</button>
+			<button type="button" id="industries-popup-save-btn" class="popup-save-btn">Save</button>
+		</div>
+	</div>
+
+
+	<div class="popup-overlay" id="addEditRequirementOverlay"></div>
+	<div class="popup criteria-popup" id="addEditRequirementPopup">
+		<div class="popup-top">
+			<h2 id="addEditRequirementPopupTitle">Add Requirement</h2>
+			<button type="button" class="popup-close js-add-edit-requirement-close" aria-label="Close popup">
+				<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M13.8906 0.854492C14.1445 0.600946 14.5558 0.60075 14.8096 0.854492C15.0632 1.10825 15.0631 1.51962 14.8096 1.77344L8.58301 7.99902L14.8096 14.2256C15.0632 14.4793 15.0631 14.8917 14.8096 15.1455C14.5558 15.3989 14.1444 15.399 13.8906 15.1455L7.66406 8.91895L1.43848 15.1455C1.18468 15.3993 0.772408 15.3992 0.518555 15.1455C0.264714 14.8917 0.264714 14.4794 0.518555 14.2256L6.74414 7.99902L0.518555 1.77344C0.26494 1.51972 0.265139 1.10833 0.518555 0.854492C0.77242 0.600946 1.18473 0.60075 1.43848 0.854492L7.66406 7.08008L13.8906 0.854492Z" fill="#232323"/>
+				</svg>
+			</button>
+		</div>
+		<div class="criteria-popup-form">
+			<div class="form-group">
+				<label for="industry-type-select">Industry Type</label>
+				<select id="industry-type-select" name="industryType"></select>
+			</div>
+			<div id="criteria-groups-container">
+				</div>
+			<button type="button" id="add-criteria-group-btn" class="add-item-btn">
+				<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M10.8666 0V10.6667H0.199951V13.3333H10.8666V24H13.5333V13.3333H24.2V10.6667H13.5333V0H10.8666Z" fill="#159C2A"></path>
+				</svg>
+			</button>
+		</div>
+		<div class="popup-actions">
+			<button type="button" class="popup-cancel-btn js-add-edit-requirement-close">Cancel</button>
+			<button type="button" id="addRequirementBtn" class="popup-save-btn">Add</button>
+		</div>
+	</div>
+
+	<!-- <div class="popup-overlay" id="criteriaPopupOverlay"></div>
 
 	<div class="popup criteria-popup" id="criteriaPopup">
 		<div class="popup-top">
@@ -1923,7 +2020,7 @@
 			<button type="button" class="popup-cancel-btn js-add-edit-requirement-close">Cancel</button>
 			<button type="button" id="addRequirementBtn" class="popup-save-btn">Add</button>
 		</div>
-	</div>
+	</div> -->
 	
 	<script src="../script.js"></script>
 	<script src="../quote/quote.js"></script>
