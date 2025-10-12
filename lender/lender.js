@@ -1,4 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const criteriaData = {
+        "criteria": {
+            "123": {
+                "name": "Time in Business",
+                "data": ["1Y", "2Y", "5Y", "2M", "1M", "5M"]
+            },
+            "222": {
+                "name": "Monthly Revenue",
+                "data": [
+                    "$10,000-$15,000", "$15,000-$30,000", "$30,000-$60,000",
+                    "$60,000-$100,000", "$100,000-$200,000", "$200,000-$350,000",
+                    "$350,000-$500,000", "$500,000+"
+                ]
+            }
+        }
+    };
 
     const groupedIndustriesList = [
         {
@@ -463,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     
     const lenderInfoTab = document.querySelector('.lender-content__item--lender');
-    let currentlyEditingBlock = null; // State to track which info block is being edited
+    let currentlyEditingBlock = null;
 
     // --- Helper Templates & Constants ---
     const iconTemplates = {
@@ -501,7 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (element.dataset.max) field.max = element.dataset.max;
                 if (element.dataset.min) field.min = element.dataset.min || 0;
 
-                // --- Доданий код для валідації в реальному часі ---
                 field.addEventListener('input', () => {
                     const val = parseFloat(field.value);
                     const max = parseFloat(field.max);
@@ -516,9 +531,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 });
-                // --- Кінець доданого коду ---
                 break;
-            case 'select2-checkbox': // NEW and replaces old 'select2'
+            case 'select2-checkbox':
                 field = document.createElement('select');
                 field.className = 'info-block__select';
                 field.multiple = true;
@@ -544,7 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 field = document.createElement('input');
                 field.type = 'text';
                 field.className = 'info-block__input';
-                // UPDATED: Handle prefix for minDepositVolume
                 if (name === 'minDepositVolume') {
                     field.value = value.replace(/[$\s]/g, '');
                 } else {
@@ -640,15 +653,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 $(field).select2({
                     width: '100%',
                     closeOnSelect: false,
-                    // templateResult: formatCheckbox, // Assuming formatCheckbox is defined elsewhere if needed
+                    // templateResult: formatCheckbox,
                     templateSelection: (data) => data.text
                 });
             }
             if (viewElement.dataset.type === 'select-tier') {
-                $(field).select2({ width: '100%', templateResult: formatTier, templateSelection: formatTier, minimumResultsForSearch: Infinity });
+                $(field).select2({ width: '100%', templateResult: formatTier, templateSelection: formatTier });
             }
             if (viewElement.dataset.type === 'select-icon') {
-                $(field).select2({ width: '100%', templateResult: formatIcon, templateSelection: formatIcon, minimumResultsForSearch: Infinity });
+                $(field).select2({ width: '100%', templateResult: formatIcon, templateSelection: formatIcon });
             }
         });
     }
@@ -662,7 +675,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const actionsContainer = block.querySelector('.info-block__actions');
         let dataToSave = {};
 
-        // This function no longer handles the new industry blocks
         if (block.classList.contains('industries-block') || block.dataset.blockName === 'industryRequirements') {
             return;
         }
@@ -769,8 +781,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Main Event Listener for Lender Info Tab ---
     if (lenderInfoTab) {
-        // Initialize all blocks (except Industry Requirements) to view mode
-        lenderInfoTab.querySelectorAll('.info-block:not([data-block-name="industryRequirements"])').forEach(block => {
+        lenderInfoTab.querySelectorAll('.info-block:not([data-block-name="industryRequirements"]):not(.industries-block)').forEach(block => {
             const actions = block.querySelector('.info-block__actions');
             if (actions) {
                 toggleActionButtons(actions, false);
@@ -801,436 +812,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* // ==========================================================================
-    // 4. (OLD) INDUSTRY REQUIREMENTS CRITERIA POPUP FEATURE - COMMENTED OUT
     // ==========================================================================
-    
-    // --- Popup Element Selectors ---
-    const criteriaPopup = document.getElementById('criteriaPopup');
-    const criteriaPopupOverlay = document.getElementById('criteriaPopupOverlay');
-    const criteriaPopupTitle = document.getElementById('criteriaPopupTitle');
-    const criteriaNameInput = document.getElementById('criteriaName');
-    const itemsContainer = document.getElementById('criteriaItemsContainer');
-    const addCriteriaItemBtn = document.getElementById('addCriteriaItem');
-    const saveCriteriaBtn = document.getElementById('saveCriteria');
-    const closeCriteriaPopupBtns = document.querySelectorAll('.js-criteria-popup-close');
-    const criteriaListContainer = document.querySelector('.criteria-list-container');
-
-    // --- Popup State ---
-    let itemCounter = 1;
-    let editingCriteriaElement = null;
-
-    function openCriteriaPopup(criteriaBlock = null) {
-        resetCriteriaPopup();
-        if (criteriaBlock) {
-            editingCriteriaElement = criteriaBlock;
-            criteriaPopupTitle.textContent = "Edit Criteria";
-            const name = criteriaBlock.dataset.criteriaName;
-            const items = JSON.parse(criteriaBlock.dataset.items || '[]');
-            
-            criteriaNameInput.value = name;
-            
-            itemsContainer.innerHTML = '';
-            itemCounter = 0;
-            items.forEach(itemText => {
-                itemCounter++;
-                const isFirst = itemCounter === 1;
-                const newItem = document.createElement('div');
-                newItem.className = 'form-group item-group';
-                newItem.innerHTML = `
-                    <label for="criteriaItem${itemCounter}">Items:</label>
-                    <div class="textarea-wrapper"><textarea id="criteriaItem${itemCounter}" name="criteriaItem[]" class="resizable-textarea" maxlength="500">${itemText}</textarea>
-                    ${!isFirst ? '<button type="button" class="delete-item-btn" aria-label="Delete item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="3" fill="white"/><rect width="24" height="24" rx="3" fill="#232323" fill-opacity="0.13"/><rect width="24" height="24" rx="3" fill="#F8F8F8"/><rect width="24" height="24" rx="3" fill="#8B928C" fill-opacity="0.1"/><path d="M13.251 5.16016C13.9423 5.16032 14.5067 5.72466 14.5068 6.41602V8.05078H18.5V9.20996H16.9131V16.748C16.9131 17.9038 15.974 18.8426 14.8184 18.8428H8.69629C7.54053 18.8426 6.60156 17.9038 6.60156 16.748V9.20898H5.5V8.04883H9.01172V6.41602C9.01183 5.72456 9.57707 5.16016 10.2686 5.16016H13.251ZM7.76367 16.7461C7.76367 17.2617 8.18281 17.6816 8.69922 17.6816H14.8184C15.3338 17.6814 15.7529 17.2624 15.7529 16.7461V9.20898H7.76367V16.7461ZM11.1367 15.543H9.97754V11.2793H11.1367V15.543ZM13.7939 15.543H12.6348V11.2793H13.7939V15.543ZM10.2686 6.31934C10.2143 6.31934 10.172 6.36176 10.1719 6.41602V8.04883H13.3477V6.41602C13.3475 6.36185 13.3051 6.31948 13.251 6.31934H10.2686Z" fill="#808080"/></svg></button></div>' : '</div>'}
-                `;
-                itemsContainer.appendChild(newItem);
-            });
-        } else {
-            editingCriteriaElement = null;
-        }
-
-        criteriaPopup.classList.add('active');
-        criteriaPopupOverlay.classList.add('active');
-    }
-
-    function closeCriteriaPopup() {
-        criteriaPopup.classList.remove('active');
-        criteriaPopupOverlay.classList.remove('active');
-    }
-
-    function resetCriteriaPopup() {
-        criteriaPopupTitle.textContent = "New Criteria";
-        criteriaNameInput.value = '';
-        itemsContainer.innerHTML = `
-            <div class="form-group item-group">
-                <label for="criteriaItem1">Items:</label>
-                <div class="textarea-wrapper"><textarea id="criteriaItem1" name="criteriaItem[]" class="resizable-textarea" maxlength="500"></textarea></div>
-            </div>
-        `;
-        itemCounter = 1;
-        editingCriteriaElement = null;
-        criteriaNameInput.classList.remove('invalid');
-        itemsContainer.querySelector('textarea').classList.remove('invalid');
-    }
-    
-    function addCriteriaToDOM(data) {
-        const newCriteria = document.createElement('div');
-        newCriteria.className = 'info-list';
-        newCriteria.dataset.criteriaName = data.name;
-        newCriteria.dataset.items = JSON.stringify(data.items);
-
-        let itemsHTML = data.items.map(item => `<span class="info-list__item">${item}</span>`).join('');
-
-        newCriteria.innerHTML = `
-            <h3 class="info-list__title">${data.name}</h3>
-            <div class="info-list__items">
-                ${itemsHTML}
-                <button class="criteria-edit-btn" style="display:inline-block;">Edit</button>
-            </div>
-        `;
-        criteriaListContainer.prepend(newCriteria);
-    }
-
-    function updateCriteriaInDOM(element, data) {
-        element.dataset.criteriaName = data.name;
-        element.dataset.items = JSON.stringify(data.items);
-        
-        element.querySelector('.info-list__title').textContent = data.name;
-
-        const itemsWrapper = element.querySelector('.info-list__items');
-        while(itemsWrapper.firstElementChild && itemsWrapper.firstElementChild.tagName !== 'BUTTON') {
-            itemsWrapper.removeChild(itemsWrapper.firstElementChild);
-        }
-
-        let itemsHTML = data.items.map(item => `<span class="info-list__item">${item}</span>`).join('');
-        itemsWrapper.insertAdjacentHTML('afterbegin', itemsHTML);
-    }
-
-    addCriteriaItemBtn.addEventListener('click', () => {
-        itemCounter++;
-        const newItem = document.createElement('div');
-        newItem.className = 'form-group item-group';
-        newItem.innerHTML = `
-            <label for="criteriaItem${itemCounter}">Items:</label>
-            <div class="textarea-wrapper"><textarea id="criteriaItem${itemCounter}" name="criteriaItem[]" class="resizable-textarea" maxlength="500"></textarea>
-            <button type="button" class="delete-item-btn" aria-label="Delete item"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" rx="3" fill="white"/><rect width="24" height="24" rx="3" fill="#232323" fill-opacity="0.13"/><rect width="24" height="24" rx="3" fill="#F8F8F8"/><rect width="24" height="24" rx="3" fill="#8B928C" fill-opacity="0.1"/><path d="M13.251 5.16016C13.9423 5.16032 14.5067 5.72466 14.5068 6.41602V8.05078H18.5V9.20996H16.9131V16.748C16.9131 17.9038 15.974 18.8426 14.8184 18.8428H8.69629C7.54053 18.8426 6.60156 17.9038 6.60156 16.748V9.20898H5.5V8.04883H9.01172V6.41602C9.01183 5.72456 9.57707 5.16016 10.2686 5.16016H13.251ZM7.76367 16.7461C7.76367 17.2617 8.18281 17.6816 8.69922 17.6816H14.8184C15.3338 17.6814 15.7529 17.2624 15.7529 16.7461V9.20898H7.76367V16.7461ZM11.1367 15.543H9.97754V11.2793H11.1367V15.543ZM13.7939 15.543H12.6348V11.2793H13.7939V15.543ZM10.2686 6.31934C10.2143 6.31934 10.172 6.36176 10.1719 6.41602V8.04883H13.3477V6.41602C13.3475 6.36185 13.3051 6.31948 13.251 6.31934H10.2686Z" fill="#808080"/></svg></button></div>
-        `;
-        itemsContainer.appendChild(newItem);
-    });
-
-    itemsContainer.addEventListener('click', (e) => {
-        const deleteBtn = e.target.closest('.delete-item-btn');
-        if (deleteBtn) {
-            deleteBtn.closest('.item-group').remove();
-        }
-    });
-
-    saveCriteriaBtn.addEventListener('click', () => {
-        let isValid = true;
-        const allPopupInputs = criteriaPopup.querySelectorAll('input, textarea');
-
-        allPopupInputs.forEach(i => i.classList.remove('invalid'));
-        criteriaPopup.querySelectorAll('.error-message').forEach(el => el.remove());
-
-        const name = criteriaNameInput.value.trim();
-        const itemTextareas = itemsContainer.querySelectorAll('textarea');
-        
-        if (name === '') {
-            isValid = false;
-            criteriaNameInput.classList.add('invalid');
-            const errorMessage = document.createElement('span');
-            errorMessage.className = 'error-message';
-            errorMessage.textContent = 'This field is required.';
-            criteriaNameInput.after(errorMessage);
-        }
-
-        if (itemTextareas[0] && itemTextareas[0].value.trim() === '') {
-            isValid = false;
-            itemTextareas[0].classList.add('invalid');
-            const errorMessage = document.createElement('span');
-            errorMessage.className = 'error-message';
-            errorMessage.textContent = 'This field is required.';
-            itemTextareas[0].closest('.textarea-wrapper').after(errorMessage);
-        }
-
-        if (!isValid) {
-            return;
-        }
-        
-        const items = [];
-        itemTextareas.forEach(textarea => {
-            const value = textarea.value.trim();
-            if (value !== '') {
-                items.push(value);
-            }
-        });
-
-        const criteriaData = {
-            name: name,
-            items: items
-        };
-        
-        console.log("Criteria data to be sent:", criteriaData);
-        
-        if (editingCriteriaElement) {
-            updateCriteriaInDOM(editingCriteriaElement, criteriaData);
-        } else {
-            addCriteriaToDOM(criteriaData);
-        }
-        
-        closeCriteriaPopup();
-    });
-
-    closeCriteriaPopupBtns.forEach(btn => btn.addEventListener('click', closeCriteriaPopup));
-    */
-
-    /* // ==========================================================================
-    // 5. (MODIFIED) INDUSTRY REQUIREMENTS - DYNAMIC POPUP & RENDERING
-    // ========================================================================== */
-
-    // --- Popup and container elements ---
-    const addEditRequirementPopup = document.getElementById('addEditRequirementPopup');
-    const addEditRequirementOverlay = document.getElementById('addEditRequirementOverlay');
-    const showAddRequirementBtn = document.getElementById('show-add-requirement-popup');
-    const addRequirementBtn = document.getElementById('addRequirementBtn');
-    const popupTitle = document.getElementById('addEditRequirementPopupTitle');
-    const industryTypeSelect = document.getElementById('industry-type-select');
-    const criteriaGroupsContainer = document.getElementById('criteria-groups-container');
-    const addCriteriaGroupBtn = document.getElementById('add-criteria-group-btn');
-    const closePopupBtns = document.querySelectorAll('.js-add-edit-requirement-close');
-    const industryRequirementsContainer = document.getElementById('industry-requirements-container');
-
-    let editingRequirementGroup = null; // To track if we are editing an existing group
-
-    // --- Helper to create a new criteria group in the popup ---
-    const createCriteriaGroupHTML = (name = '', criterion = '', isFirst = false) => {
-        const groupId = `group-${Date.now()}-${Math.random()}`;
-        return `
-            <div class="criteria-group" id="${groupId}">
-                ${!isFirst ? `
-                    <button type="button" class="criteria-group__delete-btn" aria-label="Delete group">
-                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.53906 0.578125C10.3901 0.578125 11.0857 1.27307 11.0859 2.12402V4.13574H16V5.56348H14.0469V14.8408C14.0467 16.2633 12.8903 17.4189 11.4678 17.4189H3.93457C2.51202 17.4189 1.35561 16.2633 1.35547 14.8408V5.56152H0V4.13477H4.32227V2.12402C4.32249 1.27307 5.01814 0.578125 5.86914 0.578125H9.53906ZM2.78613 14.8389C2.78624 15.4734 3.30199 15.9902 3.9375 15.9902H11.4688C12.1031 15.99 12.619 15.4742 12.6191 14.8389V5.56152H2.78613V14.8389ZM6.93262 13.3564H5.50488V8.10938H6.93262V13.3564ZM10.1934 13.3564H8.76562V8.10938H10.1934V13.3564ZM5.86914 2.00586C5.80238 2.00586 5.75022 2.05732 5.75 2.12402V4.13477H9.6582V2.12402C9.65799 2.05732 9.60583 2.00586 9.53906 2.00586H5.86914Z" fill="#808080"/>
-                        </svg>
-                    </button>
-                ` : ''}
-                <div class="form-group">
-                    <label for="name-${groupId}">Name</label>
-                    <input type="text" id="name-${groupId}" class="criteria-name" value="${name}" maxlength="150">
-                </div>
-                <div class="form-group">
-                    <label for="criterion-${groupId}">Criterion</label>
-                    <input type="text" id="criterion-${groupId}" class="criteria-criterion" value="${criterion}" maxlength="150">
-                </div>
-                <div class="criteria-group__error" style="display: none;">Both fields must be filled.</div>
-            </div>
-        `;
-    };
-
-    // --- Popup Functions ---
-    const openAddEditRequirementPopup = (isEditing = false, groupElement = null) => {
-        // Reset popup state
-        criteriaGroupsContainer.innerHTML = '';
-        addEditRequirementPopup.querySelectorAll('.error-message, .criteria-group__error').forEach(el => {
-            el.textContent = '';
-            el.style.display = 'none';
-        });
-        addEditRequirementPopup.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-        $(industryTypeSelect).val(null).trigger('change');
-        
-        editingRequirementGroup = groupElement;
-
-        if (isEditing && groupElement) {
-            popupTitle.textContent = 'Edit Requirement';
-            addRequirementBtn.textContent = 'Save';
-
-            const industry = groupElement.dataset.industry;
-            const criteria = JSON.parse(groupElement.dataset.criteria || '[]');
-            
-            $(industryTypeSelect).val(industry).trigger('change');
-            
-            criteria.forEach((item, index) => {
-                criteriaGroupsContainer.insertAdjacentHTML('beforeend', createCriteriaGroupHTML(item.name, item.criterion, index === 0));
-            });
-
-        } else {
-            popupTitle.textContent = 'Add Requirement';
-            addRequirementBtn.textContent = 'Add';
-            criteriaGroupsContainer.innerHTML = createCriteriaGroupHTML('', '', true); // Add the first, mandatory group
-        }
-
-        addEditRequirementPopup.classList.add('active');
-        addEditRequirementOverlay.classList.add('active');
-    };
-
-    const closeAddEditRequirementPopup = () => {
-        addEditRequirementPopup.classList.remove('active');
-        addEditRequirementOverlay.classList.remove('active');
-        editingRequirementGroup = null;
-    };
-
-    // --- Event Listeners for Industry Requirements ---
-    showAddRequirementBtn.addEventListener('click', () => openAddEditRequirementPopup());
-    closePopupBtns.forEach(btn => btn.addEventListener('click', closeAddEditRequirementPopup));
-    addCriteriaGroupBtn.addEventListener('click', () => {
-        criteriaGroupsContainer.insertAdjacentHTML('beforeend', createCriteriaGroupHTML());
-    });
-
-    criteriaGroupsContainer.addEventListener('click', (e) => {
-        if (e.target.closest('.criteria-group__delete-btn')) {
-            e.target.closest('.criteria-group').remove();
-        }
-    });
-
-    addRequirementBtn.addEventListener('click', () => {
-        let isValid = true;
-        const dataToSend = {
-            industry: '',
-            criteria: []
-        };
-
-        // Reset previous errors
-        addEditRequirementPopup.querySelectorAll('.error-message, .criteria-group__error').forEach(el => el.style.display = 'none');
-        addEditRequirementPopup.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-        
-        // 1. Validate Industry Type
-        const industry = $(industryTypeSelect).val();
-        if (!industry) {
-            isValid = false;
-            $(industryTypeSelect).next('.select2-container').after('<span class="error-message">This field is required.</span>');
-            $(industryTypeSelect).next('.select2-container').find('.select2-selection').addClass('invalid');
-        } else {
-            dataToSend.industry = industry;
-        }
-
-        // 2. Validate Criteria Groups
-        const groups = criteriaGroupsContainer.querySelectorAll('.criteria-group');
-        groups.forEach((group, index) => {
-            const nameInput = group.querySelector('.criteria-name');
-            const criterionInput = group.querySelector('.criteria-criterion');
-            const errorEl = group.querySelector('.criteria-group__error');
-
-            const nameValue = nameInput.value.trim();
-            const criterionValue = criterionInput.value.trim();
-
-            // Reset styles for this group
-            nameInput.classList.remove('invalid');
-            criterionInput.classList.remove('invalid');
-            if (errorEl) errorEl.style.display = 'none';
-            
-            // Remove previous error messages for inputs
-            let nextEl = nameInput.nextElementSibling;
-            if(nextEl && nextEl.classList.contains('error-message')) nextEl.remove();
-            nextEl = criterionInput.nextElementSibling;
-            if(nextEl && nextEl.classList.contains('error-message')) nextEl.remove();
-
-            if (index === 0) { // First group is mandatory
-                if (!nameValue) {
-                    isValid = false;
-                    nameInput.classList.add('invalid');
-                    // Додаємо повідомлення про помилку
-                    nameInput.insertAdjacentHTML('afterend', '<span class="error-message">This field is required.</span>');
-                }
-                if (!criterionValue) {
-                    isValid = false;
-                    criterionInput.classList.add('invalid');
-                    // Додаємо повідомлення про помилку
-                    criterionInput.insertAdjacentHTML('afterend', '<span class="error-message">This field is required.</span>');
-                }
-            } else { // Optional groups
-                if (nameValue && !criterionValue) {
-                    isValid = false;
-                    criterionInput.classList.add('invalid');
-                    if (errorEl) errorEl.style.display = 'block';
-                } else if (!nameValue && criterionValue) {
-                    isValid = false;
-                    nameInput.classList.add('invalid');
-                    if (errorEl) errorEl.style.display = 'block';
-                }
-            }
-
-            // If both are filled, add to data
-            if (nameValue && criterionValue) {
-                dataToSend.criteria.push({ name: nameValue, criterion: criterionValue });
-            }
-        });
-
-        if (!isValid) {
-            const firstInvalid = addEditRequirementPopup.querySelector('.invalid');
-            if(firstInvalid) firstInvalid.focus();
-            return;
-        }
-        
-        // --- BREAKPOINT ---
-        console.log("Data to be sent for Industry Requirements:", dataToSend);
-
-        // --- DOM Manipulation ---
-        if (editingRequirementGroup) {
-            // Update existing element
-            editingRequirementGroup.dataset.industry = dataToSend.industry;
-            editingRequirementGroup.dataset.criteria = JSON.stringify(dataToSend.criteria);
-            
-            let criteriaHTML = '';
-            dataToSend.criteria.forEach(c => {
-                criteriaHTML += `
-                    <div class="info-block__row">
-                        <span class="info-block__label">${c.name}</span>
-                        <span class="info-block__value">${c.criterion}</span>
-                    </div>
-                `;
-            });
-            
-            editingRequirementGroup.querySelector('.industry-requirement-group__title').textContent = dataToSend.industry;
-            editingRequirementGroup.querySelector('.info-block__body').innerHTML = criteriaHTML;
-        } else {
-            // Create new element
-            let criteriaHTML = '';
-            dataToSend.criteria.forEach(c => {
-                criteriaHTML += `
-                    <div class="info-block__row">
-                        <span class="info-block__label">${c.name}</span>
-                        <span class="info-block__value">${c.criterion}</span>
-                    </div>
-                `;
-            });
-            
-            const newGroupHTML = `
-                <div class="industry-requirement-group" data-industry="${dataToSend.industry}" data-criteria='${JSON.stringify(dataToSend.criteria)}'>
-                    <div class="industry-requirement-group__header">
-                        <h3 class="industry-requirement-group__title">${dataToSend.industry}</h3>
-                        <button class="info-block__edit-btn">
-                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C12 3.14478 11.8567 2.79853 11.8567 2.79853L9.70417 0.643376C9.01281 0.643499 0.15133 9.51987 0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>Edit
-                        </button>
-                    </div>
-                    <div class="info-block__body">
-                        ${criteriaHTML}
-                    </div>
-                </div>
-            `;
-            industryRequirementsContainer.insertAdjacentHTML('afterbegin', newGroupHTML);
-        }
-        
-        closeAddEditRequirementPopup();
-    });
-
-    industryRequirementsContainer.addEventListener('click', e => {
-        const editBtn = e.target.closest('.info-block__edit-btn');
-        if(editBtn) {
-            const groupElement = editBtn.closest('.industry-requirement-group');
-            openAddEditRequirementPopup(true, groupElement);
-        }
-    });
-
-
-    // --- Initial population for select ---
-    $(industryTypeSelect).select2({
-        placeholder: "Select an industry",
-        allowClear: false,
-        data: groupedIndustriesList
-    });
-
-    /* // ==========================================================================
-    // 6. PREFERRED & RESTRICTED INDUSTRIES
-    // ========================================================================== */
+    // 4. PREFERRED & RESTRICTED INDUSTRIES
+    // ==========================================================================
 
     const industriesPopup = document.getElementById('industries-popup');
     const industriesPopupOverlay = document.getElementById('industries-popup-overlay');
@@ -1240,24 +824,84 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeIndustriesPopupBtns = document.querySelectorAll('.js-industries-popup-close');
     const industriesBlocks = document.querySelectorAll('.industries-block');
 
+    // --- Confirmation Popup Elements ---
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const confirmationPopupOverlay = document.getElementById('confirmationPopupOverlay');
+    const confirmationPopupText = document.getElementById('confirmationPopupText');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const closeConfirmationBtns = document.querySelectorAll('.js-confirmation-close');
+
     let currentEditingIndustriesBlock = null;
+    let blockToDelete = null;
+    let deletionCallback = null;
+
 
     // --- Initialize Select2 for the popup ---
     $(industriesSelect).select2({
         width: '100%',
         closeOnSelect: false,
         placeholder: 'Select industries',
-        data: groupedIndustriesList
+        data: groupedIndustriesList,
+        dropdownParent: $('#industries-popup') // Fix for search in popup
+    }).on('select2:open', () => {
+        // --- Задача 1: Обработка выбора группы ---
+        setTimeout(() => { // Timeout чтобы убедиться что дропдаун отрисован
+            $('.select2-results__group').off('click.groupclick').on('click.groupclick', function (e) {
+                e.preventDefault(); // Предотвратить закрытие дропдауна
+                
+                const $group = $(this);
+                const groupText = $group.text();
+                const $select = $(industriesSelect);
+                const currentValues = $select.val() || [];
+
+                // Найти все опции в этой группе
+                let childIds = [];
+                const groupData = groupedIndustriesList.find(g => g.text === groupText);
+                if (groupData && groupData.children) {
+                    childIds = groupData.children.map(child => child.id);
+                }
+
+                // Проверить, выбраны ли уже все дочерние элементы
+                const allSelected = childIds.every(id => currentValues.includes(id));
+                
+                let newValues;
+                if (allSelected) {
+                    // Снять выбор со всех дочерних элементов
+                    newValues = currentValues.filter(id => !childIds.includes(id));
+                } else {
+                    // Выбрать все дочерние элементы (избегая дубликатов)
+                    newValues = [...new Set([...currentValues, ...childIds])];
+                }
+
+                $select.val(newValues).trigger('change');
+
+                // --- ✨ ВОТ И РЕШЕНИЕ ✨ ---
+                // 1. Закрываем список, чтобы сбросить его текущее визуальное состояние.
+                $select.select2('close');
+                // 2. Сразу же открываем его снова с небольшой задержкой.
+                // Это заставит Select2 полностью перерисовать список на основе нового значения.
+                setTimeout(() => {
+                    $select.select2('open');
+                }, 1);
+                // -------------------------
+
+            });
+        }, 0);
     });
 
     // --- Function to update the DOM ---
     const updateIndustriesBlock = (block, selectedIndustries) => {
         const listContainer = block.querySelector('.industries-block__list');
-        
-        listContainer.innerHTML = ''; // Clear previous list
-        
+        const actionsContainer = block.querySelector('.info-block__actions');
+        const addBtn = block.querySelector('.industries-add-btn');
+
+        listContainer.innerHTML = ''; // Очистить предыдущий список
+
         if (selectedIndustries && selectedIndustries.length > 0) {
             block.classList.remove('industries-block--empty');
+            actionsContainer.style.display = 'flex';
+            addBtn.style.display = 'none';
+
             selectedIndustries.forEach(industry => {
                 const item = document.createElement('div');
                 item.className = 'industries-block__list-item';
@@ -1267,6 +911,8 @@ document.addEventListener('DOMContentLoaded', () => {
             block.dataset.industries = JSON.stringify(selectedIndustries);
         } else {
             block.classList.add('industries-block--empty');
+            actionsContainer.style.display = 'none';
+            addBtn.style.display = 'flex';
             block.dataset.industries = '[]';
         }
     };
@@ -1289,338 +935,383 @@ document.addEventListener('DOMContentLoaded', () => {
         industriesPopupOverlay.classList.remove('active');
         currentEditingIndustriesBlock = null;
     };
+    
+    const openConfirmationPopup = (text, callback) => {
+        confirmationPopupText.textContent = text;
+        deletionCallback = callback;
+        confirmationPopup.classList.add('active');
+        confirmationPopupOverlay.classList.add('active');
+    };
+
+    const closeConfirmationPopup = () => {
+        confirmationPopup.classList.remove('active');
+        confirmationPopupOverlay.classList.remove('active');
+        deletionCallback = null;
+    };
+
 
     // --- Event Listeners ---
     industriesBlocks.forEach(block => {
-        // Initial state
+        // Проверка начального состояния
         updateIndustriesBlock(block, JSON.parse(block.dataset.industries || '[]'));
         
         const editBtn = block.querySelector('.info-block__edit-btn');
-        editBtn.addEventListener('click', () => {
-            openIndustriesPopup(block);
-        });
+        const deleteBtn = block.querySelector('.info-block__delete-btn');
+        const addBtn = block.querySelector('.industries-add-btn');
+
+        if (editBtn) {
+            editBtn.addEventListener('click', () => {
+                openIndustriesPopup(block);
+            });
+        }
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                openConfirmationPopup('Delete all industries?', () => {
+                    console.log('--- Deleting All Industries ---');
+                    console.log('Block Name:', block.dataset.type);
+                    console.log('Data to send:', { [block.dataset.type]: [] });
+                    updateIndustriesBlock(block, []);
+                });
+            });
+        }
+        if(addBtn) {
+            addBtn.addEventListener('click', () => {
+                openIndustriesPopup(block);
+            });
+        }
     });
 
     closeIndustriesPopupBtns.forEach(btn => btn.addEventListener('click', closeIndustriesPopup));
+    closeConfirmationBtns.forEach(btn => btn.addEventListener('click', closeConfirmationPopup));
 
     saveIndustriesBtn.addEventListener('click', () => {
         if (!currentEditingIndustriesBlock) return;
         
         const selectedData = $(industriesSelect).val();
         
-        // --- BREAKPOINT ---
         console.log(`Data to be sent for ${currentEditingIndustriesBlock.dataset.type} industries:`, selectedData);
         
         updateIndustriesBlock(currentEditingIndustriesBlock, selectedData);
         closeIndustriesPopup();
     });
 
-    // ==========================================================================
-    // 5. (NEW) INDUSTRY REQUIREMENTS - DYNAMIC POPUP & RENDERING
-    // ==========================================================================
+    confirmDeleteBtn.addEventListener('click', () => {
+        if (typeof deletionCallback === 'function') {
+            deletionCallback();
+        }
+        closeConfirmationPopup();
+    });
 
-    // --- JSON Data for dropdowns ---
-    // const jsonData = {
-    //     "criteria": {
-    //         "123": {
-    //             "name": "Time in Business",
-    //             "data": ["1Y", "2Y", "5Y", "2M", "1M", "5M"]
-    //         },
-    //         "222": {
-    //             "name": "Monthly Revenue",
-    //             "data": [
-    //                 "$10,000-$15,000", "$15,000-$30,000", "$30,000-$60,000",
-    //                 "$60,000-$100,000", "$100,000-$200,000", "$200,000-$350,000",
-    //                 "$350,000-$500,000", "$500,000+"
-    //             ]
-    //         }
-    //     }
-    // };
 
-    // // --- Popup and container elements ---
-    // const addEditRequirementPopup = document.getElementById('addEditRequirementPopup');
-    // const addEditRequirementOverlay = document.getElementById('addEditRequirementOverlay');
-    // const showAddRequirementBtn = document.getElementById('show-add-requirement-popup');
-    // const addRequirementBtn = document.getElementById('addRequirementBtn');
-    // const popupTitle = document.getElementById('addEditRequirementPopupTitle');
+    // ==========================================================================
+    // 5. INDUSTRY REQUIREMENTS - DYNAMIC POPUP & RENDERING
+    // ==========================================================================
+    // REPLACE a large part of section 5 with this updated version
     
-    // const requirementNameSelect = document.getElementById('requirementNameSelect');
-    // const requirementValuesContainer = document.getElementById('requirementValuesContainer');
-    // const requirementValuesSelect = document.getElementById('requirementValuesSelect');
-    // const requirementValuesLabel = requirementValuesContainer.querySelector('label');
+    const addEditRequirementPopup = document.getElementById('addEditRequirementPopup');
+    const addEditRequirementOverlay = document.getElementById('addEditRequirementOverlay');
+    const showAddRequirementBtn = document.getElementById('show-add-requirement-popup');
+    const addRequirementBtn = document.getElementById('addRequirementBtn');
+    const popupTitle = document.getElementById('addEditRequirementPopupTitle');
+    const industryTypeSelect = document.getElementById('industry-type-select');
+    const criteriaGroupsContainer = document.getElementById('criteria-groups-container');
+    const addCriteriaGroupBtn = document.getElementById('add-criteria-group-btn');
+    const closePopupBtns = document.querySelectorAll('.js-add-edit-requirement-close');
+    const industryRequirementsContainer = document.getElementById('industry-requirements-container');
 
-    // const newCriteriaContainer = document.getElementById('new-criteria-container');
-    // const closePopupBtns = document.querySelectorAll('.js-add-edit-requirement-close');
+    let editingRequirementGroup = null;
 
-    // let editingRowElement = null;
+    const initializeCriteriaGroup = (groupElement, name = '', values = []) => {
+        const nameSelect = $(groupElement).find('.criteria-name-select');
+        const valuesContainer = $(groupElement).find('.criteria-values-container');
+        const valuesSelect = $(groupElement).find('.criteria-values-select');
+        const valuesLabel = valuesContainer.find('label');
 
-    // // --- Helper function to format Select2 with checkboxes ---
-    // const formatCheckbox = (state) => {
-    //     if (!state.id) return state.text;
-    //     const checkboxHTML = `
-    //         <span class="select2-option__checkbox">
-    //             <svg width="9" height="8" viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //                 <path d="M7.39102 1L3.27486 5.83237L1.54826 4.20468L1 4.79568L3.33828 7L8 1.52712L7.39102 1Z" fill="white" stroke="white" stroke-width="0.3"/>
-    //             </svg>
-    //         </span>
-    //     `;
-    //     return $(`<span>${checkboxHTML}${state.text}</span>`);
-    // };
-
-    // // --- Popup Functions ---
-    // const openAddEditPopup = (isEditing = false, data = {}) => {
-    //     // Reset state
-    //     $(requirementNameSelect).val(null).trigger('change');
-    //     $(requirementValuesSelect).val(null).trigger('change');
-    //     requirementValuesContainer.style.display = 'none';
-    //     addEditRequirementPopup.querySelectorAll('.error-message').forEach(el => el.remove());
-    //     addEditRequirementPopup.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-    //     $(addEditRequirementPopup).find('.select2-selection.invalid').removeClass('invalid');
-
-    //     if (isEditing) {
-    //         editingRowElement = data.element;
-    //         popupTitle.textContent = 'Edit Requirements';
-    //         addRequirementBtn.textContent = 'Save';
-            
-    //         // Pre-fill data
-    //         $(requirementNameSelect).val(data.id).trigger('change');
-            
-    //         // We need a small delay for the second dropdown to be populated
-    //         setTimeout(() => {
-    //             $(requirementValuesSelect).val(data.values).trigger('change');
-    //         }, 100);
-
-    //     } else {
-    //         editingRowElement = null;
-    //         popupTitle.textContent = 'Add Requirements';
-    //         addRequirementBtn.textContent = 'Add';
-    //     }
-
-    //     addEditRequirementPopup.classList.add('active');
-    //     addEditRequirementOverlay.classList.add('active');
-    // };
-
-    // const closeAddEditPopup = () => {
-    //     addEditRequirementPopup.classList.remove('active');
-    //     addEditRequirementOverlay.classList.remove('active');
-    // };
-
-    // // --- Dropdown Population and Logic ---
-    // const populateNameSelect = () => {
-    //     $(requirementNameSelect).empty().append(new Option('', '', true, true)); // Add a placeholder
-    //     for (const id in jsonData.criteria) {
-    //         const criteria = jsonData.criteria[id];
-    //         const option = new Option(criteria.name, id);
-    //         requirementNameSelect.add(option);
-    //     }
-    // };
-
-    // $(requirementNameSelect).select2({
-    //     width: '100%',
-    //     placeholder: 'Select a name',
-    //     minimumResultsForSearch: Infinity
-    // });
-
-    // $(requirementNameSelect).on('change', function() {
-    //     const selectedId = $(this).val();
+        const criteriaOptions = Object.keys(criteriaData.criteria).map(key => ({
+            id: key,
+            text: criteriaData.criteria[key].name
+        }));
         
-    //     // Clean up previous error messages if any
-    //     $(requirementValuesSelect).next('.select2-container').next('.error-message').remove();
-    //     $(requirementValuesSelect).next('.select2-container').find('.select2-selection').removeClass('invalid');
+        nameSelect.select2({
+            placeholder: "Select a name",
+            allowClear: false,
+            data: [{ id: '', text: '' }, ...criteriaOptions],
+            dropdownParent: $(addEditRequirementPopup)
+        }).on('change', function() {
+            const selectedId = $(this).val();
+            const errorEl = $(this).closest('.criteria-group').find('.criteria-group__error');
+            errorEl.hide();
+             $(this).next('.select2-container').find('.select2-selection').removeClass('invalid');
 
-    //     if (selectedId && jsonData.criteria[selectedId]) {
-    //         const criteria = jsonData.criteria[selectedId];
-    //         requirementValuesLabel.textContent = criteria.name;
-            
-    //         $(requirementValuesSelect).empty();
-    //         criteria.data.forEach(item => {
-    //             const option = new Option(item, item);
-    //             requirementValuesSelect.add(option);
-    //         });
 
-    //         if ($(requirementValuesSelect).data('select2')) {
-    //             $(requirementValuesSelect).select2('destroy');
-    //         }
-    //         $(requirementValuesSelect).select2({
-    //             width: '100%',
-    //             closeOnSelect: false,
-    //             templateResult: formatCheckbox,
-    //             templateSelection: (data) => data.text
-    //         });
-            
-    //         requirementValuesContainer.style.display = 'block';
-    //     } else {
-    //         requirementValuesContainer.style.display = 'none';
-    //         if ($(requirementValuesSelect).data('select2')) {
-    //             $(requirementValuesSelect).select2('destroy');
-    //         }
-    //         $(requirementValuesSelect).empty();
-    //     }
-    // });
+            if (selectedId && criteriaData.criteria[selectedId]) {
+                const criterion = criteriaData.criteria[selectedId];
+                valuesLabel.text(criterion.name);
 
-    // // --- DOM Manipulation Functions ---
-    // const createRequirementRow = (id, name, values) => {
-    //     const rowId = `criteria-row-${id}`;
+                valuesSelect.empty().select2({
+                    placeholder: `Select ${criterion.name}`,
+                    data: criterion.data.map(item => ({ id: item, text: item })),
+                    multiple: true,
+                    closeOnSelect: false,
+                    dropdownParent: $(addEditRequirementPopup)
+                });
+
+                valuesContainer.show();
+                 $(valuesSelect).next('.select2-container').find('.select2-selection--multiple').removeClass('invalid');
+
+            } else {
+                valuesContainer.hide();
+                valuesSelect.empty().select2('destroy');
+            }
+        });
+
+        if (name) {
+            const selectedCriterionKey = Object.keys(criteriaData.criteria).find(key => criteriaData.criteria[key].name === name);
+            if (selectedCriterionKey) {
+                nameSelect.val(selectedCriterionKey).trigger('change');
+                setTimeout(() => { // Timeout to ensure the second select2 is initialized
+                    valuesSelect.val(values).trigger('change');
+                }, 100);
+            }
+        }
+    };
+
+    const createCriteriaGroupHTML = (isFirst = false) => {
+        const groupId = `group-${Date.now()}-${Math.random()}`;
+        return `
+            <div class="criteria-group" id="${groupId}">
+                ${!isFirst ? `
+                    <button type="button" class="criteria-group__delete-btn" aria-label="Delete group">
+                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.53906 0.578125C10.3901 0.578125 11.0857 1.27307 11.0859 2.12402V4.13574H16V5.56348H14.0469V14.8408C14.0467 16.2633 12.8903 17.4189 11.4678 17.4189H3.93457C2.51202 17.4189 1.35561 16.2633 1.35547 14.8408V5.56152H0V4.13477H4.32227V2.12402C4.32249 1.27307 5.01814 0.578125 5.86914 0.578125H9.53906ZM2.78613 14.8389C2.78624 15.4734 3.30199 15.9902 3.9375 15.9902H11.4688C12.1031 15.99 12.619 15.4742 12.6191 14.8389V5.56152H2.78613V14.8389ZM6.93262 13.3564H5.50488V8.10938H6.93262V13.3564ZM10.1934 13.3564H8.76562V8.10938H10.1934V13.3564ZM5.86914 2.00586C5.80238 2.00586 5.75022 2.05732 5.75 2.12402V4.13477H9.6582V2.12402C9.65799 2.05732 9.60583 2.00586 9.53906 2.00586H5.86914Z" fill="#808080"/></svg>
+                    </button>
+                ` : ''}
+                <div class="form-group">
+                    <label>Select Name</label>
+                    <select class="criteria-name-select info-block__select"></select>
+                </div>
+                <div class="form-group criteria-values-container" style="display: none;">
+                    <label></label>
+                    <select class="criteria-values-select info-block__select" multiple="multiple"></select>
+                </div>
+                <div class="criteria-group__error" style="display: none;">Both fields must be filled.</div>
+            </div>
+        `;
+    };
+
+    const openAddEditRequirementPopup = (isEditing = false, groupElement = null) => {
+        criteriaGroupsContainer.innerHTML = '';
+        addEditRequirementPopup.querySelectorAll('.error-message').forEach(el => el.remove());
+        addEditRequirementPopup.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        $(industryTypeSelect).next('.select2-container').find('.select2-selection').removeClass('invalid');
+        $(industryTypeSelect).val(null).trigger('change');
         
-    //     if (document.getElementById(rowId)) { 
-    //         const errorSpan = document.createElement('span');
-    //         errorSpan.className = 'error-message';
-    //         errorSpan.textContent = `Requirement "${name}" already exists.`;
+        editingRequirementGroup = groupElement;
 
-    //         const select2Container = $(requirementNameSelect).next('.select2-container');
-    //         select2Container.find('.select2-selection').addClass('invalid');
-    //         select2Container.after(errorSpan);
+        if (isEditing && groupElement) {
+            popupTitle.textContent = 'Edit Requirement';
+            addRequirementBtn.textContent = 'Save';
+
+            const industry = groupElement.dataset.industry;
+            const criteria = JSON.parse(groupElement.dataset.criteria || '[]');
             
-    //         return false; // Повертаємо false, якщо невдача
-    //     }
-
-    //     const newRow = document.createElement('div');
-    //     newRow.className = 'new-criteria-row';
-    //     newRow.id = rowId;
-    //     newRow.dataset.id = id;
-    //     newRow.dataset.values = JSON.stringify(values);
-
-    //     newRow.innerHTML = `
-    //         <span class="info-block__label">${name}</span>
-    //         <span class="info-block__value">${values.join(', ')}</span>
-    //         <div class="new-criteria-actions">
-    //             <button type="button" class="edit-row-btn" aria-label="Edit item">
-    //                 <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.65924 12.5 2.65997 12.5 2.66071 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C11.9485 3.39933 12 3.27469 12 3.14478C12 3.01487 11.9484 2.89035 11.8567 2.79853L9.70417 0.643376C9.51324 0.452251 9.20374 0.452128 9.01281 0.643499L0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>
-    //             </button>
-    //             <button type="button" class="delete-row-btn" aria-label="Delete item">
-    //                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.251 5.16016C13.9423 5.16032 14.5067 5.72466 14.5068 6.41602V8.05078H18.5V9.20996H16.9131V16.748C16.9131 17.9038 15.974 18.8426 14.8184 18.8428H8.69629C7.54053 18.8426 6.60156 17.9038 6.60156 16.748V9.20898H5.5V8.04883H9.01172V6.41602C9.01183 5.72456 9.57707 5.16016 10.2686 5.16016H13.251ZM7.76367 16.7461C7.76367 17.2617 8.18281 17.6816 8.69922 17.6816H14.8184C15.3338 17.6814 15.7529 17.2624 15.7529 16.7461V9.20898H7.76367V16.7461ZM11.1367 15.543H9.97754V11.2793H11.1367V15.543ZM13.7939 15.543H12.6348V11.2793H13.7939V15.543ZM10.2686 6.31934C10.2143 6.31934 10.172 6.36176 10.1719 6.41602V8.04883H13.3477V6.41602C13.3475 6.36185 13.3051 6.31948 13.251 6.31934H10.2686Z" fill="#808080"/></svg>
-    //             </button>
-    //         </div>
-    //     `;
-    //     newCriteriaContainer.appendChild(newRow);
-    //     showAddRequirementBtn.classList.remove('add-new-requirement-center-btn');
-    //     return true; // Повертаємо true, якщо все добре
-    // };
-
-    // const updateRequirementRow = (element, id, name, values) => {
-    //     element.dataset.id = id;
-    //     element.dataset.values = JSON.stringify(values);
-    //     element.querySelector('.info-block__label').textContent = name;
-    //     element.querySelector('.info-block__value').textContent = values.join(', ');
-    // };
-
-    // // --- Event Listeners ---
-    // showAddRequirementBtn.addEventListener('click', () => openAddEditPopup());
-    // closePopupBtns.forEach(btn => btn.addEventListener('click', closeAddEditPopup));
-
-    // addRequirementBtn.addEventListener('click', () => {
-    //     let isValid = true;
-    //     const selectedNameId = $(requirementNameSelect).val();
-    //     const selectedValues = $(requirementValuesSelect).val();
-
-    //     // Очищення попередніх помилок
-    //     addEditRequirementPopup.querySelectorAll('.error-message').forEach(el => el.remove());
-    //     $(requirementNameSelect).next('.select2-container').find('.select2-selection').removeClass('invalid');
-    //     $(requirementValuesSelect).next('.select2-container').find('.select2-selection').removeClass('invalid');
-
-    //     if (!selectedNameId) {
-    //         isValid = false;
-    //         const errorSpan = document.createElement('span');
-    //         errorSpan.className = 'error-message';
-    //         errorSpan.textContent = 'This field is required.';
-    //         $(requirementNameSelect).next('.select2-container').after(errorSpan);
-    //         $(requirementNameSelect).next('.select2-container').find('.select2-selection').addClass('invalid');
-    //     }
-
-    //     if (!selectedValues || selectedValues.length === 0) {
-    //         isValid = false;
-    //         if (requirementValuesContainer.style.display === 'block') {
-    //             const errorSpan = document.createElement('span');
-    //             errorSpan.className = 'error-message';
-    //             errorSpan.textContent = 'At least one value must be selected.';
-    //             $(requirementValuesSelect).next('.select2-container').after(errorSpan);
-    //             $(requirementValuesSelect).next('.select2-container').find('.select2-selection').addClass('invalid');
-    //         }
-    //     }
-
-    //     if (!isValid) return;
-
-    //     const selectedNameText = jsonData.criteria[selectedNameId].name;
-        
-    //     if (editingRowElement) {
-    //         updateRequirementRow(editingRowElement, selectedNameId, selectedNameText, selectedValues);
-    //         closeAddEditPopup(); // Закриваємо при успішному редагуванні
-    //     } else {
-    //         const success = createRequirementRow(selectedNameId, selectedNameText, selectedValues);
-    //         if (success) {
-    //             closeAddEditPopup(); // Закриваємо тільки при успішному створенні
-    //         }
-    //     }
-    // });
-
-    // newCriteriaContainer.addEventListener('click', (e) => {
-    //     const editBtn = e.target.closest('.edit-row-btn');
-    //     const deleteBtn = e.target.closest('.delete-row-btn');
-        
-    //     if (editBtn) {
-    //         const row = editBtn.closest('.new-criteria-row');
-    //         const data = {
-    //             id: row.dataset.id,
-    //             values: JSON.parse(row.dataset.values),
-    //             element: row
-    //         };
-    //         openAddEditPopup(true, data);
-    //     }
-
-    //     if (deleteBtn) {
-    //         const row = deleteBtn.closest('.new-criteria-row');
-    //         const id = row.dataset.id;
-    //         const values = JSON.parse(row.dataset.values);
-
-    //         // Breakpoint for deletion process
-    //         console.log(`--- Deleting Requirement ---`);
-    //         console.log(`ID: ${id}`);
-    //         console.log(`Values:`, values);
+            $(industryTypeSelect).val(industry).trigger('change');
             
-    //         row.remove();
+            criteria.forEach((item, index) => {
+                const groupHtml = createCriteriaGroupHTML(index === 0);
+                criteriaGroupsContainer.insertAdjacentHTML('beforeend', groupHtml);
+                const newGroupEl = criteriaGroupsContainer.lastElementChild;
+                initializeCriteriaGroup(newGroupEl, item.name, item.values);
+            });
 
-    //         if (newCriteriaContainer.children.length === 0) {
-    //             showAddRequirementBtn.classList.add('add-new-requirement-center-btn');
-    //         }
-    //     }
-    // });
+        } else {
+            popupTitle.textContent = 'Add Requirement';
+            addRequirementBtn.textContent = 'Add';
+            const groupHtml = createCriteriaGroupHTML(true);
+            criteriaGroupsContainer.innerHTML = groupHtml;
+            initializeCriteriaGroup(criteriaGroupsContainer.firstElementChild);
+        }
 
-    // // --- Initial population ---
-    // populateNameSelect();
+        addEditRequirementPopup.classList.add('active');
+        addEditRequirementOverlay.classList.add('active');
+    };
 
-    /*
-    // ==========================================================================
-    // 6. (OLD) INTERACTIVE LISTS - COMMENTED OUT
-    // ==========================================================================
-    
-    const industryLists = document.querySelectorAll('.lender-content__item--lender .info-list');
+    const closeAddEditRequirementPopup = () => {
+        addEditRequirementPopup.classList.remove('active');
+        addEditRequirementOverlay.classList.remove('active');
+        editingRequirementGroup = null;
+        criteriaGroupsContainer.innerHTML = '';
+    };
 
-    industryLists.forEach(list => {
-        const items = list.querySelectorAll('.info-list__item');
+    showAddRequirementBtn.addEventListener('click', () => openAddEditRequirementPopup());
+    closePopupBtns.forEach(btn => btn.addEventListener('click', closeAddEditRequirementPopup));
+    addCriteriaGroupBtn.addEventListener('click', () => {
+        const groupHtml = createCriteriaGroupHTML(false);
+        criteriaGroupsContainer.insertAdjacentHTML('beforeend', groupHtml);
+        initializeCriteriaGroup(criteriaGroupsContainer.lastElementChild);
+    });
 
-        if (items.length > 0) {
-            items.forEach(item => item.classList.remove('info-list__item--active'));
-
-            const lastItem = items[items.length - 1];
-            lastItem.classList.add('info-list__item--active');
+    criteriaGroupsContainer.addEventListener('click', (e) => {
+        if (e.target.closest('.criteria-group__delete-btn')) {
+            e.target.closest('.criteria-group').remove();
         }
     });
-    */
-    
-    // ==========================================================================
-    // 7. CLOSE SELECT2 ON SCROLL (WORKAROUND FOR JUMPING DROPDOWN)
-    // ==========================================================================
-    window.addEventListener('scroll', (event) => {
+
+    addRequirementBtn.addEventListener('click', () => {
+        let isValid = true;
+        const dataToSend = {
+            industry: '',
+            criteria: []
+        };
         
-        const scrollTarget = event.target;
-        if ($(scrollTarget).closest('.select2-dropdown').length > 0) {
+        // Clear previous errors
+        addEditRequirementPopup.querySelectorAll('.error-message').forEach(el => el.remove());
+        addEditRequirementPopup.querySelectorAll('.criteria-group__error').forEach(el => el.style.display = 'none');
+        addEditRequirementPopup.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        $(industryTypeSelect).next('.select2-container').find('.select2-selection').removeClass('invalid');
+
+        const industry = $(industryTypeSelect).val();
+        if (!industry) {
+            isValid = false;
+            $(industryTypeSelect).next('.select2-container').after('<span class="error-message">This field is required.</span>');
+            $(industryTypeSelect).next('.select2-container').find('.select2-selection').addClass('invalid');
+        } else {
+            dataToSend.industry = industry;
+        }
+
+        const groups = criteriaGroupsContainer.querySelectorAll('.criteria-group');
+        if (groups.length === 0) { // Ensure at least one group is added
+            isValid = false; 
+        }
+
+        groups.forEach((group, index) => {
+            const nameSelect = $(group).find('.criteria-name-select');
+            const valuesSelect = $(group).find('.criteria-values-select');
+            const errorEl = $(group).find('.criteria-group__error');
+
+            const nameValue = nameSelect.val();
+            const values = valuesSelect.val() || [];
+
+            const nameContainer = nameSelect.next('.select2-container');
+            const valuesContainer = valuesSelect.next('.select2-container');
             
+            nameContainer.find('.select2-selection').removeClass('invalid');
+            valuesContainer.find('.select2-selection--multiple').removeClass('invalid');
+
+            let isGroupValid = true;
+            // First group is mandatory
+            if (index === 0 && (!nameValue || values.length === 0)) {
+                isGroupValid = false;
+                isValid = false;
+                errorEl.text('Both fields must be filled.').show();
+                if (!nameValue) nameContainer.find('.select2-selection').addClass('invalid');
+                if (values.length === 0) valuesContainer.find('.select2-selection--multiple').addClass('invalid');
+            }
+            // Other groups are optional, but if one field is filled, the other must be too
+            else if (index > 0 && nameValue && values.length === 0) {
+                 isGroupValid = false;
+                 isValid = false;
+                 errorEl.text('Criterion values must be selected if a name is chosen.').show();
+                 valuesContainer.find('.select2-selection--multiple').addClass('invalid');
+            } else if (index > 0 && !nameValue && values.length > 0) {
+                 isGroupValid = false;
+                 isValid = false;
+                 errorEl.text('A name must be selected if criterion values are chosen.').show();
+                 nameContainer.find('.select2-selection').addClass('invalid');
+            }
+            
+            if (isGroupValid && nameValue && values.length > 0) {
+                const nameText = criteriaData.criteria[nameValue].name;
+                dataToSend.criteria.push({ name: nameText, values: values });
+            }
+        });
+
+        if (!isValid) return;
+        
+        console.log("Data to be sent for Industry Requirements:", dataToSend);
+        
+        // Find existing group to update or create a new one
+        const existingGroup = editingRequirementGroup || document.querySelector(`.industry-requirement-group[data-industry="${dataToSend.industry}"]`);
+
+        let criteriaHTML = '';
+        dataToSend.criteria.forEach(c => {
+            criteriaHTML += `
+                <div class="info-block__row">
+                    <span class="info-block__label">${c.name}</span>
+                    <span class="info-block__value">${c.values.join(', ')}</span>
+                </div>
+            `;
+        });
+        
+        if (existingGroup) {
+            existingGroup.dataset.industry = dataToSend.industry;
+            existingGroup.dataset.criteria = JSON.stringify(dataToSend.criteria);
+            existingGroup.querySelector('.industry-requirement-group__title').textContent = dataToSend.industry;
+            existingGroup.querySelector('.info-block__body').innerHTML = criteriaHTML;
+        } else {
+             const newGroupHTML = `
+                <div class="industry-requirement-group" data-industry="${dataToSend.industry}" data-criteria='${JSON.stringify(dataToSend.criteria)}'>
+                    <div class="industry-requirement-group__header">
+                        <h3 class="industry-requirement-group__title">${dataToSend.industry}</h3>
+                        <div class="info-block__actions">
+                            <button class="info-block__edit-btn">
+                                <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 12.4904L2.65851 12.5C2.7904 12.5 2.91471 12.4485 3.00651 12.3565L11.8569 3.49116C12 3.14478 11.8567 2.79853 11.8567 2.79853L9.70417 0.643376C9.01281 0.643499 0.15133 9.51987 0.15133 9.51987C0.0601425 9.6112 0.00855902 9.73499 0.0081923 9.86416L2.13602e-06 11.9987C-0.00109803 12.2692 0.216848 12.4892 0.486744 12.4904ZM9.35861 1.68226L10.8196 3.1449L8.84253 5.12533L7.38182 3.66245L9.35861 1.68226ZM0.985222 10.0697L6.69033 4.35495L8.15092 5.81796L2.45902 11.5196L0.979721 11.513L0.985222 10.0697Z" fill="#808080"/></svg>Edit
+                            </button>
+                             <button class="info-block__delete-btn">
+                                <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.53906 0.578125C10.3901 0.578125 11.0857 1.27307 11.0859 2.12402V4.13574H16V5.56348H14.0469V14.8408C14.0467 16.2633 12.8903 17.4189 11.4678 17.4189H3.93457C2.51202 17.4189 1.35561 16.2633 1.35547 14.8408V5.56152H0V4.13477H4.32227V2.12402C4.32249 1.27307 5.01814 0.578125 5.86914 0.578125H9.53906ZM2.78613 14.8389C2.78624 15.4734 3.30199 15.9902 3.9375 15.9902H11.4688C12.1031 15.99 12.619 15.4742 12.6191 14.8389V5.56152H2.78613V14.8389ZM6.93262 13.3564H5.50488V8.10938H6.93262V13.3564ZM10.1934 13.3564H8.76562V8.10938H10.1934V13.3564ZM5.86914 2.00586C5.80238 2.00586 5.75022 2.05732 5.75 2.12402V4.13477H9.6582V2.12402C9.65799 2.05732 9.60583 2.00586 9.53906 2.00586H5.86914Z" fill="#808080"/></svg>Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="info-block__body">
+                        ${criteriaHTML}
+                    </div>
+                </div>
+            `;
+            industryRequirementsContainer.insertAdjacentHTML('afterbegin', newGroupHTML);
+        }
+        
+        closeAddEditRequirementPopup();
+    });
+
+    industryRequirementsContainer.addEventListener('click', e => {
+        const editBtn = e.target.closest('.info-block__edit-btn');
+        if (editBtn) {
+            const groupElement = editBtn.closest('.industry-requirement-group');
+            openAddEditRequirementPopup(true, groupElement);
             return;
         }
 
-        
+        const deleteBtn = e.target.closest('.info-block__delete-btn');
+        if(deleteBtn) {
+            const groupElement = deleteBtn.closest('.industry-requirement-group');
+            openConfirmationPopup('Delete all industries and their criteria?', () => {
+                 const industryName = groupElement.dataset.industry;
+                 console.log('--- Deleting Industry Requirement Group ---');
+                 console.log('Data to send:', {
+                     industry: industryName,
+                     block: 'industry_requirements',
+                     scope: 'all'
+                 });
+                 groupElement.remove();
+            });
+        }
+    });
+
+    $(industryTypeSelect).select2({
+        placeholder: "Select an industry",
+        allowClear: false,
+        data: groupedIndustriesList,
+        dropdownParent: $('#addEditRequirementPopup') // Fix search
+    });
+
+    // ==========================================================================
+    // 7. CLOSE SELECT2 ON SCROLL
+    // ==========================================================================
+    window.addEventListener('scroll', (event) => {
+        const scrollTarget = event.target;
+        if ($(scrollTarget).closest('.select2-dropdown').length > 0) {
+            return;
+        }
         $('.select2-hidden-accessible').each(function() {
-            
             if ($(this).data('select2') && $(this).data('select2').isOpen()) {
                 $(this).select2('close');
             }
