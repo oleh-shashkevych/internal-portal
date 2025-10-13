@@ -1054,6 +1054,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     multiple: true,
                     closeOnSelect: false,
                     dropdownParent: $(addEditRequirementPopup)
+                }).on('change', function() {
+                    // Нова логіка для валідації "на льоту"
+                    if ($(this).val() && $(this).val().length > 0) {
+                        const group = $(this).closest('.criteria-group');
+                        const nameSelect = group.find('.criteria-name-select');
+                        const errorEl = group.find('.criteria-group__error');
+
+                        // Якщо перше поле також заповнене, ховаємо загальну помилку
+                        if (nameSelect.val()) {
+                            errorEl.hide();
+                        }
+                        
+                        // Завжди знімаємо клас помилки з поточного поля
+                        $(this).next('.select2-container').find('.select2-selection--multiple').removeClass('invalid');
+                    }
                 });
 
                 valuesContainer.show();
