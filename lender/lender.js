@@ -1319,18 +1319,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================================================
-    // 7. CLOSE SELECT2 ON SCROLL
+    // 7. CLOSE SELECT2 ON SCROLL (MODIFIED TO IGNORE POPUPS)
     // ==========================================================================
     window.addEventListener('scroll', (event) => {
+        // Эта часть остается без изменений: не закрывать, если мы скроллим сам список опций
         const scrollTarget = event.target;
         if ($(scrollTarget).closest('.select2-dropdown').length > 0) {
             return;
         }
+
+        // Проходим по всем элементам select2 на странице
         $('.select2-hidden-accessible').each(function() {
-            if ($(this).data('select2') && $(this).data('select2').isOpen()) {
-                $(this).select2('close');
+            const $select2 = $(this);
+
+            // Проверяем, открыт ли именно этот select2
+            if ($select2.data('select2') && $select2.data('select2').isOpen()) {
+                console.log("--- Scroll Event: Found an open Select2 ---");
+
+                // *** НОВАЯ ПРОВЕРКА! ***
+                // Проверяем, находится ли этот открытый select2 внутри элемента с классом .popup
+                if ($select2.closest('.popup').length > 0) {
+                    console.log("This Select2 is inside a popup. Ignoring scroll-close logic.");
+                    // Если да, то просто выходим из этой итерации цикла, ничего не делая.
+                    return; 
+                }
+
+                // Если select2 не в попапе, то закрываем его, как и раньше.
+                console.log("This Select2 is on the main page. Closing it due to scroll.");
+                $select2.select2('close');
             }
         });
-    }, true); 
+    }, true);
 
 });
