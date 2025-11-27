@@ -482,21 +482,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // ===========================================
-    // 5. BUILDER LOGIC
+    // 5. BUILDER LOGIC (UPDATED WITH ACCORDION)
     // ===========================================
 
     let blocksData = [];
     let selectedBlockId = null;
 
     const dropzone = document.getElementById('dynamic-builder-area');
-    const blocksListPanel = document.getElementById('blocks-list');
-    const inspectorPanel = document.getElementById('inspector-panel');
-    const inspectorControls = document.getElementById('inspector-controls');
-    const backToBlocksBtn = document.getElementById('backToBlocks');
-    const paper = document.querySelector('.email-paper');
     const sidebarTabs = document.querySelectorAll('.sb-tab');
 
-    // --- Tab Switching ---
+    // --- ACCORDION LOGIC ---
+    const accHeaders = document.querySelectorAll('.sb-accordion-header');
+
+    accHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            // Toggle active class on header
+            header.classList.toggle('active');
+
+            // Toggle body
+            const targetId = header.dataset.target;
+            const body = document.getElementById(targetId);
+            if (body) {
+                body.classList.toggle('open');
+            }
+        });
+    });
+
+    // Helper to open a specific accordion (used when selecting blocks)
+    function openAccordion(id) {
+        const body = document.getElementById(id);
+        const header = document.querySelector(`.sb-accordion-header[data-target="${id}"]`);
+
+        if (body && !body.classList.contains('open')) {
+            body.classList.add('open');
+        }
+        if (header && !header.classList.contains('active')) {
+            header.classList.add('active');
+        }
+    }
+
+    // --- Tab Switching (Content / Style) ---
     if (sidebarTabs.length > 0) {
         sidebarTabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -612,60 +637,69 @@ document.addEventListener('DOMContentLoaded', function () {
     function selectBlock(id) {
         selectedBlockId = id;
         renderBlocks();
-        showInspector();
+
+        // 1. Populate Inspect Panel
         renderInspectorControls(id);
-    }
 
-    function showInspector() {
-        if (blocksListPanel) blocksListPanel.style.display = 'none';
-        if (inspectorPanel) inspectorPanel.style.display = 'block';
-    }
-
-    function showBlocksList() {
-        selectedBlockId = null;
-        renderBlocks();
-        if (inspectorPanel) inspectorPanel.style.display = 'none';
-        if (blocksListPanel) blocksListPanel.style.display = 'block';
-    }
-
-    if (backToBlocksBtn) {
-        backToBlocksBtn.addEventListener('click', showBlocksList);
+        // 2. Automatically open Inspect Accordion
+        openAccordion('acc-inspect');
     }
 
     function renderInspectorControls(id) {
         const block = blocksData.find(b => b.id === id);
-        if (!block || !inspectorControls) return;
+        // Target the NEW container inside the accordion
+        const controlsContainer = document.getElementById('inspector-controls');
+
+        if (!block || !controlsContainer) return;
 
         let html = '';
 
-        // Alignment
-        html += `<div class="insp-group"><label class="insp-label">Alignment</label>
-                 <div class="btn-group-align">
-                    <button class="align-btn ${block.styles.align === 'left' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'left')">L</button>
-                    <button class="align-btn ${block.styles.align === 'center' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'center')">C</button>
-                    <button class="align-btn ${block.styles.align === 'right' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'right')">R</button>
-                 </div></div>`;
-
+        // -- Specific Controls --
         if (block.type === 'text') {
-            html += `<div class="insp-group"><label class="insp-label">HTML Content</label>
-                     <textarea class="insp-textarea" oninput="window.updateBlock('${id}', 'content', this.value)">${block.content}</textarea></div>`;
-        } else if (block.type === 'image') {
-            html += `<div class="insp-group"><label class="insp-label">Image URL</label>
-                     <input type="text" class="insp-input" value="${block.content}" oninput="window.updateBlock('${id}', 'content', this.value)"></div>`;
-        } else if (block.type === 'button') {
-            html += `<div class="insp-group"><label class="insp-label">Button Text</label>
-                     <input type="text" class="insp-input" value="${block.content.text}" oninput="window.updateBlock('${id}', 'content.text', this.value)"></div>`;
-            html += `<div class="insp-row">
-                        <div class="insp-col"><label class="insp-label">BG Color</label><input type="color" value="${block.styles.bgColor}" oninput="window.updateBlock('${id}', 'styles.bgColor', this.value)"></div>
-                        <div class="insp-col"><label class="insp-label">Text Color</label><input type="color" value="${block.styles.color}" oninput="window.updateBlock('${id}', 'styles.color', this.value)"></div>
+            html += `<div class="insp-group">
+                        <label class="insp-label">Text Content</label>
+                        <textarea class="insp-textarea" rows="4" oninput="window.updateBlock('${id}', 'content', this.value)">${block.content}</textarea>
+                     </div>`;
+        }
+        else if (block.type === 'image') {
+            html += `<div class="insp-group">
+                        <label class="insp-label">Image Source URL</label>
+                        <input type="text" class="insp-input" value="${block.content}" oninput="window.updateBlock('${id}', 'content', this.value)">
+                     </div>`;
+        }
+        else if (block.type === 'button') {
+            html += `<div class="insp-group">
+                        <label class="insp-label">Button Label</label>
+                        <input type="text" class="insp-input" value="${block.content.text}" oninput="window.updateBlock('${id}', 'content.text', this.value)">
+                     </div>
+                     <div class="insp-group">
+                        <label class="insp-label">Link URL</label>
+                        <input type="text" class="insp-input" value="${block.content.link}" oninput="window.updateBlock('${id}', 'content.link', this.value)">
+                     </div>
+                     <div class="insp-row">
+                        <div class="insp-col"><label class="insp-label">BG Color</label><input type="color" value="${block.styles.bgColor}" oninput="window.updateBlock('${id}', 'styles.bgColor', this.value)" style="width:100%"></div>
+                        <div class="insp-col"><label class="insp-label">Text Color</label><input type="color" value="${block.styles.color}" oninput="window.updateBlock('${id}', 'styles.color', this.value)" style="width:100%"></div>
                      </div>`;
         }
 
-        html += `<div style="margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
-                    <button onclick="window.deleteBlock(${id})" style="color:red; background:none; border:none; cursor:pointer; font-size:12px;">Delete Block</button>
+        // -- Alignment --
+        html += `<div class="insp-group">
+                    <label class="insp-label">Alignment</label>
+                    <div class="btn-group-align">
+                    <button class="align-btn ${block.styles.align === 'left' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'left')">L</button>
+                    <button class="align-btn ${block.styles.align === 'center' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'center')">C</button>
+                    <button class="align-btn ${block.styles.align === 'right' ? 'active' : ''}" onclick="window.updateBlock('${id}', 'styles.align', 'right')">R</button>
+                    </div>
                  </div>`;
 
-        inspectorControls.innerHTML = html;
+        // -- Delete Button --
+        html += `<div style="margin-top:15px; padding-top:15px; border-top:1px solid #eee; text-align:right;">
+                    <button onclick="window.deleteBlock(${id})" style="color:#d32f2f; background:none; border:none; cursor:pointer; font-size:12px; font-weight:600;">
+                        Delete Element
+                    </button>
+                 </div>`;
+
+        controlsContainer.innerHTML = html;
     }
 
     // Global helpers attached to window
@@ -685,7 +719,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.deleteBlock = function (id) {
         blocksData = blocksData.filter(b => b.id !== id);
-        showBlocksList();
+
+        // Reset Inspector
+        const controlsContainer = document.getElementById('inspector-controls');
+        if (controlsContainer) {
+            controlsContainer.innerHTML = '<div class="empty-state-inspect">Element deleted. Select another.</div>';
+        }
+
+        selectedBlockId = null; // Deselect
+        renderBlocks();
     };
 
 

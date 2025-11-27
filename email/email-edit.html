@@ -964,27 +964,78 @@
 
                                         <!-- CONTENT PANEL -->
                                         <div id="panel-content" class="sb-panel active">
-                                            <div id="blocks-list" class="blocks-container">
-                                                <div class="block-category">Basic</div>
-                                                <div class="blocks-grid">
-                                                    <div class="draggable-item" draggable="true" data-type="text">
-                                                        <div class="icon-box">T</div><span>Text</span>
-                                                    </div>
-                                                    <div class="draggable-item" draggable="true" data-type="image">
-                                                        <div class="icon-box">IMG</div><span>Image</span>
-                                                    </div>
-                                                    <div class="draggable-item" draggable="true" data-type="button">
-                                                        <div class="icon-box">BTN</div><span>Button</span>
+
+                                            <div class="sb-accordion-item">
+                                                <div class="sb-accordion-header" data-target="acc-inspect">
+                                                    <span>Inspect</span>
+                                                    <svg class="arrow" width="10" height="6" viewBox="0 0 10 6"
+                                                        fill="none">
+                                                        <path d="M1 1L5 5L9 1" stroke="#808080" stroke-width="1.5"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </div>
+                                                <div id="acc-inspect" class="sb-accordion-body">
+                                                    <div id="inspector-controls">
+                                                        <div class="empty-state-inspect">
+                                                            Select an element on the canvas to edit its properties.
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="inspector-panel" class="inspector-container hidden">
-                                                <div class="inspector-header">
-                                                    <button id="backToBlocks" class="back-btn">← Blocks</button>
-                                                    <span id="inspector-title">Properties</span>
+
+                                            <div class="sb-accordion-item">
+                                                <div class="sb-accordion-header active" data-target="acc-blocks">
+                                                    <span>Blocks</span>
+                                                    <svg class="arrow" width="10" height="6" viewBox="0 0 10 6"
+                                                        fill="none">
+                                                        <path d="M1 1L5 5L9 1" stroke="#808080" stroke-width="1.5"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
                                                 </div>
-                                                <div id="inspector-controls"></div>
+                                                <div id="acc-blocks" class="sb-accordion-body open">
+                                                    <div class="blocks-grid-row">
+                                                        <div class="draggable-item" draggable="true" data-type="image">
+                                                            <div class="icon-box">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="1.5">
+                                                                    <rect x="3" y="3" width="18" height="18" rx="2"
+                                                                        ry="2"></rect>
+                                                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                                                </svg>
+                                                            </div>
+                                                            <span>Image</span>
+                                                        </div>
+
+                                                        <div class="draggable-item" draggable="true" data-type="text">
+                                                            <div class="icon-box">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="1.5">
+                                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                                    <line x1="3" y1="12" x2="15" y2="12"></line>
+                                                                    <line x1="3" y1="18" x2="18" y2="18"></line>
+                                                                </svg>
+                                                            </div>
+                                                            <span>Text</span>
+                                                        </div>
+
+                                                        <div class="draggable-item" draggable="true" data-type="button">
+                                                            <div class="icon-box">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                    fill="none" stroke="currentColor"
+                                                                    stroke-width="1.5">
+                                                                    <rect x="4" y="8" width="16" height="8" rx="2">
+                                                                    </rect>
+                                                                </svg>
+                                                            </div>
+                                                            <span>Button</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
                                         </div>
 
                                         <!-- STYLE PANEL (Updated for Custom Picker) -->
