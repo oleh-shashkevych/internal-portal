@@ -48,9 +48,10 @@
     <link rel="stylesheet" href="../index.css" />
     <link rel="stylesheet" href="../home.css" />
     <link rel="stylesheet" href="./email.css" />
+    <link rel="stylesheet" href="./email-edit.css" />
     <!--styles-->
 
-    <title>Email</title>
+    <title>Edit Campaign</title>
 </head>
 
 <body class="cp_body">
@@ -730,165 +731,171 @@
                         </div>
 
                         <div class="email-main">
-                            <div class="email-tabs">
-                                <button class="email-tab active" data-tab="campaigns">Campaign</button>
-                                <button class="email-tab" data-tab="history">Email History</button>
-                            </div>
+                            <h2 class="page-title">Email Campaigns</h2>
 
-                            <div id="campaigns-view" class="tab-content active">
-                                <div class="email-controls">
-                                    <div class="search-wrapper">
-                                        <svg class="search-icon" width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.15"
-                                                d="M12 7C12 10.0375 9.53754 12.5 6.5 12.5C3.46243 12.5 1 10.0375 1 7C1 3.96243 3.46243 1.5 6.5 1.5C9.53754 1.5 12 3.96243 12 7Z"
-                                                fill="#232323" />
-                                            <path
-                                                d="M13 13.5L10.0376 10.5376M11.5882 6.79412C11.5882 3.87025 9.21795 1.5 6.29412 1.5C3.37025 1.5 1 3.87025 1 6.79412C1 9.71795 3.37025 12.0882 6.29412 12.0882C9.21795 12.0882 11.5882 9.71795 11.5882 6.79412Z"
-                                                stroke="#232323" stroke-width="1.3" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                        </svg>
-                                        <input type="text" placeholder="Search" class="email-search-input">
+                            <form class="campaign-form">
+
+                                <div class="form-group">
+                                    <label for="campaign-to">To:</label>
+                                    <div class="input-wrapper">
+                                        <select id="campaign-to" class="form-select">
+                                            <option value="all">All Contacts</option>
+                                            <option value="leads">Leads</option>
+                                            <option value="accounts">Accounts</option>
+                                            <option value="opportunities">Opportunities</option>
+                                        </select>
                                     </div>
-                                    <a href="email-edit.html" class="create-campaign-btn">+ Create Campaign</a>
                                 </div>
 
-                                <div class="email-table campaigns-table">
-                                    <div class="email-row">
-                                        <div class="col-info">
-                                            <div class="campaign-icon">
-                                                <img src="../assets/images/logo_placeholder.svg" alt="icon"
-                                                    onerror="this.style.display='none'">
-                                            </div>
-                                            <div class="campaign-details">
-                                                <div class="campaign-name">Referral Program Promotion</div>
-                                                <div class="campaign-date">Edited on 2025-10-01 17:25:30</div>
-                                            </div>
+                                <div class="form-group">
+                                    <label for="sender-name">Sender-Name:</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="sender-name" class="form-input"
+                                            placeholder="Enter sender name" maxlength="150">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sender-email">Sender-Email:</label>
+                                    <div class="input-wrapper">
+                                        <input type="email" id="sender-email" class="form-input"
+                                            placeholder="noreply@mail.gofundshop.com" maxlength="150">
+                                        <div class="field-note">
+                                            <span class="green-text">254 contacts</span> were removed as they are either
+                                            on DNC list or unsubscribed from follow ups.
                                         </div>
-                                        <div class="col-status">
-                                            <span class="status-badge draft">DRAFT</span>
-                                        </div>
-                                        <div class="col-stats">
-                                            <div class="stat-item">Processed <span>0</span></div>
-                                            <div class="stat-item">Delivered <span>0</span></div>
-                                            <div class="stat-item">Received <span>0</span></div>
-                                        </div>
-                                        <div class="col-action">
-                                            <button class="action-btn">
-                                                <svg width="16" height="4" viewBox="0 0 16 4" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M2 0C0.9 0 0 0.9 0 2C0 3.1 0.9 4 2 4C3.1 4 4 3.1 4 2C4 0.9 3.1 0 2 0ZM14 0C12.9 0 12 0.9 12 2C12 3.1 12.9 4 14 4C15.1 4 16 3.1 16 2C16 0.9 15.1 0 14 0ZM8 0C6.9 0 6 0.9 6 2C6 3.1 6.9 4 8 4C9.1 4 10 3.1 10 2C10 0.9 9.1 0 8 0Z"
-                                                        fill="#808080" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="reply-to">Reply-To-Email:</label>
+                                    <div class="input-wrapper">
+                                        <input type="email" id="reply-to" class="form-input"
+                                            placeholder="jonathan@gofundshop.com" maxlength="150">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email-subject">Email Subject:</label>
+                                    <div class="input-wrapper">
+                                        <input type="text" id="email-subject" class="form-input"
+                                            placeholder="Enter your subject" maxlength="250">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group half-width">
+                                        <label for="state-select">State</label>
+                                        <div class="custom-multiselect" id="state-multiselect">
+                                            <div class="select-box">
+                                                <span class="selected-text">New York</span>
+                                                <svg class="arrow" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                                    <path d="M1 1L5 5L9 1" stroke="#232323" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
-                                            </button>
-                                            <div class="action-dropdown">
-                                                <button class="dropdown-item edit">Edit</button>
-                                                <button class="dropdown-item delete">Delete</button>
+                                            </div>
+                                            <div class="options-list">
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="NY" checked>
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">New York</span>
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="CA">
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">California</span>
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="TX">
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">Texas</span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="email-row">
-                                        <div class="col-info">
-                                            <div class="campaign-icon"></div>
-                                            <div class="campaign-details">
-                                                <div class="campaign-name">Referral Program Promotion</div>
-                                                <div class="campaign-date">Edited on 2025-10-01 17:25:30</div>
+                                    <div class="form-group half-width">
+                                        <label for="income-select">Income</label>
+                                        <div class="custom-multiselect" id="income-multiselect">
+                                            <div class="select-box">
+                                                <span class="selected-text">$ 20.000</span>
+                                                <svg class="arrow" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                                                    <path d="M1 1L5 5L9 1" stroke="#232323" stroke-width="1.5"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
                                             </div>
-                                        </div>
-                                        <div class="col-status">
-                                            <span class="status-badge active">ACTIVE</span>
-                                        </div>
-                                        <div class="col-stats">
-                                            <div class="stat-item">Processed <span class="green">20,3%</span></div>
-                                            <div class="stat-item">Delivered <span class="blue">30,5%</span></div>
-                                            <div class="stat-item">Received <span class="green">45,1%</span></div>
-                                        </div>
-                                        <div class="col-action">
-                                            <button class="action-btn">...</button>
-                                            <div class="action-dropdown">
-                                                <button class="dropdown-item edit">Edit</button>
-                                                <button class="dropdown-item delete">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="email-row">
-                                        <div class="col-info">
-                                            <div class="campaign-icon"></div>
-                                            <div class="campaign-details">
-                                                <div class="campaign-name">Referral Program Promotion-2</div>
-                                                <div class="campaign-date">Edited on 2025-10-01 17:25:30</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-status">
-                                            <span class="status-badge active">ACTIVE</span>
-                                        </div>
-                                        <div class="col-stats">
-                                            <div class="stat-item">Processed <span class="green">9,3%</span></div>
-                                            <div class="stat-item">Delivered <span class="blue">4,5%</span></div>
-                                            <div class="stat-item">Received <span class="green">2,1%</span></div>
-                                        </div>
-                                        <div class="col-action">
-                                            <button class="action-btn">...</button>
-                                            <div class="action-dropdown">
-                                                <button class="dropdown-item edit">Edit</button>
-                                                <button class="dropdown-item delete">Delete</button>
+                                            <div class="options-list">
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="20k" checked>
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">$ 20.000</span>
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="50k">
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">$ 50.000</span>
+                                                </label>
+                                                <label class="option-item">
+                                                    <input type="checkbox" value="100k">
+                                                    <span class="checkmark"></span>
+                                                    <span class="option-label">$ 100.000</span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div id="history-view" class="tab-content">
-                                <div class="email-table history-table">
-                                    <div class="email-table-header">
-                                        <div class="h-col date">Date</div>
-                                        <div class="h-col campaign">Campaign</div>
-                                        <div class="h-col recipient">Recipient</div>
-                                        <div class="h-col status">Status</div>
+                                <div class="form-group">
+                                    <label for="date-time-trigger">Date and time</label>
+                                    <div class="input-wrapper date-wrapper">
+                                        <input type="text" id="date-time-trigger" class="form-input"
+                                            placeholder="Select date and time" readonly>
+                                        <svg class="calendar-icon" width="16" height="18" viewBox="0 0 16 18"
+                                            fill="none">
+                                            <path
+                                                d="M13.3333 2.66667H12.5V1H10.8333V2.66667H5.16667V1H3.5V2.66667H2.66667C1.74167 2.66667 1 3.41667 1 4.33333V16C1 16.9167 1.74167 17.6667 2.66667 17.6667H13.3333C14.25 17.6667 15 16.9167 15 16V4.33333C15 3.41667 14.25 2.66667 13.3333 2.66667ZM13.3333 16H2.66667V6H13.3333V16ZM3.5 7.66667H5.16667V9.33333H3.5V7.66667ZM6.83333 7.66667H8.5V9.33333H6.83333V7.66667ZM10.1667 7.66667H11.8333V9.33333H10.1667V7.66667ZM3.5 11H5.16667V12.6667H3.5V11ZM6.83333 11H8.5V12.6667H6.83333V11ZM10.1667 11H11.8333V12.6667H10.1667V11Z"
+                                                fill="#232323" />
+                                        </svg>
                                     </div>
-
-                                    <a href="#" class="email-row history-row">
-                                        <div class="h-col date">11/22/2025 14:30 PM</div>
-                                        <div class="h-col campaign">Welcome Series - Email 1</div>
-                                        <div class="h-col recipient">
-                                            <div class="r-name">John Doe</div>
-                                            <div class="r-email">johndoe12@gmail.com</div>
-                                        </div>
-                                        <div class="h-col status">
-                                            <span class="status-badge sent">Sent</span>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="email-row history-row">
-                                        <div class="h-col date">11/22/2025 14:35 PM</div>
-                                        <div class="h-col campaign">Referral Program</div>
-                                        <div class="h-col recipient">
-                                            <div class="r-name">Jane Smith</div>
-                                            <div class="r-email">jane.smith@example.com</div>
-                                        </div>
-                                        <div class="h-col status">
-                                            <span class="status-badge error">Error</span>
-                                        </div>
-                                    </a>
-
-                                    <a href="#" class="email-row history-row">
-                                        <div class="h-col date">11/22/2025 14:40 PM</div>
-                                        <div class="h-col campaign">Monthly Newsletter</div>
-                                        <div class="h-col recipient">
-                                            <div class="r-name">Bob Brown</div>
-                                            <div class="r-email">bob.brown@test.com</div>
-                                        </div>
-                                        <div class="h-col status">
-                                            <span class="status-badge sending">Sending</span>
-                                        </div>
-                                    </a>
                                 </div>
+
+                            </form>
+
+                            <div class="email-builder-container">
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="date-picker-overlay" id="datePickerOverlay">
+        <div class="date-picker-modal">
+            <div class="dp-header">
+                <h3>Pick Date and Time</h3>
+                <button type="button" class="dp-close" id="dpClose">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M13 1L1 13M1 1L13 13" stroke="#808080" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="dp-body">
+                <div id="inline-calendar"></div>
+
+                <div class="dp-time-controls">
+                    <input type="text" class="time-input" id="timeHour" value="9:30">
+                    <select class="ampm-select" id="timeAmpm">
+                        <option value="AM">AM</option>
+                        <option value="PM" selected>PM</option>
+                    </select>
+                </div>
+
+                <button type="button" class="schedule-btn" id="scheduleBtn">Schedule send</button>
+                <div class="selected-datetime-display" id="previewDateTime">
+                    Sep 18, 9:30 PM
                 </div>
             </div>
         </div>
@@ -898,6 +905,7 @@
     <script src="../quote/quote.js"></script>
     <script src="../opportunites/new_opportunities.js"></script>
     <script type="module" src="./email.js"></script>
+    <script type="module" src="./email-edit.js"></script>
     <script type="module" src="../notifications.js"></script>
 </body>
 

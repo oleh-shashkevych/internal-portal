@@ -1,0 +1,394 @@
+/* ==========================================================================
+   Email Edit Page Styles
+   ========================================================================== */
+
+.page-title {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #232323;
+}
+
+/* --- Form Container --- */
+.campaign-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    position: relative;
+    /* Context for dropdowns */
+}
+
+.form-group label {
+    width: 150px;
+    flex-shrink: 0;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-wrapper {
+    flex-grow: 1;
+    position: relative;
+}
+
+/* Inputs & Selects */
+.form-input,
+.form-select {
+    width: 100%;
+    height: 44px;
+    padding: 0 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    color: #232323;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fff;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #159C2A;
+}
+
+/* Field Note */
+.field-note {
+    font-size: 12px;
+    color: #808080;
+    margin-top: 6px;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.field-note .green-text {
+    color: #159C2A;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* --- Multi-Column Row --- */
+.form-row {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.half-width {
+    width: 50%;
+    margin-bottom: 0;
+}
+
+/* FIX: Label width in half-width rows should be same as standard (150px) or just auto */
+.half-width label {
+    width: 150px;
+}
+
+/* --- Custom Multi-select Dropdown (Updated Design) --- */
+.custom-multiselect {
+    flex-grow: 1;
+    position: relative;
+    font-family: 'Urbanist', sans-serif;
+}
+
+.select-box {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    cursor: pointer;
+    background: #fff;
+    user-select: none;
+}
+
+.select-box .arrow {
+    transition: transform 0.2s;
+}
+
+.custom-multiselect.open .arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Options Container */
+.options-list {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-radius: 6px;
+    z-index: 100;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    /* Soft shadow like image */
+    padding: 8px 0;
+}
+
+.custom-multiselect.open .options-list {
+    display: block;
+}
+
+/* Option Item Style */
+.option-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #232323;
+    position: relative;
+    transition: background-color 0.2s;
+}
+
+.option-item:hover {
+    background-color: #F7F7F7;
+}
+
+.option-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Custom Checkbox Box */
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    transition: all 0.2s;
+}
+
+.option-label {
+    margin-left: 28px;
+    /* Space for checkbox */
+}
+
+/* Checked State */
+.option-item input:checked~.checkmark {
+    background-color: #159C2A;
+    border-color: #159C2A;
+}
+
+.option-item input:checked~.checkmark:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Checked Row Background */
+.option-item:has(input:checked) {
+    background-color: #E8F6EA;
+}
+
+
+/* --- Custom Date Picker Modal --- */
+.date-picker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.date-picker-overlay.active {
+    display: flex;
+}
+
+.date-picker-modal {
+    background: #fff;
+    width: 360px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    font-family: 'Urbanist', sans-serif;
+    position: relative;
+}
+
+/* Modal Header */
+.dp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dp-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #232323;
+    margin: 0;
+}
+
+.dp-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Flatpickr Customization (Inline) */
+.flatpickr-calendar {
+    box-shadow: none !important;
+    width: 100% !important;
+}
+
+.flatpickr-months .flatpickr-month {
+    height: 40px;
+}
+
+.flatpickr-current-month {
+    font-size: 15px;
+    padding-top: 0;
+}
+
+.flatpickr-weekdays {
+    margin-bottom: 10px;
+}
+
+.flatpickr-day {
+    border-radius: 4px !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+    background: #159C2A !important;
+    border-color: #159C2A !important;
+    border-radius: 8px !important;
+}
+
+/* Time Controls below calendar */
+.dp-time-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.time-input {
+    flex: 2;
+    height: 44px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    padding: 0 15px;
+    font-size: 16px;
+    color: #232323;
+    outline: none;
+}
+
+.time-input:focus {
+    border-color: #159C2A;
+}
+
+.ampm-select {
+    flex: 1;
+    height: 44px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 16px;
+    color: #232323;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Schedule Button */
+.schedule-btn {
+    width: 100%;
+    background-color: #159C2A;
+    color: #fff;
+    border: none;
+    height: 48px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 10px;
+}
+
+.schedule-btn:hover {
+    background-color: #128323;
+}
+
+.selected-datetime-display {
+    text-align: center;
+    color: #808080;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .form-group label {
+        width: 100%;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .half-width {
+        width: 100%;
+    }
+
+    .half-width label {
+        width: 100%;
+    }
+}

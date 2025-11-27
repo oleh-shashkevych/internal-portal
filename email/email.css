@@ -219,3 +219,462 @@
     height: 100%;
     padding: 20px;
 }
+
+/* ==========================================================================
+   4. Email Campaigns Page Styles
+   ========================================================================== */
+
+/* Typography & Layout defaults */
+.email-main {
+    font-family: 'Urbanist', sans-serif;
+    color: #232323;
+}
+
+/* Tabs */
+.email-tabs {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 0;
+}
+
+.email-tab {
+    background: none;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #808080;
+    padding: 10px 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.email-tab:hover {
+    color: #159C2A;
+}
+
+.email-tab.active {
+    color: #159C2A;
+    font-weight: 700;
+}
+
+.email-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #159C2A;
+}
+
+/* Tab Content Visibility */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Controls (Search + Create Button) */
+.email-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-wrapper .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.email-search-input {
+    width: 100%;
+    height: 44px;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.email-search-input:focus {
+    border-color: #159C2A;
+}
+
+.create-campaign-btn {
+    background-color: #159C2A;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.create-campaign-btn:hover {
+    background-color: #128023;
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+/* Div Table Styles */
+.email-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.email-row {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 6px;
+    /* Rounded corners like in image */
+    border: 1px solid #F0F0F0;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+}
+
+.email-row:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-color: #E0E0E0;
+    z-index: 2;
+}
+
+/* --- Campaign Row Specifics --- */
+.campaigns-table .email-row {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Col: Info (Icon + Text) */
+.col-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 2;
+    min-width: 250px;
+}
+
+.campaign-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #F5F5F5;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.campaign-icon img {
+    max-width: 20px;
+}
+
+.campaign-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.campaign-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: #232323;
+    margin-bottom: 4px;
+}
+
+.campaign-date {
+    font-size: 12px;
+    color: #808080;
+}
+
+/* Col: Status */
+.col-status {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.draft {
+    background-color: #F5F5F5;
+    color: #808080;
+}
+
+.status-badge.active {
+    background-color: #E8F6EA;
+    color: #159C2A;
+}
+
+/* History Statuses */
+.status-badge.sent {
+    background-color: #E8F6EA;
+    color: #159C2A;
+}
+
+.status-badge.error {
+    background-color: #FDEDED;
+    color: #D32F2F;
+}
+
+.status-badge.sending {
+    background-color: #FFF8E1;
+    color: #FBC02D;
+}
+
+/* Col: Stats */
+.col-stats {
+    flex: 2;
+    display: flex;
+    justify-content: space-around;
+    min-width: 280px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    color: #808080;
+}
+
+.stat-item span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #232323;
+    margin-top: 2px;
+}
+
+.stat-item span.green {
+    color: #159C2A;
+}
+
+.stat-item span.blue {
+    color: #2D9CDB;
+}
+
+/* Col: Action */
+.col-action {
+    flex: 0 0 50px;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #808080;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.action-btn:hover {
+    background-color: #F0F0F0;
+    color: #232323;
+}
+
+/* Dropdown Menu */
+.action-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 10;
+    min-width: 120px;
+    border: 1px solid #EEE;
+    overflow: hidden;
+}
+
+.action-dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    color: #232323;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #F9F9F9;
+}
+
+.dropdown-item.delete {
+    color: #D32F2F;
+}
+
+/* --- History Table Specifics --- */
+.history-table .email-table-header {
+    display: flex;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 13px;
+    color: #232323;
+    border-bottom: 2px solid #E0E0E0;
+    margin-bottom: 5px;
+}
+
+.history-table .h-col {
+    flex: 1;
+}
+
+.history-table .h-col.date {
+    flex: 0 0 180px;
+}
+
+.history-table .h-col.campaign {
+    flex: 2;
+}
+
+.history-table .h-col.recipient {
+    flex: 2;
+}
+
+.history-table .h-col.status {
+    flex: 0 0 120px;
+    text-align: right;
+}
+
+.history-row {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.history-row:hover {
+    background-color: #FAFAFA;
+}
+
+.history-row .date {
+    font-size: 14px;
+    color: #232323;
+}
+
+.history-row .campaign {
+    font-weight: 600;
+}
+
+.r-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #232323;
+}
+
+.r-email {
+    font-size: 12px;
+    color: #808080;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .campaigns-table .email-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .col-info,
+    .col-stats,
+    .col-status {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .col-status {
+        justify-content: flex-start;
+    }
+
+    .col-stats {
+        justify-content: flex-start;
+        gap: 30px;
+    }
+
+    .col-action {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    /* History table responsive */
+    .history-table .email-table-header {
+        display: none;
+        /* Hide header on mobile */
+    }
+
+    .history-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .history-table .h-col.status {
+        text-align: left;
+    }
+}
