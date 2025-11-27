@@ -861,7 +861,209 @@
 
                             </form>
 
-                            <div class="email-builder-container">
+                            <div class="email-builder-wrapper">
+                                <!-- TOOLBAR -->
+                                <div class="builder-toolbar">
+                                    <div class="toolbar-actions">
+                                        <button class="tool-btn active" data-mode="edit" title="Edit"><svg width="18"
+                                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+                                                </path>
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+                                                </path>
+                                            </svg></button>
+                                        <button class="tool-btn" data-mode="preview" title="Preview"><svg width="18"
+                                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg></button>
+                                        <button class="tool-btn" data-mode="json" title="JSON"><svg width="18"
+                                                height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg></button>
+                                    </div>
+                                    <div class="toolbar-history">
+                                        <button class="tool-btn" title="Undo"><svg width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M3 7v6h6"></path>
+                                                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                                            </svg></button>
+                                        <button class="tool-btn" title="Redo"><svg width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 7v6h-6"></path>
+                                                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path>
+                                            </svg></button>
+                                    </div>
+                                </div>
+
+                                <div class="builder-workspace">
+                                    <!-- CANVAS -->
+                                    <div class="canvas-container">
+                                        <div class="email-paper">
+                                            <!-- HEADER -->
+                                            <div class="static-header">
+                                                <div class="header-logo"><img
+                                                        src="../assets/images/logo_placeholder.svg" alt="Fundshop">
+                                                </div>
+                                                <div class="header-socials">
+                                                    <a href="#" class="social-icon fb">F</a>
+                                                    <a href="#" class="social-icon ig">I</a>
+                                                    <a href="#" class="social-icon in">L</a>
+                                                </div>
+                                            </div>
+                                            <!-- DROPZONE -->
+                                            <div id="dynamic-builder-area" class="builder-dropzone">
+                                                <div class="empty-state-message">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="#159C2A" stroke-width="2">
+                                                        <path d="M12 5v14M5 12h14" />
+                                                    </svg>
+                                                    <p>Drop content here</p>
+                                                </div>
+                                            </div>
+                                            <!-- FOOTER -->
+                                            <div class="static-footer">
+                                                <div class="footer-divider">POWERED BY</div>
+                                                <div class="footer-content">
+                                                    <div class="footer-profile">
+                                                        <img src="../assets/images/avatar.png" alt="Manager"
+                                                            class="manager-photo">
+                                                        <div class="manager-info">
+                                                            <h3>Val Baltsevych</h3>
+                                                            <p>Finance Manager</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="footer-details">
+                                                        <p>📞 Phone: (239) 265-9663</p>
+                                                        <p>✉️ Email: amelia@gofundshop.com</p>
+                                                        <p>📍 Address: 3434 Hancock Bridge Pkwy, FL 33903</p>
+                                                        <div class="footer-actions">
+                                                            <div class="mini-socials">
+                                                                <span>🌐</span><span>F</span><span>I</span><span>L</span>
+                                                            </div>
+                                                            <button class="footer-btn">APPLY NOW</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="footer-disclaimer">NON-DISCLOSURE NOTICE...</div>
+                                                <div class="footer-copyright">© Copyright Fundshop, 2019-2025</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SIDEBAR -->
+                                    <div class="builder-sidebar">
+                                        <div class="sidebar-tabs">
+                                            <button class="sb-tab active" data-target="panel-content">Content</button>
+                                            <button class="sb-tab" data-target="panel-style">Style</button>
+                                        </div>
+
+                                        <!-- CONTENT PANEL -->
+                                        <div id="panel-content" class="sb-panel active">
+                                            <div id="blocks-list" class="blocks-container">
+                                                <div class="block-category">Basic</div>
+                                                <div class="blocks-grid">
+                                                    <div class="draggable-item" draggable="true" data-type="text">
+                                                        <div class="icon-box">T</div><span>Text</span>
+                                                    </div>
+                                                    <div class="draggable-item" draggable="true" data-type="image">
+                                                        <div class="icon-box">IMG</div><span>Image</span>
+                                                    </div>
+                                                    <div class="draggable-item" draggable="true" data-type="button">
+                                                        <div class="icon-box">BTN</div><span>Button</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="inspector-panel" class="inspector-container hidden">
+                                                <div class="inspector-header">
+                                                    <button id="backToBlocks" class="back-btn">← Blocks</button>
+                                                    <span id="inspector-title">Properties</span>
+                                                </div>
+                                                <div id="inspector-controls"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- STYLE PANEL (Updated for Custom Picker) -->
+                                        <div id="panel-style" class="sb-panel">
+                                            <div class="style-group">
+                                                <label>Backdrop color</label>
+                                                <!-- Custom Wrapper, no type="color" -->
+                                                <div class="color-swatch-wrapper" data-target="style-backdrop">
+                                                    <input type="text" id="style-backdrop" class="color-input-hidden"
+                                                        value="#F5F5F5" hidden>
+                                                    <div class="color-swatch" id="swatch-backdrop"
+                                                        style="background-color: #F5F5F5;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="style-group">
+                                                <label>Canvas color</label>
+                                                <div class="color-swatch-wrapper" data-target="style-canvas">
+                                                    <input type="text" id="style-canvas" class="color-input-hidden"
+                                                        value="#FFFFFF" hidden>
+                                                    <div class="color-swatch" id="swatch-canvas"
+                                                        style="background-color: #FFFFFF;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="style-group">
+                                                <label>Canvas border color</label>
+                                                <div class="color-swatch-wrapper" data-target="style-border-color">
+                                                    <input type="text" id="style-border-color"
+                                                        class="color-input-hidden" value="#FFFFFF" hidden>
+                                                    <div class="color-swatch plus-swatch" id="swatch-border-color">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                            <path d="M7 1V13M1 7H13" stroke="#232323" stroke-width="1.2"
+                                                                stroke-linecap="round" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="style-group">
+                                                <label>Canvas border radius</label>
+                                                <div class="slider-wrapper">
+                                                    <div class="slider-icon"><svg width="18" height="18"
+                                                            viewBox="0 0 24 24" fill="none" stroke="#232323"
+                                                            stroke-width="2">
+                                                            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                                                            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                                                            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                                                            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                                                        </svg></div>
+                                                    <input type="range" id="style-radius" min="0" max="40" value="0"
+                                                        class="style-range">
+                                                    <span class="slider-value" id="radius-val">0px</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="style-group">
+                                                <label>Font family</label>
+                                                <div class="select-underline-wrapper">
+                                                    <select id="style-font" class="style-select-underline">
+                                                        <option value="'Urbanist', sans-serif">Urbanist</option>
+                                                        <option value="'Open Sans', sans-serif">Modern sans</option>
+                                                        <option value="'Times New Roman', serif">Serif</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="style-group">
+                                                <label>Text color</label>
+                                                <div class="color-swatch-wrapper" data-target="style-text-color">
+                                                    <input type="text" id="style-text-color" class="color-input-hidden"
+                                                        value="#232323" hidden>
+                                                    <div class="color-swatch" id="swatch-text-color"
+                                                        style="background-color: #232323;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
