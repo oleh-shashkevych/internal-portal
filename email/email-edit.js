@@ -14,8 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let historyStep = -1;
     const MAX_HISTORY = 50;
 
+    // DOM Elements
     const dropzone = document.getElementById('dynamic-builder-area');
     const paperElement = document.querySelector('.email-paper');
+    const canvasContainer = document.querySelector('.canvas-container');
+
+    // Create Code Editor Area (PRE tag) inside Canvas dynamically
+    const codeEditor = document.createElement('pre');
+    codeEditor.id = 'canvas-code-editor';
+    canvasContainer.appendChild(codeEditor);
 
     // ===========================================
     // 1. HELPER FUNCTIONS (COLOR MATH)
@@ -88,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             historyStep++;
         }
-        console.log('History Saved. Step:', historyStep);
     }
 
     function undo() {
@@ -127,25 +133,58 @@ document.addEventListener('DOMContentLoaded', function () {
             const mode = btn.dataset.mode;
             const title = btn.getAttribute('title');
 
-            if (mode === 'edit' || mode === 'preview') {
+            // Handle Mode Switching
+            if (mode) {
                 document.querySelectorAll('.tool-btn[data-mode]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-            }
 
-            if (mode === 'edit') {
+                // Reset States
                 isPreviewMode = false;
-                if (paperElement) paperElement.classList.remove('preview-active');
-                renderBlocks();
-            }
-            else if (mode === 'preview') {
-                isPreviewMode = true;
-                selectedBlockId = null;
-                if (paperElement) paperElement.classList.add('preview-active');
-                renderBlocks();
-                updateInspectorState();
-            }
-            else if (mode === 'json') {
-                showJsonModal();
+                paperElement.classList.remove('preview-active');
+                canvasContainer.classList.remove('mode-code');
+
+                if (mode === 'edit') {
+                    renderBlocks();
+                    if (blocksData.length > 0) selectBlock(blocksData[0].id);
+                    else {
+                        selectedBlockId = null;
+                        updateInspectorState();
+                    }
+                }
+                else if (mode === 'preview') {
+                    isPreviewMode = true;
+                    selectedBlockId = null;
+                    paperElement.classList.add('preview-active');
+                    renderBlocks();
+                    updateInspectorState();
+                }
+                else if (mode === 'code') {
+                    selectedBlockId = null; // Deselect
+                    updateInspectorState(); // Clear inspector
+                    canvasContainer.classList.add('mode-code');
+                    codeEditor.textContent = generateEmailHtml();
+                }
+                else if (mode === 'json') {
+                    selectedBlockId = null; // Deselect
+                    updateInspectorState(); // Clear inspector
+                    canvasContainer.classList.add('mode-code');
+                    const exportData = {
+                        root: {
+                            type: "EmailLayout",
+                            data: {
+                                backdropColor: document.getElementById('style-backdrop').value,
+                                canvasColor: document.getElementById('style-canvas').value,
+                                fontFamily: document.getElementById('style-font').value,
+                                childrenIds: blocksData.map(b => `block-${b.id}`)
+                            }
+                        },
+                        blocks: blocksData.reduce((acc, block) => {
+                            acc[`block-${block.id}`] = block;
+                            return acc;
+                        }, {})
+                    };
+                    codeEditor.textContent = JSON.stringify(exportData, null, 2);
+                }
             }
             else if (title === 'Undo') {
                 undo();
@@ -156,33 +195,90 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // JSON Modal
-    const jsonModal = document.createElement('div');
-    jsonModal.className = 'json-modal-overlay';
-    jsonModal.innerHTML = `
-        <div class="json-modal">
-            <h3>JSON Data</h3>
-            <textarea class="json-textarea" readonly></textarea>
-            <div class="json-actions">
-                <button class="json-btn copy">Copy</button>
-                <button class="json-btn close">Close</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(jsonModal);
+    function generateEmailHtml() {
+        const bg = document.getElementById('style-backdrop').value;
+        const canvasBg = document.getElementById('style-canvas').value;
+        const fontFamily = document.getElementById('style-font').value;
+        const textColor = document.getElementById('style-text-color').value;
+        const borderRadius = document.getElementById('style-radius').value;
 
-    function showJsonModal() {
-        const textarea = jsonModal.querySelector('textarea');
-        textarea.value = JSON.stringify(blocksData, null, 2);
-        jsonModal.classList.add('active');
+        let html = `<!DOCTYPE html>
+<html>
+<body style="margin: 0; padding: 0; background-color: ${bg};">
+    <div style="background-color: ${bg}; font-family: ${fontFamily}; color: ${textColor}; padding: 40px 0;">
+        <table align="center" width="100%" style="max-width: 600px; background-color: ${canvasBg}; margin: 0 auto; border-collapse: collapse; border-radius: ${borderRadius}px; overflow: hidden;">
+            <tbody>
+                <tr>
+                    <td style="padding: 0;">\n`;
+
+        blocksData.forEach(block => {
+            const pTop = block.styles.paddingTop;
+            const pBottom = block.styles.paddingBottom;
+            const pLeft = block.styles.paddingLeft;
+            const pRight = block.styles.paddingRight;
+            const align = block.styles.align;
+            const bgCol = block.styles.bgColor === 'transparent' ? 'transparent' : block.styles.bgColor;
+
+            const wrapperStyle = `padding: ${pTop} ${pRight} ${pBottom} ${pLeft}; background-color: ${bgCol}; text-align: ${align};`;
+
+            html += `                        \n`;
+            html += `                        <div style="${wrapperStyle}">\n`;
+
+            if (block.type === 'text') {
+                const s = block.styles;
+                const fontStyle = `font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; line-height: 1.5; margin: 0;`;
+
+                if (block.isList) {
+                    html += `                            <ul style="${fontStyle} padding-left: 20px; margin: 0; list-style-position: inside;">\n`;
+                    block.content.split('\n').forEach(line => {
+                        if (line.trim()) html += `                                <li>${line}</li>\n`;
+                    });
+                    html += `                            </ul>\n`;
+                } else {
+                    html += `                            <div style="${fontStyle}">${block.content.replace(/\n/g, '<br>')}</div>\n`;
+                }
+            }
+            else if (block.type === 'image') {
+                const s = block.styles;
+                const imgStyle = `max-width: 100%; width: ${s.width}; height: ${s.height}; display: inline-block; vertical-align: ${s.verticalAlign || 'middle'}; object-fit: ${s.objectFit || 'fill'};`;
+
+                if (block.content.link) {
+                    html += `                            <a href="${block.content.link}" target="_blank"><img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}" border="0"></a>\n`;
+                } else {
+                    html += `                            <img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}" border="0">\n`;
+                }
+            }
+            else if (block.type === 'button') {
+                const s = block.styles;
+                let btnRadius = '4px';
+                if (s.btnStyle === 'rectangle') btnRadius = '0px';
+                if (s.btnStyle === 'pill') btnRadius = '50px';
+
+                const widthStyle = s.widthMode === 'full' ? '100%' : 'auto';
+                const displayStyle = s.widthMode === 'full' ? 'block' : 'inline-block';
+
+                let pad = '12px 24px';
+                if (s.btnSize === 'xs') pad = '6px 12px';
+                if (s.btnSize === 'sm') pad = '8px 16px';
+                if (s.btnSize === 'lg') pad = '16px 32px';
+
+                const btnStyle = `display: ${displayStyle}; width: ${widthStyle}; background-color: ${s.buttonColor}; color: ${s.color}; padding: ${pad}; text-decoration: none; border-radius: ${btnRadius}; font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; text-align: center; box-sizing: border-box;`;
+
+                html += `                            <a href="${block.content.link}" target="_blank" style="${btnStyle}">${block.content.text}</a>\n`;
+            }
+
+            html += `                        </div>\n`;
+        });
+
+        html += `                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>`;
+        return html;
     }
-
-    jsonModal.querySelector('.close').addEventListener('click', () => jsonModal.classList.remove('active'));
-    jsonModal.querySelector('.copy').addEventListener('click', () => {
-        const textarea = jsonModal.querySelector('textarea');
-        textarea.select();
-        document.execCommand('copy');
-    });
 
     // ===========================================
     // 3. CUSTOM UI LOGIC (Multiselect, Date, Color)
@@ -327,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
         div.addEventListener('click', () => {
             setColorFromHex(color);
             applyColor();
-            saveHistory(); // Save on preset click
+            saveHistory();
         });
         presetsBox.appendChild(div);
     });
@@ -367,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isDraggingSat || isDraggingHue) {
             isDraggingSat = false;
             isDraggingHue = false;
-            saveHistory(); // Save when releasing color drag
+            saveHistory();
         }
     });
     hexInput.addEventListener('change', () => {
@@ -431,7 +527,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 5. BUILDER LOGIC
     // ===========================================
 
-    // Init History
     saveHistory();
 
     const sidebarTabs = document.querySelectorAll('.sb-tab');
@@ -645,7 +740,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 menu.className = 'quick-add-menu';
                 menu.innerHTML = `
                     <div class="quick-add-item" onclick="window.insertBlock('image', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg><span>Image</span></div>
-                    <div class="quick-add-item" onclick="window.insertBlock('text', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg><span>Text</span></div>
+                    <div class="quick-add-item" onclick="window.insertBlock('text', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg><span>Text</span></div>
                     <div class="quick-add-item" onclick="window.insertBlock('button', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="8" rx="2"></rect></svg><span>Button</span></div>
                 `;
                 addBtn.addEventListener('click', (e) => {
@@ -734,7 +829,7 @@ document.addEventListener('DOMContentLoaded', function () {
             html += `<div class="insp-group"><label class="insp-label">Url</label><input type="text" class="insp-input" value="${block.content.link}" oninput="window.updateBlock('${blockId}', 'content.link', this.value, false)"></div>`;
             html += `<div class="insp-group"><label class="insp-label">Width</label><div class="segmented-control"><button class="${block.styles.widthMode === 'full' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.widthMode', 'full')">Full</button><button class="${block.styles.widthMode === 'auto' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.widthMode', 'auto')">Auto</button></div></div>`;
             html += `<div class="insp-group"><label class="insp-label">Size</label><div class="segmented-control"><button class="${block.styles.btnSize === 'xs' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnSize', 'xs')">Xs</button><button class="${block.styles.btnSize === 'sm' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnSize', 'sm')">Sm</button><button class="${block.styles.btnSize === 'md' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnSize', 'md')">Md</button><button class="${block.styles.btnSize === 'lg' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnSize', 'lg')">Lg</button></div></div>`;
-            html += `<div class="insp-group"><label class="insp-label">Style</label><div class="segmented-control"><button class="${block.styles.btnStyle === 'rectangle' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'rectangle')">Rect</button><button class="${block.styles.btnStyle === 'rounded' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'rounded')">Rnd</button><button class="${block.styles.btnStyle === 'pill' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'pill')">Pill</button></div></div>`;
+            html += `<div class="insp-group"><label class="insp-label">Style</label><div class="segmented-control"><button class="${block.styles.btnStyle === 'rectangle' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'rectangle')">Rectangle</button><button class="${block.styles.btnStyle === 'rounded' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'rounded')">Rounded</button><button class="${block.styles.btnStyle === 'pill' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.btnStyle', 'pill')">Pill</button></div></div>`;
             html += renderColorPicker('Text color', 'color', block.styles.color);
             html += renderColorPicker('Button color', 'buttonColor', block.styles.buttonColor);
             html += renderColorPicker('Background color', 'bgColor', block.styles.bgColor);
@@ -764,7 +859,7 @@ document.addEventListener('DOMContentLoaded', function () {
         blocksData = blocksData.filter(b => b.id !== id);
         saveHistory();
         const c = document.getElementById('inspector-controls');
-        if (c) c.innerHTML = '<div class="empty-state-inspect">Element deleted.</div>';
+        if (c) c.innerHTML = '<div class="empty-state-inspect">Element deleted. Select another.</div>';
         selectedBlockId = null;
         renderBlocks();
     };
@@ -778,10 +873,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // 6. STYLE PANEL LISTENER LOGIC
     // ===========================================
     const backdropInput = document.getElementById('style-backdrop');
-    const canvasContainer = document.querySelector('.canvas-container');
     const canvasInput = document.getElementById('style-canvas');
     const borderColorInput = document.getElementById('style-border-color');
     const radiusInput = document.getElementById('style-radius');
+    const radiusVal = document.getElementById('radius-val');
     const fontInput = document.getElementById('style-font');
     const textColorInput = document.getElementById('style-text-color');
 
@@ -792,7 +887,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    if (backdropInput && canvasContainer) backdropInput.addEventListener('input', (e) => { updateSwatch(e.target, document.getElementById('swatch-backdrop')); canvasContainer.style.backgroundColor = e.target.value; });
+    // Fix: Use the global canvasContainer defined at top (section 0)
+    if (backdropInput && canvasContainer) {
+        backdropInput.addEventListener('input', (e) => {
+            updateSwatch(e.target, document.getElementById('swatch-backdrop'));
+            canvasContainer.style.backgroundColor = e.target.value;
+        });
+    }
+
     if (canvasInput && paperElement) canvasInput.addEventListener('input', (e) => { updateSwatch(e.target, document.getElementById('swatch-canvas')); paperElement.style.backgroundColor = e.target.value; });
     if (borderColorInput && paperElement) borderColorInput.addEventListener('input', (e) => { updateSwatch(e.target, document.getElementById('swatch-border-color')); paperElement.style.border = `1px solid ${e.target.value}`; });
     if (radiusInput && paperElement) { radiusInput.value = 0; radiusInput.addEventListener('input', (e) => { document.getElementById('radius-val').textContent = e.target.value + 'px'; paperElement.style.borderRadius = e.target.value + 'px'; }); }
