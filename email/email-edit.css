@@ -1141,3 +1141,199 @@
     margin-bottom: 6px;
     color: #555;
 }
+
+/* ==========================================================================
+   INSPECTOR UI COMPONENTS (Design Match)
+   ========================================================================== */
+
+.insp-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* --- Toggle Switch --- */
+.flex-row-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.insp-label-inline {
+    font-size: 14px;
+    color: #232323;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #159C2A;
+}
+
+input:checked+.slider:before {
+    transform: translateX(16px);
+}
+
+.slider.round {
+    border-radius: 20px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* --- Segmented Controls (Font Weight, Alignment) --- */
+.segmented-control {
+    display: flex;
+    background: #F2F2F2;
+    padding: 2px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.segmented-control button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 0;
+    font-size: 13px;
+    color: #555;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 500;
+}
+
+.segmented-control button:hover {
+    color: #000;
+}
+
+.segmented-control button.active {
+    background: #fff;
+    color: #232323;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+.segmented-control.icon-mode button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.segmented-control.icon-mode button svg {
+    opacity: 0.6;
+}
+
+.segmented-control.icon-mode button.active svg {
+    opacity: 1;
+    color: #232323;
+}
+
+/* --- Slider Rows (Font Size, Padding) --- */
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.slider-row.compact {
+    margin-bottom: 8px;
+    /* For padding stack */
+}
+
+.icon-label {
+    width: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #232323;
+}
+
+.icon-label-img {
+    width: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.val-label {
+    width: 35px;
+    text-align: right;
+    font-size: 12px;
+    color: #555;
+}
+
+/* Styling the Range Input to look more like the design */
+/* (Base .style-range styles were added previously, refining here) */
+.style-range {
+    height: 3px;
+    background: #E0E0E0;
+    border-radius: 2px;
+}
+
+.style-range::-webkit-slider-thumb {
+    margin-top: -6px;
+    /* center on track */
+    background: #007BFF;
+    /* Blue thumb */
+    border: 2px solid #fff;
+    /* White border */
+    width: 14px;
+    height: 14px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Color Swatch Plus Icon fix --- */
+.plus-swatch svg {
+    width: 10px;
+    height: 10px;
+}
+
+/* TextArea refine */
+.insp-textarea {
+    resize: vertical;
+    font-family: 'Urbanist', sans-serif;
+    border-color: #E0E0E0;
+    background: #fff;
+}
+
+.insp-textarea:focus {
+    border-color: #159C2A;
+}
