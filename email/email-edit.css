@@ -569,23 +569,6 @@
     font-family: sans-serif;
 }
 
-.canvas-block.selected::after {
-    content: "...";
-    position: absolute;
-    top: 50%;
-    right: -25px;
-    transform: translateY(-50%);
-    background: #999;
-    color: #fff;
-    width: 20px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    cursor: grab;
-}
-
 /* Static Footer */
 .static-footer {
     padding: 20px 30px;
@@ -1336,4 +1319,209 @@ input:checked+.slider:before {
 
 .insp-textarea:focus {
     border-color: #159C2A;
+}
+
+/* --- Inspector Inputs Layout --- */
+.insp-half-row {
+    display: flex;
+    gap: 15px;
+}
+
+.insp-half-col {
+    flex: 1;
+    position: relative;
+}
+
+.input-wrapper-suffix {
+    position: relative;
+}
+
+.input-suffix {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.insp-input-with-suffix {
+    padding-right: 30px;
+    /* Space for 'px' */
+}
+
+/* ==========================================================================
+   CANVAS CONTROLS (Sorting & Quick Add)
+   ========================================================================== */
+
+/* 1. Remove spacing between blocks */
+.canvas-block {
+    margin-bottom: 0 !important;
+    /* Force no margin */
+    position: relative;
+    /* Context for absolute controls */
+    border: 2px solid transparent;
+    /* Placeholder for selection border */
+    transition: background-color 0.2s;
+}
+
+.canvas-block.selected {
+    border-color: #159C2A;
+    z-index: 10;
+    /* Bring on top to show controls */
+}
+
+/* 2. Drag Handle (Right Side) */
+.block-handle {
+    position: absolute;
+    right: -24px;
+    /* Move outside the block */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 40px;
+    background-color: #999;
+    border-radius: 0 4px 4px 0;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.canvas-block.selected .block-handle {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.block-handle:active {
+    cursor: grabbing;
+}
+
+/* 3. Quick Add Trigger (Bottom Left) */
+.block-add-trigger {
+    position: absolute;
+    left: 0;
+    bottom: -12px;
+    /* Center on the bottom edge */
+    width: 24px;
+    height: 24px;
+    background-color: #159C2A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.block-add-trigger:hover {
+    transform: scale(1.1);
+}
+
+.canvas-block.selected .block-add-trigger {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 4. Quick Add Dropdown Menu */
+.quick-add-menu {
+    position: absolute;
+    top: 25px;
+    /* Below the plus button */
+    left: 0;
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    width: 260px;
+    /* Wider to fit 3 items */
+    padding: 10px;
+    z-index: 100;
+    display: none;
+    cursor: default;
+}
+
+.quick-add-menu.active {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.quick-add-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 5px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-add-item:hover {
+    border-color: #159C2A;
+    background-color: #F9F9F9;
+}
+
+.quick-add-item span {
+    font-size: 11px;
+    color: #555;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+.quick-add-item svg {
+    color: #555;
+}
+
+.quick-add-item:hover svg {
+    color: #159C2A;
+}
+
+/* Visual cue when dragging over for sort */
+.canvas-block.sort-over-top {
+    border-top: 2px solid #159C2A;
+}
+
+.canvas-block.sort-over-bottom {
+    border-bottom: 2px solid #159C2A;
+}
+
+/* ==========================================================================
+   IMPROVED DRAG & DROP UX
+   ========================================================================== */
+
+/* Стиль для элемента, который остался на странице, пока мы тащим его копию */
+.canvas-block.dragging {
+    opacity: 0.4;
+    background-color: #f9f9f9;
+    border: 2px dashed #ccc;
+    box-shadow: none;
+}
+
+/* Убираем старые стили для линий, они больше не нужны */
+.canvas-block.sort-over-top,
+.canvas-block.sort-over-bottom {
+    border-top: none;
+    border-bottom: none;
+}
+
+/* Гарантируем, что контейнер имеет высоту, чтобы в него можно было бросить, даже если он пуст */
+.builder-dropzone {
+    min-height: 100px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    /* Важно для вертикального списка */
 }
