@@ -1,15 +1,6 @@
 /* ==========================================================================
    Email Edit Page Styles
    ========================================================================== */
-
-.page-title {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #232323;
-}
-
 /* --- Form Container --- */
 .campaign-form {
     background-color: #fff;
