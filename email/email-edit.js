@@ -301,6 +301,13 @@ document.addEventListener('DOMContentLoaded', function () {
         list.addEventListener('click', (e) => e.stopPropagation());
     });
 
+    // Close multiselects when clicking outside
+    document.addEventListener('click', function () {
+        document.querySelectorAll('.custom-multiselect').forEach(ms => {
+            ms.classList.remove('open');
+        });
+    });
+
     function updateSelectedText(container) {
         const checkboxes = container.querySelectorAll('input[type="checkbox"]:checked');
         const displaySpan = container.querySelector('.selected-text');
