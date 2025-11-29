@@ -701,3 +701,63 @@
         text-align: left;
     }
 }
+
+/* ==========================================================================
+   5. History Table Adaptation
+   ========================================================================== */
+
+/* Reuse Flexbox logic from campaigns-table for history items */
+.history-table .email-row {
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Adjust stats column specifically for history data */
+.history-stats {
+    align-items: center;
+    justify-content: flex-end;
+    gap: 30px;
+    min-width: 350px;
+    width: 100%;
+    max-width: 768px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px;
+}
+
+/* Force email to break nicely if too long */
+.history-stats .stat-item span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: block;
+}
+
+/* Align the status badge in history row */
+.status-box {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* Mobile responsiveness for the new history layout */
+@media (max-width: 1024px) {
+    .history-table .email-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .history-stats {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .status-box {
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 5px;
+    }
+}
