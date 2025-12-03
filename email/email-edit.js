@@ -720,8 +720,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 const displayType = block.styles.widthMode === 'full' ? 'block' : 'inline-block';
                 const widthStyle = block.styles.widthMode === 'full' ? '100%' : 'auto';
                 const btnStyle = `display: ${displayType}; width: ${widthStyle}; background-color: ${block.styles.buttonColor}; color: ${block.styles.color}; padding: ${btnPad}; text-decoration: none; border-radius: ${borderRadius}; font-family: ${block.styles.fontFamily === 'inherit' ? 'inherit' : block.styles.fontFamily}; font-size: ${block.styles.fontSize}px; font-weight: ${block.styles.fontWeight}; text-align: ${block.styles.align}; border: none; cursor: pointer; box-sizing: border-box;`;
-                el.innerHTML = `<a href="${block.content.link}" style="${btnStyle}" target="_blank" onclick="event.preventDefault();">${block.content.text}</a>`;
+
+                // ПРАВКА 1: Прибрано onclick="event.preventDefault();" з HTML рядка нижче
+                el.innerHTML = `<a href="${block.content.link}" style="${btnStyle}" target="_blank">${block.content.text}</a>`;
             }
+
+            // ПРАВКА 2: Додана логіка для блокування всіх посилань у режимі редагування
+            const links = el.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Якщо ми НЕ в режимі перегляду (тобто в режимі редагування)
+                    if (!isPreviewMode) {
+                        e.preventDefault(); // Забороняємо перехід по посиланню
+                        // Ми НЕ робимо stopPropagation(), щоб клік піднявся до el і спрацював selectBlock
+                    }
+                });
+            });
 
             if (!isPreviewMode && block.id === selectedBlockId) {
                 const handle = document.createElement('div');
