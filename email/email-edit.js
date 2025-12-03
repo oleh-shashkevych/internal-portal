@@ -797,6 +797,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const controlsContainer = document.getElementById('inspector-controls');
         if (!block || !controlsContainer) return;
 
+        // --- UPDATED FONT LIST ---
+        const fontOptions = `
+            <option value="inherit">Match email settings</option>
+            <optgroup label="Sans Serif">
+                <option value="Arial, Helvetica, sans-serif">Arial</option>
+                <option value="'Arial Black', Gadget, sans-serif">Arial Black</option>
+                <option value="Helvetica, sans-serif">Helvetica</option>
+                <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
+                <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet MS</option>
+                <option value="Impact, Charcoal, sans-serif">Impact</option>
+                <option value="'Lucida Sans Unicode', 'Lucida Grande', sans-serif">Lucida Sans</option>
+            </optgroup>
+            <optgroup label="Serif">
+                <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">Palatino</option>
+            </optgroup>
+            <optgroup label="Monospace">
+                <option value="'Courier New', Courier, monospace">Courier New</option>
+                <option value="'Lucida Console', Monaco, monospace">Lucida Console</option>
+            </optgroup>
+        `;
+
         let html = '';
         const padSlider = (labelIcon, prop, val) => `<div class="slider-row compact"><span class="icon-label-img">${labelIcon}</span><input type="range" min="0" max="100" value="${parseInt(val)}" oninput="document.getElementById('p-${prop}-${blockId}').textContent = this.value + 'px'; window.updateBlock('${blockId}', 'styles.${prop}', this.value + 'px', false)" class="style-range"><span class="val-label" id="p-${prop}-${blockId}">${val}</span></div>`;
         const iconTop = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1H11M6 3V11" stroke="#232323" stroke-width="1.5"/><path d="M1 1H11" stroke="#232323" stroke-width="2"/></svg>`;
@@ -828,7 +852,8 @@ document.addEventListener('DOMContentLoaded', function () {
             html += `<div class="insp-group flex-row-center"><label class="switch"><input type="checkbox" ${block.isList ? 'checked' : ''} onchange="window.updateBlock('${blockId}', 'isList', this.checked)"><span class="slider round"></span></label><span class="insp-label-inline">Markdown (List)</span></div>`;
             html += renderColorPicker('Text color', 'color', block.styles.color);
             html += renderBgColor(block.styles.bgColor);
-            html += `<div class="insp-group"><label class="insp-label">Font family</label><select class="insp-select" onchange="window.updateBlock('${blockId}', 'styles.fontFamily', this.value)"><option value="inherit">Match email settings</option><option value="'Urbanist', sans-serif">Urbanist</option><option value="'Open Sans', sans-serif">Open Sans</option><option value="'Times New Roman', serif">Serif</option></select></div>`;
+            // Використовуємо нову змінну fontOptions
+            html += `<div class="insp-group"><label class="insp-label">Font family</label><select class="insp-select" onchange="window.updateBlock('${blockId}', 'styles.fontFamily', this.value)">${fontOptions}</select></div>`;
             html += `<div class="insp-group"><label class="insp-label">Font size</label><div class="slider-row"><span class="icon-label">Tt</span><input type="range" min="10" max="60" value="${block.styles.fontSize}" oninput="document.getElementById('fs-val-${blockId}').textContent = this.value + 'px'; window.updateBlock('${blockId}', 'styles.fontSize', this.value, false)" class="style-range"><span class="val-label" id="fs-val-${blockId}">${block.styles.fontSize}px</span></div></div>`;
             html += `<div class="insp-group"><label class="insp-label">Font weight</label><div class="segmented-control"><button class="${block.styles.fontWeight === 'normal' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.fontWeight', 'normal')">Regular</button><button class="${block.styles.fontWeight === 'bold' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.fontWeight', 'bold')">Bold</button></div></div>`;
             html += renderAlignControl(block.styles.align);
@@ -854,7 +879,8 @@ document.addEventListener('DOMContentLoaded', function () {
             html += renderColorPicker('Text color', 'color', block.styles.color);
             html += renderColorPicker('Button color', 'buttonColor', block.styles.buttonColor);
             html += renderColorPicker('Background color', 'bgColor', block.styles.bgColor);
-            html += `<div class="insp-group"><label class="insp-label">Font family</label><select class="insp-select" onchange="window.updateBlock('${blockId}', 'styles.fontFamily', this.value)"><option value="inherit">Match email settings</option><option value="'Urbanist', sans-serif">Urbanist</option><option value="'Open Sans', sans-serif">Open Sans</option><option value="'Times New Roman', serif">Serif</option></select></div>`;
+            // Використовуємо нову змінну fontOptions
+            html += `<div class="insp-group"><label class="insp-label">Font family</label><select class="insp-select" onchange="window.updateBlock('${blockId}', 'styles.fontFamily', this.value)">${fontOptions}</select></div>`;
             html += `<div class="insp-group"><label class="insp-label">Font size</label><div class="slider-row"><span class="icon-label">Tt</span><input type="range" min="10" max="60" value="${block.styles.fontSize}" oninput="document.getElementById('fs-val-${blockId}').textContent = this.value + 'px'; window.updateBlock('${blockId}', 'styles.fontSize', this.value, false)" class="style-range"><span class="val-label" id="fs-val-${blockId}">${block.styles.fontSize}px</span></div></div>`;
             html += `<div class="insp-group"><label class="insp-label">Font weight</label><div class="segmented-control"><button class="${block.styles.fontWeight === 'normal' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.fontWeight', 'normal')">Regular</button><button class="${block.styles.fontWeight === 'bold' ? 'active' : ''}" onclick="window.updateBlock('${blockId}', 'styles.fontWeight', 'bold')">Bold</button></div></div>`;
             html += renderAlignControl(block.styles.align);
@@ -863,6 +889,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         html += `<div style="margin-top:20px; padding-top:15px; border-top:1px solid #eee;"><button onclick="window.deleteBlock(${blockId})" style="width:100%; color:#d32f2f; background:#FFF5F5; border:1px solid #FFCDCD; padding:8px; border-radius:4px; cursor:pointer; font-size:12px; font-weight:600;">Delete Block</button></div>`;
         controlsContainer.innerHTML = html;
+
+        // Важливо: встановлюємо вибраний шрифт для select, оскільки він будується динамічно
+        const fontSelectors = controlsContainer.querySelectorAll('select.insp-select');
+        fontSelectors.forEach(sel => {
+            if (sel.previousElementSibling.textContent === 'Font family') {
+                sel.value = block.styles.fontFamily;
+            }
+        });
     }
 
     window.updateBlock = function (id, path, value, save = true) {
@@ -929,5 +963,166 @@ document.addEventListener('DOMContentLoaded', function () {
     if (burger && closeBurger && sideBar && mainOverlay) {
         burger.addEventListener('click', () => { sideBar.style.transform = 'translateX(0)'; mainOverlay.style.display = 'flex'; });
         closeBurger.addEventListener('click', () => { sideBar.style.transform = 'translateX(-120%)'; mainOverlay.style.display = 'none'; });
+    }
+
+    // ===========================================
+    // 7. NEW FEATURES: IMPORT/EXPORT & VIEW MODES
+    // ===========================================
+
+    // --- Export JSON ---
+    document.getElementById('btn-export-json').addEventListener('click', () => {
+        const exportData = {
+            root: {
+                type: "EmailLayout",
+                data: {
+                    backdropColor: document.getElementById('style-backdrop').value,
+                    canvasColor: document.getElementById('style-canvas').value,
+                    fontFamily: document.getElementById('style-font').value,
+                    textColor: document.getElementById('style-text-color').value,
+                    borderRadius: document.getElementById('style-radius').value,
+                    // Сохраняем значения инпутов формы
+                    meta: {
+                        senderName: document.getElementById('sender-name')?.value || '',
+                        senderEmail: document.getElementById('sender-email')?.value || '',
+                        subject: document.getElementById('email-subject')?.value || ''
+                    }
+                }
+            },
+            blocks: blocksData // Массив блоков
+        };
+
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "email_template.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    });
+
+    // --- Import JSON Modal Logic ---
+    const importModal = document.getElementById('importJsonModal');
+    const importTextArea = document.getElementById('import-json-area');
+
+    // Open Modal
+    document.getElementById('btn-import-json').addEventListener('click', () => {
+        importTextArea.value = '';
+        importModal.classList.add('active');
+    });
+
+    // Close Modal
+    function closeImportModal() {
+        importModal.classList.remove('active');
+    }
+    document.getElementById('closeJsonModal').addEventListener('click', closeImportModal);
+    document.getElementById('cancelJsonImport').addEventListener('click', closeImportModal);
+    importModal.addEventListener('click', (e) => {
+        if (e.target === importModal) closeImportModal();
+    });
+
+    // Confirm Import
+    document.getElementById('confirmJsonImport').addEventListener('click', () => {
+        try {
+            const raw = importTextArea.value;
+            if (!raw.trim()) return;
+
+            const parsed = JSON.parse(raw);
+
+            // 1. Restore Blocks
+            if (parsed.blocks && Array.isArray(parsed.blocks)) {
+                blocksData = parsed.blocks;
+            } else if (parsed.blocks && typeof parsed.blocks === 'object') {
+                // Если формат старый (объект), конвертируем в массив (если нужно)
+                // Но в нашем экспорте blocks - это массив
+                blocksData = Object.values(parsed.blocks);
+            }
+
+            // 2. Restore Settings
+            if (parsed.root && parsed.root.data) {
+                const d = parsed.root.data;
+
+                // Colors & Styles
+                if (d.backdropColor) {
+                    document.getElementById('style-backdrop').value = d.backdropColor;
+                    document.getElementById('style-backdrop').dispatchEvent(new Event('input'));
+                }
+                if (d.canvasColor) {
+                    document.getElementById('style-canvas').value = d.canvasColor;
+                    document.getElementById('style-canvas').dispatchEvent(new Event('input'));
+                }
+                if (d.fontFamily) {
+                    document.getElementById('style-font').value = d.fontFamily;
+                    document.getElementById('style-font').dispatchEvent(new Event('change'));
+                }
+                if (d.textColor) {
+                    document.getElementById('style-text-color').value = d.textColor;
+                    document.getElementById('style-text-color').dispatchEvent(new Event('input'));
+                }
+                if (d.borderRadius) {
+                    document.getElementById('style-radius').value = d.borderRadius;
+                    document.getElementById('style-radius').dispatchEvent(new Event('input'));
+                }
+
+                // Meta fields
+                if (d.meta) {
+                    if (document.getElementById('sender-name')) document.getElementById('sender-name').value = d.meta.senderName;
+                    if (document.getElementById('sender-email')) document.getElementById('sender-email').value = d.meta.senderEmail;
+                    if (document.getElementById('email-subject')) document.getElementById('email-subject').value = d.meta.subject;
+                }
+            }
+
+            // 3. Rerender
+            selectedBlockId = null;
+            renderBlocks();
+            updateInspectorState();
+            saveHistory();
+            closeImportModal();
+
+        } catch (e) {
+            alert("Invalid JSON format");
+            console.error(e);
+        }
+    });
+
+    // --- View Toggles (Desktop/Mobile) ---
+    const viewButtons = document.querySelectorAll('.view-btn');
+
+    viewButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Switch Active Class
+            viewButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const viewType = btn.dataset.view;
+            if (viewType === 'mobile') {
+                paperElement.classList.add('mobile-view');
+            } else {
+                paperElement.classList.remove('mobile-view');
+            }
+        });
+    });
+
+    // --- Export HTML ---
+    const btnExportHtml = document.getElementById('btn-export-html');
+    if (btnExportHtml) {
+        btnExportHtml.addEventListener('click', () => {
+            // 1. Генеруємо повний HTML код за допомогою існуючої функції
+            const htmlContent = generateEmailHtml();
+
+            // 2. Створюємо Blob об'єкт (файл у пам'яті)
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+
+            // 3. Створюємо посилання для скачування
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'email-template.html'; // Назва файлу
+
+            // 4. Емулюємо клік і прибираємо сміття
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     }
 });

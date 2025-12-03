@@ -894,55 +894,110 @@
                             <div class="email-builder-wrapper">
                                 <!-- TOOLBAR -->
                                 <div class="builder-toolbar">
-                                    <div class="toolbar-actions">
-                                        <button class="tool-btn active" data-mode="edit" title="Edit">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
-                                                </path>
-                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
-                                                </path>
-                                            </svg>
-                                        </button>
-
-                                        <button class="tool-btn" data-mode="preview" title="Preview">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                <circle cx="12" cy="12" r="3"></circle>
-                                            </svg>
-                                        </button>
-
-                                        <button class="tool-btn" data-mode="code" title="View Code">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <polyline points="16 18 22 12 16 6"></polyline>
-                                                <polyline points="8 6 2 12 8 18"></polyline>
-                                            </svg>
-                                        </button>
-
-                                        <button class="tool-btn" data-mode="json" title="View JSON">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <path
-                                                    d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" />
-                                                <path
-                                                    d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
-                                            </svg>
-                                        </button>
+                                    <div class="toolbar-left">
+                                        <div class="toolbar-actions">
+                                            <button class="tool-btn active" data-mode="edit" title="Edit">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path
+                                                        d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+                                                    </path>
+                                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                            <button class="tool-btn" data-mode="preview" title="Preview">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                    <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                            </button>
+                                            <button class="tool-btn" data-mode="code" title="View Code">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                                </svg>
+                                            </button>
+                                            <button class="tool-btn" data-mode="json" title="View JSON Source">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path
+                                                        d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1" />
+                                                    <path
+                                                        d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="toolbar-history">
-                                        <button class="tool-btn" title="Undo"><svg width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M3 7v6h6"></path>
-                                                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
-                                            </svg></button>
-                                        <button class="tool-btn" title="Redo"><svg width="16" height="16"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 7v6h-6"></path>
-                                                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path>
-                                            </svg></button>
+
+                                    <div class="toolbar-right">
+                                        <div class="view-toggles" id="view-toggles">
+                                            <button class="view-btn active" data-view="desktop" title="Desktop View">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                                </svg>
+                                            </button>
+                                            <button class="view-btn" data-view="mobile" title="Mobile View">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="json-actions">
+                                            <button class="tool-btn" id="btn-import-json" title="Import Template">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                                </svg>
+                                            </button>
+                                            <button class="tool-btn" id="btn-export-json" title="Download JSON">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                                </svg>
+                                            </button>
+                                            <button class="tool-btn" id="btn-export-html" title="Download HTML">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path
+                                                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                                    </path>
+                                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                                </svg>
+                                            </button>
+                                        </div>
+
+                                        <div class="toolbar-history">
+                                            <button class="tool-btn" title="Undo" id="btn-undo"><svg width="16"
+                                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path d="M3 7v6h6"></path>
+                                                    <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                                                </svg></button>
+                                            <button class="tool-btn" title="Redo" id="btn-redo"><svg width="16"
+                                                    height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2">
+                                                    <path d="M21 7v6h-6"></path>
+                                                    <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path>
+                                                </svg></button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -1392,9 +1447,30 @@
                                                 <label>Font family</label>
                                                 <div class="select-underline-wrapper">
                                                     <select id="style-font" class="style-select-underline">
-                                                        <option value="'Urbanist', sans-serif">Urbanist</option>
-                                                        <option value="'Open Sans', sans-serif">Modern sans</option>
-                                                        <option value="'Times New Roman', serif">Serif</option>
+                                                        <option value="Arial, Helvetica, sans-serif">Arial</option>
+                                                        <option value="'Arial Black', Gadget, sans-serif">Arial Black
+                                                        </option>
+                                                        <option value="Helvetica, sans-serif">Helvetica</option>
+                                                        <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                                                        <option value="Tahoma, Geneva, sans-serif">Tahoma</option>
+                                                        <option value="'Trebuchet MS', Helvetica, sans-serif">Trebuchet
+                                                            MS</option>
+                                                        <option value="Impact, Charcoal, sans-serif">Impact</option>
+                                                        <option
+                                                            value="'Lucida Sans Unicode', 'Lucida Grande', sans-serif">
+                                                            Lucida Sans</option>
+
+                                                        <option value="'Times New Roman', Times, serif">Times New Roman
+                                                        </option>
+                                                        <option value="Georgia, serif">Georgia</option>
+                                                        <option
+                                                            value="'Palatino Linotype', 'Book Antiqua', Palatino, serif">
+                                                            Palatino</option>
+
+                                                        <option value="'Courier New', Courier, monospace">Courier New
+                                                        </option>
+                                                        <option value="'Lucida Console', Monaco, monospace">Lucida
+                                                            Console</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1446,6 +1522,29 @@
                 <div class="selected-datetime-display" id="previewDateTime">
                     Sep 18, 9:30 PM
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="json-modal-overlay" id="importJsonModal">
+        <div class="json-modal-box">
+            <div class="json-modal-header">
+                <h3>Import JSON</h3>
+                <button class="json-modal-close" id="closeJsonModal">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M13 1L1 13M1 1L13 13" stroke="#808080" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+            <div class="json-modal-body">
+                <p>Copy and paste an EmailBuilder JSON below. <strong>This will override your current template.</strong>
+                </p>
+                <textarea id="import-json-area" placeholder='{"root": {...}, "blocks": {...}}'></textarea>
+            </div>
+            <div class="json-modal-footer">
+                <button class="btn-cancel" id="cancelJsonImport">Cancel</button>
+                <button class="btn-import" id="confirmJsonImport">Import</button>
             </div>
         </div>
     </div>
