@@ -89,6 +89,10 @@ document.addEventListener('DOMContentLoaded', function () {
             historyStack.splice(historyStep + 1);
         }
         const state = JSON.stringify(blocksData);
+        // Avoid duplicate states
+        if (historyStack.length > 0 && historyStack[historyStack.length - 1] === state) {
+            return;
+        }
         historyStack.push(state);
         if (historyStack.length > MAX_HISTORY) {
             historyStack.shift();
@@ -202,14 +206,65 @@ document.addEventListener('DOMContentLoaded', function () {
         const textColor = document.getElementById('style-text-color').value;
         const borderRadius = document.getElementById('style-radius').value;
 
+        // 1. Отримуємо HTML хедера та футера прямо з DOM
+        const headerEl = document.querySelector('.static-header');
+        const footerEl = document.querySelector('.static-footer');
+
+        // Клонуємо, щоб не змінювати реальний DOM, якщо треба буде почистити класи
+        const headerHTML = headerEl ? headerEl.outerHTML : '';
+        const footerHTML = footerEl ? footerEl.outerHTML : '';
+
         let html = `<!DOCTYPE html>
 <html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Базові стилі для сумісності */
+        body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+        a { text-decoration: none; }
+        /* Стилі з твого CSS для хедера/футера, щоб вони виглядали гарно в пошті */
+        .static-header { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #BBBBBB; }
+        .static-footer { padding: 10px 24px 24px; border-top: 1px solid #BBBBBB; font-family: '${fontFamily}', sans-serif; }
+        .header-logo img { width: 180px; display: block; }
+        .header-socials { display: flex; gap: 8px; }
+        .social-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+        .footer-divider { text-align: center; font-size: 11px; color: #232323CC; margin-bottom: 10px; text-transform: uppercase; }
+        .footer-content { display: flex; gap: 12px; max-width: 410px; margin: 0 auto 10px; align-items: center; justify-content: center; }
+        .footer-profile { width: 120px; text-align: center; flex-shrink: 0; }
+        .manager-photo { width: 100%; margin-bottom: 10px; display: block; }
+        .manager-info h3 { font-size: 14px; margin: 0; font-weight: 500; }
+        .manager-info p { font-size: 10px; color: #232323; margin: 0; }
+        .footer-details { display: grid; gap: 14px; max-width: 410px; margin: 0 auto; font-family: '${fontFamily}', sans-serif; }
+        .fd-contacts .fd-contact { display: flex; align-items: flex-start; gap: 3px; margin-bottom: 7px; }
+        .fd-contact p { margin: 0; font-weight: 400; font-size: 7.33px; line-height: 9px; color: #232323; }
+        .fd-contact .w500 { font-weight: 500; }
+        .fd-col.fd-actions { display: flex; align-items: center; }
+        .fd-socials { display: flex; gap: 5px; margin-right: 32px; }
+        .fd-apply-btn { font-family: '${fontFamily}', sans-serif; font-weight: 500; font-size: 7.72px; line-height: 100%; text-transform: uppercase; color: #fff !important; background: #159C2A; border: none; padding: 6px 17px; border-radius: 3px; cursor: pointer; display: inline-block; text-decoration: none; }
+        .fd-disclaimer p { margin: 0; font-weight: 400; font-size: 6px; line-height: 100%; color: #232323; }
+        .footer-copyright { text-align: center; font-size: 11px; color: #232323CC; margin-top: 10px;}
+        
+        /* Медіа-запити для мобільних (спрощено для прикладу) */
+        @media only screen and (max-width: 600px) {
+            .static-header, .footer-content, .footer-details { flex-direction: column; text-align: center; }
+            .header-socials { margin-top: 10px; }
+        }
+    </style>
+</head>
 <body style="margin: 0; padding: 0; background-color: ${bg};">
     <div style="background-color: ${bg}; font-family: ${fontFamily}; color: ${textColor}; padding: 40px 0;">
-        <table align="center" width="100%" style="max-width: 600px; background-color: ${canvasBg}; margin: 0 auto; border-collapse: collapse; border-radius: ${borderRadius}px; overflow: hidden;">
-            <tbody>
-                <tr>
-                    <td style="padding: 0;">\n`;
+        <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: ${canvasBg}; margin: 0 auto; border-collapse: collapse; border-radius: ${borderRadius}px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            
+            <tr>
+                <td style="padding: 0; background-color: ${canvasBg};">
+                    ${headerHTML}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="padding: 0;">\n`;
 
         blocksData.forEach(block => {
             const pTop = block.styles.paddingTop;
@@ -272,6 +327,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         html += `                    </td>
                 </tr>
+
+                <tr>
+                    <td style="padding: 0; background-color: ${canvasBg};">
+                        ${footerHTML}
+                    </td>
+                </tr>
+
             </tbody>
         </table>
     </div>
@@ -667,77 +729,193 @@ document.addEventListener('DOMContentLoaded', function () {
         return base;
     }
 
+    // ===========================================
+    // HELPER: Generate Block Content HTML String
+    // ===========================================
+    function generateBlockContentHTML(block) {
+        if (block.type === 'text') {
+            const s = block.styles;
+            const textStyles = `font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; line-height: 1.5; margin: 0;`;
+            if (block.isList) {
+                const lines = block.content.split('\n').filter(line => line.trim() !== '');
+                const listItems = lines.map(line => `<li>${line}</li>`).join('');
+                return `<ul style="${textStyles}; padding-left: 30px; margin-left: 0; text-align: ${s.align}; list-style-type: disc; list-style-position: inside;">${listItems}</ul>`;
+            } else {
+                const formattedContent = block.content.replace(/\n/g, '<br>');
+                return `<div class="inner-text" style="${textStyles}">${formattedContent}</div>`;
+            }
+        } else if (block.type === 'image') {
+            let objPos = 'center';
+            if (block.styles.verticalAlign === 'top') objPos = 'top';
+            if (block.styles.verticalAlign === 'bottom') objPos = 'bottom';
+            const imgStyle = `max-width: 100%; width: ${block.styles.width}; height: ${block.styles.height}; display: inline-block; vertical-align: ${block.styles.verticalAlign || 'middle'}; object-fit: ${block.styles.objectFit || 'fill'}; object-position: ${objPos};`;
+            let imgHtml = `<img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}">`;
+            if (block.content.link) {
+                return `<a href="${block.content.link}" target="_blank" style="display: inline-block;">${imgHtml}</a>`;
+            } else {
+                return imgHtml;
+            }
+        } else if (block.type === 'button') {
+            let btnPad = '12px 24px';
+            if (block.styles.btnSize === 'xs') btnPad = '6px 12px';
+            if (block.styles.btnSize === 'sm') btnPad = '8px 16px';
+            if (block.styles.btnSize === 'md') btnPad = '12px 24px';
+            if (block.styles.btnSize === 'lg') btnPad = '16px 32px';
+            let borderRadius = '4px';
+            if (block.styles.btnStyle === 'rectangle') borderRadius = '0px';
+            if (block.styles.btnStyle === 'rounded') borderRadius = '4px';
+            if (block.styles.btnStyle === 'pill') borderRadius = '50px';
+            const displayType = block.styles.widthMode === 'full' ? 'block' : 'inline-block';
+            const widthStyle = block.styles.widthMode === 'full' ? '100%' : 'auto';
+            const btnStyle = `display: ${displayType}; width: ${widthStyle}; background-color: ${block.styles.buttonColor}; color: ${block.styles.color}; padding: ${btnPad}; text-decoration: none; border-radius: ${borderRadius}; font-family: ${block.styles.fontFamily === 'inherit' ? 'inherit' : block.styles.fontFamily}; font-size: ${block.styles.fontSize}px; font-weight: ${block.styles.fontWeight}; text-align: ${block.styles.align}; border: none; cursor: pointer; box-sizing: border-box;`;
+
+            return `<a href="${block.content.link}" style="${btnStyle}" target="_blank">${block.content.text}</a>`;
+        }
+        return '';
+    }
+
+    // ===========================================
+    // HELPER: Attach Listeners to Block Element
+    // ===========================================
+    function attachBlockEvents(el, blockId, index) {
+        // Prevent link clicks in edit mode
+        const links = el.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                if (!isPreviewMode) {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // Click to select
+        el.addEventListener('click', (e) => {
+            if (isPreviewMode) return;
+            e.stopPropagation();
+            document.querySelectorAll('.quick-add-menu').forEach(m => m.classList.remove('active'));
+            selectBlock(blockId);
+        });
+    }
+
+    // ===========================================
+    // MAIN RENDER FUNCTION (DIFFING / SMART UPDATE)
+    // ===========================================
     function renderBlocks() {
         if (!dropzone) return;
         if (document.querySelector('.dragging')) return;
-        dropzone.innerHTML = '';
 
+        // 1. Remove deleted blocks from DOM
+        const currentIds = blocksData.map(b => String(b.id));
+        Array.from(dropzone.children).forEach(child => {
+            if (child.classList.contains('empty-state-message')) return;
+            if (child.dataset.id && !currentIds.includes(child.dataset.id)) {
+                child.remove();
+            }
+        });
+
+        // 2. Handle Empty State
         if (blocksData.length === 0) {
             dropzone.innerHTML = `<div class="empty-state-message"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#159C2A" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><p>Drop content here</p></div>`;
             return;
+        } else {
+            const emptyMsg = dropzone.querySelector('.empty-state-message');
+            if (emptyMsg) emptyMsg.remove();
         }
 
+        // 3. Loop and Sync
         blocksData.forEach((block, index) => {
-            const el = document.createElement('div');
-            el.classList.add('canvas-block');
-            if (block.id === selectedBlockId) el.classList.add('selected');
-            el.dataset.id = block.id;
-            el.dataset.index = index;
+            let el = dropzone.querySelector(`.canvas-block[data-id="${block.id}"]`);
+            const isNew = !el;
 
+            if (isNew) {
+                el = document.createElement('div');
+                el.classList.add('canvas-block');
+                el.dataset.id = block.id;
+                // Add event listeners only once on creation
+                attachBlockEvents(el, block.id, index);
+            }
+
+            // Update DOM Order
+            // Check if element is at the correct position
+            if (dropzone.children[index] !== el) {
+                dropzone.insertBefore(el, dropzone.children[index]);
+            }
+
+            // Update Wrapper Styles (Padding, Align, BG)
+            // We update these every time because checking diffs for all styles is tedious vs setting them.
+            el.dataset.index = index;
             el.style.padding = `${block.styles.paddingTop} ${block.styles.paddingRight} ${block.styles.paddingBottom} ${block.styles.paddingLeft}`;
             el.style.textAlign = block.styles.align;
             el.style.backgroundColor = block.styles.bgColor;
 
-            if (block.type === 'text') {
-                const s = block.styles;
-                const textStyles = `font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; line-height: 1.5; margin: 0;`;
-                if (block.isList) {
-                    const lines = block.content.split('\n').filter(line => line.trim() !== '');
-                    const listItems = lines.map(line => `<li>${line}</li>`).join('');
-                    el.innerHTML = `<ul style="${textStyles}; padding-left: 30px; margin-left: 0; text-align: ${s.align}; list-style-type: disc; list-style-position: inside;">${listItems}</ul>`;
-                } else {
-                    const formattedContent = block.content.replace(/\n/g, '<br>');
-                    el.innerHTML = `<div class="inner-text" style="${textStyles}">${formattedContent}</div>`;
-                }
-            } else if (block.type === 'image') {
-                let objPos = 'center';
-                if (block.styles.verticalAlign === 'top') objPos = 'top';
-                if (block.styles.verticalAlign === 'bottom') objPos = 'bottom';
-                const imgStyle = `max-width: 100%; width: ${block.styles.width}; height: ${block.styles.height}; display: inline-block; vertical-align: ${block.styles.verticalAlign || 'middle'}; object-fit: ${block.styles.objectFit || 'fill'}; object-position: ${objPos};`;
-                let imgHtml = `<img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}">`;
-                if (block.content.link) el.innerHTML = `<a href="${block.content.link}" target="_blank" style="display: inline-block;">${imgHtml}</a>`;
-                else el.innerHTML = imgHtml;
-            } else if (block.type === 'button') {
-                let btnPad = '12px 24px';
-                if (block.styles.btnSize === 'xs') btnPad = '6px 12px';
-                if (block.styles.btnSize === 'sm') btnPad = '8px 16px';
-                if (block.styles.btnSize === 'md') btnPad = '12px 24px';
-                if (block.styles.btnSize === 'lg') btnPad = '16px 32px';
-                let borderRadius = '4px';
-                if (block.styles.btnStyle === 'rectangle') borderRadius = '0px';
-                if (block.styles.btnStyle === 'rounded') borderRadius = '4px';
-                if (block.styles.btnStyle === 'pill') borderRadius = '50px';
-                const displayType = block.styles.widthMode === 'full' ? 'block' : 'inline-block';
-                const widthStyle = block.styles.widthMode === 'full' ? '100%' : 'auto';
-                const btnStyle = `display: ${displayType}; width: ${widthStyle}; background-color: ${block.styles.buttonColor}; color: ${block.styles.color}; padding: ${btnPad}; text-decoration: none; border-radius: ${borderRadius}; font-family: ${block.styles.fontFamily === 'inherit' ? 'inherit' : block.styles.fontFamily}; font-size: ${block.styles.fontSize}px; font-weight: ${block.styles.fontWeight}; text-align: ${block.styles.align}; border: none; cursor: pointer; box-sizing: border-box;`;
+            // Selection State
+            if (block.id === selectedBlockId) el.classList.add('selected');
+            else el.classList.remove('selected');
 
-                // ПРАВКА 1: Прибрано onclick="event.preventDefault();" з HTML рядка нижче
-                el.innerHTML = `<a href="${block.content.link}" style="${btnStyle}" target="_blank">${block.content.text}</a>`;
+            // --- CONTENT UPDATE STRATEGY (Anti-Flicker) ---
+            const contentHtml = generateBlockContentHTML(block);
+
+            // Temporarily remove controls (handle, add btn) from DOM check to compare pure content
+            const controls = el.querySelectorAll('.block-handle, .block-add-trigger, .quick-add-menu');
+            controls.forEach(c => c.remove());
+
+            // Image Optimization: Prevent src reload if URL is same
+            if (block.type === 'image' && !isNew) {
+                const img = el.querySelector('img');
+                const link = el.querySelector('a'); // If image is wrapped in link
+
+                // Determine if we need a full innerHTML replace
+                let needFullReload = false;
+
+                // If link status changed (added/removed link), we need reload structure
+                if ((block.content.link && !link) || (!block.content.link && link)) {
+                    needFullReload = true;
+                }
+                // If img tag is missing (weird case), reload
+                else if (!img) {
+                    needFullReload = true;
+                }
+                // If URL changed, reload
+                else if (img.getAttribute('src') !== block.content.url) {
+                    needFullReload = true;
+                }
+
+                if (needFullReload) {
+                    el.innerHTML = contentHtml;
+                } else {
+                    // SMART UPDATE: Update image attributes directly without touching innerHTML
+                    // Styles are in `contentHtml`, but parsing it is hard.
+                    // Instead, let's re-apply styles from `block.styles` directly to the element.
+                    let objPos = 'center';
+                    if (block.styles.verticalAlign === 'top') objPos = 'top';
+                    if (block.styles.verticalAlign === 'bottom') objPos = 'bottom';
+
+                    img.style.maxWidth = '100%';
+                    img.style.width = block.styles.width;
+                    img.style.height = block.styles.height;
+                    img.style.display = 'inline-block';
+                    img.style.verticalAlign = block.styles.verticalAlign || 'middle';
+                    img.style.objectFit = block.styles.objectFit || 'fill';
+                    img.style.objectPosition = objPos;
+                    img.alt = block.content.alt;
+
+                    if (block.content.link && link) {
+                        link.href = block.content.link;
+                        link.style.display = 'inline-block';
+                    }
+                }
+            } else {
+                // For Text and Button blocks, or New blocks:
+                // Compare HTML strings. Only write if different.
+                if (el.innerHTML !== contentHtml) {
+                    el.innerHTML = contentHtml;
+                }
             }
 
-            // ПРАВКА 2: Додана логіка для блокування всіх посилань у режимі редагування
-            const links = el.querySelectorAll('a');
-            links.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    // Якщо ми НЕ в режимі перегляду (тобто в режимі редагування)
-                    if (!isPreviewMode) {
-                        e.preventDefault(); // Забороняємо перехід по посиланню
-                        // Ми НЕ робимо stopPropagation(), щоб клік піднявся до el і спрацював selectBlock
-                    }
-                });
-            });
-
+            // --- RE-APPEND CONTROLS IF SELECTED ---
+            // Because we stripped them above, we must put them back if selected.
             if (!isPreviewMode && block.id === selectedBlockId) {
+                // Handle
                 const handle = document.createElement('div');
                 handle.className = 'block-handle';
                 handle.draggable = true;
@@ -754,9 +932,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 el.appendChild(handle);
 
+                // Add Trigger
                 const addBtn = document.createElement('div');
                 addBtn.className = 'block-add-trigger';
                 addBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1V11M1 6H11" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`;
+
+                // Menu
                 const menu = document.createElement('div');
                 menu.className = 'quick-add-menu';
                 menu.innerHTML = `
@@ -764,23 +945,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="quick-add-item" onclick="window.insertBlock('text', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg><span>Text</span></div>
                     <div class="quick-add-item" onclick="window.insertBlock('button', ${index})"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="8" rx="2"></rect></svg><span>Button</span></div>
                 `;
+
                 addBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     document.querySelectorAll('.quick-add-menu').forEach(m => m.classList.remove('active'));
                     menu.classList.toggle('active');
                 });
                 menu.addEventListener('click', (e) => e.stopPropagation());
+
                 el.appendChild(addBtn);
                 el.appendChild(menu);
             }
 
-            el.addEventListener('click', (e) => {
-                if (isPreviewMode) return;
-                e.stopPropagation();
-                document.querySelectorAll('.quick-add-menu').forEach(m => m.classList.remove('active'));
-                selectBlock(block.id);
-            });
-            dropzone.appendChild(el);
+            if (isNew) {
+                dropzone.appendChild(el);
+            }
         });
     }
 

@@ -472,12 +472,15 @@ span.flatpickr-weekday {
 
 /* --- BUILDER WRAPPER --- */
 .email-builder-wrapper {
-    flex-grow: 1;
+    /* Висота екрану мінус хедер (приблизно 150px на око: хедер + відступи) */
+    height: calc(100vh - 140px);
     display: flex;
     flex-direction: column;
     border: 1px solid #D2DAD2;
     border-radius: 3px;
     overflow: hidden;
+    /* Щоб нічого не вилазило за рамки */
+    background: #fff;
 }
 
 /* --- TOOLBAR --- */
@@ -526,18 +529,23 @@ span.flatpickr-weekday {
     flex-grow: 1;
     display: flex;
     overflow: hidden;
+    /* Прибираємо загальний скрол, щоб скролили дочірні елементи */
+    height: 100%;
+    /* Важливо */
 }
 
 /* Canvas Area */
 .canvas-container {
     flex-grow: 1;
-    padding: 24px;
+    height: 100%;
     overflow-y: auto;
+    /* Внутрішній скрол */
     background-color: #F5F5F5;
-    /* Global BG editor */
+    padding: 24px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    /* Щоб лист починався зверху */
 }
 
 /* THE PAPER (600px Max) */
@@ -721,6 +729,7 @@ span.flatpickr-weekday {
 /* --- SIDEBAR (RIGHT) --- */
 .builder-sidebar {
     width: 320px;
+    height: 100%;
     background: #fff;
     border-left: 1px solid #D2DAD2;
     display: flex;
@@ -764,6 +773,9 @@ span.flatpickr-weekday {
     display: none;
     flex-grow: 1;
     overflow-y: auto;
+    /* Скрол для інструментів */
+    height: 100%;
+    padding-bottom: 20px;
 }
 
 .sb-panel.active {
