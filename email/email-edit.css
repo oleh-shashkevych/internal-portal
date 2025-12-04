@@ -558,6 +558,10 @@ span.flatpickr-weekday {
     flex-direction: column;
 }
 
+.email-paper:not(.preview-active) a {
+    pointer-events: none !important;
+}
+
 /* Static Sections */
 .static-header {
     padding: 24px;

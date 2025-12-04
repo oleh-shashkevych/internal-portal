@@ -199,73 +199,148 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // ===========================================
+    // Оновлена функція генерації HTML (email-edit.js)
+    // ===========================================
+
     function generateEmailHtml() {
+        // 1. Отримуємо налаштування стилів
         const bg = document.getElementById('style-backdrop').value;
         const canvasBg = document.getElementById('style-canvas').value;
         const fontFamily = document.getElementById('style-font').value;
         const textColor = document.getElementById('style-text-color').value;
         const borderRadius = document.getElementById('style-radius').value;
 
-        // 1. Отримуємо HTML хедера та футера прямо з DOM
-        const headerEl = document.querySelector('.static-header');
-        const footerEl = document.querySelector('.static-footer');
+        // 2. ХЕЛПЕРИ ДЛЯ ВИТЯГУВАННЯ КОНТЕНТУ З DOM
+        // Ми не просто клонуємо, а беремо внутрішній HTML, щоб обгорнути його в таблиці
 
-        // Клонуємо, щоб не змінювати реальний DOM, якщо треба буде почистити класи
-        const headerHTML = headerEl ? headerEl.outerHTML : '';
-        const footerHTML = footerEl ? footerEl.outerHTML : '';
+        // Хедер: Логотип
+        const logoEl = document.querySelector('.header-logo');
+        const logoHTML = logoEl ? logoEl.innerHTML : '';
 
-        let html = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Базові стилі для сумісності */
-        body { margin: 0; padding: 0; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        img { border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
-        a { text-decoration: none; }
-        /* Стилі з твого CSS для хедера/футера, щоб вони виглядали гарно в пошті */
-        .static-header { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #BBBBBB; }
-        .static-footer { padding: 10px 24px 24px; border-top: 1px solid #BBBBBB; font-family: '${fontFamily}', sans-serif; }
-        .header-logo img { width: 180px; display: block; }
-        .header-socials { display: flex; gap: 8px; }
-        .social-icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
-        .footer-divider { text-align: center; font-size: 11px; color: #232323CC; margin-bottom: 10px; text-transform: uppercase; }
-        .footer-content { display: flex; gap: 12px; max-width: 410px; margin: 0 auto 10px; align-items: center; justify-content: center; }
-        .footer-profile { width: 120px; text-align: center; flex-shrink: 0; }
-        .manager-photo { width: 100%; margin-bottom: 10px; display: block; }
-        .manager-info h3 { font-size: 14px; margin: 0; font-weight: 500; }
-        .manager-info p { font-size: 10px; color: #232323; margin: 0; }
-        .footer-details { display: grid; gap: 14px; max-width: 410px; margin: 0 auto; font-family: '${fontFamily}', sans-serif; }
-        .fd-contacts .fd-contact { display: flex; align-items: flex-start; gap: 3px; margin-bottom: 7px; }
-        .fd-contact p { margin: 0; font-weight: 400; font-size: 7.33px; line-height: 9px; color: #232323; }
-        .fd-contact .w500 { font-weight: 500; }
-        .fd-col.fd-actions { display: flex; align-items: center; }
-        .fd-socials { display: flex; gap: 5px; margin-right: 32px; }
-        .fd-apply-btn { font-family: '${fontFamily}', sans-serif; font-weight: 500; font-size: 7.72px; line-height: 100%; text-transform: uppercase; color: #fff !important; background: #159C2A; border: none; padding: 6px 17px; border-radius: 3px; cursor: pointer; display: inline-block; text-decoration: none; }
-        .fd-disclaimer p { margin: 0; font-weight: 400; font-size: 6px; line-height: 100%; color: #232323; }
-        .footer-copyright { text-align: center; font-size: 11px; color: #232323CC; margin-top: 10px;}
-        
-        /* Медіа-запити для мобільних (спрощено для прикладу) */
-        @media only screen and (max-width: 600px) {
-            .static-header, .footer-content, .footer-details { flex-direction: column; text-align: center; }
-            .header-socials { margin-top: 10px; }
+        // Хедер: Соцмережі
+        const socialsEl = document.querySelector('.header-socials');
+        // Обробляємо посилання соцмереж, щоб вони були inline-block
+        let socialsHTML = '';
+        if (socialsEl) {
+            const socialLinks = socialsEl.querySelectorAll('a');
+            socialLinks.forEach(link => {
+                // Додаємо стилі прямо в тег
+                const icon = link.innerHTML;
+                socialsHTML += `<a href="${link.href}" target="_blank" style="text-decoration: none; display: inline-block; margin-left: 5px;">${icon}</a>`;
+            });
         }
-    </style>
-</head>
-<body style="margin: 0; padding: 0; background-color: ${bg};">
-    <div style="background-color: ${bg}; font-family: ${fontFamily}; color: ${textColor}; padding: 40px 0;">
-        <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: ${canvasBg}; margin: 0 auto; border-collapse: collapse; border-radius: ${borderRadius}px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-            
-            <tr>
-                <td style="padding: 0; background-color: ${canvasBg};">
-                    ${headerHTML}
-                </td>
-            </tr>
 
-            <tr>
-                <td style="padding: 0;">\n`;
+        // Футер: Ліва частина (Фото + Ім'я)
+        const footerProfileEl = document.querySelector('.footer-profile');
+        let footerLeftHTML = '';
+        if (footerProfileEl) {
+            const img = footerProfileEl.querySelector('img');
+            const h3 = footerProfileEl.querySelector('h3');
+            const p = footerProfileEl.querySelector('p');
 
+            const imgSrc = img ? img.src : '';
+            const name = h3 ? h3.textContent : '';
+            const role = p ? p.textContent : '';
+
+            footerLeftHTML = `
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td align="center" style="padding-bottom: 10px;">
+                        <img src="${imgSrc}" alt="${name}" width="120" style="width: 120px; max-width: 100%; border-radius: 4px; display: block; border: 0;">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: ${fontFamily}, sans-serif; font-size: 14px; font-weight: 600; color: ${textColor}; padding-bottom: 2px;">
+                        ${name}
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" style="font-family: ${fontFamily}, sans-serif; font-size: 10px; color: ${textColor};">
+                        ${role}
+                    </td>
+                </tr>
+            </table>
+        `;
+        }
+
+        // Футер: Права частина (Контакти, Кнопка, Дисклеймер)
+        // Тут ми вручну збираємо дані, щоб гарантувати правильні стилі
+        let footerRightHTML = '';
+        const footerDetails = document.querySelector('.footer-details');
+        if (footerDetails) {
+            // Контакти
+            const contacts = footerDetails.querySelectorAll('.fd-contact');
+            let contactsRows = '';
+            contacts.forEach(c => {
+                const icon = c.querySelector('svg') ? c.querySelector('svg').outerHTML : '';
+                const text = c.querySelector('p') ? c.querySelector('p').innerHTML : '';
+                contactsRows += `
+                <tr>
+                    <td width="15" valign="top" style="padding-bottom: 6px; padding-right: 5px;">${icon}</td>
+                    <td valign="top" style="font-family: ${fontFamily}, sans-serif; font-size: 9px; line-height: 1.4; color: ${textColor}; padding-bottom: 6px;">${text}</td>
+                </tr>
+            `;
+            });
+
+            // Соцмережі в футері
+            const footerSocialsDiv = footerDetails.querySelector('.fd-socials');
+            let footerSocialsHTML = '';
+            if (footerSocialsDiv) {
+                const fLinks = footerSocialsDiv.querySelectorAll('a');
+                fLinks.forEach(l => {
+                    footerSocialsHTML += `<a href="${l.href}" style="text-decoration: none; display: inline-block; margin-right: 5px;">${l.innerHTML}</a>`;
+                });
+            }
+
+            // Кнопка
+            const applyBtn = footerDetails.querySelector('.fd-apply-btn');
+            const btnLink = applyBtn ? applyBtn.getAttribute('href') : '#';
+            const btnText = applyBtn ? applyBtn.textContent : 'APPLY NOW';
+
+            // Дисклеймер
+            const disclaimer = footerDetails.querySelector('.fd-disclaimer p');
+            const disclaimerText = disclaimer ? disclaimer.innerHTML : '';
+
+            footerRightHTML = `
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${contactsRows}
+                
+                <tr>
+                    <td colspan="2" style="padding-top: 10px; padding-bottom: 10px;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td valign="middle">
+                                    ${footerSocialsHTML}
+                                </td>
+                                <td valign="middle" align="left">
+                                    <table cellpadding="0" cellspacing="0" border="0">
+                                        <tr>
+                                            <td align="center" bgcolor="#159C2A" style="border-radius: 3px;">
+                                                <a href="${btnLink}" target="_blank" style="font-family: ${fontFamily}, sans-serif; font-size: 9px; font-weight: 600; color: #ffffff; text-decoration: none; text-transform: uppercase; padding: 8px 18px; display: inline-block; border: 1px solid #159C2A; background-color: #159C2A; border-radius: 3px;">
+                                                    ${btnText}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="font-family: ${fontFamily}, sans-serif; font-size: 7px; line-height: 1.4; color: ${textColor}99; padding-top: 5px;">
+                        ${disclaimerText}
+                    </td>
+                </tr>
+            </table>
+        `;
+        }
+
+
+        // 3. ЗБИРАЄМО КОНТЕНТ (БЛОКИ) У ТАБЛИЦЮ
+        let contentHTML = '';
         blocksData.forEach(block => {
             const pTop = block.styles.paddingTop;
             const pBottom = block.styles.paddingBottom;
@@ -274,33 +349,31 @@ document.addEventListener('DOMContentLoaded', function () {
             const align = block.styles.align;
             const bgCol = block.styles.bgColor === 'transparent' ? 'transparent' : block.styles.bgColor;
 
-            const wrapperStyle = `padding: ${pTop} ${pRight} ${pBottom} ${pLeft}; background-color: ${bgCol}; text-align: ${align};`;
-
-            html += `                        \n`;
-            html += `                        <div style="${wrapperStyle}">\n`;
+            let innerContent = '';
 
             if (block.type === 'text') {
                 const s = block.styles;
-                const fontStyle = `font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; line-height: 1.5; margin: 0;`;
+                const fontStyle = `font-family: ${s.fontFamily === 'inherit' ? fontFamily : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; line-height: 1.5; margin: 0;`;
 
                 if (block.isList) {
-                    html += `                            <ul style="${fontStyle} padding-left: 20px; margin: 0; list-style-position: inside;">\n`;
+                    let listItems = '';
                     block.content.split('\n').forEach(line => {
-                        if (line.trim()) html += `                                <li>${line}</li>\n`;
+                        if (line.trim()) listItems += `<li style="margin-bottom: 5px;">${line}</li>`;
                     });
-                    html += `                            </ul>\n`;
+                    innerContent = `<ul style="${fontStyle} padding-left: 20px; margin: 0;">${listItems}</ul>`;
                 } else {
-                    html += `                            <div style="${fontStyle}">${block.content.replace(/\n/g, '<br>')}</div>\n`;
+                    innerContent = `<div style="${fontStyle}">${block.content.replace(/\n/g, '<br>')}</div>`;
                 }
             }
             else if (block.type === 'image') {
                 const s = block.styles;
-                const imgStyle = `max-width: 100%; width: ${s.width}; height: ${s.height}; display: inline-block; vertical-align: ${s.verticalAlign || 'middle'}; object-fit: ${s.objectFit || 'fill'};`;
+                const imgStyle = `width: ${s.width}; height: ${s.height}; max-width: 100%; display: inline-block; border: 0; outline: none;`;
 
+                // Image wrapping logic
                 if (block.content.link) {
-                    html += `                            <a href="${block.content.link}" target="_blank"><img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}" border="0"></a>\n`;
+                    innerContent = `<a href="${block.content.link}" target="_blank" style="text-decoration: none;"><img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}"></a>`;
                 } else {
-                    html += `                            <img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}" border="0">\n`;
+                    innerContent = `<img src="${block.content.url}" alt="${block.content.alt}" style="${imgStyle}">`;
                 }
             }
             else if (block.type === 'button') {
@@ -309,37 +382,99 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (s.btnStyle === 'rectangle') btnRadius = '0px';
                 if (s.btnStyle === 'pill') btnRadius = '50px';
 
-                const widthStyle = s.widthMode === 'full' ? '100%' : 'auto';
-                const displayStyle = s.widthMode === 'full' ? 'block' : 'inline-block';
+                let padTop = '12px', padSide = '24px';
+                if (s.btnSize === 'xs') { padTop = '6px'; padSide = '12px'; }
+                if (s.btnSize === 'sm') { padTop = '8px'; padSide = '16px'; }
+                if (s.btnSize === 'lg') { padTop = '16px'; padSide = '32px'; }
 
-                let pad = '12px 24px';
-                if (s.btnSize === 'xs') pad = '6px 12px';
-                if (s.btnSize === 'sm') pad = '8px 16px';
-                if (s.btnSize === 'lg') pad = '16px 32px';
-
-                const btnStyle = `display: ${displayStyle}; width: ${widthStyle}; background-color: ${s.buttonColor}; color: ${s.color}; padding: ${pad}; text-decoration: none; border-radius: ${btnRadius}; font-family: ${s.fontFamily === 'inherit' ? 'inherit' : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; text-align: center; box-sizing: border-box;`;
-
-                html += `                            <a href="${block.content.link}" target="_blank" style="${btnStyle}">${block.content.text}</a>\n`;
+                // Bulletproof button for Outlook (Table based button)
+                innerContent = `
+                <table width="${s.widthMode === 'full' ? '100%' : 'auto'}" cellpadding="0" cellspacing="0" border="0" align="${align}">
+                    <tr>
+                        <td align="center" bgcolor="${s.buttonColor}" style="border-radius: ${btnRadius};">
+                            <a href="${block.content.link}" target="_blank" style="font-family: ${s.fontFamily === 'inherit' ? fontFamily : s.fontFamily}; font-size: ${s.fontSize}px; font-weight: ${s.fontWeight}; color: ${s.color}; text-decoration: none; display: inline-block; padding: ${padTop} ${padSide}; border: 1px solid ${s.buttonColor}; border-radius: ${btnRadius}; background-color: ${s.buttonColor};">
+                                ${block.content.text}
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            `;
             }
 
-            html += `                        </div>\n`;
+            // Огортаємо блок у рядок таблиці (Table Row)
+            // Використовуємо <div> всередині <td> для паддінгів, це надійніше, ніж padding на td в Outlook
+            contentHTML += `
+            <tr>
+                <td align="${align}" bgcolor="${bgCol}" style="padding: ${pTop} ${pRight} ${pBottom} ${pLeft};">
+                    ${block.type === 'button' ? innerContent : innerContent} 
+                </td>
+            </tr>
+        `;
         });
 
-        html += `                    </td>
-                </tr>
 
-                <tr>
-                    <td style="padding: 0; background-color: ${canvasBg};">
-                        ${footerHTML}
-                    </td>
-                </tr>
+        // 4. ФІНАЛЬНА ЗБІРКА HTML
+        // Додаємо <html> і базові стилі для скидання
+        const finalHtml = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<table style="margin: 0; padding: 0; background-color: ${bg}; font-family: ${fontFamily}, sans-serif;">
+    
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${bg}" style="background-color: ${bg};">
+        <tr>
+            <td align="center" valign="top" style="padding: 40px 10px;">
+                
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${canvasBg}" style="max-width: 600px; background-color: ${canvasBg}; border-radius: ${borderRadius}px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    
+                    <tr>
+                        <td style="border-bottom: 1px solid #BBBBBB; padding: 24px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td align="left" valign="middle">
+                                        ${logoHTML}
+                                    </td>
+                                    <td align="right" valign="middle">
+                                        ${socialsHTML}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-            </tbody>
-        </table>
-    </div>
-</body>
+                    ${contentHTML}
+
+                    <tr>
+                        <td style="border-top: 1px solid #BBBBBB; padding: 20px 24px;">
+                            <div style="text-align: center; font-size: 11px; color: ${textColor}CC; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-family: ${fontFamily}, sans-serif;">
+                                POWERED BY
+                            </div>
+
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td width="130" valign="top" style="padding-right: 15px;">
+                                        ${footerLeftHTML}
+                                    </td>
+                                    
+                                    <td valign="top">
+                                        ${footerRightHTML}
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="text-align: center; font-size: 11px; color: ${textColor}CC; margin-top: 15px; font-family: ${fontFamily}, sans-serif;">
+                                © Copyright Fundshop, 2019-2025
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+                </td>
+        </tr>
+    </table>
+
+</table>
 </html>`;
-        return html;
+
+        return finalHtml;
     }
 
     // ===========================================
