@@ -1188,3 +1188,474 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const payTab = document.getElementById('tab-payments');
+    if (!payTab) return;
+
+    const jsonData_2025 = {
+        year: '2025',
+        total_due: '10,800.00',
+        total_paid: '7,135.00',
+        total: '10,800.00',
+        data: [
+            {
+                itm_id: '24',
+                payment_date: '05/16/2024',
+                payment_amount: '28,000.00',
+                payment_type: 'Ria',
+                payment_details: 'This Text message 2',
+                deals_paid: [
+                    { name: 'Item Name Text 4882345657568', url: 'pathto?itm=877' },
+                    { name: 'Item Name Text 675678356', url: 'pathto?itm=789' },
+                    { name: 'Item Name Text 4356347889769', url: 'pathto?itm=565' }
+                ]
+            }
+        ]
+    };
+
+    const jsonData_2018 = {
+        year: '2018',
+        total_due: '15,800.00',
+        total_paid: '4,135.00',
+        total: '15,800.00',
+        data: [
+            {
+                itm_id: '26',
+                payment_date: '01/12/2018',
+                payment_amount: '29,000.00',
+                payment_type: 'Paypal',
+                payment_details: 'This Text message 311',
+                deals_paid: []
+            }
+        ]
+    };
+
+    const dealsPaidData = [
+        { id: '10', name: 'David Bechtel Photography Dba Loft Creative Group #1' },
+        { id: '11', name: 'Carlie Care Kids Inc #1' },
+        { id: '15', name: 'David Bechtel Photography Dba Loft Creative Group #1' },
+        { id: '20', name: 'Hayes Lawncare And Landscape Services #1' },
+        { id: '22', name: 'C&j Mechanical Services #1' },
+        { id: '25', name: 'Low Country Fish Camp Homes Homes At Olive Shell #1' },
+        { id: '30', name: 'LSSP Corporation #9' },
+        { id: '31', name: 'TABA PERSONAL CARE LLC #1' },
+        { id: '33', name: 'Gustavo Anthony Ponce De Leon Dba Chula Vista Fence #1' },
+        { id: '40', name: "Ljl Food Management Inc Dba Tina's Cafe #1" }
+    ];
+
+    let currentYear = '2025';
+    const dataByYear = { '2025': jsonData_2025, '2018': jsonData_2018 };
+
+    const payTableBody = document.getElementById('payTableBody');
+    const payYearSelector = document.getElementById('payYearSelector');
+    const payYearDropdown = document.getElementById('payYearDropdown');
+    const payYearList = document.getElementById('payYearList');
+    const paySelectedYear = document.getElementById('paySelectedYear');
+    const payYearArrow = document.getElementById('payYearArrow');
+
+    const payAddOverlay = document.getElementById('payAddOverlay');
+    const payAddPopup = document.getElementById('payAddPopup');
+    const payDeleteOverlay = document.getElementById('payDeleteOverlay');
+    const payDeletePopup = document.getElementById('payDeletePopup');
+
+    let currentDeleteId = null;
+
+    initYearDropdown();
+    renderData();
+    populateAddPopupList();
+
+    // Year Dropdown
+    payYearSelector.addEventListener('click', (e) => {
+        e.stopPropagation();
+        payYearDropdown.classList.toggle('active');
+        payYearArrow.style.transform = payYearDropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    payYearList.addEventListener('click', (e) => {
+        if (e.target.tagName === 'LI') {
+            currentYear = e.target.textContent;
+            paySelectedYear.textContent = currentYear;
+            renderData();
+        }
+    });
+
+    function initYearDropdown() {
+        payYearList.innerHTML = '';
+        Object.keys(dataByYear).sort((a, b) => b - a).forEach(yr => {
+            const li = document.createElement('li');
+            li.textContent = yr;
+            payYearList.appendChild(li);
+        });
+    }
+
+    function calculateTotals() {
+        const dataArr = dataByYear[currentYear].data;
+        const totalAmount = dataArr.reduce((sum, item) => sum + parseFloat(item.payment_amount.replace(/,/g, '')), 0);
+        const formatted = totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        dataByYear[currentYear].total = formatted;
+        dataByYear[currentYear].total_due = formatted;
+        dataByYear[currentYear].total_paid = formatted;
+    }
+
+    function renderData() {
+        calculateTotals();
+        const dataObj = dataByYear[currentYear];
+
+        document.getElementById('payTotalDue').textContent = `$${dataObj.total_due}`;
+        document.getElementById('payTotalPaid').textContent = `$${dataObj.total_paid}`;
+        document.getElementById('payTotal').textContent = `$${dataObj.total}`;
+
+        payTableBody.innerHTML = '';
+        dataObj.data.forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'pay-row';
+            row.setAttribute('data-id', item.itm_id);
+
+            let linksHtml = '';
+            let btnHtml = '';
+            if (item.deals_paid && item.deals_paid.length > 0) {
+                const links = item.deals_paid.map(deal => `<li><a href="${deal.url || '#'}" target="_blank">${deal.name}</a></li>`).join('');
+                linksHtml = `<ul class="pay-notes-list">${links}</ul>`;
+                btnHtml = `<button class="pay-btn-more"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="#232323" stroke-width="2"><path d="M1 1l5 5 5-5"></path></svg></button>`;
+            }
+
+            let dateRaw = '';
+            if (item.payment_date) {
+                const parts = item.payment_date.split(/[-/]/);
+                if (parts.length === 3) dateRaw = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+            }
+
+            // Get selected deals ID array
+            const selectedDealIds = item.deals_paid ? item.deals_paid.map(dp => {
+                const found = dealsPaidData.find(d => d.name === dp.name);
+                return found ? found.id : null;
+            }).filter(Boolean) : [];
+
+            const listOptionsHtml = dealsPaidData.map(d => {
+                const isSelected = selectedDealIds.includes(d.id);
+                return `<li data-id="${d.id}" data-name="${d.name}" class="${isSelected ? 'selected' : ''}"><div class="pay-checkbox-custom"></div>${d.name}</li>`;
+            }).join('');
+
+            const tagsHtml = selectedDealIds.map(id => {
+                const deal = dealsPaidData.find(d => String(d.id) === String(id));
+                return deal ? `<div class="pay-tag"><span>${deal.name}</span><span class="pay-tag-remove" data-id="${deal.id}">×</span></div>` : '';
+            }).join('');
+
+            row.innerHTML = `
+                <div class="pay-cell">
+                    <div class="pay-view">${item.payment_date}</div>
+                    <div class="pay-edit"><input type="date" class="pay-input pay-edit-date" value="${dateRaw}"></div>
+                </div>
+                <div class="pay-cell">
+                    <div class="pay-view">$${item.payment_amount}</div>
+                    <div class="pay-edit"><input type="text" class="pay-input pay-edit-amount" value="${item.payment_amount.replace(/,/g, '')}"></div>
+                </div>
+                <div class="pay-cell">
+                    <div class="pay-view">${item.payment_type}</div>
+                    <div class="pay-edit">
+                        <select class="pay-input pay-edit-type" style="cursor:pointer;">
+                            <option value="Payroll" ${item.payment_type === 'Payroll' ? 'selected' : ''}>Payroll</option>
+                            <option value="Paypal" ${item.payment_type === 'Paypal' ? 'selected' : ''}>Paypal</option>
+                            <option value="Ria" ${item.payment_type === 'Ria' ? 'selected' : ''}>Ria</option>
+                            <option value="Payoneer" ${item.payment_type === 'Payoneer' ? 'selected' : ''}>Payoneer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pay-cell">
+                    <div class="pay-view">
+                        <div class="pay-notes-wrapper">
+                            <div>${item.payment_details}</div>
+                            ${linksHtml}
+                            ${btnHtml}
+                        </div>
+                    </div>
+                    <div class="pay-edit">
+                        <textarea class="pay-textarea pay-edit-details" rows="2">${item.payment_details}</textarea>
+                        
+                        <div class="pay-multiselect-wrapper" style="margin-top: 5px;">
+                            <div class="pay-multiselect-box">
+                                <input type="text" class="pay-multiselect-search" placeholder="Search options...">
+                                <div class="pay-multiselect-tags">${tagsHtml}</div>
+                            </div>
+                            <div class="pay-multiselect-dropdown">
+                                <ul class="pay-multiselect-list">${listOptionsHtml}</ul>
+                            </div>
+                            <input type="hidden" class="pay-edit-deals-hidden" value='${JSON.stringify(selectedDealIds)}'>
+                        </div>
+                    </div>
+                </div>
+                <div class="pay-cell pay-center">
+                    <div class="pay-view pay-actions">
+                        <button class="pay-icon-btn pay-icon-btn-edit">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="pay-icon-btn pay-icon-btn-delete">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </div>
+                    <div class="pay-edit pay-edit-actions">
+                        <button class="pay-btn-save">Save</button>
+                        <button class="pay-btn-cancel">Cancel</button>
+                    </div>
+                </div>
+            `;
+            payTableBody.appendChild(row);
+
+            if (typeof Cleave !== 'undefined') {
+                new Cleave(row.querySelector('.pay-edit-amount'), { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
+            }
+        });
+    }
+
+    payTableBody.addEventListener('click', (e) => {
+        const btnMore = e.target.closest('.pay-btn-more');
+        const btnEdit = e.target.closest('.pay-icon-btn-edit');
+        const btnCancel = e.target.closest('.pay-btn-cancel');
+        const btnSave = e.target.closest('.pay-btn-save');
+        const btnDelete = e.target.closest('.pay-icon-btn-delete');
+
+        if (btnMore) {
+            btnMore.classList.toggle('is-active');
+            const list = btnMore.parentElement.querySelector('.pay-notes-list');
+            if (list) list.classList.toggle('is-open');
+        }
+
+        if (btnEdit) {
+            const row = btnEdit.closest('.pay-row');
+            row.classList.add('is-editing', 'is-active-row');
+        }
+
+        if (btnCancel) {
+            const row = e.target.closest('.pay-row');
+            row.classList.remove('is-editing', 'is-active-row');
+            renderData();
+        }
+
+        if (btnSave) {
+            saveInlineEdit(e);
+        }
+
+        if (btnDelete) {
+            const row = btnDelete.closest('.pay-row');
+            currentDeleteId = row.getAttribute('data-id');
+            payDeleteOverlay.classList.add('active');
+            payDeletePopup.classList.add('active');
+        }
+    });
+
+    function saveInlineEdit(e) {
+        const row = e.target.closest('.pay-row');
+        const id = row.getAttribute('data-id');
+        const item = dataByYear[currentYear].data.find(d => String(d.itm_id) === String(id));
+
+        if (item) {
+            const dateInput = row.querySelector('.pay-edit-date').value;
+            const amountInput = row.querySelector('.pay-edit-amount').value;
+            const typeInput = row.querySelector('.pay-edit-type').value;
+            const detailsInput = row.querySelector('.pay-edit-details').value;
+            const dealsHidden = row.querySelector('.pay-edit-deals-hidden').value;
+
+            const selectedDealIds = JSON.parse(dealsHidden || '[]');
+            const dealsObj = selectedDealIds.map(dealId => {
+                const deal = dealsPaidData.find(d => String(d.id) === String(dealId));
+                return { name: deal.name, url: '#' };
+            });
+
+            if (dateInput) {
+                const parts = dateInput.split('-');
+                item.payment_date = `${parts[1]}/${parts[2]}/${parts[0]}`;
+            }
+
+            item.payment_amount = amountInput;
+            item.payment_type = typeInput;
+            item.payment_details = detailsInput;
+            item.deals_paid = dealsObj;
+
+            renderData();
+        }
+    }
+
+    // Modal Add Setup
+    const addForm = document.getElementById('payAddForm');
+    const addAmount = document.getElementById('payAddAmount');
+    const addDetails = document.getElementById('payAddDetails');
+    const addCharCount = document.getElementById('payAddCharCount');
+
+    if (typeof Cleave !== 'undefined' && addAmount) {
+        new Cleave(addAmount, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
+    }
+
+    if (addDetails) {
+        addDetails.addEventListener('input', () => {
+            addCharCount.textContent = `${500 - addDetails.value.length} characters left`;
+        });
+    }
+
+    function populateAddPopupList() {
+        const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
+        if (!list) return;
+        dealsPaidData.forEach(deal => {
+            const li = document.createElement('li');
+            li.setAttribute('data-id', deal.id);
+            li.setAttribute('data-name', deal.name);
+            li.innerHTML = `<div class="pay-checkbox-custom"></div>${deal.name}`;
+            list.appendChild(li);
+        });
+    }
+
+    document.getElementById('payOpenAddBtn')?.addEventListener('click', () => {
+        addForm.reset();
+        addCharCount.textContent = '500 characters left';
+
+        // Reset multiselect
+        const tags = document.querySelector('#payAddDealsWrapper .pay-multiselect-tags');
+        const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
+        const hidden = document.getElementById('payAddDeals');
+        if (tags) tags.innerHTML = '';
+        if (hidden) hidden.value = '';
+        if (list) list.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+
+        payAddOverlay.classList.add('active');
+        payAddPopup.classList.add('active');
+    });
+
+    document.getElementById('payCloseAddBtn')?.addEventListener('click', () => {
+        payAddOverlay.classList.remove('active');
+        payAddPopup.classList.remove('active');
+    });
+
+    addForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const dateInput = document.getElementById('payAddDate').value;
+        const typeInput = document.getElementById('payAddType').value;
+        const detailsInput = addDetails.value;
+        const amountVal = addAmount.value;
+
+        const parts = dateInput.split('-');
+        const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+
+        const dealsHiddenVal = document.getElementById('payAddDeals').value;
+        const selectedDealIds = JSON.parse(dealsHiddenVal || '[]');
+        const dealsObj = selectedDealIds.map(id => {
+            const deal = dealsPaidData.find(d => String(d.id) === String(id));
+            return { name: deal.name, url: '#' };
+        });
+
+        const newItem = {
+            itm_id: Date.now().toString(),
+            payment_date: formattedDate,
+            payment_amount: amountVal,
+            payment_type: typeInput,
+            payment_details: detailsInput,
+            deals_paid: dealsObj
+        };
+
+        if (!dataByYear[currentYear]) dataByYear[currentYear] = { data: [], total_due: '0.00', total_paid: '0.00', total: '0.00' };
+        dataByYear[currentYear].data.unshift(newItem);
+
+        renderData();
+        payAddOverlay.classList.remove('active');
+        payAddPopup.classList.remove('active');
+    });
+
+    // Global Multiselect Handlers (Works for Add Modal & Inline Rows)
+    document.addEventListener('click', (e) => {
+        const searchInput = e.target.closest('.pay-multiselect-search');
+        if (searchInput) return; // Prevent closing when clicking search
+
+        const box = e.target.closest('.pay-multiselect-box');
+        if (box) {
+            const wrapper = box.closest('.pay-multiselect-wrapper');
+            const dropdown = wrapper.querySelector('.pay-multiselect-dropdown');
+
+            document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => {
+                if (d !== dropdown) d.classList.remove('active');
+            });
+            document.querySelectorAll('.pay-multiselect-box').forEach(b => {
+                if (b !== box) b.classList.remove('is-focused');
+            });
+
+            dropdown.classList.add('active');
+            box.classList.add('is-focused');
+            box.querySelector('.pay-multiselect-search').focus();
+            e.stopPropagation();
+            return;
+        }
+
+        const listItem = e.target.closest('.pay-multiselect-list li');
+        if (listItem) {
+            e.stopPropagation();
+            listItem.classList.toggle('selected');
+            updateMultiselectTags(listItem.closest('.pay-multiselect-wrapper'));
+            return;
+        }
+
+        if (e.target.classList.contains('pay-tag-remove')) {
+            e.stopPropagation();
+            const id = e.target.getAttribute('data-id');
+            const wrapper = e.target.closest('.pay-multiselect-wrapper');
+            const li = wrapper.querySelector(`li[data-id="${id}"]`);
+            if (li) li.classList.remove('selected');
+            updateMultiselectTags(wrapper);
+            return;
+        }
+
+        // Close dropdowns
+        document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.pay-multiselect-box').forEach(b => b.classList.remove('is-focused'));
+        payYearDropdown.classList.remove('active');
+        payYearArrow.style.transform = 'rotate(0deg)';
+    });
+
+    document.addEventListener('input', (e) => {
+        if (e.target.classList.contains('pay-multiselect-search')) {
+            const val = e.target.value.toLowerCase();
+            const list = e.target.closest('.pay-multiselect-wrapper').querySelector('.pay-multiselect-list');
+            list.querySelectorAll('li').forEach(li => {
+                li.style.display = li.textContent.toLowerCase().includes(val) ? 'flex' : 'none';
+            });
+        }
+    });
+
+    function updateMultiselectTags(wrapper) {
+        const tagsContainer = wrapper.querySelector('.pay-multiselect-tags');
+        const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+        const selectedLis = wrapper.querySelectorAll('.pay-multiselect-list li.selected');
+
+        tagsContainer.innerHTML = '';
+        const ids = [];
+
+        selectedLis.forEach(li => {
+            const id = li.getAttribute('data-id');
+            const name = li.getAttribute('data-name');
+            ids.push(id);
+            const tag = document.createElement('div');
+            tag.className = 'pay-tag';
+            tag.innerHTML = `<span>${name}</span><span class="pay-tag-remove" data-id="${id}">×</span>`;
+            tagsContainer.appendChild(tag);
+        });
+
+        if (hiddenInput) hiddenInput.value = JSON.stringify(ids);
+    }
+
+    // Delete Modal Confirmation
+    document.getElementById('payCancelDeleteBtn')?.addEventListener('click', closeDeleteModal);
+    document.getElementById('payConfirmDeleteBtn')?.addEventListener('click', () => {
+        if (currentDeleteId) {
+            const dataArr = dataByYear[currentYear].data;
+            const index = dataArr.findIndex(item => String(item.itm_id) === String(currentDeleteId));
+            if (index > -1) {
+                dataArr.splice(index, 1);
+                renderData();
+            }
+            closeDeleteModal();
+        }
+    });
+
+    function closeDeleteModal() {
+        payDeleteOverlay.classList.remove('active');
+        payDeletePopup.classList.remove('active');
+        currentDeleteId = null;
+    }
+});
