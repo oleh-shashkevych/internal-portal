@@ -749,3 +749,135 @@ document.addEventListener('DOMContentLoaded', function () {
         clearCrForm();
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const rplCard = document.getElementById('rplCard');
+    const rplGlobalEditBtn = document.getElementById('rplGlobalEditBtn');
+
+    if (!rplCard) return;
+
+    let isRplGlobalEditActive = false;
+
+    // Helper: Convert MM/DD/YYYY to YYYY-MM-DD for date inputs
+    function parseDateToInputFormat(dateStr) {
+        if (!dateStr || dateStr === '—') return '';
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+        }
+        return '';
+    }
+
+    // Helper: Convert YYYY-MM-DD back to MM/DD/YYYY for display
+    function formatDateToDisplay(dateStr) {
+        if (!dateStr) return '—';
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return `${parts[1]}/${parts[2]}/${parts[0]}`;
+        }
+        return dateStr;
+    }
+
+    if (rplGlobalEditBtn) {
+        rplGlobalEditBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            isRplGlobalEditActive = !isRplGlobalEditActive;
+
+            const allFields = rplCard.querySelectorAll('.rpl-field');
+            allFields.forEach(field => {
+                toggleEditMode(field, isRplGlobalEditActive);
+            });
+
+            if (isRplGlobalEditActive) {
+                this.style.backgroundColor = '#159C2A';
+                this.style.color = '#FFFFFF';
+                this.style.borderColor = '#159C2A';
+                this.innerHTML = `Close Edit Mode`;
+            } else {
+                this.style.backgroundColor = '';
+                this.style.color = '';
+                this.style.borderColor = '';
+                this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit`;
+            }
+        });
+    }
+
+    rplCard.addEventListener('click', function (e) {
+        const editBtnInline = e.target.closest('.rpl-edit-btn-inline');
+        const cancelBtn = e.target.closest('.rpl-cancel-btn');
+        const saveBtn = e.target.closest('.rpl-save-btn');
+
+        if (editBtnInline) {
+            e.preventDefault();
+            toggleEditMode(editBtnInline.closest('.rpl-field'), true);
+        }
+
+        if (cancelBtn) {
+            e.preventDefault();
+            toggleEditMode(cancelBtn.closest('.rpl-field'), false);
+        }
+
+        if (saveBtn) {
+            e.preventDefault();
+            saveFieldData(saveBtn.closest('.rpl-field'));
+        }
+    });
+
+    function toggleEditMode(fieldWrap, isEditing) {
+        const viewMode = fieldWrap.querySelector('.rpl-view-mode');
+        const editMode = fieldWrap.querySelector('.rpl-edit-mode');
+        const valDisplay = fieldWrap.querySelector('.rpl-val');
+        const input = fieldWrap.querySelector('.rpl-input');
+
+        if (isEditing) {
+            // Pre-fill inputs with current text content
+            if (input && input.type === 'date' && valDisplay) {
+                input.value = parseDateToInputFormat(valDisplay.textContent.trim());
+            } else if (input && valDisplay) {
+                const currentVal = valDisplay.textContent.trim();
+                input.value = currentVal === '—' ? '' : currentVal;
+            }
+
+            viewMode.style.display = 'none';
+            editMode.style.display = 'flex';
+        } else {
+            viewMode.style.display = 'flex';
+            editMode.style.display = 'none';
+        }
+    }
+
+    function saveFieldData(fieldWrap) {
+        const input = fieldWrap.querySelector('.rpl-input');
+        if (!input) return;
+
+        const fieldName = input.getAttribute('name');
+        const fieldValue = input.value;
+        const valDisplay = fieldWrap.querySelector('.rpl-val');
+
+        // Handling display update based on input type
+        if (input.type === 'date') {
+            valDisplay.textContent = formatDateToDisplay(fieldValue);
+        } else if (valDisplay.tagName === 'A') {
+            // Make sure the link is clickable if it's a URL
+            if (fieldValue) {
+                const urlVal = fieldValue.startsWith('http') ? fieldValue : `https://${fieldValue}`;
+                valDisplay.href = urlVal;
+                valDisplay.textContent = fieldValue;
+            } else {
+                valDisplay.removeAttribute('href');
+                valDisplay.textContent = '—';
+            }
+        } else {
+            valDisplay.textContent = fieldValue || '—';
+        }
+
+        const payload = {
+            [fieldName]: fieldValue
+        };
+
+        // Simulate backend call
+        console.log('RPL Sending data:', payload);
+
+        toggleEditMode(fieldWrap, false);
+    }
+});
