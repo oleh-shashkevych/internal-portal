@@ -1658,13 +1658,418 @@
 										</div>
 									</div>
 									<div class="pr-tab-content" id="tab-pipeline">
-										<p>Pipeline</p>
+										<div class="pr-pipe-container">
+											<div class="pr-pipe-table">
+												<div class="pr-pipe-table__header">
+													<div class="pr-pipe-table__cell">Date Sent</div>
+													<div class="pr-pipe-table__cell">Business Name</div>
+													<div class="pr-pipe-table__cell">
+														Stage
+														<button class="pr-pipe-table__filter" type="button">
+															<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<rect width="20" height="20" rx="3" fill="white" />
+																<g clip-path="url(#clip0_900_3352)">
+																	<rect width="14" height="12"
+																		transform="translate(3 4)" fill="white" />
+																	<path
+																		d="M8.84056 15.529C8.68511 15.529 8.51995 15.4257 8.51995 15.2471L8.46166 11.338C8.46166 11.0561 8.35479 10.7742 8.14105 10.5392L3.5942 5.02317C3.4679 4.89162 3.47762 4.78825 3.50677 4.72247C3.5262 4.68488 3.60392 4.54393 3.81766 4.53453L16.1855 4.46875C16.3992 4.46875 16.4769 4.6191 16.4964 4.66609C16.5255 4.74127 16.5352 4.84463 16.4283 4.9386L12.1924 10.5956C12.0078 10.7742 11.8718 11.0843 11.8718 11.385L11.8232 14.486C11.8232 14.5893 11.7552 14.6739 11.658 14.7209L9.08345 15.4633C8.95715 15.5197 8.90857 15.529 8.85999 15.529L8.84056 15.529Z"
+																		fill="#656565" fill-opacity="0.3" />
+																	<path
+																		d="M15.8154 4.9397L11.832 10.2678C11.5406 10.5779 11.3754 10.982 11.3754 11.3673L11.3268 14.3179L8.9951 14.9851L8.93681 11.3391C8.93681 10.935 8.78136 10.5497 8.51904 10.2584L4.19566 5.00548L15.8056 4.9397M16.1748 4L3.80704 4.06578C3.10752 4.07518 2.73833 4.83634 3.21439 5.31558L7.77095 10.8504C7.89725 10.9914 7.97497 11.1605 7.97497 11.3485L8.03327 15.2576C8.03327 15.6899 8.42189 16 8.83965 16C8.96595 16 9.08254 15.9718 9.20884 15.9154L11.8514 15.1543C12.1235 15.0321 12.2984 14.7784 12.2984 14.4965L12.3469 11.3861C12.3469 11.1981 12.4344 11.0102 12.5801 10.8692L16.7578 5.278C17.2727 4.80815 16.9035 4 16.1748 4Z"
+																		fill="#656565" />
+																</g>
+																<defs>
+																	<clipPath>
+																		<rect width="14" height="12" fill="white"
+																			transform="translate(3 4)" />
+																	</clipPath>
+																</defs>
+															</svg>
+														</button>
+													</div>
+													<div class="pr-pipe-table__cell">
+														Status
+														<button class="pr-pipe-table__filter" type="button">
+															<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<rect width="20" height="20" rx="3" fill="white" />
+																<g clip-path="url(#clip0_900_3352)">
+																	<rect width="14" height="12"
+																		transform="translate(3 4)" fill="white" />
+																	<path
+																		d="M8.84056 15.529C8.68511 15.529 8.51995 15.4257 8.51995 15.2471L8.46166 11.338C8.46166 11.0561 8.35479 10.7742 8.14105 10.5392L3.5942 5.02317C3.4679 4.89162 3.47762 4.78825 3.50677 4.72247C3.5262 4.68488 3.60392 4.54393 3.81766 4.53453L16.1855 4.46875C16.3992 4.46875 16.4769 4.6191 16.4964 4.66609C16.5255 4.74127 16.5352 4.84463 16.4283 4.9386L12.1924 10.5956C12.0078 10.7742 11.8718 11.0843 11.8718 11.385L11.8232 14.486C11.8232 14.5893 11.7552 14.6739 11.658 14.7209L9.08345 15.4633C8.95715 15.5197 8.90857 15.529 8.85999 15.529L8.84056 15.529Z"
+																		fill="#656565" fill-opacity="0.3" />
+																	<path
+																		d="M15.8154 4.9397L11.832 10.2678C11.5406 10.5779 11.3754 10.982 11.3754 11.3673L11.3268 14.3179L8.9951 14.9851L8.93681 11.3391C8.93681 10.935 8.78136 10.5497 8.51904 10.2584L4.19566 5.00548L15.8056 4.9397M16.1748 4L3.80704 4.06578C3.10752 4.07518 2.73833 4.83634 3.21439 5.31558L7.77095 10.8504C7.89725 10.9914 7.97497 11.1605 7.97497 11.3485L8.03327 15.2576C8.03327 15.6899 8.42189 16 8.83965 16C8.96595 16 9.08254 15.9718 9.20884 15.9154L11.8514 15.1543C12.1235 15.0321 12.2984 14.7784 12.2984 14.4965L12.3469 11.3861C12.3469 11.1981 12.4344 11.0102 12.5801 10.8692L16.7578 5.278C17.2727 4.80815 16.9035 4 16.1748 4Z"
+																		fill="#656565" />
+																</g>
+																<defs>
+																	<clipPath>
+																		<rect width="14" height="12" fill="white"
+																			transform="translate(3 4)" />
+																	</clipPath>
+																</defs>
+															</svg>
+														</button>
+													</div>
+													<div class="pr-pipe-table__cell">
+														Highest Approval
+														<button class="pr-pipe-table__sort" type="button">
+															<svg width="10" height="10" viewBox="0 0 10 10" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<path
+																	d="M5 -4.37114e-07L0.669872 3.75L9.33013 3.75L5 -4.37114e-07Z"
+																	fill="#232323" fill-opacity="0.8" />
+																<path d="M5 10L9.33013 6.25H0.669873L5 10Z"
+																	fill="#232323" fill-opacity="0.8" />
+															</svg>
+														</button>
+													</div>
+													<div class="pr-pipe-table__cell">Competing</div>
+													<div class="pr-pipe-table__cell">Description</div>
+													<div class="pr-pipe-table__cell">
+														Representative
+														<button class="pr-pipe-table__filter" type="button">
+															<svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<rect width="20" height="20" rx="3" fill="white" />
+																<g clip-path="url(#clip0_900_3352)">
+																	<rect width="14" height="12"
+																		transform="translate(3 4)" fill="white" />
+																	<path
+																		d="M8.84056 15.529C8.68511 15.529 8.51995 15.4257 8.51995 15.2471L8.46166 11.338C8.46166 11.0561 8.35479 10.7742 8.14105 10.5392L3.5942 5.02317C3.4679 4.89162 3.47762 4.78825 3.50677 4.72247C3.5262 4.68488 3.60392 4.54393 3.81766 4.53453L16.1855 4.46875C16.3992 4.46875 16.4769 4.6191 16.4964 4.66609C16.5255 4.74127 16.5352 4.84463 16.4283 4.9386L12.1924 10.5956C12.0078 10.7742 11.8718 11.0843 11.8718 11.385L11.8232 14.486C11.8232 14.5893 11.7552 14.6739 11.658 14.7209L9.08345 15.4633C8.95715 15.5197 8.90857 15.529 8.85999 15.529L8.84056 15.529Z"
+																		fill="#656565" fill-opacity="0.3" />
+																	<path
+																		d="M15.8154 4.9397L11.832 10.2678C11.5406 10.5779 11.3754 10.982 11.3754 11.3673L11.3268 14.3179L8.9951 14.9851L8.93681 11.3391C8.93681 10.935 8.78136 10.5497 8.51904 10.2584L4.19566 5.00548L15.8056 4.9397M16.1748 4L3.80704 4.06578C3.10752 4.07518 2.73833 4.83634 3.21439 5.31558L7.77095 10.8504C7.89725 10.9914 7.97497 11.1605 7.97497 11.3485L8.03327 15.2576C8.03327 15.6899 8.42189 16 8.83965 16C8.96595 16 9.08254 15.9718 9.20884 15.9154L11.8514 15.1543C12.1235 15.0321 12.2984 14.7784 12.2984 14.4965L12.3469 11.3861C12.3469 11.1981 12.4344 11.0102 12.5801 10.8692L16.7578 5.278C17.2727 4.80815 16.9035 4 16.1748 4Z"
+																		fill="#656565" />
+																</g>
+																<defs>
+																	<clipPath>
+																		<rect width="14" height="12" fill="white"
+																			transform="translate(3 4)" />
+																	</clipPath>
+																</defs>
+															</svg>
+														</button>
+													</div>
+													<div class="pr-pipe-table__cell">Shared With</div>
+												</div>
+
+												<div class="pr-pipe-table__body">
+													<a href="#" class="pr-pipe-table__row">
+														<div class="pr-pipe-table__cell">08/04/2025 10:07 AM</div>
+														<div class="pr-pipe-table__cell">Fundshop Submissions</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--approved">APPROVED</span>
+														</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--underwriting">UNDERWRITING</span>
+														</div>
+														<div class="pr-pipe-table__cell">$ 2,000.00</div>
+														<div class="pr-pipe-table__cell pr-pipe-table__cell--icon">
+															<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<path
+																	d="M8.36592 22.4633C8.08771 22.3746 7.78992 22.5289 7.70371 22.8065..."
+																	fill="#159C2A" />
+															</svg>
+														</div>
+														<div class="pr-pipe-table__cell">1/20/24- EDL Recon submitted-
+															no response</div>
+														<div class="pr-pipe-table__cell">Emily Johnson</div>
+														<div class="pr-pipe-table__cell">
+															<div class="pr-pipe-table__shared-with">
+																<div class="pr-pipe-table__avatar">EJ</div>
+																<div class="pr-pipe-table__avatar">IT</div>
+															</div>
+														</div>
+													</a>
+
+													<a href="#" class="pr-pipe-table__row">
+														<div class="pr-pipe-table__cell">08/04/2025 10:40 AM</div>
+														<div class="pr-pipe-table__cell">Fundshop Submissions</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--declined">DECLINED</span>
+														</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--pending">PENDING</span>
+														</div>
+														<div class="pr-pipe-table__cell">$ 30,500.00</div>
+														<div class="pr-pipe-table__cell pr-pipe-table__cell--icon">
+															<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<path
+																	d="M8.36592 22.4633C8.08771 22.3746 7.78992 22.5289 7.70371 22.8065..."
+																	fill="#159C2A" />
+															</svg>
+														</div>
+														<div class="pr-pipe-table__cell">Looking for 2.5k payroll inc
+															Dec 2019 Revenues started</div>
+														<div class="pr-pipe-table__cell">Michael Smith</div>
+														<div class="pr-pipe-table__cell">
+															<div class="pr-pipe-table__shared-with">
+																<div class="pr-pipe-table__avatar">MS</div>
+																<div class="pr-pipe-table__avatar">DP</div>
+															</div>
+														</div>
+													</a>
+
+													<a href="#" class="pr-pipe-table__row">
+														<div class="pr-pipe-table__cell">03/17/2025 07:27 PM</div>
+														<div class="pr-pipe-table__cell">Fundshop Submissions</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--contracts-in">CONTRACTS
+																IN</span>
+														</div>
+														<div class="pr-pipe-table__cell">
+															<span
+																class="pr-pipe-table__badge pr-pipe-table__badge--killed-in-final">KILLED
+																IN FINAL</span>
+														</div>
+														<div class="pr-pipe-table__cell">—</div>
+														<div class="pr-pipe-table__cell pr-pipe-table__cell--icon">—
+														</div>
+														<div class="pr-pipe-table__cell">Katie, Thank you for the call
+															--- It was good speaking with</div>
+														<div class="pr-pipe-table__cell">Sophia Taylor</div>
+														<div class="pr-pipe-table__cell">
+															<div class="pr-pipe-table__shared-with">
+																<div class="pr-pipe-table__avatar">DP</div>
+																<div class="pr-pipe-table__avatar">EJ</div>
+															</div>
+														</div>
+													</a>
+												</div>
+											</div>
+										</div>
 									</div>
 									<div class="pr-tab-content" id="tab-documents">
-										<p>Documents</p>
+										<div class="doc-header">
+											<h2 class="doc-title">Documents</h2>
+											<button class="doc-btn-add" id="docOpenAddBtn">
+												<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+													stroke="currentColor" stroke-width="2">
+													<path d="M12 5v14m-7-7h14"></path>
+												</svg>
+												ADD
+											</button>
+										</div>
+
+										<div class="doc-list-container">
+											<div class="doc-list" id="docListBody">
+
+												<div class="doc-row">
+													<div class="doc-cell-icon">
+														<svg width="32" height="40" viewBox="0 0 32 40" fill="none"
+															xmlns="http://www.w3.org/2000/svg">
+															<path
+																d="M20 2H6C4.89543 2 4 2.89543 4 4V36C4 37.1046 4.89543 38 6 38H26C27.1046 38 28 37.1046 28 36V10L20 2Z"
+																stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<path d="M20 2V10H28" stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<rect x="2" y="24" width="16" height="10" rx="2"
+																fill="#E92C2C" />
+															<text x="10" y="31" fill="white" font-size="7"
+																font-family="Arial, sans-serif" font-weight="bold"
+																text-anchor="middle">PDF</text>
+														</svg>
+													</div>
+													<div class="doc-cell-info">
+														<div class="doc-name">Financial_Repost_TechSolutions
+															LLC_10.21.24</div>
+														<div class="doc-meta">05/06/2024 08:25 • AM Uploaded By: Jimmy
+															Turner (Jimmy@Gmail.com)</div>
+													</div>
+													<div class="doc-cell-size">File size: 14.4 KB</div>
+													<div class="doc-cell-type">File type: PDF</div>
+												</div>
+
+												<div class="doc-row">
+													<div class="doc-cell-icon">
+														<svg width="32" height="40" viewBox="0 0 32 40" fill="none"
+															xmlns="http://www.w3.org/2000/svg">
+															<path
+																d="M20 2H6C4.89543 2 4 2.89543 4 4V36C4 37.1046 4.89543 38 6 38H26C27.1046 38 28 37.1046 28 36V10L20 2Z"
+																stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<path d="M20 2V10H28" stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<rect x="2" y="24" width="16" height="10" rx="2"
+																fill="#0073E6" />
+															<text x="10" y="31" fill="white" font-size="7"
+																font-family="Arial, sans-serif" font-weight="bold"
+																text-anchor="middle">DOC</text>
+														</svg>
+													</div>
+													<div class="doc-cell-info">
+														<div class="doc-name">Financial_Repost_TechSolutions
+															LLC_10.21.24</div>
+														<div class="doc-meta">05/06/2024 08:25 • AM Uploaded By: Jimmy
+															Turner (Jimmy@Gmail.com)</div>
+													</div>
+													<div class="doc-cell-size">File size: 13.4 KB</div>
+													<div class="doc-cell-type">File type: DOC</div>
+												</div>
+
+												<div class="doc-row">
+													<div class="doc-cell-icon">
+														<svg width="32" height="40" viewBox="0 0 32 40" fill="none"
+															xmlns="http://www.w3.org/2000/svg">
+															<path
+																d="M20 2H6C4.89543 2 4 2.89543 4 4V36C4 37.1046 4.89543 38 6 38H26C27.1046 38 28 37.1046 28 36V10L20 2Z"
+																stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<path d="M20 2V10H28" stroke="#D0D3D1" stroke-width="2"
+																stroke-linejoin="round" />
+															<rect x="2" y="24" width="16" height="10" rx="2"
+																fill="#E92C2C" />
+															<text x="10" y="31" fill="white" font-size="7"
+																font-family="Arial, sans-serif" font-weight="bold"
+																text-anchor="middle">PDF</text>
+														</svg>
+													</div>
+													<div class="doc-cell-info">
+														<div class="doc-name">Financial_Repost_TechSolutions
+															LLC_10.21.24</div>
+														<div class="doc-meta">05/06/2024 08:25 • AM Uploaded By: Jimmy
+															Turner (Jimmy@Gmail.com)</div>
+													</div>
+													<div class="doc-cell-size">File size: 20.1 KB</div>
+													<div class="doc-cell-type">File type: PDF</div>
+												</div>
+
+											</div>
+										</div>
 									</div>
 									<div class="pr-tab-content" id="tab-activity_history">
-										<p>Activity History</p>
+
+										<div class="ah-block">
+											<div class="ah-header">
+												<h2 class="ah-title">Activity History</h2>
+												<button class="ah-toggle-btn">
+													<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+														stroke="currentColor" stroke-width="2" stroke-linecap="round"
+														stroke-linejoin="round">
+														<path d="M7 15l5 5 5-5"></path>
+														<path d="M7 9l5-5 5 5"></path>
+													</svg>
+												</button>
+											</div>
+											<div class="ah-content">
+												<div class="ah-table">
+													<div class="ah-table-header">
+														<div class="ah-row ah-header-row">
+															<div class="ah-cell ah-th">Created Date</div>
+															<div class="ah-cell ah-th">Activity</div>
+														</div>
+													</div>
+													<div class="ah-table-body">
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> added
+																<span class="ah-highlight">Representative</span> field
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="ah-block">
+											<div class="ah-header">
+												<h2 class="ah-title">Email</h2>
+												<button class="ah-toggle-btn">
+													<svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+														stroke="currentColor" stroke-width="2" stroke-linecap="round"
+														stroke-linejoin="round">
+														<path d="M7 15l5 5 5-5"></path>
+														<path d="M7 9l5-5 5 5"></path>
+													</svg>
+												</button>
+											</div>
+											<div class="ah-content">
+												<div class="ah-table">
+													<div class="ah-table-header">
+														<div class="ah-row ah-header-row">
+															<div class="ah-cell ah-th">Created Date</div>
+															<div class="ah-cell ah-th">Activity</div>
+														</div>
+													</div>
+													<div class="ah-table-body">
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+														<div class="ah-row">
+															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-desc">
+																<span class="ah-highlight">Bogdan Admin</span> removed
+																<span class="ah-highlight">RP Type</span> field from
+																<span class="ah-highlight">CPA</span> and removed <span
+																	class="ah-highlight">Bank Type</span> field from
+																<span class="ah-highlight">Chase</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
 									</div>
 									<div class="pr-tab-content" id="tab-payments">
 										<p>Payments</p>
@@ -2798,6 +3203,58 @@
 					<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
 				</svg>
 				Yes
+			</button>
+		</div>
+	</div>
+
+	<div class="pr-filter-popup" id="prFilterPopup">
+		<div class="pr-filter-popup__header">
+			<input type="text" id="prFilterSearch" placeholder="Search" class="pr-filter-popup__search">
+		</div>
+		<div class="pr-filter-popup__body" id="prFilterList">
+		</div>
+		<div class="pr-filter-popup__footer">
+			<button class="pr-filter-popup__btn pr-filter-popup__btn--reset" id="prFilterResetBtn">Reset</button>
+			<button class="pr-filter-popup__btn pr-filter-popup__btn--apply" id="prFilterApplyBtn">Apply</button>
+		</div>
+	</div>
+	<div class="pr-filter-overlay" id="prFilterOverlay"></div>
+
+	<div class="popup-overlay" id="docOverlay"></div>
+	<div class="popup popup--large" id="docPopup" style="max-width: 800px; padding: 25px 35px;">
+		<div class="popup-top" style="margin-bottom: 20px; border-bottom: 1px solid #EEEEEE; padding-bottom: 15px;">
+			<h2 style="color: #159C2A; font-size: 18px; font-weight: 600; text-transform: uppercase;">UPLOAD APPLICATION
+				AND REQUESTED FILES</h2>
+			<button class="popup-close" id="docClosePopupBtn"
+				style="background: #EFEFEE; width: 28px; height: 28px; border-radius: 4px;">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2">
+					<path d="M18 6L6 18M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
+
+		<div class="doc-dropzone" id="docDropzone">
+			<input type="file" id="docFileInput" multiple hidden accept=".pdf,.jpg,.jpeg,.doc,.docx,.xls,.xlsx">
+			<span class="doc-dropzone-title">Drag and Drop files</span>
+			<div class="doc-dropzone-divider">
+				<span>OR</span>
+			</div>
+			<button class="doc-btn-browse" id="docBrowseBtn">BROWSE FILES</button>
+			<span class="doc-dropzone-hint">Upload Files: *PDF, JPG, JPEG, Word, Excel - Maximum All Upload Size 25
+				MB</span>
+		</div>
+
+		<div class="doc-preview-list" id="docPreviewList"></div>
+
+		<div style="display: flex; justify-content: flex-end; margin-top: 25px;">
+			<button class="doc-btn-submit" id="docSubmitBtn">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+					stroke-linecap="round" stroke-linejoin="round">
+					<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
+					<path d="M12 12v9"></path>
+					<path d="M8 16l4-4 4 4"></path>
+				</svg>
+				Add files...
 			</button>
 		</div>
 	</div>

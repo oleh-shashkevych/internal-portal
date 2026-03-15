@@ -881,3 +881,310 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleEditMode(fieldWrap, false);
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const filterPopup = document.getElementById('prFilterPopup');
+    const filterOverlay = document.getElementById('prFilterOverlay');
+    const filterList = document.getElementById('prFilterList');
+    const searchInput = document.getElementById('prFilterSearch');
+    const applyBtn = document.getElementById('prFilterApplyBtn');
+    const resetBtn = document.getElementById('prFilterResetBtn');
+
+    // We only attach to buttons inside tab-pipeline to avoid conflicts
+    const pipeTab = document.getElementById('tab-pipeline');
+    if (!pipeTab) return;
+
+    let activeFilters = {};
+    let currentColumnIndex = -1;
+    let currentFilterButton = null;
+
+    pipeTab.addEventListener('click', function (e) {
+        const filterBtn = e.target.closest('.pr-pipe-table__filter');
+        if (filterBtn) {
+            e.stopPropagation();
+
+            const headerCell = filterBtn.closest('.pr-pipe-table__cell');
+            const headerRow = headerCell.parentElement;
+            currentColumnIndex = Array.from(headerRow.children).indexOf(headerCell);
+            currentFilterButton = filterBtn;
+
+            const tableBody = pipeTab.querySelector('.pr-pipe-table__body');
+            const rows = tableBody.querySelectorAll('.pr-pipe-table__row');
+            const uniqueValues = new Set();
+
+            rows.forEach(row => {
+                const cell = row.children[currentColumnIndex];
+                if (cell) {
+                    const badge = cell.querySelector('.pr-pipe-table__badge');
+                    const textContent = badge ? badge.textContent.trim() : cell.textContent.trim();
+                    if (textContent && textContent !== '—') {
+                        uniqueValues.add(textContent);
+                    }
+                }
+            });
+
+            const previouslyChecked = activeFilters[currentColumnIndex] || [];
+            populatePopupList(Array.from(uniqueValues).sort(), previouslyChecked);
+
+            positionPopup(filterBtn);
+            openPopup();
+        }
+    });
+
+    function positionPopup(buttonElement) {
+        const rect = buttonElement.getBoundingClientRect();
+        const popupHeight = 300;
+
+        let topPosition = rect.bottom + window.scrollY + 5;
+        let leftPosition = rect.left + window.scrollX - 100;
+
+        if (leftPosition < 10) leftPosition = 10;
+
+        filterPopup.style.top = `${topPosition}px`;
+        filterPopup.style.left = `${leftPosition}px`;
+    }
+
+    function populatePopupList(items, checkedItems) {
+        filterList.innerHTML = '';
+        items.forEach((item, index) => {
+            const label = document.createElement('label');
+            label.className = 'pr-filter-popup__item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = item;
+            if (checkedItems.includes(item)) {
+                checkbox.checked = true;
+            }
+
+            const textNode = document.createTextNode(item);
+
+            label.appendChild(checkbox);
+            label.appendChild(textNode);
+            filterList.appendChild(label);
+        });
+    }
+
+    function applyAllFilters() {
+        const tableBody = pipeTab.querySelector('.pr-pipe-table__body');
+        if (!tableBody) return;
+
+        const rows = tableBody.querySelectorAll('.pr-pipe-table__row');
+
+        rows.forEach(row => {
+            let isRowVisible = true;
+
+            for (const colIndex in activeFilters) {
+                const selectedValues = activeFilters[colIndex];
+                if (selectedValues.length === 0) continue;
+
+                const cell = row.children[colIndex];
+                if (cell) {
+                    const badge = cell.querySelector('.pr-pipe-table__badge');
+                    const cellValue = badge ? badge.textContent.trim() : cell.textContent.trim();
+
+                    if (!selectedValues.includes(cellValue)) {
+                        isRowVisible = false;
+                        break;
+                    }
+                }
+            }
+            row.style.display = isRowVisible ? 'grid' : 'none';
+        });
+    }
+
+    function openPopup() {
+        filterPopup.classList.add('active');
+        filterOverlay.classList.add('active');
+    }
+
+    function closePopup() {
+        filterPopup.classList.remove('active');
+        filterOverlay.classList.remove('active');
+        searchInput.value = '';
+    }
+
+    filterOverlay?.addEventListener('click', closePopup);
+
+    searchInput?.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const items = filterList.querySelectorAll('.pr-filter-popup__item');
+        items.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(searchTerm) ? 'flex' : 'none';
+        });
+    });
+
+    applyBtn?.addEventListener('click', () => {
+        const selectedValues = Array.from(filterList.querySelectorAll('input[type="checkbox"]:checked'))
+            .map(cb => cb.value);
+
+        if (selectedValues.length > 0) {
+            activeFilters[currentColumnIndex] = selectedValues;
+            if (currentFilterButton) currentFilterButton.classList.add('filtered');
+        } else {
+            delete activeFilters[currentColumnIndex];
+            if (currentFilterButton) currentFilterButton.classList.remove('filtered');
+        }
+
+        applyAllFilters();
+        closePopup();
+    });
+
+    resetBtn?.addEventListener('click', () => {
+        if (activeFilters[currentColumnIndex]) {
+            delete activeFilters[currentColumnIndex];
+            if (currentFilterButton) {
+                currentFilterButton.classList.remove('filtered');
+            }
+        }
+
+        applyAllFilters();
+        closePopup();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const docOpenAddBtn = document.getElementById('docOpenAddBtn');
+    const docClosePopupBtn = document.getElementById('docClosePopupBtn');
+    const docOverlay = document.getElementById('docOverlay');
+    const docPopup = document.getElementById('docPopup');
+
+    const docDropzone = document.getElementById('docDropzone');
+    const docFileInput = document.getElementById('docFileInput');
+    const docBrowseBtn = document.getElementById('docBrowseBtn');
+    const docPreviewList = document.getElementById('docPreviewList');
+    const docSubmitBtn = document.getElementById('docSubmitBtn');
+    const docListBody = document.getElementById('docListBody');
+
+    let selectedFiles = [];
+
+    function openDocPopup() {
+        docOverlay.classList.add('active');
+        docPopup.classList.add('active');
+    }
+
+    function closeDocPopup() {
+        docOverlay.classList.remove('active');
+        docPopup.classList.remove('active');
+        selectedFiles = [];
+        docFileInput.value = '';
+        renderPreview();
+    }
+
+    docOpenAddBtn?.addEventListener('click', openDocPopup);
+    docClosePopupBtn?.addEventListener('click', closeDocPopup);
+    docOverlay?.addEventListener('click', closeDocPopup);
+
+    docBrowseBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        docFileInput.click();
+    });
+
+    docFileInput?.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+    });
+
+    docDropzone?.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        docDropzone.classList.add('dragover');
+    });
+
+    docDropzone?.addEventListener('dragleave', () => {
+        docDropzone.classList.remove('dragover');
+    });
+
+    docDropzone?.addEventListener('drop', (e) => {
+        e.preventDefault();
+        docDropzone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            handleFiles(e.dataTransfer.files);
+        }
+    });
+
+    function handleFiles(files) {
+        Array.from(files).forEach(file => {
+            selectedFiles.push(file);
+        });
+        renderPreview();
+    }
+
+    function renderPreview() {
+        docPreviewList.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const item = document.createElement('div');
+            item.className = 'doc-preview-item';
+            item.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+            docPreviewList.appendChild(item);
+        });
+    }
+
+    function getFileIcon(extension) {
+        const isDoc = ['doc', 'docx'].includes(extension);
+        const color = isDoc ? '#0073E6' : '#E92C2C';
+        const label = isDoc ? 'DOC' : 'PDF';
+
+        return `
+            <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2H6C4.89543 2 4 2.89543 4 4V36C4 37.1046 4.89543 38 6 38H26C27.1046 38 28 37.1046 28 36V10L20 2Z" stroke="#D0D3D1" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M20 2V10H28" stroke="#D0D3D1" stroke-width="2" stroke-linejoin="round"/>
+                <rect x="2" y="24" width="16" height="10" rx="2" fill="${color}"/>
+                <text x="10" y="31" fill="white" font-size="7" font-family="Arial, sans-serif" font-weight="bold" text-anchor="middle">${label}</text>
+            </svg>
+        `;
+    }
+
+    function formatDate() {
+        const d = new Date();
+        const mo = String(d.getMonth() + 1).padStart(2, '0');
+        const da = String(d.getDate()).padStart(2, '0');
+        const yr = d.getFullYear();
+        let hr = d.getHours();
+        const min = String(d.getMinutes()).padStart(2, '0');
+        const ampm = hr >= 12 ? 'PM' : 'AM';
+        hr = hr % 12;
+        hr = hr ? hr : 12;
+        const hrStr = String(hr).padStart(2, '0');
+        return `${mo}/${da}/${yr} ${hrStr}:${min} • ${ampm}`;
+    }
+
+    docSubmitBtn?.addEventListener('click', () => {
+        if (selectedFiles.length === 0) return;
+
+        selectedFiles.forEach(file => {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const iconSvg = getFileIcon(ext);
+            const dateStr = formatDate();
+            const sizeStr = (file.size / 1024).toFixed(1);
+
+            const row = document.createElement('div');
+            row.className = 'doc-row';
+            row.innerHTML = `
+                <div class="doc-cell-icon">${iconSvg}</div>
+                <div class="doc-cell-info">
+                    <div class="doc-name">${file.name}</div>
+                    <div class="doc-meta">${dateStr} Uploaded By: Current User</div>
+                </div>
+                <div class="doc-cell-size">File size: ${sizeStr} KB</div>
+                <div class="doc-cell-type">File type: ${ext.toUpperCase()}</div>
+            `;
+
+            docListBody.insertBefore(row, docListBody.firstChild);
+        });
+
+        closeDocPopup();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const ahTab = document.getElementById('tab-activity_history');
+    if (!ahTab) return;
+
+    ahTab.addEventListener('click', function (e) {
+        const header = e.target.closest('.ah-header');
+        if (header) {
+            const block = header.closest('.ah-block');
+            block.classList.toggle('is-expanded');
+        }
+    });
+});
