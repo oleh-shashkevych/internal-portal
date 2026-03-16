@@ -213,14 +213,12 @@
     background-color: rgba(0, 0, 0, 0.4);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
     z-index: 1000;
 }
 
 .popup-overlay.active {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease;
 }
 
 .popup {
@@ -236,7 +234,6 @@
     max-width: 500px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
     z-index: 1001;
 }
 
@@ -248,7 +245,6 @@
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
-    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .popup-top {
@@ -292,12 +288,10 @@
     font-size: 12px;
     line-height: 15px;
     color: rgba(35, 35, 35, 0.8);
-    transition: color 0.2s ease;
 }
 
 .form-group label .required {
     color: rgba(35, 35, 35, 0.8);
-    transition: color 0.2s ease;
 }
 
 #newMessageForm .form-group label {
@@ -317,7 +311,6 @@
     font-family: 'Urbanist', sans-serif;
     color: rgba(35, 35, 35, 0.8);
     box-sizing: border-box;
-    transition: border-color 0.2s ease;
 }
 
 .form-group select {
@@ -388,7 +381,6 @@
     line-height: 19px;
     cursor: pointer;
     margin: 25px auto 0;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-apply:hover {
@@ -420,7 +412,6 @@
     line-height: 19px;
     cursor: pointer;
     margin: 25px auto 0;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-cancel:hover {
@@ -606,7 +597,6 @@
         padding: 15px 0;
         width: 325px;
         transform: translateX(-120%);
-        transition: 300ms ease;
         z-index: 999;
     }
 
@@ -846,7 +836,6 @@
     cursor: pointer;
     box-sizing: border-box;
     outline: none;
-    transition: all 0.2s ease;
     white-space: nowrap;
 }
 
@@ -885,7 +874,7 @@
 }
 
 .lgv-top-section {
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
 .lgv-page-title {
@@ -899,12 +888,12 @@
 .lgv-balance-card {
     background: #FFFFFF;
     border: 1px solid #EEEEEE;
-    border-radius: 4px;
-    padding: 30px;
+    border-radius: 3px;
+    padding: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 40px;
+    gap: 16px;
 }
 
 .lgv-balance-info {
@@ -914,64 +903,63 @@
 }
 
 .lgv-balance-main {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 600;
     color: #232323;
-}
-
-.lgv-balance-main span {
-    font-size: 24px;
-    font-weight: 700;
 }
 
 .lgv-balance-sub {
     font-size: 14px;
-    color: #8B928C;
-    margin: 8px 0 20px 0;
+    line-height: 1;
+    font-weight: 400;
+    color: #808080;
+    margin: 8px 0 24px 0;
 }
 
 .lgv-text-green {
-    color: #159C2A;
-    font-weight: 600;
+    color: #1E5121;
+    font-weight: 500;
 }
 
 .lgv-spacer {
-    margin-left: 20px;
+    margin-left: 14px;
 }
 
 .lgv-text-dark {
-    color: #232323;
-    font-weight: 600;
+    color: #1E5121;
+    font-weight: 500;
 }
 
 .lgv-progress-track {
     width: 100%;
     height: 8px;
-    background: #E8F6EA;
-    border-radius: 4px;
+    background: #159C2A1C;
+    border-radius: 5px;
     overflow: hidden;
 }
 
 .lgv-progress-fill {
     height: 100%;
-    background: #159C2A;
+    background: #159C2AE5;
     width: 0%;
-    border-radius: 4px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0px;
 }
 
 .lgv-btn-recharge {
-    background: #159C2A;
-    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #159C2A;
+    color: #FFF;
     border: none;
-    border-radius: 4px;
-    padding: 12px 25px;
+    border-radius: 3px;
+    padding: 8px 24px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-    white-space: nowrap;
+    height: 40px;
 }
 
 .lgv-btn-recharge:hover {
@@ -996,13 +984,12 @@
     background: #159C2A;
     color: #FFFFFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 10px 20px;
     font-family: 'Urbanist', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
 .lgv-btn-add:hover {
@@ -1048,7 +1035,7 @@
 
 .lgv-badge {
     padding: 4px 10px;
-    border-radius: 4px;
+    border-radius: 3px;
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1068,13 +1055,12 @@
     background: transparent;
     border: 1px solid #159C2A;
     color: #159C2A;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 8px 16px;
     font-family: 'Urbanist', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 .lgv-action-btn-outline:hover {
@@ -1086,13 +1072,12 @@
     background: #159C2A;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 9px 16px;
     font-family: 'Urbanist', sans-serif;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 
 .lgv-action-btn-fill:hover {
@@ -1139,14 +1124,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    padding: 0 5px;
+    margin-bottom: 14px;
 }
 
 .lgv-det-title {
     font-family: 'Urbanist', sans-serif;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
+    line-height: 22px;
     color: #232323;
     margin: 0;
 }
@@ -1154,99 +1139,104 @@
 .lgv-det-edit-btn-global {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background-color: #EFEFEE;
-    border: 1px solid #E5E5E5;
-    border-radius: 4px;
-    padding: 8px 16px;
+    gap: 10px;
+    background-color: #23232321;
+    border-radius: 3px;
+    padding: 2px 7px;
     font-family: 'Urbanist', sans-serif;
     font-size: 14px;
-    color: #8B928C;
+    font-weight: 500;
+    color: #808080;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    height: 24px;
 }
 
 .lgv-det-edit-btn-global:hover {
-    background-color: #E5E5E5;
+    background: #159C2A;
+    color: #fff;
 }
 
 .lgv-det-card {
+    margin: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
     border: 1px solid #EEEEEE;
-    border-radius: 4px;
-    padding: 30px;
-    background-color: #FFFFFF;
+    padding: 14px;
+    border-radius: 3px;
 }
 
 .lgv-det-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 50px;
-    row-gap: 25px;
+    column-gap: 20px;
+    row-gap: 14px;
 }
 
 .lgv-det-field {
     display: grid;
-    grid-template-columns: 140px 1fr;
+    grid-template-columns: 160px 1fr;
     align-items: center;
     gap: 15px;
 }
 
 .lgv-det-label {
     font-family: 'Urbanist', sans-serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 14px;
-    color: #8B928C;
+    line-height: 20px;
+    color: #808080;
 }
 
 .lgv-det-view-mode {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .lgv-det-val {
     font-family: 'Urbanist', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
     color: #232323;
-    word-break: break-word;
 }
 
 .lgv-det-link {
-    color: #159C2A;
-    text-decoration: none;
-}
-
-.lgv-det-link:hover {
+    color: #0461A0;
     text-decoration: underline;
 }
 
+.lgv-det-link:hover {
+    opacity: 0.8;
+}
+
 .lgv-det-badge {
-    background-color: #E8F6EA;
-    color: #159C2A;
-    padding: 4px 10px;
-    border-radius: 4px;
+    background-color: #0D661A26;
+    color: #0D661A;
+    padding: 3.5px 7px;
+    border-radius: 3px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
-.lgv-det-badge.inactive {
-    background-color: #FFEAEF;
-    color: #FF496B;
-}
+/* .lgv-det-badge.inactive {
+    background-color: #FFE5E3;
+    color: #D04437;
+} */
 
 .lgv-det-action-btn {
     background: #FFFFFF;
     border: 1px solid #E5E5E5;
-    border-radius: 4px;
+    border-radius: 3px;
     width: 26px;
     height: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
     padding: 0;
     opacity: 0;
     visibility: hidden;
@@ -1330,73 +1320,67 @@
     }
 }
 
-.lgv-inv-card {
-    background: #FFFFFF;
-    border: 1px solid #EEEEEE;
-    border-top: none;
-    padding: 30px;
-}
-
 .lgv-inv-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 
 .lgv-inv-title {
     font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
     font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
     color: #232323;
     margin: 0;
 }
 
 .lgv-inv-btn-add {
-    background: #159C2A;
-    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #159C2A;
+    color: #FFF;
     border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
+    border-radius: 3px;
+    padding: 8px 24px;
     font-family: 'Urbanist', sans-serif;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    height: 40px;
 }
 
 .lgv-inv-btn-add:hover {
     background: #007E05;
 }
 
+.lgv-inv-table-container {
+    overflow-x: auto;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+
 .lgv-inv-table {
     width: 100%;
+    min-width: 900px;
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
-}
-
-.lgv-inv-table-header {
-    min-width: 1000px;
-}
-
-.lgv-inv-table-body {
-    min-width: 1000px;
 }
 
 .lgv-inv-row {
     display: grid;
-    grid-template-columns: 120px 2fr 120px 120px 120px 1.5fr;
+    grid-template-columns: minmax(120px, 1fr) minmax(200px, 2fr) minmax(120px, 1fr) minmax(120px, 1fr) minmax(120px, 1fr) 180px;
     align-items: center;
     border-bottom: 1px solid #EEEEEE;
-    transition: background-color 0.2s ease;
     cursor: pointer;
     /* Вказує, що рядок клікабельний */
 }
 
 .lgv-inv-header-row {
-    border-bottom: 1px solid #EEEEEE;
-    cursor: default;
+    background-color: #F9F9F9;
+    border: none;
 }
 
 .lgv-inv-table-body .lgv-inv-row:last-child {
@@ -1413,16 +1397,23 @@
 }
 
 .lgv-inv-cell {
-    padding: 18px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px 14px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
     color: #232323;
-    box-sizing: border-box;
+    height: 44px;
 }
 
 .lgv-inv-th {
-    font-weight: 500;
-    color: #8B928C;
+    color: #232323B2;
+    font-size: 14px;
+    line-height: 17px;
+    height: 40px;
 }
 
 .lgv-inv-right {
@@ -1431,34 +1422,36 @@
 }
 
 .lgv-inv-badge {
-    padding: 4px 10px;
-    border-radius: 4px;
+    padding: 3px 5px;
+    border-radius: 3px;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 600;
+    line-height: 13px;
     text-transform: uppercase;
+    display: inline-block;
 }
 
 .lgv-inv-badge-paid {
-    background-color: #E8F6EA;
+    background-color: #EBFFEE;
     color: #159C2A;
 }
 
 .lgv-inv-badge-pending {
-    background-color: #FFF4E5;
-    color: #FF9800;
+    background-color: #FEF2D3;
+    color: #EB9B00;
 }
 
 .lgv-inv-action-btn-outline {
     background: transparent;
     border: 1px solid #159C2A;
     color: #159C2A;
-    border-radius: 4px;
-    padding: 8px 16px;
+    border-radius: 3px;
+    padding: 3.5px 7px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
     white-space: nowrap;
 }
 
@@ -1468,16 +1461,16 @@
 }
 
 .lgv-inv-action-btn-fill {
-    background: #159C2A;
+    background: #54BE59;
     color: #FFF;
     border: none;
-    border-radius: 4px;
-    padding: 9px 16px;
+    border-radius: 3px;
+    padding: 3.5px 7px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
     white-space: nowrap;
 }
 
@@ -1508,7 +1501,7 @@
 .lgv-inv-textarea {
     width: 100%;
     padding: 8px 10px;
-    border: 1px solid #159C2A;
+    border: 1px solid #E5E5E5;
     border-radius: 3px;
     font-family: 'Urbanist', sans-serif;
     font-size: 14px;
@@ -1521,6 +1514,7 @@
 .lgv-inv-input:focus,
 .lgv-inv-textarea:focus {
     box-shadow: 0 0 0 2px rgba(21, 156, 42, 0.2);
+    border: 1px solid #159C2A;
 }
 
 .lgv-inv-input.has-error,
@@ -1589,14 +1583,13 @@
     background: #159C2A;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 12px;
     font-family: 'Urbanist', sans-serif;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    transition: background 0.2s ease;
 }
 
 .lgv-inv-btn-submit-full:hover {
@@ -1633,17 +1626,31 @@
     }
 }
 
+.pr-pipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.pr-pipe-title {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #232323;
+    margin: 0;
+}
+
 .pr-pipe-container {
     overflow-x: auto;
     border: 1px solid #eee;
     border-radius: 3px;
-    background-color: #fff;
 }
 
 .pr-pipe-table {
-    font-size: 14px;
-    color: #232323;
-    min-width: 1200px;
+    width: 100%;
+    min-width: 900px;
     display: flex;
     flex-direction: column;
 }
@@ -1651,7 +1658,7 @@
 .pr-pipe-table__header,
 .pr-pipe-table__row {
     display: grid;
-    grid-template-columns: 1.5fr 2.1fr 1.5fr 1.5fr 1.5fr 0.8fr 4.1fr 1.7fr 1fr;
+    grid-template-columns: minmax(120px, 1.5fr) minmax(160px, 2.1fr) minmax(120px, 1.5fr) minmax(120px, 1.5fr) minmax(150px, 1.5fr) minmax(98px, 0.8fr) minmax(250px, 4.1fr) minmax(140px, 1.7fr) minmax(100px, 1fr);
     align-items: center;
     text-decoration: none;
     color: inherit;
@@ -1671,21 +1678,28 @@
 
 .pr-pipe-table__header {
     background-color: #F9F9F9;
-    font-weight: 500;
-    color: #8B928C;
-    border-bottom: 1px solid #eee;
+    border: none;
 }
 
 .pr-pipe-table__cell {
-    padding: 10px 15px;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    padding: 4px 14px;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #232323;
+    height: 44px;
+}
+
+.pr-pipe-table__header .pr-pipe-table__cell {
+    color: #232323B2;
+    font-size: 14px;
+    line-height: 17px;
+    height: 40px;
     justify-content: space-between;
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-    min-height: 40px;
 }
 
 .pr-pipe-table__cell--icon {
@@ -1822,7 +1836,7 @@
     background: #FFFFFF;
     border: 1px solid #EEEEEE;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
+    border-radius: 3px;
     z-index: 1000;
     display: none;
     flex-direction: column;
@@ -1907,7 +1921,7 @@
 }
 
 .pr-filter-popup__btn--reset {
-    color: #8B928C;
+    color: #808080;
     border-right: 1px solid #EEEEEE;
 }
 
