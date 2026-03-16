@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.style.backgroundColor = '';
                 this.style.color = '';
                 this.style.borderColor = '';
-                this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit`;
+                this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
             }
         });
     }
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.style.backgroundColor = '';
             this.style.color = '';
             this.style.borderColor = '';
-            this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit`;
+            this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
         }
     });
 
@@ -797,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.style.backgroundColor = '';
                 this.style.color = '';
                 this.style.borderColor = '';
-                this.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit`;
+                this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
             }
         });
     }
