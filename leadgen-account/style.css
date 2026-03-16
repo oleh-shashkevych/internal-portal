@@ -813,6 +813,13 @@
 }
 
 /* Page custom */
+.lga-main {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    padding: 14px;
+}
+
 .lga-header {
     display: flex;
     justify-content: space-between;
@@ -835,7 +842,7 @@
     background-color: #159C2A;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 10px 20px;
     font-family: 'Urbanist', sans-serif;
     font-size: 15px;
@@ -850,8 +857,7 @@
 
 .lga-table-container {
     border: 1px solid #EEEEEE;
-    border-radius: 4px;
-    background-color: #FFFFFF;
+    border-radius: 3px;
     overflow-x: auto;
 }
 
@@ -864,14 +870,15 @@
 
 .lga-row {
     display: grid;
-    grid-template-columns: 120px 1.5fr 1.5fr 120px 130px 2fr 100px;
+    grid-template-columns: 140px minmax(150px, 1fr) minmax(150px, 1fr) 150px 130px 2fr 150px;
     align-items: center;
     border-bottom: 1px solid #EEEEEE;
     transition: background-color 0.2s ease;
 }
 
 .lga-header-row {
-    background-color: #FAFAFA;
+    background-color: #F9F9F9;
+    border: none;
 }
 
 .lga-table-body .lga-row:last-child {
@@ -891,19 +898,23 @@
 }
 
 .lga-cell {
-    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px 14px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
     color: #232323;
-    box-sizing: border-box;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    height: 44px;
 }
 
 .lga-th {
-    font-weight: 500;
-    color: #8B928C;
+    color: #232323B2;
+    font-size: 14px;
+    line-height: 17px;
+    height: 40px;
 }
 
 .lga-center {
@@ -914,22 +925,23 @@
 }
 
 .lga-badge {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 700;
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 13px;
     text-transform: uppercase;
     display: inline-block;
 }
 
 .lga-badge-active {
-    background-color: #E8F6EA;
+    background-color: #EBFFEE;
     color: #159C2A;
 }
 
 .lga-badge-inactive {
-    background-color: #FFEAEF;
-    color: #FF496B;
+    background-color: #FFE5E3;
+    color: #D04437;
 }
 
 .lga-actions,
@@ -940,25 +952,26 @@
 }
 
 .lga-icon-btn {
-    background: #FAFAFA;
-    border: 1px solid #EEEEEE;
-    border-radius: 4px;
-    width: 32px;
-    height: 32px;
+    background: #8B928C1A;
+    color: #8B928C;
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
     padding: 0;
 }
 
 .lga-icon-btn:hover {
-    background: #EEEEEE;
+    background: #159C2A;
+    color: #fff;
 }
 
-.lga-icon-btn.lga-btn-delete:hover svg {
-    stroke: #FF496B;
+.lga-icon-btn.lga-btn-delete:hover {
+    background: #FF3535;
+    color: #fff;
 }
 
 .lga-edit {
@@ -1110,7 +1123,7 @@
     background: #159C2A;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 12px;
     font-family: 'Urbanist', sans-serif;
     font-size: 16px;
@@ -1129,7 +1142,7 @@
     background: #F44336;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 10px 30px;
     font-family: 'Urbanist', sans-serif;
     font-size: 15px;
@@ -1141,7 +1154,7 @@
     background: #8B928C;
     color: #FFF;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 10px 30px;
     font-family: 'Urbanist', sans-serif;
     font-size: 15px;
