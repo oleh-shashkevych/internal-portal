@@ -86,11 +86,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.style.color = '#FFFFFF';
                 this.style.borderColor = '#159C2A';
                 this.innerHTML = `Close Edit Mode`;
+                this.classList.add('pr-lp-edit-btn-active');
             } else {
                 this.style.backgroundColor = '';
                 this.style.color = '';
                 this.style.borderColor = '';
-                this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
+                this.innerHTML = `Edit`;
+                this.classList.remove('pr-lp-edit-btn-active');
             }
         });
     }
@@ -99,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const editBtn = e.target.closest('.pr-edit-btn');
         const cancelBtn = e.target.closest('.pr-cancel-btn');
         const saveBtn = e.target.closest('.pr-save-btn');
-        const copyBtn = e.target.closest('.pr-copy-btn');
 
         if (editBtn) {
             e.preventDefault();
@@ -117,12 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const fieldWrap = saveBtn.closest('.pr-inline-field');
             saveInlineData(fieldWrap);
-        }
-
-        if (copyBtn) {
-            e.preventDefault();
-            const fieldWrap = copyBtn.closest('.pr-inline-field');
-            copyToClipboard(fieldWrap, copyBtn);
         }
     });
 
@@ -181,22 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         toggleEditMode(fieldWrap, false);
     }
-
-    function copyToClipboard(fieldWrap, btnElement) {
-        const input = fieldWrap.querySelector('.pr-edit-input');
-        if (!input || !input.value) return;
-
-        navigator.clipboard.writeText(input.value).then(() => {
-            const originalHTML = btnElement.innerHTML;
-            btnElement.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#159C2A" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-            btnElement.style.borderColor = '#159C2A';
-
-            setTimeout(() => {
-                btnElement.innerHTML = originalHTML;
-                btnElement.style.borderColor = '';
-            }, 2000);
-        });
-    }
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -220,9 +199,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const pInput = document.getElementById('addPassword');
         if (pInput) pInput.type = 'password';
-
-        const eyeBtn = document.getElementById('togglePasswordBtn');
-        if (eyeBtn) eyeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
     }
 
     document.getElementById('openAddAccountBtn')?.addEventListener('click', () => {
@@ -330,14 +306,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         <option value="The user passes additional moderation" ${displayStatus === 'The user passes additional moderation' ? 'selected' : ''}>The user passes additional moderation</option>
                     </select>
                 </div>
-                <div class="ab-cell">
+                <div class="ab-cell ab-center">
                     <div class="ab-view ab-actions">
                         <button class="ab-btn-convert">Convert</button>
                         <button class="ab-btn-icon ab-btn-edit">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
                         <button class="ab-btn-icon ab-btn-delete">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </button>
                     </div>
                     <div class="ab-edit ab-edit-actions">
@@ -408,6 +382,10 @@ document.addEventListener('DOMContentLoaded', function () {
             passwordInput.value = pass;
             passwordInput.type = 'text';
 
+            if (typeof toggleEyeBtn !== 'undefined' && toggleEyeBtn) {
+                toggleEyeBtn.classList.add('is-visible');
+            }
+
             navigator.clipboard.writeText(pass).then(() => {
                 const originalText = generateBtn.textContent;
                 generateBtn.textContent = 'Copied!';
@@ -419,14 +397,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (toggleEyeBtn && passwordInput) {
-        toggleEyeBtn.addEventListener('click', () => {
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleEyeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#159C2A" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
-            } else {
-                passwordInput.type = 'password';
-                toggleEyeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-            }
+        if (passwordInput.getAttribute('type') === 'text') {
+            toggleEyeBtn.classList.add('is-visible');
+        }
+
+        toggleEyeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const isPassword = passwordInput.getAttribute('type') === 'password';
+            passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+
+            toggleEyeBtn.classList.toggle('is-visible');
         });
     }
 });
@@ -453,11 +434,13 @@ document.addEventListener('DOMContentLoaded', function () {
             this.style.color = '#FFFFFF';
             this.style.borderColor = '#159C2A';
             this.innerHTML = `Close Edit Mode`;
+            this.classList.add('bd-edit-btn-global-active');
         } else {
             this.style.backgroundColor = '';
             this.style.color = '';
             this.style.borderColor = '';
-            this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
+            this.innerHTML = `Edit`;
+            this.classList.remove('bd-edit-btn-global-active');
         }
     });
 
@@ -729,10 +712,8 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="cr-cell">
                 <div class="cr-view cr-actions">
                     <button class="cr-icon-btn cr-btn-edit">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                     </button>
                     <button class="cr-icon-btn cr-btn-delete">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     </button>
                 </div>
                 <div class="cr-edit cr-edit-actions">
@@ -793,11 +774,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.style.color = '#FFFFFF';
                 this.style.borderColor = '#159C2A';
                 this.innerHTML = `Close Edit Mode`;
+                this.classList.add('rpl-edit-btn-global--active');
             } else {
                 this.style.backgroundColor = '';
                 this.style.color = '';
                 this.style.borderColor = '';
-                this.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.486744 11.9904L2.65851 12C2.65924 12 2.65997 12 2.66071 12C2.7904 12 2.91471 11.9485 3.00651 11.8565L11.8569 2.99116C11.9485 2.89933 12 2.77469 12 2.64478C12 2.51487 11.9484 2.39035 11.8567 2.29853L9.70417 0.143376C9.51324 -0.0477491 9.20374 -0.0478715 9.01281 0.143499L0.15133 9.01987C0.0601425 9.1112 0.00855902 9.23499 0.0081923 9.36416L2.13602e-06 11.4987C-0.00109803 11.7692 0.216848 11.9892 0.486744 11.9904ZM9.35861 1.18226L10.8196 2.6449L8.84253 4.62533L7.38182 3.16245L9.35861 1.18226ZM0.985222 9.56973L6.69033 3.85495L8.15092 5.31796L2.45902 11.0196L0.979721 11.013L0.985222 9.56973Z"fill="currentColor" /></svg> Edit`;
+                this.innerHTML = `Edit`;
+                this.classList.remove('rpl-edit-btn-global--active');
             }
         });
     }
@@ -1059,6 +1042,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let selectedFiles = [];
 
+    function getFileIconClass(extension) {
+        const isDoc = ['doc', 'docx'].includes(extension);
+        return isDoc ? 'icon-doc' : 'icon-pdf';
+    }
+
     function openDocPopup() {
         docOverlay.classList.add('active');
         docPopup.classList.add('active');
@@ -1119,21 +1107,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function getFileIcon(extension) {
-        const isDoc = ['doc', 'docx'].includes(extension);
-        const color = isDoc ? '#0073E6' : '#E92C2C';
-        const label = isDoc ? 'DOC' : 'PDF';
-
-        return `
-            <svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 2H6C4.89543 2 4 2.89543 4 4V36C4 37.1046 4.89543 38 6 38H26C27.1046 38 28 37.1046 28 36V10L20 2Z" stroke="#D0D3D1" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M20 2V10H28" stroke="#D0D3D1" stroke-width="2" stroke-linejoin="round"/>
-                <rect x="2" y="24" width="16" height="10" rx="2" fill="${color}"/>
-                <text x="10" y="31" fill="white" font-size="7" font-family="Arial, sans-serif" font-weight="bold" text-anchor="middle">${label}</text>
-            </svg>
-        `;
-    }
-
     function formatDate() {
         const d = new Date();
         const mo = String(d.getMonth() + 1).padStart(2, '0');
@@ -1153,14 +1126,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         selectedFiles.forEach(file => {
             const ext = file.name.split('.').pop().toLowerCase();
-            const iconSvg = getFileIcon(ext);
+            const iconClass = getFileIconClass(ext); // Получаем класс
             const dateStr = formatDate();
             const sizeStr = (file.size / 1024).toFixed(1);
 
             const row = document.createElement('div');
             row.className = 'doc-row';
+
+            // Вставляем полученный класс прямо в div.doc-cell-icon
             row.innerHTML = `
-                <div class="doc-cell-icon">${iconSvg}</div>
+                <div class="doc-cell-icon ${iconClass}"></div>
                 <div class="doc-cell-info">
                     <div class="doc-name">${file.name}</div>
                     <div class="doc-meta">${dateStr} Uploaded By: Current User</div>
@@ -1317,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (item.deals_paid && item.deals_paid.length > 0) {
                 const links = item.deals_paid.map(deal => `<li><a href="${deal.url || '#'}" target="_blank">${deal.name}</a></li>`).join('');
                 linksHtml = `<ul class="pay-notes-list">${links}</ul>`;
-                btnHtml = `<button class="pay-btn-more"><svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="#232323" stroke-width="2"><path d="M1 1l5 5 5-5"></path></svg></button>`;
+                btnHtml = `<button class="pay-btn-more"></button>`;
             }
 
             let dateRaw = '';
@@ -1388,10 +1363,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="pay-cell pay-center">
                     <div class="pay-view pay-actions">
                         <button class="pay-icon-btn pay-icon-btn-edit">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
                         <button class="pay-icon-btn pay-icon-btn-delete">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </button>
                     </div>
                     <div class="pay-edit pay-edit-actions">

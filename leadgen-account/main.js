@@ -107,14 +107,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (btnEye && passInput) {
-            btnEye.addEventListener('click', () => {
-                if (passInput.type === 'password') {
-                    passInput.type = 'text';
-                    btnEye.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#159C2A" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
-                } else {
-                    passInput.type = 'password';
-                    btnEye.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-                }
+            if (passInput.getAttribute('type') === 'text') {
+                btnEye.classList.add('is-visible');
+            }
+
+            btnEye.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const isPassword = passInput.getAttribute('type') === 'password';
+                passInput.setAttribute('type', isPassword ? 'text' : 'password');
+
+                btnEye.classList.toggle('is-visible');
             });
         }
 
@@ -125,10 +128,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (let i = 0; i < 12; i++) {
                     pass += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
+
                 passInput.value = pass;
                 passInput.type = 'text';
+
                 if (btnEye) {
-                    btnEye.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#159C2A" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+                    btnEye.classList.add('is-visible');
                 }
 
                 navigator.clipboard.writeText(pass).then(() => {
@@ -306,10 +311,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="lga-cell lga-center">
                     <div class="lga-view lga-actions">
                         <button class="lga-icon-btn lga-btn-edit">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </button>
                         <button class="lga-icon-btn lga-btn-delete">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B928C" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </button>
                     </div>
                     <div class="lga-edit lga-edit-actions">
