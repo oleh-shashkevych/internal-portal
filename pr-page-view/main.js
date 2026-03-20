@@ -38,6 +38,69 @@ window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
 
+function initAllCustomDatePickers(container = document) {
+    container.querySelectorAll('.custom-calendar').forEach(function (calendarField) {
+        if (calendarField.querySelector('.visually-hidden')) return;
+
+        const span = calendarField.querySelector('span');
+        const dateValue = span.innerText.trim() === '-' ? '' : span.innerText.trim();
+
+        // 1. Улучшенный поиск родителя и префикса
+        const parentCell = calendarField.closest('[class*="-cell"], [class*="-field"], [class*="-form-group"]');
+        let prefix = 'cr'; // по умолчанию
+        let fieldName = '';
+
+        if (parentCell) {
+            // Пытаемся вытащить префикс из класса (например, "pay" из "pay-form-group")
+            const classMatch = parentCell.className.match(/([a-z]+)-(cell|field|form-group)/);
+            if (classMatch) prefix = classMatch[1];
+
+            // Берем название поля из data-field
+            fieldName = parentCell.getAttribute('data-field') || '';
+        }
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = dateValue;
+        input.classList.add('visually-hidden', `${prefix}-edit`, `${prefix}-input`);
+
+        // 2. ВАЖНО: Генерируем ID (например, payAddDate)
+        if (fieldName) {
+            input.name = fieldName;
+            input.id = prefix + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+        }
+
+        calendarField.appendChild(input);
+
+        flatpickr(input, {
+            dateFormat: 'm/d/Y',
+            defaultDate: dateValue || null,
+            disableMobile: true,
+            positionElement: calendarField,
+            monthSelectorType: 'dropdown',
+            onChange: function (selectedDates, dateStr) {
+                span.innerText = dateStr;
+                input.value = dateStr;
+            },
+        });
+
+        calendarField.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const row = calendarField.closest('[class*="-row"]');
+            const editModeWrapper = calendarField.closest('[class*="-edit-mode"]');
+            const popup = calendarField.closest('.active');
+
+            const isEditing = (row && row.classList.contains('is-editing')) ||
+                (editModeWrapper && window.getComputedStyle(editModeWrapper).display !== 'none') ||
+                (popup !== null);
+
+            if (isEditing) {
+                input._flatpickr.open();
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.pr-tab-btn');
     const tabContents = document.querySelectorAll('.pr-tab-content');
@@ -130,7 +193,9 @@ document.addEventListener('DOMContentLoaded', function () {
             editMode.style.display = 'flex';
 
             const input = editMode.querySelector('.pr-edit-input');
-            if (input) input.focus();
+            if (input && !input.classList.contains('visually-hidden')) {
+                input.focus();
+            }
         } else {
             viewMode.style.display = 'flex';
             editMode.style.display = 'none';
@@ -523,18 +588,28 @@ document.addEventListener('DOMContentLoaded', function () {
     let activeDeleteRow = null;
 
     function clearCrForm() {
-        document.getElementById('crFirstName').value = '';
-        document.getElementById('crLastName').value = '';
-        document.getElementById('crRole').value = '';
-        document.getElementById('crOwnership').value = '';
-        document.getElementById('crEmail').value = '';
-        document.getElementById('crPhone').value = '';
-        document.getElementById('crDob').value = '';
-        document.getElementById('crSsn').value = '';
-        document.getElementById('crAddress').value = '';
-        document.getElementById('crZip').value = '';
-        document.getElementById('crState').value = '';
-        document.getElementById('crCity').value = '';
+        // Обычные поля
+        const simpleFields = [
+            'crFirstName', 'crLastName', 'crRole', 'crOwnership',
+            'crEmail', 'crPhone', 'crSsn', 'crAddress',
+            'crZip', 'crState', 'crCity'
+        ];
+        simpleFields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+
+        // Сброс календаря в попапе
+        const dobGroup = document.querySelector('.form-group[data-field="dob"]');
+        if (dobGroup) {
+            const span = dobGroup.querySelector('.custom-calendar span');
+            const input = dobGroup.querySelector('input');
+            if (span) span.textContent = '-';
+            if (input) {
+                input.value = '';
+                if (input._flatpickr) input._flatpickr.clear(); // Очищаем сам Flatpickr
+            }
+        }
 
         document.querySelectorAll('.cr-input').forEach(inp => inp.style.borderColor = '');
     }
@@ -602,14 +677,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cells = row.querySelectorAll('.cr-cell[data-field]');
 
                 cells.forEach(cell => {
-                    const input = cell.querySelector('.cr-edit');
+                    const input = cell.querySelector('input, select');
                     const view = cell.querySelector('.cr-val');
 
                     if (input && view) {
                         let val = input.value || '-';
-                        if (input.type === 'date' && input.value) {
-                            val = formatDOB(input.value);
-                        }
 
                         view.textContent = val;
 
@@ -637,11 +709,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('crSaveNewBtn')?.addEventListener('click', () => {
+        // Основные поля
         const fName = document.getElementById('crFirstName');
         const lName = document.getElementById('crLastName');
         const email = document.getElementById('crEmail');
         const phone = document.getElementById('crPhone');
 
+        // Валидация обязательных полей
         let hasError = false;
         [fName, lName, email, phone].forEach(input => {
             if (!input.value.trim()) {
@@ -654,81 +728,100 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (hasError) return;
 
+        // Сбор данных из полей
         const fullName = `${fName.value.trim()} ${lName.value.trim()}`;
         const ownership = document.getElementById('crOwnership').value.trim() || '-';
         const role = document.getElementById('crRole').value || '-';
         const ssn = document.getElementById('crSsn').value.trim() || '-';
-        const dobRaw = document.getElementById('crDob').value;
-        const dobFormat = formatDOB(dobRaw);
 
+        // НОВОЕ: Получаем дату из нашего кастомного календаря в попапе
+        // Ищем скрытый инпут, который создала функция initAllCustomDatePickers внутри группы DOB
+        const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
+        const dobInput = dobGroup ? dobGroup.querySelector('input') : null;
+        const dobFormat = (dobInput && dobInput.value) ? dobInput.value : '-';
+
+        // Сбор адреса
         const address = document.getElementById('crAddress').value.trim();
         const city = document.getElementById('crCity').value.trim();
         const state = document.getElementById('crState').value;
         const zip = document.getElementById('crZip').value.trim();
-
         let fullAddress = [address, city, state, zip].filter(Boolean).join(', ') || '-';
 
         const roleClass = role === 'Owner' ? 'cr-text-green' : '';
 
+        // Создание новой строки таблицы
         const newRow = document.createElement('div');
         newRow.className = 'cr-row';
         newRow.innerHTML = `
-            <div class="cr-cell" data-field="fullName">
-                <span class="cr-view cr-val">${fullName}</span>
-                <input type="text" class="cr-edit cr-input" value="${fullName}">
-            </div>
-            <div class="cr-cell" data-field="ownership">
-                <span class="cr-view cr-val">${ownership}</span>
-                <input type="text" class="cr-edit cr-input" value="${ownership}">
-            </div>
-            <div class="cr-cell" data-field="role">
-                <span class="cr-view cr-val ${roleClass}">${role}</span>
-                <select class="cr-edit cr-input">
-                    <option value="Owner" ${role === 'Owner' ? 'selected' : ''}>Owner</option>
-                    <option value="Manager" ${role === 'Manager' ? 'selected' : ''}>Manager</option>
-                    <option value="Employee" ${role === 'Employee' ? 'selected' : ''}>Employee</option>
-                </select>
-            </div>
-            <div class="cr-cell" data-field="phone">
-                <span class="cr-view cr-val">${phone.value}</span>
-                <input type="text" class="cr-edit cr-input" value="${phone.value}">
-            </div>
-            <div class="cr-cell" data-field="email">
-                <span class="cr-view cr-val">${email.value}</span>
-                <input type="email" class="cr-edit cr-input" value="${email.value}">
-            </div>
-            <div class="cr-cell" data-field="ssn">
-                <span class="cr-view cr-val">${ssn}</span>
-                <input type="text" class="cr-edit cr-input" value="${ssn}">
-            </div>
-            <div class="cr-cell" data-field="dob">
-                <span class="cr-view cr-val">${dobFormat}</span>
-                <input type="date" class="cr-edit cr-input" value="${dobRaw}">
-            </div>
-            <div class="cr-cell" data-field="address">
-                <span class="cr-view cr-val">${fullAddress}</span>
-                <input type="text" class="cr-edit cr-input" value="${fullAddress}">
-            </div>
-            <div class="cr-cell">
-                <div class="cr-view cr-actions">
-                    <button class="cr-icon-btn cr-btn-edit">
-                    </button>
-                    <button class="cr-icon-btn cr-btn-delete">
-                    </button>
-                </div>
-                <div class="cr-edit cr-edit-actions">
-                    <button class="cr-btn-save">Save</button>
-                    <button class="cr-btn-cancel">Cancel</button>
+        <div class="cr-cell" data-field="fullName">
+            <span class="cr-view cr-val">${fullName}</span>
+            <input type="text" class="cr-edit cr-input" value="${fullName}">
+        </div>
+        <div class="cr-cell" data-field="ownership">
+            <span class="cr-view cr-val">${ownership}</span>
+            <input type="text" class="cr-edit cr-input" value="${ownership}">
+        </div>
+        <div class="cr-cell" data-field="role">
+            <span class="cr-view cr-val ${roleClass}">${role}</span>
+            <select class="cr-edit cr-input">
+                <option value="Owner" ${role === 'Owner' ? 'selected' : ''}>Owner</option>
+                <option value="Manager" ${role === 'Manager' ? 'selected' : ''}>Manager</option>
+                <option value="Employee" ${role === 'Employee' ? 'selected' : ''}>Employee</option>
+            </select>
+        </div>
+        <div class="cr-cell" data-field="phone">
+            <span class="cr-view cr-val">${phone.value}</span>
+            <input type="text" class="cr-edit cr-input" value="${phone.value}">
+        </div>
+        <div class="cr-cell" data-field="email">
+            <span class="cr-view cr-val">${email.value}</span>
+            <input type="email" class="cr-edit cr-input" value="${email.value}">
+        </div>
+        <div class="cr-cell" data-field="ssn">
+            <span class="cr-view cr-val">${ssn}</span>
+            <input type="text" class="cr-edit cr-input" value="${ssn}">
+        </div>
+        <div class="cr-cell" data-field="dob">
+            <span class="cr-view cr-val">${dobFormat}</span>
+            <div class="cr-edit" style="width: 100%;">
+                <div class="custom-calendar" style="position: relative; display: flex; align-items: center; justify-content: space-between; border: 1px solid #159C2A; padding: 6px 10px; border-radius: 3px; background: #fff; cursor: pointer;">
+                    <span style="font-family: 'Urbanist', sans-serif; font-size: 14px; color: #232323;">${dobFormat}</span>
                 </div>
             </div>
-        `;
+        </div>
+        <div class="cr-cell" data-field="address">
+            <span class="cr-view cr-val">${fullAddress}</span>
+            <input type="text" class="cr-edit cr-input" value="${fullAddress}">
+        </div>
+        <div class="cr-cell cr-center">
+            <div class="cr-view cr-actions">
+                <button class="cr-icon-btn cr-btn-edit"></button>
+                <button class="cr-icon-btn cr-btn-delete"></button>
+            </div>
+            <div class="cr-edit cr-edit-actions">
+                <button class="cr-btn-save">Save</button>
+                <button class="cr-btn-cancel">Cancel</button>
+            </div>
+        </div>
+    `;
 
+        // Добавляем строку в таблицу
         crTableBody.appendChild(newRow);
 
+        // ВАЖНО: Инициализируем календарь в только что созданной строке
+        initAllCustomDatePickers(newRow);
+
+        // Закрываем модалку и очищаем форму
         crAddOverlay.classList.remove('active');
         crAddPopup.classList.remove('active');
         clearCrForm();
     });
+
+    initAllCustomDatePickers();
+
+    if (crAddPopup) {
+        initAllCustomDatePickers(crAddPopup);
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -836,12 +929,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const fieldName = input.getAttribute('name');
         const fieldValue = input.value;
         const valDisplay = fieldWrap.querySelector('.rpl-val');
+        const isDatePicker = fieldWrap.getAttribute('data-field').includes('date') || input.closest('.custom-calendar');
 
-        // Handling display update based on input type
-        if (input.type === 'date') {
-            valDisplay.textContent = formatDateToDisplay(fieldValue);
+        if (isDatePicker) {
+            valDisplay.textContent = fieldValue || '—';
         } else if (valDisplay.tagName === 'A') {
-            // Make sure the link is clickable if it's a URL
             if (fieldValue) {
                 const urlVal = fieldValue.startsWith('http') ? fieldValue : `https://${fieldValue}`;
                 valDisplay.href = urlVal;
@@ -858,7 +950,6 @@ document.addEventListener('DOMContentLoaded', function () {
             [fieldName]: fieldValue
         };
 
-        // Simulate backend call
         console.log('RPL Sending data:', payload);
 
         toggleEditMode(fieldWrap, false);
@@ -1318,9 +1409,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }).join('');
 
             row.innerHTML = `
-                <div class="pay-cell">
+                <div class="pay-cell" data-field="payment_date">
                     <div class="pay-view">${item.payment_date}</div>
-                    <div class="pay-edit"><input type="date" class="pay-input pay-edit-date" value="${dateRaw}"></div>
+                    <div class="pay-edit" style="width: 100%;">
+                        <div class="custom-calendar">
+                            <span>${item.payment_date}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="pay-cell">
                     <div class="pay-view">$${item.payment_amount}</div>
@@ -1379,6 +1474,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 new Cleave(row.querySelector('.pay-edit-amount'), { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
             }
         });
+
+        initAllCustomDatePickers(payTableBody);
     }
 
     payTableBody.addEventListener('click', (e) => {
@@ -1423,7 +1520,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const item = dataByYear[currentYear].data.find(d => String(d.itm_id) === String(id));
 
         if (item) {
-            const dateInput = row.querySelector('.pay-edit-date').value;
+            const dateInput = row.querySelector('.pay-input.pay-edit-date')?.value ||
+                row.querySelector('.custom-calendar input')?.value;
             const amountInput = row.querySelector('.pay-edit-amount').value;
             const typeInput = row.querySelector('.pay-edit-type').value;
             const detailsInput = row.querySelector('.pay-edit-details').value;
@@ -1436,8 +1534,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (dateInput) {
-                const parts = dateInput.split('-');
-                item.payment_date = `${parts[1]}/${parts[2]}/${parts[0]}`;
+                item.payment_date = dateInput;
             }
 
             item.payment_amount = amountInput;
@@ -1500,36 +1597,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const dateInput = document.getElementById('payAddDate').value;
+
+        // Пытаемся найти инпут по ID или просто внутри группы addDate
+        let dateInput = document.getElementById('payAddDate');
+        if (!dateInput) {
+            dateInput = addForm.querySelector('[data-field="addDate"] input');
+        }
+
         const typeInput = document.getElementById('payAddType').value;
         const detailsInput = addDetails.value;
         const amountVal = addAmount.value;
 
-        const parts = dateInput.split('-');
-        const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+        // Валидация
+        if (!dateInput || !dateInput.value || dateInput.value === '-') {
+            const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
+            if (calendarBox) calendarBox.style.borderColor = '#FF496B';
+            return;
+        } else {
+            const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
+            if (calendarBox) calendarBox.style.borderColor = '#159C2A';
+        }
 
-        const dealsHiddenVal = document.getElementById('payAddDeals').value;
-        const selectedDealIds = JSON.parse(dealsHiddenVal || '[]');
+        // Обработка сделок (с защитой от пустого JSON)
+        const dealsHiddenVal = document.getElementById('payAddDeals')?.value || "";
+        let selectedDealIds = [];
+        if (dealsHiddenVal) {
+            try { selectedDealIds = JSON.parse(dealsHiddenVal); } catch (e) { selectedDealIds = []; }
+        }
+
         const dealsObj = selectedDealIds.map(id => {
             const deal = dealsPaidData.find(d => String(d.id) === String(id));
-            return { name: deal.name, url: '#' };
+            return { name: deal ? deal.name : 'Unknown', url: '#' };
         });
 
         const newItem = {
             itm_id: Date.now().toString(),
-            payment_date: formattedDate,
+            payment_date: dateInput.value,
             payment_amount: amountVal,
             payment_type: typeInput,
             payment_details: detailsInput,
             deals_paid: dealsObj
         };
 
-        if (!dataByYear[currentYear]) dataByYear[currentYear] = { data: [], total_due: '0.00', total_paid: '0.00', total: '0.00' };
+        if (!dataByYear[currentYear]) dataByYear[currentYear] = { data: [] };
         dataByYear[currentYear].data.unshift(newItem);
 
         renderData();
+
+        // Закрытие и сброс
         payAddOverlay.classList.remove('active');
         payAddPopup.classList.remove('active');
+        addForm.reset();
+        const calendarSpan = addForm.querySelector('.custom-calendar span');
+        if (calendarSpan) calendarSpan.textContent = '-';
     });
 
     // Global Multiselect Handlers (Works for Add Modal & Inline Rows)
@@ -1577,8 +1697,13 @@ document.addEventListener('DOMContentLoaded', function () {
         // Close dropdowns
         document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => d.classList.remove('active'));
         document.querySelectorAll('.pay-multiselect-box').forEach(b => b.classList.remove('is-focused'));
-        payYearDropdown.classList.remove('active');
-        payYearArrow.style.transform = 'rotate(0deg)';
+
+        // Используем поиск элементов напрямую, чтобы не зависеть от областей видимости
+        const yearDropdown = document.getElementById('payYearDropdown');
+        const yearArrow = document.getElementById('payYearArrow');
+
+        if (yearDropdown) yearDropdown.classList.remove('active');
+        if (yearArrow) yearArrow.style.transform = 'rotate(0deg)';
     });
 
     document.addEventListener('input', (e) => {
@@ -1631,4 +1756,10 @@ document.addEventListener('DOMContentLoaded', function () {
         payDeletePopup.classList.remove('active');
         currentDeleteId = null;
     }
+
+    if (payAddPopup) {
+        initAllCustomDatePickers(payAddPopup);
+    }
+
+    initAllCustomDatePickers(document.getElementById('payAddPopup'));
 });

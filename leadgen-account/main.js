@@ -38,7 +38,47 @@ window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
 
+// Универсальная функция инициализации календарей
+function initCustomDatePickers(container = document) {
+    container.querySelectorAll('.custom-calendar').forEach(function (calendarField) {
+        if (calendarField.querySelector('.visually-hidden')) return;
+
+        const span = calendarField.querySelector('span');
+        const dateValue = span.innerText.trim();
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = dateValue;
+        input.classList.add('visually-hidden', 'lga-edit', 'lga-inline-input');
+        calendarField.appendChild(input);
+
+        flatpickr(input, {
+            dateFormat: 'm/d/Y',
+            defaultDate: dateValue,
+            disableMobile: true,
+            positionElement: calendarField,
+            static: false,
+            // ИЗМЕНЕНО: теперь будет выпадающий список месяцев и ввод года
+            monthSelectorType: 'dropdown',
+            ignoredFocusElements: [calendarField],
+
+            onChange: function (selectedDates, dateStr) {
+                span.innerText = dateStr;
+                input.value = dateStr;
+            },
+        });
+
+        calendarField.addEventListener('click', function (e) {
+            e.stopPropagation();
+            input._flatpickr.open();
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    // Запускаем инициализацию при загрузке страницы
+    initCustomDatePickers();
+
     const tabButtons = document.querySelectorAll('.pr-tab-btn');
     const tabContents = document.querySelectorAll('.pr-tab-content');
 
@@ -227,11 +267,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cells = row.querySelectorAll('.lga-cell[data-field]');
 
                 cells.forEach(cell => {
-                    const input = cell.querySelector('.lga-edit');
+                    const input = cell.querySelector('input.lga-inline-input, select.lga-inline-input');
                     const view = cell.querySelector('.lga-val');
 
                     if (input && view) {
                         let val = input.value;
+
                         if (input.type === 'date') {
                             val = formatDateToDisplay(val);
                         }
@@ -269,7 +310,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const date = new Date();
             const dateStr = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
-            const dateInputFormat = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
             const fullName = `${formData.get('firstName')} ${formData.get('lastName')}`;
             const email = formData.get('email');
@@ -283,7 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
             newRow.innerHTML = `
                 <div class="lga-cell" data-field="date">
                     <span class="lga-view lga-val">${dateStr}</span>
-                    <input type="date" class="lga-edit lga-inline-input" value="${dateInputFormat}">
+                    <div class="lga-edit" style="width: 100%;"> <div class="custom-calendar">
+                            <span>${dateStr}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="lga-cell" data-field="fullName">
                     <span class="lga-view lga-val">${fullName}</span>
@@ -323,6 +366,10 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
 
             lgaTableBody.insertBefore(newRow, lgaTableBody.firstChild);
+
+            // Инициализируем календарь для только что созданной строки
+            initCustomDatePickers(newRow);
+
             closeAllModals();
         }
     });

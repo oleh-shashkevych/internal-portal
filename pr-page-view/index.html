@@ -1217,8 +1217,12 @@
 															<input type="text" class="cr-edit cr-input" value="-">
 														</div>
 														<div class="cr-cell" data-field="dob">
-															<span class="cr-view cr-val">-</span>
-															<input type="date" class="cr-edit cr-input">
+															<span class="cr-view cr-val">03/15/2026</span>
+															<div class="cr-edit" style="width: 100%;">
+																<div class="custom-calendar">
+																	<span>03/15/2026</span>
+																</div>
+															</div>
 														</div>
 														<div class="cr-cell" data-field="address">
 															<span class="cr-view cr-val">-</span>
@@ -1317,11 +1321,12 @@
 														<span class="rpl-label">Date Create</span>
 														<div class="rpl-view-mode">
 															<span class="rpl-val">08/20/2025</span>
-															<button class="rpl-action-btn rpl-edit-btn-inline">
-															</button>
+															<button class="rpl-action-btn rpl-edit-btn-inline"></button>
 														</div>
 														<div class="rpl-edit-mode" style="display: none;">
-															<input type="date" name="date_create" class="rpl-input">
+															<div class="custom-calendar">
+																<span>08/20/2025</span>
+															</div>
 															<div class="rpl-edit-actions">
 																<button class="rpl-save-btn">Save</button>
 																<button class="rpl-cancel-btn">Cancel</button>
@@ -1571,7 +1576,7 @@
 													</div>
 													<div class="ah-table-body">
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -1581,7 +1586,7 @@
 															</div>
 														</div>
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -1591,7 +1596,7 @@
 															</div>
 														</div>
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -1601,7 +1606,7 @@
 															</div>
 														</div>
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -1611,7 +1616,7 @@
 															</div>
 														</div>
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> added
 																<span class="ah-highlight">Representative</span> field
@@ -1639,7 +1644,7 @@
 													</div>
 													<div class="ah-table-body">
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -1649,7 +1654,7 @@
 															</div>
 														</div>
 														<div class="ah-row">
-															<div class="ah-cell ah-date">08.27.2025 21:23 PM</div>
+															<div class="ah-cell ah-date">08/27/2025 21:23 PM</div>
 															<div class="ah-cell ah-desc">
 																<span class="ah-highlight">Bogdan Admin</span> removed
 																<span class="ah-highlight">RP Type</span> field from
@@ -2771,9 +2776,11 @@
 				<label>Phone: <span class="cr-req">*</span></label>
 				<input type="text" id="crPhone" placeholder="Phone Direct">
 			</div>
-			<div class="form-group">
+			<div class="form-group" data-field="dob">
 				<label>DOB:</label>
-				<input type="date" id="crDob">
+				<div class="custom-calendar">
+					<span>-</span>
+				</div>
 			</div>
 			<div class="form-group">
 				<label>SSN:</label>
@@ -2877,9 +2884,11 @@
 			</button>
 		</div>
 		<form id="payAddForm" style="display: flex; flex-direction: column; gap: 15px;">
-			<div class="pay-form-group">
+			<div class="pay-form-group" data-field="addDate">
 				<label class="pay-label">Payment Date*</label>
-				<input type="date" id="payAddDate" class="pay-input" required>
+				<div class="custom-calendar">
+					<span>-</span>
+				</div>
 			</div>
 			<div class="pay-form-group">
 				<label class="pay-label">Payment Amount*</label>
