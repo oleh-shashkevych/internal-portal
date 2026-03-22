@@ -1300,6 +1300,13 @@
     padding: 0;
     color: #8B928C;
     transition: all 0.3s ease;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.lgv-det-field:hover .lgv-det-action-btn {
+    visibility: visible;
+    opacity: 1;
 }
 
 .lgv-det-action-btn::before {
