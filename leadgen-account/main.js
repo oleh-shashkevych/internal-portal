@@ -163,6 +163,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (btnGenerate && passInput) {
             btnGenerate.addEventListener('click', () => {
+                // Prevent execution if the button is already disabled
+                if (btnGenerate.disabled) return;
+
+                // Disable the button to prevent multiple clicks
+                btnGenerate.disabled = true;
+
                 const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
                 let pass = "";
                 for (let i = 0; i < 12; i++) {
@@ -181,7 +187,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     btnGenerate.textContent = 'Copied!';
                     setTimeout(() => {
                         btnGenerate.textContent = origText;
+                        // Enable the button after the timeout
+                        btnGenerate.disabled = false;
                     }, 2000);
+                }).catch(err => {
+                    // Enable the button back if copying to clipboard fails
+                    console.error('Failed to copy text: ', err);
+                    btnGenerate.disabled = false;
                 });
             });
         }

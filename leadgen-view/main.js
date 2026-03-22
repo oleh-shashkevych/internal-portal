@@ -1,15 +1,15 @@
 const burger = document.getElementById('burger');
 const closeBurger = document.getElementById('close_burger');
 const sideBar = document.querySelector('.left_cp_bar');
-const overlay = document.querySelector('.overlay')
+const overlay = document.querySelector('.overlay');
 
-// При клике на бургер показываем меню
+// Show menu on burger click
 burger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(0)';
     overlay.style.display = 'flex';
 });
 
-// При клике на крестик скрываем меню
+// Hide menu on close click
 closeBurger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(-120%)';
     overlay.style.display = 'none';
@@ -30,14 +30,15 @@ function toggleContactsPanel(width) {
     }
 }
 
-// Инициализация при загрузке
+// Initialize on load
 toggleContactsPanel(window.innerWidth);
 
-// Слушатель изменения размера окна
+// Listen for window resize
 window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
 
+// Tab switching logic with edit mode reset
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.pr-tab-btn');
     const tabContents = document.querySelectorAll('.pr-tab-content');
@@ -45,14 +46,45 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tabButtons.length > 0) {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Убираем класс active у всех кнопок и контента
+
+                // --- RESET EDIT MODES ---
+
+                // 1. Cancel Detail Tab Global Edit
+                const globalEditBtn = document.getElementById('lgvDetGlobalEditBtn');
+                if (globalEditBtn && globalEditBtn.classList.contains('lgv-det-edit-btn-global-active')) {
+                    globalEditBtn.click();
+                }
+
+                // 2. Cancel Detail Tab Inline Edits
+                const detailCancelBtns = document.querySelectorAll('.lgv-det-edit-mode .lgv-det-cancel-btn');
+                detailCancelBtns.forEach(btn => {
+                    const editMode = btn.closest('.lgv-det-edit-mode');
+                    if (editMode && window.getComputedStyle(editMode).display !== 'none') {
+                        btn.click();
+                    }
+                });
+
+                // 3. Cancel Invoices Tab Edits
+                const editingInvoiceRows = document.querySelectorAll('.lgv-inv-row.is-editing');
+                editingInvoiceRows.forEach(row => {
+                    const cancelBtn = row.querySelector('.lgv-inv-btn-cancel');
+                    if (cancelBtn) {
+                        cancelBtn.click();
+                    } else {
+                        row.classList.remove('is-editing');
+                    }
+                });
+
+                // --- TAB SWITCHING LOGIC ---
+
+                // Remove active class from all buttons and content
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
 
-                // Добавляем класс active кликнутой кнопке
+                // Add active class to the clicked button
                 button.classList.add('active');
 
-                // Ищем соответствующий контент по data-tab и показываем его
+                // Find corresponding content by data-tab and show it
                 const tabId = button.getAttribute('data-tab');
                 const targetContent = document.getElementById(`tab-${tabId}`);
                 if (targetContent) {
@@ -89,30 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             elFill.style.width = `${Math.min(Math.max(percent, 0), 100)}%`;
         }, 300);
-    }
-
-    // Tab switching logic (reusing standard logic for .pr-tab-btn inside .lgv-main if it wasn't global)
-    const lgvMain = document.querySelector('.lgv-main');
-    if (lgvMain) {
-        const tabButtons = lgvMain.querySelectorAll('.pr-tab-btn');
-        const tabContents = lgvMain.querySelectorAll('.pr-tab-content');
-
-        if (tabButtons.length > 0) {
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(content => content.classList.remove('active'));
-
-                    button.classList.add('active');
-
-                    const tabId = button.getAttribute('data-tab');
-                    const targetContent = document.getElementById(`tab-${tabId}`);
-                    if (targetContent) {
-                        targetContent.classList.add('active');
-                    }
-                });
-            });
-        }
     }
 });
 
@@ -227,14 +235,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const lgvInvAddDetail = document.getElementById('lgvInvAddDetail');
     const lgvInvAddCount = document.getElementById('lgvInvAddCount');
 
-    // Ініціалізація існуючих Cleave.js масок в таблиці
+    // Initialize existing Cleave.js masks in the table
     if (typeof Cleave !== 'undefined') {
         document.querySelectorAll('.lgv-inv-cleave').forEach(el => {
             new Cleave(el, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
         });
     }
 
-    // Рахівник символів для textarea
+    // Character counter for textarea
     if (lgvInvAddDetail) {
         lgvInvAddDetail.addEventListener('input', () => {
             const left = 500 - lgvInvAddDetail.value.length;
@@ -243,13 +251,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Прибирання помилок при введенні (в попапі)
+    // Remove errors on input (in popup)
     lgvInvAddForm?.querySelectorAll('.lgv-inv-input').forEach(input => {
         input.addEventListener('input', () => input.classList.remove('has-error'));
         input.addEventListener('change', () => input.classList.remove('has-error'));
     });
 
-    // Відкриття / Закриття попапа
+    // Open / Close popup
     document.getElementById('lgvInvOpenAddBtn')?.addEventListener('click', () => {
         lgvInvAddForm.reset();
         lgvInvAddCount.textContent = '500 characters left';
@@ -266,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('lgvInvCloseAddBtn')?.addEventListener('click', closeAddPopup);
 
-    // Додавання нового інвойсу
+    // Add new invoice
     lgvInvAddForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         let isValid = true;
@@ -328,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             lgvInvTableBody.insertBefore(newRow, lgvInvTableBody.firstChild);
 
-            // Застосовуємо Cleave до нових інпутів
+            // Apply Cleave to new inputs
             if (typeof Cleave !== 'undefined') {
                 newRow.querySelectorAll('.lgv-inv-cleave').forEach(el => {
                     new Cleave(el, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
@@ -339,17 +347,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Логіка інлайн редагування (Клік на рядок)
+    // Inline editing logic (Row click)
     if (lgvInvTableBody) {
         lgvInvTableBody.addEventListener('click', (e) => {
             const row = e.target.closest('.lgv-inv-row');
             if (!row) return;
 
-            // Якщо клікнули по кнопці дії або якщо рядок вже редагується — ігноруємо відкриття редагування
+            // Ignore if action button clicked or row already editing
             const isActionButton = e.target.closest('button') && !e.target.closest('.lgv-inv-edit-actions');
             if (isActionButton || row.classList.contains('is-editing')) {
 
-                // Обробка кнопок Save/Cancel
+                // Handle Save/Cancel buttons
                 const cancelBtn = e.target.closest('.lgv-inv-btn-cancel');
                 const saveBtn = e.target.closest('.lgv-inv-btn-save');
 
@@ -380,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     view.classList.add('lgv-inv-badge-pending');
                                 }
 
-                                // Зміна кнопки дії
+                                // Change action button
                                 const actionWrapper = row.querySelector('.lgv-inv-actions-wrapper');
                                 if (actionWrapper) {
                                     if (val === 'Paid') {
@@ -400,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Якщо клік був просто по рядку, відкриваємо редагування
+            // Open edit mode on row click
             row.classList.add('is-editing');
         });
     }

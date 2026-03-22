@@ -1,7 +1,7 @@
 const burger = document.getElementById('burger');
 const closeBurger = document.getElementById('close_burger');
 const sideBar = document.querySelector('.left_cp_bar');
-const overlay = document.querySelector('.overlay')
+const overlay = document.querySelector('.overlay');
 
 // При клике на бургер показываем меню
 burger.addEventListener('click', () => {
@@ -101,6 +101,7 @@ function initAllCustomDatePickers(container = document) {
     });
 }
 
+// --- УЛУЧШЕННАЯ ЛОГИКА ТАБОВ СО СБРОСОМ РЕДАКТИРОВАНИЯ ---
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.pr-tab-btn');
     const tabContents = document.querySelectorAll('.pr-tab-content');
@@ -108,6 +109,54 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tabButtons.length > 0) {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
+
+                // --- 1. СБРОС ГЛОБАЛЬНЫХ РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
+
+                // Landing Page
+                const lpGlobalBtn = document.getElementById('lpGlobalEditBtn');
+                if (lpGlobalBtn && lpGlobalBtn.classList.contains('pr-lp-edit-btn-active')) lpGlobalBtn.click();
+
+                // Business Details
+                const bdGlobalBtn = document.getElementById('bdGlobalEditBtn');
+                if (bdGlobalBtn && bdGlobalBtn.classList.contains('bd-edit-btn-global-active')) bdGlobalBtn.click();
+
+                // RP Leads Details
+                const rplGlobalBtn = document.getElementById('rplGlobalEditBtn');
+                if (rplGlobalBtn && rplGlobalBtn.classList.contains('rpl-edit-btn-global--active')) rplGlobalBtn.click();
+
+
+                // --- 2. СБРОС ИНЛАЙН (ВСТРОЕННЫХ) РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
+
+                // Landing Page Inline
+                document.querySelectorAll('.pr-edit-mode .pr-cancel-btn').forEach(btn => {
+                    const wrap = btn.closest('.pr-edit-mode');
+                    if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
+                });
+
+                // Accounts Broker Inline
+                document.querySelectorAll('.ab-row.is-editing .ab-btn-cancel').forEach(btn => btn.click());
+
+                // Business Details Inline
+                document.querySelectorAll('.bd-edit-mode .bd-cancel-btn').forEach(btn => {
+                    const wrap = btn.closest('.bd-edit-mode');
+                    if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
+                });
+
+                // Contact Roles Inline
+                document.querySelectorAll('.cr-row.is-editing .cr-btn-cancel').forEach(btn => btn.click());
+
+                // RP Leads Details Inline
+                document.querySelectorAll('.rpl-edit-mode .rpl-cancel-btn').forEach(btn => {
+                    const wrap = btn.closest('.rpl-edit-mode');
+                    if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
+                });
+
+                // Payments Inline
+                document.querySelectorAll('.pay-row.is-editing .pay-btn-cancel').forEach(btn => btn.click());
+
+
+                // --- 3. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ---
+
                 // Убираем класс active у всех кнопок и контента
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
@@ -447,6 +496,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (generateBtn && passwordInput) {
         generateBtn.addEventListener('click', () => {
+            if (generateBtn.disabled) return;
+
+            generateBtn.disabled = true;
+
             const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
             let pass = "";
             for (let i = 0; i < 12; i++) {
@@ -464,7 +517,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 generateBtn.textContent = 'Copied!';
                 setTimeout(() => {
                     generateBtn.textContent = originalText;
+                    generateBtn.disabled = false;
                 }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                generateBtn.disabled = false;
             });
         });
     }
@@ -484,18 +541,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Function to close the delete modal and clear active row
     function closeAbDeleteModal() {
         if (abDeleteOverlay) abDeleteOverlay.classList.remove('active');
         if (abDeletePopup) abDeletePopup.classList.remove('active');
         activeAbDeleteRow = null;
     }
 
-    // Event listeners for closing the modal
     document.getElementById('abCloseDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
     document.getElementById('abCancelDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
 
-    // Event listener for confirming deletion
     document.getElementById('abConfirmDeleteBtn')?.addEventListener('click', () => {
         if (activeAbDeleteRow) {
             activeAbDeleteRow.remove();
@@ -615,7 +669,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let activeDeleteRow = null;
 
     function clearCrForm() {
-        // Обычные поля
         const simpleFields = [
             'crFirstName', 'crLastName', 'crRole', 'crOwnership',
             'crEmail', 'crPhone', 'crSsn', 'crAddress',
@@ -626,7 +679,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (el) el.value = '';
         });
 
-        // Сброс календаря в попапе
         const dobGroup = document.querySelector('.form-group[data-field="dob"]');
         if (dobGroup) {
             const span = dobGroup.querySelector('.custom-calendar span');
@@ -634,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (span) span.textContent = '-';
             if (input) {
                 input.value = '';
-                if (input._flatpickr) input._flatpickr.clear(); // Очищаем сам Flatpickr
+                if (input._flatpickr) input._flatpickr.clear();
             }
         }
 
@@ -709,7 +761,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (input && view) {
                         let val = input.value || '-';
-
                         view.textContent = val;
 
                         if (cell.getAttribute('data-field') === 'role') {
@@ -736,13 +787,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('crSaveNewBtn')?.addEventListener('click', () => {
-        // Основные поля
         const fName = document.getElementById('crFirstName');
         const lName = document.getElementById('crLastName');
         const email = document.getElementById('crEmail');
         const phone = document.getElementById('crPhone');
 
-        // Валидация обязательных полей
         let hasError = false;
         [fName, lName, email, phone].forEach(input => {
             if (!input.value.trim()) {
@@ -755,19 +804,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (hasError) return;
 
-        // Сбор данных из полей
         const fullName = `${fName.value.trim()} ${lName.value.trim()}`;
         const ownership = document.getElementById('crOwnership').value.trim() || '-';
         const role = document.getElementById('crRole').value || '-';
         const ssn = document.getElementById('crSsn').value.trim() || '-';
 
-        // НОВОЕ: Получаем дату из нашего кастомного календаря в попапе
-        // Ищем скрытый инпут, который создала функция initAllCustomDatePickers внутри группы DOB
         const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
         const dobInput = dobGroup ? dobGroup.querySelector('input') : null;
         const dobFormat = (dobInput && dobInput.value) ? dobInput.value : '-';
 
-        // Сбор адреса
         const address = document.getElementById('crAddress').value.trim();
         const city = document.getElementById('crCity').value.trim();
         const state = document.getElementById('crState').value;
@@ -776,7 +821,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const roleClass = role === 'Owner' ? 'cr-text-green' : '';
 
-        // Создание новой строки таблицы
         const newRow = document.createElement('div');
         newRow.className = 'cr-row';
         newRow.innerHTML = `
@@ -832,13 +876,9 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `;
 
-        // Добавляем строку в таблицу
         crTableBody.appendChild(newRow);
-
-        // ВАЖНО: Инициализируем календарь в только что созданной строке
         initAllCustomDatePickers(newRow);
 
-        // Закрываем модалку и очищаем форму
         crAddOverlay.classList.remove('active');
         crAddPopup.classList.remove('active');
         clearCrForm();
@@ -859,7 +899,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isRplGlobalEditActive = false;
 
-    // Helper: Convert MM/DD/YYYY to YYYY-MM-DD for date inputs
     function parseDateToInputFormat(dateStr) {
         if (!dateStr || dateStr === '—') return '';
         const parts = dateStr.split('/');
@@ -869,7 +908,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return '';
     }
 
-    // Helper: Convert YYYY-MM-DD back to MM/DD/YYYY for display
     function formatDateToDisplay(dateStr) {
         if (!dateStr) return '—';
         const parts = dateStr.split('-');
@@ -933,7 +971,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const input = fieldWrap.querySelector('.rpl-input');
 
         if (isEditing) {
-            // Pre-fill inputs with current text content
             if (input && input.type === 'date' && valDisplay) {
                 input.value = parseDateToInputFormat(valDisplay.textContent.trim());
             } else if (input && valDisplay) {
@@ -991,7 +1028,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const applyBtn = document.getElementById('prFilterApplyBtn');
     const resetBtn = document.getElementById('prFilterResetBtn');
 
-    // We only attach to buttons inside tab-pipeline to avoid conflicts
     const pipeTab = document.getElementById('tab-pipeline');
     if (!pipeTab) return;
 
@@ -1244,14 +1280,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         selectedFiles.forEach(file => {
             const ext = file.name.split('.').pop().toLowerCase();
-            const iconClass = getFileIconClass(ext); // Получаем класс
+            const iconClass = getFileIconClass(ext);
             const dateStr = formatDate();
             const sizeStr = (file.size / 1024).toFixed(1);
 
             const row = document.createElement('div');
             row.className = 'doc-row';
 
-            // Вставляем полученный класс прямо в div.doc-cell-icon
             row.innerHTML = `
                 <div class="doc-cell-icon ${iconClass}"></div>
                 <div class="doc-cell-info">
@@ -1358,7 +1393,6 @@ document.addEventListener('DOMContentLoaded', function () {
     renderData();
     populateAddPopupList();
 
-    // Year Dropdown
     payYearSelector.addEventListener('click', (e) => {
         e.stopPropagation();
         payYearDropdown.classList.toggle('active');
@@ -1419,7 +1453,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (parts.length === 3) dateRaw = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
             }
 
-            // Get selected deals ID array
             const selectedDealIds = item.deals_paid ? item.deals_paid.map(dp => {
                 const found = dealsPaidData.find(d => d.name === dp.name);
                 return found ? found.id : null;
@@ -1573,7 +1606,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Modal Add Setup
     const addForm = document.getElementById('payAddForm');
     const addAmount = document.getElementById('payAddAmount');
     const addDetails = document.getElementById('payAddDetails');
@@ -1605,7 +1637,6 @@ document.addEventListener('DOMContentLoaded', function () {
         addForm.reset();
         addCharCount.textContent = '500 characters left';
 
-        // Reset multiselect
         const tags = document.querySelector('#payAddDealsWrapper .pay-multiselect-tags');
         const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
         const hidden = document.getElementById('payAddDeals');
@@ -1625,7 +1656,6 @@ document.addEventListener('DOMContentLoaded', function () {
     addForm?.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Пытаемся найти инпут по ID или просто внутри группы addDate
         let dateInput = document.getElementById('payAddDate');
         if (!dateInput) {
             dateInput = addForm.querySelector('[data-field="addDate"] input');
@@ -1635,7 +1665,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const detailsInput = addDetails.value;
         const amountVal = addAmount.value;
 
-        // Валидация
         if (!dateInput || !dateInput.value || dateInput.value === '-') {
             const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
             if (calendarBox) calendarBox.style.borderColor = '#FF496B';
@@ -1645,7 +1674,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (calendarBox) calendarBox.style.borderColor = '#159C2A';
         }
 
-        // Обработка сделок (с защитой от пустого JSON)
         const dealsHiddenVal = document.getElementById('payAddDeals')?.value || "";
         let selectedDealIds = [];
         if (dealsHiddenVal) {
@@ -1671,7 +1699,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         renderData();
 
-        // Закрытие и сброс
         payAddOverlay.classList.remove('active');
         payAddPopup.classList.remove('active');
         addForm.reset();
@@ -1679,10 +1706,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (calendarSpan) calendarSpan.textContent = '-';
     });
 
-    // Global Multiselect Handlers (Works for Add Modal & Inline Rows)
     document.addEventListener('click', (e) => {
         const searchInput = e.target.closest('.pay-multiselect-search');
-        if (searchInput) return; // Prevent closing when clicking search
+        if (searchInput) return;
 
         const box = e.target.closest('.pay-multiselect-box');
         if (box) {
@@ -1721,11 +1747,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Close dropdowns
         document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => d.classList.remove('active'));
         document.querySelectorAll('.pay-multiselect-box').forEach(b => b.classList.remove('is-focused'));
 
-        // Используем поиск элементов напрямую, чтобы не зависеть от областей видимости
         const yearDropdown = document.getElementById('payYearDropdown');
         const yearArrow = document.getElementById('payYearArrow');
 
@@ -1764,7 +1788,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (hiddenInput) hiddenInput.value = JSON.stringify(ids);
     }
 
-    // Delete Modal Confirmation
     document.getElementById('payCancelDeleteBtn')?.addEventListener('click', closeDeleteModal);
     document.getElementById('payCloseDeleteBtn')?.addEventListener('click', closeDeleteModal);
     document.getElementById('payConfirmDeleteBtn')?.addEventListener('click', () => {
