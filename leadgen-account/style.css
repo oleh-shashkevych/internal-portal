@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
+.main_container {
+    max-width: 3200px;
+}
+
 /* Notifications */
 @keyframes bell-shake {
     0% {
