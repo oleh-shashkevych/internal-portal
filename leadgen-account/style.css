@@ -1050,18 +1050,6 @@
     width: 100%;
 }
 
-.is-editing .lga-view {
-    display: none;
-}
-
-.is-editing .lga-edit {
-    display: block;
-}
-
-.is-editing .lga-edit-actions {
-    display: flex;
-}
-
 .lga-inline-input {
     width: 100%;
     padding: 6px 10px;

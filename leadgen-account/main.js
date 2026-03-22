@@ -9,31 +9,12 @@ function applyMasks(container = document) {
     }
 
     // Маска телефона: (000) 000-0000
-    $(container).find('input[type="tel"], input[id*="Phone" i], input[id*="phone" i], input[name*="phone" i], .mask-phone, [data-field="phone"] input').each(function () {
+    $(container).find('input[name*="phone" i], .mask-phone, [data-field="phone"] input').each(function () {
         if (!$(this).hasClass('mask-applied') && $(this).attr('type') !== 'hidden') {
             $(this).inputmask({
                 mask: "(999) 999-9999",
-                clearIncomplete: true, // Очищает поле, если телефон введен не полностью
+                clearIncomplete: true,
                 showMaskOnHover: false
-            }).addClass('mask-applied');
-        }
-    });
-
-    // Маска суммы: 999,999,999.99 (если на этой странице тоже понадобятся суммы)
-    $(container).find('input[id*="Amount" i], input[name*="amount" i], input[name*="price" i], .mask-amount, [data-field="amount"] input').each(function () {
-        if (!$(this).hasClass('mask-applied') && $(this).attr('type') !== 'hidden') {
-            $(this).inputmask("currency", {
-                alias: "numeric",
-                groupSeparator: ",",
-                autoGroup: true,
-                digits: 2,
-                digitsOptional: false,
-                prefix: "",
-                placeholder: "0",
-                rightAlign: false,
-                clearMaskOnLostFocus: false,
-                max: "999999999.99",
-                allowMinus: false
             }).addClass('mask-applied');
         }
     });
@@ -64,12 +45,10 @@ function validateFormFields(inputsArray) {
             if (!emailRegex.test(val)) isFieldValid = false;
         }
 
-        // 3. Строгая проверка Телефона (ровно 10 цифр под маской)
+        // 3. Строгая проверка Телефона (ровно 10 цифр)
         const isPhoneField = input.type === 'tel' ||
-            input.id.toLowerCase().includes('phone') ||
             (input.name && input.name.toLowerCase().includes('phone')) ||
-            input.classList.contains('mask-phone') ||
-            (input.closest('[data-field="phone"]') !== null);
+            input.classList.contains('mask-phone');
 
         if (val !== '' && isPhoneField) {
             const digits = val.replace(/\D/g, '');
@@ -92,21 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// ОСНОВНОЙ СКРИПТ ПАНЕЛИ И ТАБОВ
+// ОСНОВНОЙ СКРИПТ (САЙДБАР)
 // ==========================================
 
 const burger = document.getElementById('burger');
 const closeBurger = document.getElementById('close_burger');
 const sideBar = document.querySelector('.left_cp_bar');
-const overlay = document.querySelector('.overlay')
+const overlay = document.querySelector('.overlay');
 
-// При клике на бургер показываем меню
 burger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(0)';
     overlay.style.display = 'flex';
 });
 
-// При клике на крестик скрываем меню
 closeBurger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(-120%)';
     overlay.style.display = 'none';
@@ -127,10 +104,7 @@ function toggleContactsPanel(width) {
     }
 }
 
-// Инициализация при загрузке
 toggleContactsPanel(window.innerWidth);
-
-// Слушатель изменения размера окна
 window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
@@ -157,7 +131,6 @@ function initCustomDatePickers(container = document) {
             static: false,
             monthSelectorType: 'dropdown',
             ignoredFocusElements: [calendarField],
-
             onChange: function (selectedDates, dateStr) {
                 span.innerText = dateStr;
                 input.value = dateStr;
@@ -172,32 +145,9 @@ function initCustomDatePickers(container = document) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Запускаем инициализацию при загрузке страницы
     initCustomDatePickers();
-
-    const tabButtons = document.querySelectorAll('.pr-tab-btn');
-    const tabContents = document.querySelectorAll('.pr-tab-content');
-
-    if (tabButtons.length > 0) {
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Убираем класс active у всех кнопок и контента
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                // Добавляем класс active кликнутой кнопке
-                button.classList.add('active');
-
-                // Ищем соответствующий контент по data-tab и показываем его
-                const tabId = button.getAttribute('data-tab');
-                const targetContent = document.getElementById(`tab-${tabId}`);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                }
-            });
-        });
-    }
 });
+
 
 // ==========================================
 // ЛОГИКА ТАБЛИЦЫ LEADGEN ACCOUNTS
@@ -209,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const lgaAddPopup = document.getElementById('lgaAddPopup');
     const lgaDeletePopup = document.getElementById('lgaDeletePopup');
 
+    let activeLgaEditRow = null; // Флаг для отслеживания редактируемой строки
     let activeDeleteRow = null;
 
     function formatDateToDisplay(dateStr) {
@@ -216,15 +167,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const parts = dateStr.split('-');
         if (parts.length === 3) {
             return `${parts[1]}/${parts[2]}/${parts[0]}`;
-        }
-        return dateStr;
-    }
-
-    function parseDateToInput(dateStr) {
-        if (!dateStr) return '';
-        const parts = dateStr.split('/');
-        if (parts.length === 3) {
-            return `${parts[2]}-${parts[0]}-${parts[1]}`;
         }
         return dateStr;
     }
@@ -297,24 +239,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const addFormObj = setupFormLogic('lgaAddForm', 'lgaAdd');
 
     function closeAllModals() {
-        lgaOverlay.classList.remove('active');
+        if (lgaOverlay) lgaOverlay.classList.remove('active');
         if (lgaAddPopup) lgaAddPopup.classList.remove('active');
         if (lgaDeletePopup) lgaDeletePopup.classList.remove('active');
+
+        if (activeLgaEditRow) {
+            activeLgaEditRow.classList.remove('is-editing'); // Снимаем выделение
+            activeLgaEditRow = null;
+        }
+
         if (activeDeleteRow) {
             activeDeleteRow.classList.remove('is-deleting-row');
             activeDeleteRow = null;
         }
     }
 
+    // Открытие попапа на СОЗДАНИЕ
     document.getElementById('lgaOpenAddBtn')?.addEventListener('click', () => {
+        activeLgaEditRow = null; // Сбрасываем флаг редактирования
+
         if (addFormObj) {
             addFormObj.reset();
             addFormObj.querySelectorAll('input, select, textarea').forEach(el => el.style.borderColor = '');
         }
+
         const countDisplay = document.getElementById('lgaAddCount');
         if (countDisplay) countDisplay.textContent = '500 characters left';
 
-        lgaOverlay.classList.add('active');
+        const popupTitle = document.querySelector('#lgaAddPopup h2');
+        if (popupTitle) popupTitle.textContent = "Add New Account";
+
+        if (lgaOverlay) lgaOverlay.classList.add('active');
         if (lgaAddPopup) lgaAddPopup.classList.add('active');
     });
 
@@ -329,163 +284,162 @@ document.addEventListener('DOMContentLoaded', function () {
         closeAllModals();
     });
 
+    // Обработка кликов в таблице
     if (lgaTableBody) {
         lgaTableBody.addEventListener('click', (e) => {
             const editBtn = e.target.closest('.lga-btn-edit');
-            const cancelBtn = e.target.closest('.lga-btn-cancel');
-            const saveBtn = e.target.closest('.lga-btn-save');
             const deleteBtn = e.target.closest('.lga-btn-delete');
             const row = e.target.closest('.lga-row');
 
             if (!row) return;
 
+            // КЛИК НА РЕДАКТИРОВАНИЕ (ОТКРЫВАЕТ ПОПАП)
             if (editBtn) {
                 e.preventDefault();
-                row.classList.add('is-editing');
-            }
+                activeLgaEditRow = row;
+                row.classList.add('is-editing'); // Добавляем подсветку строки
 
-            if (cancelBtn) {
-                e.preventDefault();
-                row.classList.remove('is-editing');
-                row.querySelectorAll('input, select, textarea').forEach(i => i.style.borderColor = '');
-            }
+                // Извлекаем данные
+                const fullName = row.querySelector('[data-field="fullName"] .lga-val').textContent.trim();
+                const email = row.querySelector('[data-field="email"] .lga-val').textContent.trim();
+                const phone = row.querySelector('[data-field="phone"] .lga-val').textContent.trim();
+                const status = row.querySelector('[data-field="status"] .lga-val').textContent.trim();
+                const note = row.querySelector('[data-field="note"] .lga-val').textContent.trim();
 
-            if (saveBtn) {
-                e.preventDefault();
+                // Разбиваем имя для инпутов формы
+                const names = fullName.split(' ');
+                const firstName = names[0] || '';
+                const lastName = names.slice(1).join(' ') || '';
 
-                // ВАЛИДАЦИЯ ИНЛАЙН СТРОКИ ПЕРЕД СОХРАНЕНИЕМ
-                const inputsToValidate = row.querySelectorAll('input.lga-inline-input, select.lga-inline-input');
-                if (!validateFormFields(Array.from(inputsToValidate))) return;
+                // Заполняем форму
+                const form = document.getElementById('lgaAddForm');
+                if (form) {
+                    form.querySelector('input[name="firstName"]').value = firstName;
+                    form.querySelector('input[name="lastName"]').value = lastName;
+                    form.querySelector('input[name="email"]').value = email;
+                    form.querySelector('input[name="phone"]').value = phone;
+                    form.querySelector('input[name="username"]').value = ''; // В таблице нет username
+                    form.querySelector('input[name="password"]').value = ''; // Пароль не достаем
 
-                const cells = row.querySelectorAll('.lga-cell[data-field]');
-
-                cells.forEach(cell => {
-                    const input = cell.querySelector('input.lga-inline-input, select.lga-inline-input');
-                    const view = cell.querySelector('.lga-val');
-
-                    if (input && view) {
-                        let val = input.value;
-
-                        if (input.type === 'date') {
-                            val = formatDateToDisplay(val);
-                        }
-
-                        view.textContent = val;
-
-                        if (cell.getAttribute('data-field') === 'status') {
-                            view.className = 'lga-view lga-badge lga-val';
-                            if (val === 'Active') {
-                                view.classList.add('lga-badge-active');
-                            } else {
-                                view.classList.add('lga-badge-inactive');
-                            }
+                    const statusSelect = form.querySelector('select[name="status"]');
+                    if (statusSelect) {
+                        for (let i = 0; i < statusSelect.options.length; i++) {
+                            if (statusSelect.options[i].text === status) statusSelect.selectedIndex = i;
                         }
                     }
-                });
 
-                row.classList.remove('is-editing');
+                    const noteArea = form.querySelector('textarea[name="note"]');
+                    if (noteArea) {
+                        noteArea.value = note;
+                        const countDisplay = document.getElementById('lgaAddCount');
+                        if (countDisplay) countDisplay.textContent = `${500 - note.length} characters left`;
+                    }
+
+                    // Очищаем ошибки
+                    form.querySelectorAll('.lga-input, .lga-textarea').forEach(el => el.style.borderColor = '');
+                }
+
+                // Меняем заголовок
+                const popupTitle = document.querySelector('#lgaAddPopup h2');
+                if (popupTitle) popupTitle.textContent = "Edit Account";
+
+                if (lgaOverlay) lgaOverlay.classList.add('active');
+                if (lgaAddPopup) lgaAddPopup.classList.add('active');
             }
 
             if (deleteBtn) {
                 e.preventDefault();
                 activeDeleteRow = row;
                 activeDeleteRow.classList.add('is-deleting-row');
-                lgaOverlay.classList.add('active');
+                if (lgaOverlay) lgaOverlay.classList.add('active');
                 if (lgaDeletePopup) lgaDeletePopup.classList.add('active');
             }
         });
     }
 
+    // СОХРАНЕНИЕ ДАННЫХ ИЗ ПОПАПА (Create / Update)
     addFormObj?.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // ВАЛИДАЦИЯ ПОПАПА
-        const inputs = Array.from(addFormObj.querySelectorAll('input, select, textarea'));
+        // 1. Собираем инпуты для валидации
+        const inputsToValidate = Array.from(addFormObj.querySelectorAll('input:not([type="hidden"]), select, textarea'));
 
-        // Делаем нужные поля required перед проверкой
-        const emailInput = addFormObj.querySelector('input[type="email"], input[name*="email" i], input[id*="email" i]');
-        const phoneInput = addFormObj.querySelector('input[type="tel"], input[name*="phone" i], input[id*="phone" i]');
+        // 2. Убеждаемся что нужные поля отмечены required
+        const emailInput = addFormObj.querySelector('input[name="email"]');
+        const phoneInput = addFormObj.querySelector('input[name="phone"]');
         if (emailInput) emailInput.setAttribute('required', 'true');
         if (phoneInput) phoneInput.setAttribute('required', 'true');
 
-        if (validateFormFields(inputs)) {
-            const formData = new FormData(addFormObj);
+        // 3. Валидация
+        if (!validateFormFields(inputsToValidate)) return;
 
-            const date = new Date();
-            const dateStr = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
+        // 4. Сбор данных
+        const formData = new FormData(addFormObj);
 
-            const fullName = `${formData.get('firstName') || ''} ${formData.get('lastName') || ''}`.trim() || 'New User';
+        const date = new Date();
+        const dateStr = `${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}/${date.getFullYear()}`;
 
-            // Если formData не подхватила имя, достаем через ID (если в HTML не прописаны name="")
-            const fName = addFormObj.querySelector('#addFirstName') ? addFormObj.querySelector('#addFirstName').value : (formData.get('firstName') || '');
-            const lName = addFormObj.querySelector('#addLastName') ? addFormObj.querySelector('#addLastName').value : (formData.get('lastName') || '');
-            const finalFullName = (fName + ' ' + lName).trim() || fullName;
+        const fName = formData.get('firstName') || '';
+        const lName = formData.get('lastName') || '';
+        const fullName = `${fName} ${lName}`.trim() || 'New User';
 
-            // Достаем email и телефон (с маской)
-            const email = (emailInput ? emailInput.value : formData.get('email')) || '';
-            const phone = (phoneInput ? phoneInput.value : formData.get('phone')) || '';
+        const email = formData.get('email') || '';
+        const phone = formData.get('phone') || '';
+        const status = formData.get('status') || 'Active';
+        const note = formData.get('note') || '';
 
-            const statusSelect = addFormObj.querySelector('#addStatus');
-            const status = statusSelect ? statusSelect.value : (formData.get('status') || 'Active');
+        const badgeClass = status === 'Active' ? 'lga-badge-active' : 'lga-badge-inactive';
 
-            const noteInput = addFormObj.querySelector('#lgaAddNote, textarea');
-            const note = noteInput ? noteInput.value : (formData.get('note') || '');
+        if (activeLgaEditRow) {
+            // UPDATE ROW
+            activeLgaEditRow.querySelector('[data-field="fullName"] .lga-val').textContent = fullName;
+            activeLgaEditRow.querySelector('[data-field="email"] .lga-val').textContent = email;
+            activeLgaEditRow.querySelector('[data-field="phone"] .lga-val').textContent = phone;
+            activeLgaEditRow.querySelector('[data-field="note"] .lga-val').textContent = note;
 
-            const badgeClass = status === 'Active' ? 'lga-badge-active' : 'lga-badge-inactive';
+            const statusBadge = activeLgaEditRow.querySelector('[data-field="status"] .lga-val');
+            if (statusBadge) {
+                statusBadge.textContent = status;
+                statusBadge.className = `lga-view lga-badge ${badgeClass} lga-val`;
+            }
 
+        } else {
+            // CREATE NEW ROW
             const newRow = document.createElement('div');
             newRow.className = 'lga-row';
+
+            // В HTML мы оставляем только .lga-view (т.к. редактирование теперь только в попапе)
             newRow.innerHTML = `
                 <div class="lga-cell" data-field="date">
                     <span class="lga-view lga-val">${dateStr}</span>
-                    <div class="lga-edit" style="width: 100%;"> 
-                        <div class="custom-calendar">
-                            <span>${dateStr}</span>
-                        </div>
-                    </div>
                 </div>
                 <div class="lga-cell" data-field="fullName">
-                    <span class="lga-view lga-val">${finalFullName}</span>
-                    <input type="text" class="lga-edit lga-inline-input" value="${finalFullName}" required>
+                    <span class="lga-view lga-val">${fullName}</span>
                 </div>
                 <div class="lga-cell" data-field="email">
                     <span class="lga-view lga-val">${email}</span>
-                    <input type="email" class="lga-edit lga-inline-input" value="${email}" required>
                 </div>
                 <div class="lga-cell" data-field="phone">
                     <span class="lga-view lga-val">${phone}</span>
-                    <input type="tel" class="lga-edit lga-inline-input mask-phone" value="${phone}" required>
                 </div>
                 <div class="lga-cell" data-field="status">
                     <span class="lga-view lga-badge ${badgeClass} lga-val">${status}</span>
-                    <select class="lga-edit lga-inline-input" required>
-                        <option value="Active" ${status === 'Active' ? 'selected' : ''}>Active</option>
-                        <option value="Not active" ${status === 'Not active' ? 'selected' : ''}>Not active</option>
-                    </select>
                 </div>
                 <div class="lga-cell" data-field="note">
                     <span class="lga-view lga-val">${note}</span>
-                    <input type="text" class="lga-edit lga-inline-input" value="${note}">
                 </div>
                 <div class="lga-cell lga-center">
                     <div class="lga-view lga-actions">
                         <button class="lga-icon-btn lga-btn-edit"></button>
                         <button class="lga-icon-btn lga-btn-delete"></button>
                     </div>
-                    <div class="lga-edit lga-edit-actions">
-                        <button class="lga-btn-save">Save</button>
-                        <button class="lga-btn-cancel">Cancel</button>
-                    </div>
                 </div>
             `;
 
             lgaTableBody.insertBefore(newRow, lgaTableBody.firstChild);
-
-            // Инициализируем календарь и маску для новой строки
-            initCustomDatePickers(newRow);
-            applyMasks(newRow);
-
-            closeAllModals();
+            applyMasks(newRow); // Применяем маски, если они нужны в отображении
         }
+
+        closeAllModals();
     });
 });
