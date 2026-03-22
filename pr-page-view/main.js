@@ -386,8 +386,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const convertPopup = document.getElementById('convertPopup');
     const popupSaveBtn = document.querySelector('#addAccountPopup .btn-apply');
 
-    let activeConvertRow = null;
+    let activeAbEditRow = null;
     let activeAbDeleteRow = null;
+    let activeConvertRow = null; // Добавлено
 
     const abDeleteOverlay = document.getElementById('abDeleteOverlay');
     const abDeletePopup = document.getElementById('abDeletePopup');
@@ -406,60 +407,111 @@ document.addEventListener('DOMContentLoaded', function () {
         if (pInput) pInput.type = 'password';
     }
 
-    document.getElementById('openAddAccountBtn')?.addEventListener('click', () => {
-        addAccountOverlay.classList.add('active');
-        addAccountPopup.classList.add('active');
-    });
+    function closeAllModals() {
+        if (addAccountOverlay) addAccountOverlay.classList.remove('active');
+        if (addAccountPopup) addAccountPopup.classList.remove('active');
+        if (abDeleteOverlay) abDeleteOverlay.classList.remove('active');
+        if (abDeletePopup) abDeletePopup.classList.remove('active');
 
-    document.getElementById('closeAddAccountBtn')?.addEventListener('click', () => {
-        addAccountOverlay.classList.remove('active');
-        addAccountPopup.classList.remove('active');
+        if (activeAbEditRow) {
+            activeAbEditRow.classList.remove('is-active-row');
+            activeAbEditRow = null;
+        }
+        if (activeAbDeleteRow) {
+            activeAbDeleteRow.classList.remove('is-deleting-row');
+            activeAbDeleteRow = null;
+        }
         clearAddAccountForm();
-    });
+    }
+
+    // --- ВОТ ЭТО ДОБАВЛЕНО ДЛЯ CONVERT POPUP ---
+    function closeConvertModal(e) {
+        if (e) e.preventDefault();
+        if (convertOverlay) convertOverlay.classList.remove('active');
+        if (convertPopup) convertPopup.classList.remove('active');
+        if (activeConvertRow) {
+            activeConvertRow.classList.remove('is-active-row');
+            activeConvertRow = null;
+        }
+    }
 
     document.getElementById('closeConvertBtn')?.addEventListener('click', closeConvertModal);
     document.getElementById('confirmConvertBtn')?.addEventListener('click', closeConvertModal);
+    // -------------------------------------------
+
+    document.getElementById('openAddAccountBtn')?.addEventListener('click', () => {
+        activeAbEditRow = null;
+        document.querySelector('#addAccountPopup h2').textContent = "New Account Broker Portal";
+        if (addAccountOverlay) addAccountOverlay.classList.add('active');
+        if (addAccountPopup) addAccountPopup.classList.add('active');
+    });
+
+    document.getElementById('closeAddAccountBtn')?.addEventListener('click', closeAllModals);
+    document.getElementById('abCloseDeleteBtn')?.addEventListener('click', closeAllModals);
+    document.getElementById('abCancelDeleteBtn')?.addEventListener('click', closeAllModals);
+
+    document.getElementById('abConfirmDeleteBtn')?.addEventListener('click', () => {
+        if (activeAbDeleteRow) {
+            activeAbDeleteRow.remove();
+        }
+        closeAllModals();
+    });
 
     if (tableContainer) {
         tableContainer.addEventListener('click', function (e) {
             const editBtn = e.target.closest('.ab-btn-edit');
-            const cancelBtn = e.target.closest('.ab-btn-cancel');
-            const saveBtn = e.target.closest('.ab-btn-save');
-            const convertBtn = e.target.closest('.ab-btn-convert');
             const deleteBtn = e.target.closest('.ab-btn-delete');
+            const convertBtn = e.target.closest('.ab-btn-convert');
+            const row = e.target.closest('.ab-row');
+
+            if (!row) return;
 
             if (editBtn) {
-                const row = editBtn.closest('.ab-row');
-                row.classList.add('is-editing', 'is-active-row');
-            }
+                e.preventDefault();
+                activeAbEditRow = row;
+                row.classList.add('is-active-row');
 
-            if (cancelBtn) {
-                const row = cancelBtn.closest('.ab-row');
-                row.classList.remove('is-editing', 'is-active-row');
-                row.querySelectorAll('.ab-edit').forEach(i => i.style.borderColor = '');
-            }
+                const fullName = row.querySelector('[data-field="fullName"] .ab-view').textContent.trim();
+                const email = row.querySelector('[data-field="email"] .ab-view').textContent.trim();
+                const phone = row.querySelector('[data-field="phone"] .ab-view').textContent.trim();
 
-            if (saveBtn) {
-                const row = saveBtn.closest('.ab-row');
+                // ИСПРАВЛЕНИЕ: Удаляем лишние пробелы и переносы строк
+                const status = row.querySelector('[data-field="status"] .ab-view').textContent.replace(/\s+/g, ' ').trim();
 
-                // ИСПРАВЛЕНИЕ: Ищем ТОЛЬКО инпуты и селекты, исключая div-обертки
-                const inputsToValidate = row.querySelectorAll('input.ab-edit, select.ab-edit');
-                if (!validateFormFields(Array.from(inputsToValidate))) return;
+                const names = fullName.split(' ');
+                document.getElementById('addFirstName').value = names[0] || '';
+                document.getElementById('addLastName').value = names.slice(1).join(' ') || '';
+                document.getElementById('addEmail').value = email;
+                document.getElementById('addPhone').value = phone;
 
-                saveRowData(row);
-                row.classList.remove('is-editing', 'is-active-row');
+                const statusSelect = document.getElementById('addStatus');
+                if (statusSelect) {
+                    for (let i = 0; i < statusSelect.options.length; i++) {
+                        // Сравниваем очищенный текст
+                        if (statusSelect.options[i].text.replace(/\s+/g, ' ').trim() === status) {
+                            statusSelect.selectedIndex = i;
+                        }
+                    }
+                }
+
+                document.querySelector('#addAccountPopup h2').textContent = "Edit Account Broker";
+
+                if (addAccountOverlay) addAccountOverlay.classList.add('active');
+                if (addAccountPopup) addAccountPopup.classList.add('active');
             }
 
             if (convertBtn) {
-                activeConvertRow = convertBtn.closest('.ab-row');
+                e.preventDefault();
+                activeConvertRow = row;
                 activeConvertRow.classList.add('is-active-row');
-                convertOverlay.classList.add('active');
-                convertPopup.classList.add('active');
+                if (convertOverlay) convertOverlay.classList.add('active');
+                if (convertPopup) convertPopup.classList.add('active');
             }
 
             if (deleteBtn) {
                 e.preventDefault();
-                activeAbDeleteRow = deleteBtn.closest('.ab-row');
+                activeAbDeleteRow = row;
+                activeAbDeleteRow.classList.add('is-deleting-row');
                 if (abDeleteOverlay && abDeletePopup) {
                     abDeleteOverlay.classList.add('active');
                     abDeletePopup.classList.add('active');
@@ -470,7 +522,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (popupSaveBtn && tableBody) {
         popupSaveBtn.addEventListener('click', () => {
-            // ВАЛИДАЦИЯ ПОПАПА
             const inputsToValidate = [
                 document.getElementById('addFirstName'),
                 document.getElementById('addLastName'),
@@ -498,89 +549,65 @@ document.addEventListener('DOMContentLoaded', function () {
                 badgeClass = 'ab-badge-moderation';
             }
 
-            const newRow = document.createElement('div');
-            newRow.className = 'ab-row';
-            newRow.innerHTML = `
-                <div class="ab-cell" data-field="fullName">
-                    <span class="ab-view">${fullName}</span>
-                    <input type="text" class="ab-edit ab-input" value="${fullName}" required>
-                </div>
-                <div class="ab-cell" data-field="email">
-                    <span class="ab-view">${email}</span>
-                    <input type="email" class="ab-edit ab-input" value="${email}" required>
-                </div>
-                <div class="ab-cell" data-field="phone">
-                    <span class="ab-view">${phone}</span>
-                    <input type="text" class="ab-edit ab-input mask-phone" value="${phone}" required>
-                </div>
-                <div class="ab-cell" data-field="status">
-                    <span class="ab-view ab-badge ${badgeClass}">${displayStatus}</span>
-                    <select class="ab-edit ab-input">
-                        <option value="Active" ${displayStatus === 'Active' ? 'selected' : ''}>Active</option>
-                        <option value="Deleted" ${displayStatus === 'Deleted' ? 'selected' : ''}>Deleted</option>
-                        <option value="Not Active" ${displayStatus === 'Not Active' ? 'selected' : ''}>Not Active</option>
-                        <option value="The user is blocked" ${displayStatus === 'The user is blocked' ? 'selected' : ''}>The user is blocked</option>
-                        <option value="The user passes additional moderation" ${displayStatus === 'The user passes additional moderation' ? 'selected' : ''}>The user passes additional moderation</option>
-                    </select>
-                </div>
-                <div class="ab-cell ab-center">
-                    <div class="ab-view ab-actions">
-                        <button class="ab-btn-convert">Convert</button>
-                        <button class="ab-btn-icon ab-btn-edit"></button>
-                        <button class="ab-btn-icon ab-btn-delete"></button>
+            if (activeAbEditRow) {
+                activeAbEditRow.querySelector('[data-field="fullName"] .ab-view').textContent = fullName;
+                const inputFullName = activeAbEditRow.querySelector('[data-field="fullName"] input.ab-input');
+                if (inputFullName) inputFullName.value = fullName;
+
+                activeAbEditRow.querySelector('[data-field="email"] .ab-view').textContent = email;
+                const inputEmail = activeAbEditRow.querySelector('[data-field="email"] input.ab-input');
+                if (inputEmail) inputEmail.value = email;
+
+                activeAbEditRow.querySelector('[data-field="phone"] .ab-view').textContent = phone;
+                const inputPhone = activeAbEditRow.querySelector('[data-field="phone"] input.ab-input');
+                if (inputPhone) inputPhone.value = phone;
+
+                const statusView = activeAbEditRow.querySelector('[data-field="status"] .ab-view');
+                statusView.textContent = displayStatus;
+                statusView.className = `ab-view ab-badge ${badgeClass}`;
+                const inputStatus = activeAbEditRow.querySelector('[data-field="status"] select.ab-input');
+                if (inputStatus) inputStatus.value = displayStatus;
+
+            } else {
+                const newRow = document.createElement('div');
+                newRow.className = 'ab-row';
+                newRow.innerHTML = `
+                    <div class="ab-cell" data-field="fullName">
+                        <span class="ab-view">${fullName}</span>
+                        <input type="text" class="ab-edit ab-input" value="${fullName}" required style="display:none;">
                     </div>
-                    <div class="ab-edit ab-edit-actions">
-                        <button class="ab-btn-save">Save</button>
-                        <button class="ab-btn-cancel">Cancel</button>
+                    <div class="ab-cell" data-field="email">
+                        <span class="ab-view">${email}</span>
+                        <input type="email" class="ab-edit ab-input" value="${email}" required style="display:none;">
                     </div>
-                </div>
-            `;
-
-            tableBody.appendChild(newRow);
-            applyMasks(newRow); // Активируем маски для новой строки
-
-            clearAddAccountForm();
-            addAccountOverlay.classList.remove('active');
-            addAccountPopup.classList.remove('active');
-        });
-    }
-
-    function closeConvertModal() {
-        convertOverlay.classList.remove('active');
-        convertPopup.classList.remove('active');
-        if (activeConvertRow) {
-            activeConvertRow.classList.remove('is-active-row');
-            activeConvertRow = null;
-        }
-    }
-
-    function saveRowData(row) {
-        const cells = row.querySelectorAll('.ab-cell[data-field]');
-        cells.forEach(cell => {
-            const input = cell.querySelector('.ab-edit');
-            const view = cell.querySelector('.ab-view');
-
-            if (input && view) {
-                const val = input.value;
-                if (input.tagName === 'SELECT') {
-                    view.textContent = val;
-                    updateBadgeClass(view, val);
-                } else {
-                    view.textContent = val;
-                }
+                    <div class="ab-cell" data-field="phone">
+                        <span class="ab-view">${phone}</span>
+                        <input type="text" class="ab-edit ab-input mask-phone" value="${phone}" required style="display:none;">
+                    </div>
+                    <div class="ab-cell" data-field="status">
+                        <span class="ab-view ab-badge ${badgeClass}">${displayStatus}</span>
+                        <select class="ab-edit ab-input" style="display:none;">
+                            <option value="Active" ${displayStatus === 'Active' ? 'selected' : ''}>Active</option>
+                            <option value="Deleted" ${displayStatus === 'Deleted' ? 'selected' : ''}>Deleted</option>
+                            <option value="Not Active" ${displayStatus === 'Not Active' ? 'selected' : ''}>Not Active</option>
+                            <option value="The user is blocked" ${displayStatus === 'The user is blocked' ? 'selected' : ''}>The user is blocked</option>
+                            <option value="The user passes additional moderation" ${displayStatus === 'The user passes additional moderation' ? 'selected' : ''}>The user passes additional moderation</option>
+                        </select>
+                    </div>
+                    <div class="ab-cell ab-center">
+                        <div class="ab-view ab-actions">
+                            <button class="ab-btn-convert">Convert</button>
+                            <button class="ab-btn-icon ab-btn-edit"></button>
+                            <button class="ab-btn-icon ab-btn-delete"></button>
+                        </div>
+                    </div>
+                `;
+                tableBody.appendChild(newRow);
+                applyMasks(newRow);
             }
-        });
-    }
 
-    function updateBadgeClass(badgeElement, statusText) {
-        badgeElement.className = 'ab-view ab-badge';
-        if (statusText === 'Active') {
-            badgeElement.classList.add('ab-badge-active');
-        } else if (statusText === 'The user passes additional moderation') {
-            badgeElement.classList.add('ab-badge-moderation');
-        } else {
-            badgeElement.classList.add('ab-badge-blocked');
-        }
+            closeAllModals();
+        });
     }
 
     const generateBtn = document.getElementById('generatePasswordBtn');
@@ -600,7 +627,7 @@ document.addEventListener('DOMContentLoaded', function () {
             passwordInput.value = pass;
             passwordInput.type = 'text';
 
-            if (typeof toggleEyeBtn !== 'undefined' && toggleEyeBtn) {
+            if (toggleEyeBtn) {
                 toggleEyeBtn.classList.add('is-visible');
             }
 
@@ -619,10 +646,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (toggleEyeBtn && passwordInput) {
-        if (passwordInput.getAttribute('type') === 'text') {
-            toggleEyeBtn.classList.add('is-visible');
-        }
-
         toggleEyeBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const isPassword = passwordInput.getAttribute('type') === 'password';
@@ -630,21 +653,6 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleEyeBtn.classList.toggle('is-visible');
         });
     }
-
-    function closeAbDeleteModal() {
-        if (abDeleteOverlay) abDeleteOverlay.classList.remove('active');
-        if (abDeletePopup) abDeletePopup.classList.remove('active');
-        activeAbDeleteRow = null;
-    }
-
-    document.getElementById('abCloseDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
-    document.getElementById('abCancelDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
-    document.getElementById('abConfirmDeleteBtn')?.addEventListener('click', () => {
-        if (activeAbDeleteRow) {
-            activeAbDeleteRow.remove();
-            closeAbDeleteModal();
-        }
-    });
 });
 
 // --- БЛОК 3: BUSINESS DETAILS ---
@@ -768,9 +776,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const crTableBody = document.getElementById('crTableBody');
     const crAddOverlay = document.getElementById('crAddOverlay');
     const crAddPopup = document.getElementById('crAddPopup');
+
     const crDeleteOverlay = document.getElementById('crDeleteOverlay');
     const crDeletePopup = document.getElementById('crDeletePopup');
 
+    let activeCrEditRow = null; // Отслеживаем редактируемую строку
     let activeDeleteRow = null;
 
     function clearCrForm() {
@@ -787,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        const dobGroup = document.querySelector('.form-group[data-field="dob"]');
+        const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
         if (dobGroup) {
             const span = dobGroup.querySelector('.custom-calendar span');
             const input = dobGroup.querySelector('input');
@@ -799,92 +809,121 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function closeDeletePopup() {
+    function closeAllModals() {
+        crAddOverlay.classList.remove('active');
+        crAddPopup.classList.remove('active');
         crDeleteOverlay.classList.remove('active');
         crDeletePopup.classList.remove('active');
+
+        if (activeCrEditRow) {
+            activeCrEditRow.classList.remove('is-active-row');
+            activeCrEditRow = null;
+        }
         if (activeDeleteRow) {
             activeDeleteRow.classList.remove('is-deleting-row');
             activeDeleteRow = null;
         }
+        clearCrForm();
     }
 
+    // Открытие попапа для СОЗДАНИЯ
     document.getElementById('crOpenAddBtn')?.addEventListener('click', () => {
+        activeCrEditRow = null;
+        document.querySelector('#crAddPopup h2').textContent = "New Contact";
         crAddOverlay.classList.add('active');
         crAddPopup.classList.add('active');
     });
 
-    document.getElementById('crCloseAddBtn')?.addEventListener('click', () => {
-        crAddOverlay.classList.remove('active');
-        crAddPopup.classList.remove('active');
-        clearCrForm();
-    });
-
-    document.getElementById('crCloseDeleteBtn')?.addEventListener('click', closeDeletePopup);
-    document.getElementById('crCancelDeleteBtn')?.addEventListener('click', closeDeletePopup);
+    document.getElementById('crCloseAddBtn')?.addEventListener('click', closeAllModals);
+    document.getElementById('crCloseDeleteBtn')?.addEventListener('click', closeAllModals);
+    document.getElementById('crCancelDeleteBtn')?.addEventListener('click', closeAllModals);
 
     document.getElementById('crConfirmDeleteBtn')?.addEventListener('click', () => {
         if (activeDeleteRow) {
             activeDeleteRow.remove();
         }
-        closeDeletePopup();
+        closeAllModals();
     });
 
     if (crTableContainer) {
         crTableContainer.addEventListener('click', function (e) {
             const editBtn = e.target.closest('.cr-btn-edit');
-            const cancelBtn = e.target.closest('.cr-btn-cancel');
-            const saveBtn = e.target.closest('.cr-btn-save');
             const deleteBtn = e.target.closest('.cr-btn-delete');
+            const row = e.target.closest('.cr-row');
 
+            if (!row) return;
+
+            // КЛИК НА РЕДАКТИРОВАНИЕ (ОТКРЫВАЕТ ПОПАП)
             if (editBtn) {
-                const row = editBtn.closest('.cr-row');
-                row.classList.add('is-editing', 'is-active-row');
-            }
+                e.preventDefault();
+                activeCrEditRow = row;
+                row.classList.add('is-active-row');
 
-            if (cancelBtn) {
-                const row = cancelBtn.closest('.cr-row');
-                row.classList.remove('is-editing', 'is-active-row');
-                row.querySelectorAll('input').forEach(i => i.style.borderColor = '');
-            }
+                // Извлекаем данные из спанов текущей строки
+                const fullName = row.querySelector('[data-field="fullName"] .cr-val').textContent.trim();
+                const ownership = row.querySelector('[data-field="ownership"] .cr-val').textContent.trim();
+                const role = row.querySelector('[data-field="role"] .cr-val').textContent.trim();
+                const phone = row.querySelector('[data-field="phone"] .cr-val').textContent.trim();
+                const email = row.querySelector('[data-field="email"] .cr-val').textContent.trim();
+                const ssn = row.querySelector('[data-field="ssn"] .cr-val').textContent.trim();
+                const dob = row.querySelector('[data-field="dob"] .cr-val').textContent.trim();
+                const addressStr = row.querySelector('[data-field="address"] .cr-val').textContent.trim();
 
-            if (saveBtn) {
-                const row = saveBtn.closest('.cr-row');
-                const cells = row.querySelectorAll('.cr-cell[data-field]');
+                // Заполняем форму
+                const names = fullName.split(' ');
+                document.getElementById('crFirstName').value = names[0] || '';
+                document.getElementById('crLastName').value = names.slice(1).join(' ') || '';
+                document.getElementById('crOwnership').value = ownership !== '-' ? ownership : '';
+                document.getElementById('crRole').value = role !== '-' ? role : '';
+                document.getElementById('crPhone').value = phone;
+                document.getElementById('crEmail').value = email;
+                document.getElementById('crSsn').value = ssn !== '-' ? ssn : '';
 
-                // ВАЛИДАЦИЯ ИНЛАЙН
-                const inputs = row.querySelectorAll('.cr-input');
-                if (!validateFormFields(Array.from(inputs))) return;
+                // Вставляем полный адрес в строку (если нужно разбивать - нужно проставлять data-атрибуты строке)
+                document.getElementById('crAddress').value = row.getAttribute('data-address') || (addressStr !== '-' ? addressStr : '');
+                document.getElementById('crCity').value = row.getAttribute('data-city') || '';
+                document.getElementById('crState').value = row.getAttribute('data-state') || '';
+                document.getElementById('crZip').value = row.getAttribute('data-zip') || '';
 
-                cells.forEach(cell => {
-                    const input = cell.querySelector('input, select');
-                    const view = cell.querySelector('.cr-val');
-
-                    if (input && view) {
-                        let val = input.value || '-';
-                        view.textContent = val;
-
-                        if (cell.getAttribute('data-field') === 'role') {
-                            if (val === 'Owner') {
-                                view.classList.add('cr-text-green');
-                            } else {
-                                view.classList.remove('cr-text-green');
-                            }
-                        }
+                const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
+                if (dobGroup) {
+                    const span = dobGroup.querySelector('.custom-calendar span');
+                    const input = dobGroup.querySelector('input');
+                    if (span) span.textContent = dob !== '-' ? dob : '-';
+                    if (input) {
+                        input.value = dob !== '-' ? dob : '';
+                        if (input._flatpickr && dob !== '-') input._flatpickr.setDate(dob);
                     }
-                });
+                }
 
-                row.classList.remove('is-editing', 'is-active-row');
+                document.querySelector('#crAddPopup h2').textContent = "Edit Contact";
+
+                crAddOverlay.classList.add('active');
+                crAddPopup.classList.add('active');
             }
 
+            // КЛИК НА УДАЛЕНИЕ (ДИНАМИЧЕСКИЙ ТЕКСТ)
             if (deleteBtn) {
-                activeDeleteRow = deleteBtn.closest('.cr-row');
-                activeDeleteRow.classList.add('is-deleting-row');
+                e.preventDefault();
+                activeDeleteRow = row;
+                row.classList.add('is-deleting-row');
+
+                const role = row.querySelector('[data-field="role"] .cr-val').textContent.trim();
+                const deleteText = document.querySelector('#crDeletePopup .form-group p');
+
+                if (role === 'Owner') {
+                    deleteText.textContent = "This contact is selected as the main one for sending emails, do you want to delete it?.";
+                } else {
+                    deleteText.textContent = "Are you sure you want to completely delete this entry?";
+                }
+
                 crDeleteOverlay.classList.add('active');
                 crDeletePopup.classList.add('active');
             }
         });
     }
 
+    // Сохранение из Попапа (Срабатывает и на Update, и на Create)
     document.getElementById('crSaveNewBtn')?.addEventListener('click', () => {
         const fName = document.getElementById('crFirstName');
         const lName = document.getElementById('crLastName');
@@ -903,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const ownership = document.getElementById('crOwnership').value.trim() || '-';
         const role = document.getElementById('crRole').value || '-';
         const ssn = document.getElementById('crSsn').value.trim() || '-';
-        const phoneVal = phone.value; // Уже в маске
+        const phoneVal = phone.value;
 
         const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
         const dobInput = dobGroup ? dobGroup.querySelector('input') : null;
@@ -917,68 +956,111 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const roleClass = role === 'Owner' ? 'cr-text-green' : '';
 
-        const newRow = document.createElement('div');
-        newRow.className = 'cr-row';
-        newRow.innerHTML = `
-        <div class="cr-cell" data-field="fullName">
-            <span class="cr-view cr-val">${fullName}</span>
-            <input type="text" class="cr-edit cr-input" value="${fullName}" required>
-        </div>
-        <div class="cr-cell" data-field="ownership">
-            <span class="cr-view cr-val">${ownership}</span>
-            <input type="text" class="cr-edit cr-input" value="${ownership}">
-        </div>
-        <div class="cr-cell" data-field="role">
-            <span class="cr-view cr-val ${roleClass}">${role}</span>
-            <select class="cr-edit cr-input">
-                <option value="Owner" ${role === 'Owner' ? 'selected' : ''}>Owner</option>
-                <option value="Manager" ${role === 'Manager' ? 'selected' : ''}>Manager</option>
-                <option value="Employee" ${role === 'Employee' ? 'selected' : ''}>Employee</option>
-            </select>
-        </div>
-        <div class="cr-cell" data-field="phone">
-            <span class="cr-view cr-val">${phoneVal}</span>
-            <input type="text" class="cr-edit cr-input mask-phone" value="${phoneVal}" required>
-        </div>
-        <div class="cr-cell" data-field="email">
-            <span class="cr-view cr-val">${email.value}</span>
-            <input type="email" class="cr-edit cr-input" value="${email.value}" required>
-        </div>
-        <div class="cr-cell" data-field="ssn">
-            <span class="cr-view cr-val">${ssn}</span>
-            <input type="text" class="cr-edit cr-input" value="${ssn}">
-        </div>
-        <div class="cr-cell" data-field="dob">
-            <span class="cr-view cr-val">${dobFormat}</span>
-            <div class="cr-edit" style="width: 100%;">
-                <div class="custom-calendar" style="position: relative; display: flex; align-items: center; justify-content: space-between; border: 1px solid #159C2A; padding: 6px 10px; border-radius: 3px; background: #fff; cursor: pointer;">
-                    <span style="font-family: 'Urbanist', sans-serif; font-size: 14px; color: #232323;">${dobFormat}</span>
+        if (activeCrEditRow) {
+            // UPDATE СУЩЕСТВУЮЩЕЙ СТРОКИ
+            activeCrEditRow.setAttribute('data-address', address);
+            activeCrEditRow.setAttribute('data-city', city);
+            activeCrEditRow.setAttribute('data-state', state);
+            activeCrEditRow.setAttribute('data-zip', zip);
+
+            activeCrEditRow.querySelector('[data-field="fullName"] .cr-val').textContent = fullName;
+            const inputName = activeCrEditRow.querySelector('[data-field="fullName"] input.cr-input');
+            if (inputName) inputName.value = fullName;
+
+            activeCrEditRow.querySelector('[data-field="ownership"] .cr-val').textContent = ownership;
+            const inputOwn = activeCrEditRow.querySelector('[data-field="ownership"] input.cr-input');
+            if (inputOwn) inputOwn.value = ownership;
+
+            const roleView = activeCrEditRow.querySelector('[data-field="role"] .cr-val');
+            roleView.textContent = role;
+            roleView.className = `cr-view cr-val ${roleClass}`;
+            const inputRole = activeCrEditRow.querySelector('[data-field="role"] select.cr-input');
+            if (inputRole) inputRole.value = role;
+
+            activeCrEditRow.querySelector('[data-field="phone"] .cr-val').textContent = phoneVal;
+            const inputPhone = activeCrEditRow.querySelector('[data-field="phone"] input.cr-input');
+            if (inputPhone) inputPhone.value = phoneVal;
+
+            activeCrEditRow.querySelector('[data-field="email"] .cr-val').textContent = email.value;
+            const inputEmail = activeCrEditRow.querySelector('[data-field="email"] input.cr-input');
+            if (inputEmail) inputEmail.value = email.value;
+
+            activeCrEditRow.querySelector('[data-field="ssn"] .cr-val').textContent = ssn;
+            const inputSsn = activeCrEditRow.querySelector('[data-field="ssn"] input.cr-input');
+            if (inputSsn) inputSsn.value = ssn;
+
+            activeCrEditRow.querySelector('[data-field="dob"] .cr-val').textContent = dobFormat;
+            const dobInlineSpan = activeCrEditRow.querySelector('[data-field="dob"] .custom-calendar span');
+            if (dobInlineSpan) dobInlineSpan.textContent = dobFormat;
+
+            activeCrEditRow.querySelector('[data-field="address"] .cr-val').textContent = fullAddress;
+            const inputAddress = activeCrEditRow.querySelector('[data-field="address"] input.cr-input');
+            if (inputAddress) inputAddress.value = fullAddress;
+
+        } else {
+            // ДОБАВЛЕНИЕ НОВОЙ СТРОКИ
+            const newRow = document.createElement('div');
+            newRow.className = 'cr-row';
+            newRow.setAttribute('data-address', address);
+            newRow.setAttribute('data-city', city);
+            newRow.setAttribute('data-state', state);
+            newRow.setAttribute('data-zip', zip);
+
+            newRow.innerHTML = `
+            <div class="cr-cell" data-field="fullName">
+                <span class="cr-view cr-val">${fullName}</span>
+                <input type="text" class="cr-edit cr-input" value="${fullName}" required style="display:none;">
+            </div>
+            <div class="cr-cell" data-field="ownership">
+                <span class="cr-view cr-val">${ownership}</span>
+                <input type="text" class="cr-edit cr-input" value="${ownership}" style="display:none;">
+            </div>
+            <div class="cr-cell" data-field="role">
+                <span class="cr-view cr-val ${roleClass}">${role}</span>
+                <select class="cr-edit cr-input" style="display:none;">
+                    <option value="Owner" ${role === 'Owner' ? 'selected' : ''}>Owner</option>
+                    <option value="Manager" ${role === 'Manager' ? 'selected' : ''}>Manager</option>
+                    <option value="Employee" ${role === 'Employee' ? 'selected' : ''}>Employee</option>
+                </select>
+            </div>
+            <div class="cr-cell" data-field="phone">
+                <span class="cr-view cr-val">${phoneVal}</span>
+                <input type="text" class="cr-edit cr-input mask-phone" value="${phoneVal}" required style="display:none;">
+            </div>
+            <div class="cr-cell" data-field="email">
+                <span class="cr-view cr-val">${email.value}</span>
+                <input type="email" class="cr-edit cr-input" value="${email.value}" required style="display:none;">
+            </div>
+            <div class="cr-cell" data-field="ssn">
+                <span class="cr-view cr-val">${ssn}</span>
+                <input type="text" class="cr-edit cr-input" value="${ssn}" style="display:none;">
+            </div>
+            <div class="cr-cell" data-field="dob">
+                <span class="cr-view cr-val">${dobFormat}</span>
+                <div class="cr-edit" style="width: 100%; display:none;">
+                    <div class="custom-calendar">
+                        <span>${dobFormat}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="cr-cell" data-field="address">
-            <span class="cr-view cr-val">${fullAddress}</span>
-            <input type="text" class="cr-edit cr-input" value="${fullAddress}">
-        </div>
-        <div class="cr-cell cr-center">
-            <div class="cr-view cr-actions">
-                <button class="cr-icon-btn cr-btn-edit"></button>
-                <button class="cr-icon-btn cr-btn-delete"></button>
+            <div class="cr-cell" data-field="address">
+                <span class="cr-view cr-val">${fullAddress}</span>
+                <input type="text" class="cr-edit cr-input" value="${fullAddress}" style="display:none;">
             </div>
-            <div class="cr-edit cr-edit-actions">
-                <button class="cr-btn-save">Save</button>
-                <button class="cr-btn-cancel">Cancel</button>
+            <div class="cr-cell cr-center">
+                <div class="cr-view cr-actions">
+                    <button class="cr-icon-btn cr-btn-edit"></button>
+                    <button class="cr-icon-btn cr-btn-delete"></button>
+                </div>
             </div>
-        </div>
-        `;
+            `;
 
-        crTableBody.appendChild(newRow);
-        initAllCustomDatePickers(newRow);
-        applyMasks(newRow); // Активация масок
+            crTableBody.appendChild(newRow);
+            initAllCustomDatePickers(newRow);
+            applyMasks(newRow);
+        }
 
-        crAddOverlay.classList.remove('active');
-        crAddPopup.classList.remove('active');
-        clearCrForm();
+        closeAllModals();
     });
 
     initAllCustomDatePickers();
