@@ -299,12 +299,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     referralBlock.addEventListener('click', function (e) {
         const editBtn = e.target.closest('.pr-edit-btn');
+        const valDisplay = e.target.closest('.pr-val-display');
         const cancelBtn = e.target.closest('.pr-cancel-btn');
         const saveBtn = e.target.closest('.pr-save-btn');
 
-        if (editBtn) {
+        if (editBtn || valDisplay) {
             e.preventDefault();
-            const fieldWrap = editBtn.closest('.pr-inline-field');
+            const fieldWrap = (editBtn || valDisplay).closest('.pr-inline-field');
             toggleEditMode(fieldWrap, true);
         }
 
@@ -705,12 +706,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     bdCard.addEventListener('click', function (e) {
         const editBtnInline = e.target.closest('.bd-edit-btn-inline');
+        const valDisplay = e.target.closest('.bd-val');
         const cancelBtn = e.target.closest('.bd-cancel-btn');
         const saveBtn = e.target.closest('.bd-save-btn');
 
-        if (editBtnInline) {
+        if (editBtnInline || valDisplay) {
             e.preventDefault();
-            toggleEditMode(editBtnInline.closest('.bd-field'), true);
+            const fieldWrap = (editBtnInline || valDisplay).closest('.bd-field');
+            toggleEditMode(fieldWrap, true);
         }
 
         if (cancelBtn) {
@@ -1130,12 +1133,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     rplCard.addEventListener('click', function (e) {
         const editBtnInline = e.target.closest('.rpl-edit-btn-inline');
+        const valDisplay = e.target.closest('.rpl-val');
         const cancelBtn = e.target.closest('.rpl-cancel-btn');
         const saveBtn = e.target.closest('.rpl-save-btn');
 
-        if (editBtnInline) {
+        if (editBtnInline || valDisplay) {
             e.preventDefault();
-            toggleEditMode(editBtnInline.closest('.rpl-field'), true);
+            const fieldWrap = (editBtnInline || valDisplay).closest('.rpl-field');
+            toggleEditMode(fieldWrap, true);
         }
 
         if (cancelBtn) {

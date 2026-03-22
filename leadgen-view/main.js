@@ -275,10 +275,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const editBtnInline = e.target.closest('.lgv-det-edit-btn-inline');
         const cancelBtn = e.target.closest('.lgv-det-cancel-btn');
         const saveBtn = e.target.closest('.lgv-det-save-btn');
+        const valDisplay = e.target.closest('.lgv-det-val');
 
-        if (editBtnInline) {
+        if (editBtnInline || valDisplay) {
             e.preventDefault();
-            toggleEditMode(editBtnInline.closest('.lgv-det-field'), true);
+            const field = (editBtnInline || valDisplay).closest('.lgv-det-field');
+            toggleEditMode(field, true);
         }
 
         if (cancelBtn) {

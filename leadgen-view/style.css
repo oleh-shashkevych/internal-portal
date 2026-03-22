@@ -2083,3 +2083,8 @@
 .pr-filter-popup__btn--apply:hover {
     background: #E8F6EA;
 }
+
+.lgv-det-val,
+.lgv-inv-val {
+    cursor: pointer;
+}
