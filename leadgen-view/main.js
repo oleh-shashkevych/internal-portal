@@ -47,15 +47,15 @@ document.addEventListener('DOMContentLoaded', function () {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
 
-                // --- RESET EDIT MODES ---
+                // --- СБРОС РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
 
-                // 1. Cancel Detail Tab Global Edit
+                // 1. Сброс глобальной кнопки на вкладке Detail
                 const globalEditBtn = document.getElementById('lgvDetGlobalEditBtn');
                 if (globalEditBtn && globalEditBtn.classList.contains('lgv-det-edit-btn-global-active')) {
                     globalEditBtn.click();
                 }
 
-                // 2. Cancel Detail Tab Inline Edits
+                // 2. Сброс инлайн-полей на вкладке Detail
                 const detailCancelBtns = document.querySelectorAll('.lgv-det-edit-mode .lgv-det-cancel-btn');
                 detailCancelBtns.forEach(btn => {
                     const editMode = btn.closest('.lgv-det-edit-mode');
@@ -64,27 +64,27 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                // 3. Cancel Invoices Tab Edits
+                // 3. Сброс инлайн-редактирования в таблице Invoices
                 const editingInvoiceRows = document.querySelectorAll('.lgv-inv-row.is-editing');
                 editingInvoiceRows.forEach(row => {
                     const cancelBtn = row.querySelector('.lgv-inv-btn-cancel');
                     if (cancelBtn) {
-                        cancelBtn.click();
+                        cancelBtn.click(); // Имитируем клик по Cancel, чтобы вернуть исходные значения
                     } else {
                         row.classList.remove('is-editing');
                     }
                 });
 
-                // --- TAB SWITCHING LOGIC ---
+                // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК ---
 
-                // Remove active class from all buttons and content
+                // Убираем активные классы
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
 
-                // Add active class to the clicked button
+                // Добавляем активный класс нажатой кнопке
                 button.classList.add('active');
 
-                // Find corresponding content by data-tab and show it
+                // Показываем нужный контент
                 const tabId = button.getAttribute('data-tab');
                 const targetContent = document.getElementById(`tab-${tabId}`);
                 if (targetContent) {
@@ -132,6 +132,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isLgvDetGlobalEditActive = false;
 
+    // НОВОЕ: Функция для проверки, остались ли открытые поля
+    function checkLgvDetGlobalState() {
+        if (!lgvDetGlobalEditBtn) return;
+        const allEditModes = lgvDetCard.querySelectorAll('.lgv-det-edit-mode');
+        const anyOpen = Array.from(allEditModes).some(el => el.style.display !== 'none');
+
+        if (!anyOpen && isLgvDetGlobalEditActive) {
+            isLgvDetGlobalEditActive = false;
+            lgvDetGlobalEditBtn.style.backgroundColor = '';
+            lgvDetGlobalEditBtn.style.color = '';
+            lgvDetGlobalEditBtn.style.borderColor = '';
+            lgvDetGlobalEditBtn.innerHTML = `Edit`;
+            lgvDetGlobalEditBtn.classList.remove('lgv-det-edit-btn-global-active');
+        }
+    }
+
     if (lgvDetGlobalEditBtn) {
         lgvDetGlobalEditBtn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -171,11 +187,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.lgv-det-field'), false);
+            checkLgvDetGlobalState(); // Вызываем проверку при отмене
         }
 
         if (saveBtn) {
             e.preventDefault();
             saveFieldData(saveBtn.closest('.lgv-det-field'));
+            checkLgvDetGlobalState(); // Вызываем проверку при сохранении
         }
     });
 
@@ -205,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (input.tagName === 'SELECT') {
             if (badgeDisplay) {
                 badgeDisplay.textContent = fieldValue;
-                if (fieldValue === 'Active') {
+                if (fieldValue === 'ON BOARD') { // Удалил 'Active', заменил на твой класс из HTML
                     badgeDisplay.classList.remove('inactive');
                 } else {
                     badgeDisplay.classList.add('inactive');

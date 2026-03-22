@@ -45,17 +45,13 @@ function initAllCustomDatePickers(container = document) {
         const span = calendarField.querySelector('span');
         const dateValue = span.innerText.trim() === '-' ? '' : span.innerText.trim();
 
-        // 1. Улучшенный поиск родителя и префикса
         const parentCell = calendarField.closest('[class*="-cell"], [class*="-field"], [class*="-form-group"]');
-        let prefix = 'cr'; // по умолчанию
+        let prefix = 'cr';
         let fieldName = '';
 
         if (parentCell) {
-            // Пытаемся вытащить префикс из класса (например, "pay" из "pay-form-group")
             const classMatch = parentCell.className.match(/([a-z]+)-(cell|field|form-group)/);
             if (classMatch) prefix = classMatch[1];
-
-            // Берем название поля из data-field
             fieldName = parentCell.getAttribute('data-field') || '';
         }
 
@@ -64,7 +60,6 @@ function initAllCustomDatePickers(container = document) {
         input.value = dateValue;
         input.classList.add('visually-hidden', `${prefix}-edit`, `${prefix}-input`);
 
-        // 2. ВАЖНО: Генерируем ID (например, payAddDate)
         if (fieldName) {
             input.name = fieldName;
             input.id = prefix + fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
@@ -110,61 +105,44 @@ document.addEventListener('DOMContentLoaded', function () {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
 
-                // --- 1. СБРОС ГЛОБАЛЬНЫХ РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
-
-                // Landing Page
+                // 1. СБРОС ГЛОБАЛЬНЫХ РЕЖИМОВ РЕДАКТИРОВАНИЯ
                 const lpGlobalBtn = document.getElementById('lpGlobalEditBtn');
                 if (lpGlobalBtn && lpGlobalBtn.classList.contains('pr-lp-edit-btn-active')) lpGlobalBtn.click();
 
-                // Business Details
                 const bdGlobalBtn = document.getElementById('bdGlobalEditBtn');
                 if (bdGlobalBtn && bdGlobalBtn.classList.contains('bd-edit-btn-global-active')) bdGlobalBtn.click();
 
-                // RP Leads Details
                 const rplGlobalBtn = document.getElementById('rplGlobalEditBtn');
                 if (rplGlobalBtn && rplGlobalBtn.classList.contains('rpl-edit-btn-global--active')) rplGlobalBtn.click();
 
-
-                // --- 2. СБРОС ИНЛАЙН (ВСТРОЕННЫХ) РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
-
-                // Landing Page Inline
+                // 2. СБРОС ИНЛАЙН (ВСТРОЕННЫХ) РЕЖИМОВ РЕДАКТИРОВАНИЯ
                 document.querySelectorAll('.pr-edit-mode .pr-cancel-btn').forEach(btn => {
                     const wrap = btn.closest('.pr-edit-mode');
                     if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
                 });
 
-                // Accounts Broker Inline
                 document.querySelectorAll('.ab-row.is-editing .ab-btn-cancel').forEach(btn => btn.click());
 
-                // Business Details Inline
                 document.querySelectorAll('.bd-edit-mode .bd-cancel-btn').forEach(btn => {
                     const wrap = btn.closest('.bd-edit-mode');
                     if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
                 });
 
-                // Contact Roles Inline
                 document.querySelectorAll('.cr-row.is-editing .cr-btn-cancel').forEach(btn => btn.click());
 
-                // RP Leads Details Inline
                 document.querySelectorAll('.rpl-edit-mode .rpl-cancel-btn').forEach(btn => {
                     const wrap = btn.closest('.rpl-edit-mode');
                     if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
                 });
 
-                // Payments Inline
                 document.querySelectorAll('.pay-row.is-editing .pay-btn-cancel').forEach(btn => btn.click());
 
-
-                // --- 3. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ---
-
-                // Убираем класс active у всех кнопок и контента
+                // 3. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
 
-                // Добавляем класс active кликнутой кнопке
                 button.classList.add('active');
 
-                // Ищем соответствующий контент по data-tab и показываем его
                 const tabId = button.getAttribute('data-tab');
                 const targetContent = document.getElementById(`tab-${tabId}`);
                 if (targetContent) {
@@ -175,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// --- БЛОК 1: LANDING PAGE ---
 document.addEventListener('DOMContentLoaded', function () {
     const referralBlock = document.querySelector('.pr-referral-block');
     const lpGlobalEditBtn = document.getElementById('lpGlobalEditBtn');
@@ -182,6 +161,22 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!referralBlock) return;
 
     let isLpGlobalEditActive = false;
+
+    // Helper: Reset global button if all fields are closed manually
+    function checkLpGlobalState() {
+        if (!lpGlobalEditBtn) return;
+        const allEditModes = referralBlock.querySelectorAll('.pr-edit-mode');
+        const anyOpen = Array.from(allEditModes).some(el => el.style.display !== 'none');
+
+        if (!anyOpen && isLpGlobalEditActive) {
+            isLpGlobalEditActive = false;
+            lpGlobalEditBtn.style.backgroundColor = '';
+            lpGlobalEditBtn.style.color = '';
+            lpGlobalEditBtn.style.borderColor = '';
+            lpGlobalEditBtn.innerHTML = `Edit`;
+            lpGlobalEditBtn.classList.remove('pr-lp-edit-btn-active');
+        }
+    }
 
     if (lpGlobalEditBtn) {
         lpGlobalEditBtn.addEventListener('click', function (e) {
@@ -224,12 +219,14 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const fieldWrap = cancelBtn.closest('.pr-inline-field');
             toggleEditMode(fieldWrap, false);
+            checkLpGlobalState(); // NEW CHECK
         }
 
         if (saveBtn) {
             e.preventDefault();
             const fieldWrap = saveBtn.closest('.pr-inline-field');
             saveInlineData(fieldWrap);
+            checkLpGlobalState(); // NEW CHECK
         }
     });
 
@@ -270,10 +267,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const payload = {
-            [fieldName]: fieldValue
-        };
-
         const valueDisplay = fieldWrap.querySelector('.pr-val-display');
 
         if (input.tagName === 'SELECT') {
@@ -292,6 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// --- БЛОК 2: ACCOUNTS BROKER ---
 document.addEventListener('DOMContentLoaded', function () {
     const tableContainer = document.querySelector('.ab-table-container');
     const tableBody = document.querySelector('.ab-table-body');
@@ -302,9 +296,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const popupSaveBtn = document.querySelector('#addAccountPopup .btn-apply');
 
     let activeConvertRow = null;
-
-    // Variables for delete popup
     let activeAbDeleteRow = null;
+
     const abDeleteOverlay = document.getElementById('abDeleteOverlay');
     const abDeletePopup = document.getElementById('abDeletePopup');
 
@@ -331,13 +324,8 @@ document.addEventListener('DOMContentLoaded', function () {
         clearAddAccountForm();
     });
 
-    document.getElementById('closeConvertBtn')?.addEventListener('click', () => {
-        closeConvertModal();
-    });
-
-    document.getElementById('confirmConvertBtn')?.addEventListener('click', () => {
-        closeConvertModal();
-    });
+    document.getElementById('closeConvertBtn')?.addEventListener('click', closeConvertModal);
+    document.getElementById('confirmConvertBtn')?.addEventListener('click', closeConvertModal);
 
     if (tableContainer) {
         tableContainer.addEventListener('click', function (e) {
@@ -431,10 +419,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="ab-cell ab-center">
                     <div class="ab-view ab-actions">
                         <button class="ab-btn-convert">Convert</button>
-                        <button class="ab-btn-icon ab-btn-edit">
-                        </button>
-                        <button class="ab-btn-icon ab-btn-delete">
-                        </button>
+                        <button class="ab-btn-icon ab-btn-edit"></button>
+                        <button class="ab-btn-icon ab-btn-delete"></button>
                     </div>
                     <div class="ab-edit ab-edit-actions">
                         <button class="ab-btn-save">Save</button>
@@ -446,7 +432,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tableBody.appendChild(newRow);
 
             clearAddAccountForm();
-
             addAccountOverlay.classList.remove('active');
             addAccountPopup.classList.remove('active');
         });
@@ -497,7 +482,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (generateBtn && passwordInput) {
         generateBtn.addEventListener('click', () => {
             if (generateBtn.disabled) return;
-
             generateBtn.disabled = true;
 
             const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
@@ -533,10 +517,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         toggleEyeBtn.addEventListener('click', (e) => {
             e.preventDefault();
-
             const isPassword = passwordInput.getAttribute('type') === 'password';
             passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-
             toggleEyeBtn.classList.toggle('is-visible');
         });
     }
@@ -558,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// --- БЛОК 3: BUSINESS DETAILS ---
 document.addEventListener('DOMContentLoaded', function () {
     const bdCard = document.getElementById('bdCard');
     const bdGlobalEditBtn = document.getElementById('bdGlobalEditBtn');
@@ -565,6 +548,22 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!bdCard) return;
 
     let isGlobalEditActive = false;
+
+    // Helper: Reset global button if all fields are closed manually
+    function checkBdGlobalState() {
+        if (!bdGlobalEditBtn) return;
+        const allEditModes = bdCard.querySelectorAll('.bd-edit-mode');
+        const anyOpen = Array.from(allEditModes).some(el => el.style.display !== 'none');
+
+        if (!anyOpen && isGlobalEditActive) {
+            isGlobalEditActive = false;
+            bdGlobalEditBtn.style.backgroundColor = '';
+            bdGlobalEditBtn.style.color = '';
+            bdGlobalEditBtn.style.borderColor = '';
+            bdGlobalEditBtn.innerHTML = `Edit`;
+            bdGlobalEditBtn.classList.remove('bd-edit-btn-global-active');
+        }
+    }
 
     bdGlobalEditBtn?.addEventListener('click', function (e) {
         e.preventDefault();
@@ -603,11 +602,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.bd-field'), false);
+            checkBdGlobalState(); // NEW CHECK
         }
 
         if (saveBtn) {
             e.preventDefault();
             saveFieldData(saveBtn.closest('.bd-field'));
+            checkBdGlobalState(); // NEW CHECK
         }
     });
 
@@ -631,12 +632,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const fieldName = input.getAttribute('name');
         const fieldValue = input.value;
 
-        const payload = {
-            [fieldName]: fieldValue
-        };
-
-        console.log('BD Sending data:', payload);
-
         const valDisplay = fieldWrap.querySelector('.bd-val');
         const badgeDisplay = fieldWrap.querySelector('.bd-badge');
 
@@ -656,13 +651,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// --- БЛОК 4: CONTACT ROLES ---
 document.addEventListener('DOMContentLoaded', function () {
     const crTableContainer = document.querySelector('.cr-table-container');
     const crTableBody = document.getElementById('crTableBody');
-
     const crAddOverlay = document.getElementById('crAddOverlay');
     const crAddPopup = document.getElementById('crAddPopup');
-
     const crDeleteOverlay = document.getElementById('crDeleteOverlay');
     const crDeletePopup = document.getElementById('crDeletePopup');
 
@@ -691,15 +685,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         document.querySelectorAll('.cr-input').forEach(inp => inp.style.borderColor = '');
-    }
-
-    function formatDOB(dateString) {
-        if (!dateString) return '-';
-        const [year, month, day] = dateString.split('-');
-        if (year && month && day) {
-            return `${month}/${day}/${year}`;
-        }
-        return dateString;
     }
 
     function closeDeletePopup() {
@@ -874,7 +859,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <button class="cr-btn-cancel">Cancel</button>
             </div>
         </div>
-    `;
+        `;
 
         crTableBody.appendChild(newRow);
         initAllCustomDatePickers(newRow);
@@ -885,12 +870,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     initAllCustomDatePickers();
-
     if (crAddPopup) {
         initAllCustomDatePickers(crAddPopup);
     }
 });
 
+// --- БЛОК 5: RP LEADS DETAILS ---
 document.addEventListener('DOMContentLoaded', function () {
     const rplCard = document.getElementById('rplCard');
     const rplGlobalEditBtn = document.getElementById('rplGlobalEditBtn');
@@ -899,6 +884,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isRplGlobalEditActive = false;
 
+    // Helper: Reset global button if all fields are closed manually
+    function checkRplGlobalState() {
+        if (!rplGlobalEditBtn) return;
+        const allEditModes = rplCard.querySelectorAll('.rpl-edit-mode');
+        const anyOpen = Array.from(allEditModes).some(el => el.style.display !== 'none');
+
+        if (!anyOpen && isRplGlobalEditActive) {
+            isRplGlobalEditActive = false;
+            rplGlobalEditBtn.style.backgroundColor = '';
+            rplGlobalEditBtn.style.color = '';
+            rplGlobalEditBtn.style.borderColor = '';
+            rplGlobalEditBtn.innerHTML = `Edit`;
+            rplGlobalEditBtn.classList.remove('rpl-edit-btn-global--active');
+        }
+    }
+
     function parseDateToInputFormat(dateStr) {
         if (!dateStr || dateStr === '—') return '';
         const parts = dateStr.split('/');
@@ -906,15 +907,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
         }
         return '';
-    }
-
-    function formatDateToDisplay(dateStr) {
-        if (!dateStr) return '—';
-        const parts = dateStr.split('-');
-        if (parts.length === 3) {
-            return `${parts[1]}/${parts[2]}/${parts[0]}`;
-        }
-        return dateStr;
     }
 
     if (rplGlobalEditBtn) {
@@ -956,11 +948,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.rpl-field'), false);
+            checkRplGlobalState(); // NEW CHECK
         }
 
         if (saveBtn) {
             e.preventDefault();
             saveFieldData(saveBtn.closest('.rpl-field'));
+            checkRplGlobalState(); // NEW CHECK
         }
     });
 
@@ -1010,16 +1004,11 @@ document.addEventListener('DOMContentLoaded', function () {
             valDisplay.textContent = fieldValue || '—';
         }
 
-        const payload = {
-            [fieldName]: fieldValue
-        };
-
-        console.log('RPL Sending data:', payload);
-
         toggleEditMode(fieldWrap, false);
     }
 });
 
+// --- БЛОК 6: PIPELINE FILTER ---
 document.addEventListener('DOMContentLoaded', function () {
     const filterPopup = document.getElementById('prFilterPopup');
     const filterOverlay = document.getElementById('prFilterOverlay');
@@ -1070,8 +1059,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function positionPopup(buttonElement) {
         const rect = buttonElement.getBoundingClientRect();
-        const popupHeight = 300;
-
         let topPosition = rect.bottom + window.scrollY + 5;
         let leftPosition = rect.left + window.scrollX - 100;
 
@@ -1181,6 +1168,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// --- БЛОК 7: DOCUMENTS ---
 document.addEventListener('DOMContentLoaded', function () {
     const docOpenAddBtn = document.getElementById('docOpenAddBtn');
     const docClosePopupBtn = document.getElementById('docClosePopupBtn');
@@ -1304,6 +1292,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// --- БЛОК 8: ACTIVITY HISTORY ---
 document.addEventListener('DOMContentLoaded', function () {
     const ahTab = document.getElementById('tab-activity_history');
     if (!ahTab) return;
@@ -1317,6 +1306,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// --- БЛОК 9: PAYMENTS ---
 document.addEventListener('DOMContentLoaded', function () {
     const payTab = document.getElementById('tab-payments');
     if (!payTab) return;
@@ -1447,12 +1437,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 btnHtml = `<button class="pay-btn-more"></button>`;
             }
 
-            let dateRaw = '';
-            if (item.payment_date) {
-                const parts = item.payment_date.split(/[-/]/);
-                if (parts.length === 3) dateRaw = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
-            }
-
             const selectedDealIds = item.deals_paid ? item.deals_paid.map(dp => {
                 const found = dealsPaidData.find(d => d.name === dp.name);
                 return found ? found.id : null;
@@ -1517,10 +1501,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 <div class="pay-cell pay-center">
                     <div class="pay-view pay-actions">
-                        <button class="pay-icon-btn pay-icon-btn-edit">
-                        </button>
-                        <button class="pay-icon-btn pay-icon-btn-delete">
-                        </button>
+                        <button class="pay-icon-btn pay-icon-btn-edit"></button>
+                        <button class="pay-icon-btn pay-icon-btn-delete"></button>
                     </div>
                     <div class="pay-edit pay-edit-actions">
                         <button class="pay-btn-save">Save</button>
