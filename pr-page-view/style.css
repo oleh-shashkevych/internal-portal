@@ -323,7 +323,7 @@
 
 .form-group select,
 .form-group textarea,
-.form-group input:not(.pay-multiselect-search) {
+.form-group input {
 	width: 100%;
 	padding: 10px 6px;
 	border: 1px solid #D0D3D1;
@@ -364,7 +364,7 @@
 	padding-bottom: 25px;
 }
 
-.form-group input:not(.pay-multiselect-search)::placeholder,
+.form-group input::placeholder,
 .form-group textarea::placeholder {
 	color: #808080;
 }
@@ -993,7 +993,7 @@
 .pr-inline-label {
 	font-family: 'Urbanist', sans-serif;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	color: #808080;
 }
@@ -1006,7 +1006,7 @@
 
 .pr-val-display {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #232323;
@@ -1086,7 +1086,7 @@
 	border: 1px solid #159C2A;
 	border-radius: 3px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	color: #232323;
 	outline: none;
 	background-color: transparent;
@@ -1106,9 +1106,9 @@
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
 }
@@ -1118,9 +1118,9 @@
 	color: #232323;
 	border: 1px solid #D0D3D1;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	cursor: pointer;
 }
 
@@ -1190,7 +1190,7 @@
 
 .pr-lp-link {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #0461A0;
@@ -1670,7 +1670,7 @@
 .bd-label {
 	font-family: 'Urbanist', sans-serif;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	color: #808080;
 }
@@ -1683,7 +1683,7 @@
 
 .bd-val {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #232323;
@@ -1704,7 +1704,7 @@
 	padding: 3.5px 7px;
 	border-radius: 3px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: 600;
 	text-transform: uppercase;
 }
@@ -1761,7 +1761,7 @@
 	border: 1px solid #159C2A;
 	border-radius: 3px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	color: #232323;
 	outline: none;
 	box-sizing: border-box;
@@ -1781,9 +1781,9 @@
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
 }
@@ -1793,9 +1793,9 @@
 	color: #232323;
 	border: 1px solid #D0D3D1;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	cursor: pointer;
 }
 
@@ -2245,7 +2245,7 @@
 .rpl-label {
 	font-family: 'Urbanist', sans-serif;
 	font-weight: 400;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	color: #808080;
 }
@@ -2258,7 +2258,7 @@
 
 .rpl-val {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 20px;
 	font-weight: 500;
 	color: #232323;
@@ -2325,7 +2325,7 @@
 	border: 1px solid #159C2A;
 	border-radius: 3px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	color: #232323;
 	outline: none;
 	box-sizing: border-box;
@@ -2345,9 +2345,9 @@
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
 }
@@ -2357,9 +2357,9 @@
 	color: #232323;
 	border: 1px solid #D0D3D1;
 	border-radius: 3px;
-	padding: 6px 12px;
+	padding: 7px 12px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 15px;
 	cursor: pointer;
 }
 
@@ -2870,7 +2870,7 @@
 
 .doc-meta {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 15px;
 	color: #23232399;
 	padding: 5px 0;
@@ -2879,7 +2879,7 @@
 .doc-cell-size,
 .doc-cell-type {
 	font-family: 'Urbanist', sans-serif;
-	font-size: 12px;
+	font-size: 14px;
 	color: #23232399;
 	line-height: 15px;
 	text-align: end;
@@ -3137,7 +3137,7 @@
 .ah-cell {
 	padding: 13px 14px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	color: #232323;
 	box-sizing: border-box;
 	line-height: 17px;

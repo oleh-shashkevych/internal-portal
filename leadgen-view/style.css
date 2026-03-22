@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 .main_container {
-	max-width: 3200px;
+    max-width: 3200px;
 }
 
 /* Notifications */
@@ -1249,7 +1249,7 @@
 .lgv-det-label {
     font-family: 'Urbanist', sans-serif;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
     color: #808080;
 }
@@ -1262,7 +1262,7 @@
 
 .lgv-det-val {
     font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
     font-weight: 500;
     color: #232323;
@@ -1283,7 +1283,7 @@
     padding: 3.5px 7px;
     border-radius: 3px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -1340,7 +1340,7 @@
     border: 1px solid #159C2A;
     border-radius: 3px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     color: #232323;
     outline: none;
     box-sizing: border-box;
@@ -1360,9 +1360,9 @@
     color: #FFF;
     border: none;
     border-radius: 3px;
-    padding: 6px 12px;
+    padding: 7px 12px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -1372,9 +1372,9 @@
     color: #232323;
     border: 1px solid #D0D3D1;
     border-radius: 3px;
-    padding: 6px 12px;
+    padding: 7px 12px;
     font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
+    font-size: 15px;
     cursor: pointer;
 }
 
