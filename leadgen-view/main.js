@@ -1,15 +1,113 @@
+// ==========================================
+// ГЛОБАЛЬНЫЕ МАСКИ И ВАЛИДАЦИЯ (jQuery Inputmask)
+// ==========================================
+
+function applyMasks(container = document) {
+    if (typeof $ === 'undefined' || typeof $.fn.inputmask === 'undefined') {
+        console.warn('jQuery or jQuery Inputmask is not loaded!');
+        return;
+    }
+
+    // Маска телефона: (000) 000-0000
+    $(container).find('input[type="tel"], input[id*="Phone"], input[name*="phone"], .mask-phone, [data-field="phone"] input').each(function () {
+        if (!$(this).hasClass('mask-applied') && $(this).attr('type') !== 'hidden') {
+            $(this).inputmask({
+                mask: "(999) 999-9999",
+                clearIncomplete: true,
+                showMaskOnHover: false
+            }).addClass('mask-applied');
+        }
+    });
+
+    // Маска суммы: 999,999,999.99 (Ищем классы, имена и ID, связанные с суммами)
+    $(container).find('input[name="monthly_sales"], input[name="amount"], input[name="price"], .lgv-inv-cleave, .mask-amount').each(function () {
+        if (!$(this).hasClass('mask-applied') && $(this).attr('type') !== 'hidden') {
+            $(this).inputmask("currency", {
+                alias: "numeric",
+                groupSeparator: ",",
+                autoGroup: true,
+                digits: 2,
+                digitsOptional: false,
+                prefix: "",
+                placeholder: "0",
+                rightAlign: false,
+                clearMaskOnLostFocus: false,
+                max: "999999999.99",
+                allowMinus: false
+            }).addClass('mask-applied');
+        }
+    });
+
+    // Сброс красной рамки при вводе
+    $(container).find('input, select, textarea').on('input change', function () {
+        this.style.borderColor = '';
+    });
+}
+
+function validateFormFields(inputsArray) {
+    let isValid = true;
+
+    inputsArray.forEach(input => {
+        if (!input || typeof input.value === 'undefined') return;
+
+        let isFieldValid = true;
+        const val = input.value.trim();
+
+        // 1. Обязательное поле (required)
+        if (input.hasAttribute('required') && val === '') {
+            isFieldValid = false;
+        }
+
+        // 2. Строгая проверка Email
+        if (val !== '' && input.type === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(val)) isFieldValid = false;
+        }
+
+        // 3. Строгая проверка Телефона (ровно 10 цифр под маской)
+        const isPhoneField = input.type === 'tel' ||
+            input.id.toLowerCase().includes('phone') ||
+            input.classList.contains('mask-phone') ||
+            (input.closest('[data-field="phone"]') !== null);
+
+        if (val !== '' && isPhoneField) {
+            const digits = val.replace(/\D/g, '');
+            if (digits.length !== 10) isFieldValid = false;
+        }
+
+        // Применяем/убираем ошибку
+        if (!isFieldValid) {
+            input.style.borderColor = '#FF496B';
+            isValid = false;
+        } else {
+            input.style.borderColor = '';
+        }
+    });
+
+    return isValid;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyMasks(document);
+});
+
+
+// ==========================================
+// ОСНОВНАЯ ЛОГИКА СТРАНИЦЫ
+// ==========================================
+
 const burger = document.getElementById('burger');
 const closeBurger = document.getElementById('close_burger');
 const sideBar = document.querySelector('.left_cp_bar');
 const overlay = document.querySelector('.overlay');
 
-// Show menu on burger click
+// При клике на бургер показываем меню
 burger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(0)';
     overlay.style.display = 'flex';
 });
 
-// Hide menu on close click
+// При клике на крестик скрываем меню
 closeBurger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(-120%)';
     overlay.style.display = 'none';
@@ -30,15 +128,15 @@ function toggleContactsPanel(width) {
     }
 }
 
-// Initialize on load
+// Инициализация при загрузке
 toggleContactsPanel(window.innerWidth);
 
-// Listen for window resize
 window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
 
-// Tab switching logic with edit mode reset
+
+// --- УЛУЧШЕННАЯ ЛОГИКА ТАБОВ СО СБРОСОМ РЕДАКТИРОВАНИЯ ---
 document.addEventListener('DOMContentLoaded', function () {
     const tabButtons = document.querySelectorAll('.pr-tab-btn');
     const tabContents = document.querySelectorAll('.pr-tab-content');
@@ -46,8 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tabButtons.length > 0) {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-
-                // --- СБРОС РЕЖИМОВ РЕДАКТИРОВАНИЯ ---
 
                 // 1. Сброс глобальной кнопки на вкладке Detail
                 const globalEditBtn = document.getElementById('lgvDetGlobalEditBtn');
@@ -69,22 +165,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 editingInvoiceRows.forEach(row => {
                     const cancelBtn = row.querySelector('.lgv-inv-btn-cancel');
                     if (cancelBtn) {
-                        cancelBtn.click(); // Имитируем клик по Cancel, чтобы вернуть исходные значения
+                        cancelBtn.click();
                     } else {
                         row.classList.remove('is-editing');
                     }
                 });
 
-                // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ ВКЛАДОК ---
-
                 // Убираем активные классы
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
 
-                // Добавляем активный класс нажатой кнопке
+                // Добавляем активный класс
                 button.classList.add('active');
 
-                // Показываем нужный контент
+                // Показываем контент
                 const tabId = button.getAttribute('data-tab');
                 const targetContent = document.getElementById(`tab-${tabId}`);
                 if (targetContent) {
@@ -95,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+
+// --- БЛОК БАЛАНСА ---
 document.addEventListener('DOMContentLoaded', function () {
     const balanceData = {
         maxAmount: 5000.00,
@@ -124,6 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+
+// --- БЛОК 1: ACCOUNT DETAILS ---
 document.addEventListener('DOMContentLoaded', function () {
     const lgvDetCard = document.getElementById('lgvDetCard');
     const lgvDetGlobalEditBtn = document.getElementById('lgvDetGlobalEditBtn');
@@ -132,7 +230,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isLgvDetGlobalEditActive = false;
 
-    // НОВОЕ: Функция для проверки, остались ли открытые поля
     function checkLgvDetGlobalState() {
         if (!lgvDetGlobalEditBtn) return;
         const allEditModes = lgvDetCard.querySelectorAll('.lgv-det-edit-mode');
@@ -187,13 +284,19 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.lgv-det-field'), false);
-            checkLgvDetGlobalState(); // Вызываем проверку при отмене
+            checkLgvDetGlobalState();
         }
 
         if (saveBtn) {
             e.preventDefault();
-            saveFieldData(saveBtn.closest('.lgv-det-field'));
-            checkLgvDetGlobalState(); // Вызываем проверку при сохранении
+            const fieldWrap = saveBtn.closest('.lgv-det-field');
+
+            // ВАЛИДАЦИЯ ИНЛАЙН (Detail)
+            const input = fieldWrap.querySelector('.lgv-det-input');
+            if (!validateFormFields([input])) return;
+
+            saveFieldData(fieldWrap);
+            checkLgvDetGlobalState();
         }
     });
 
@@ -207,6 +310,8 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             viewMode.style.display = 'flex';
             editMode.style.display = 'none';
+            const input = editMode.querySelector('.lgv-det-input');
+            if (input) input.style.borderColor = '';
         }
     }
 
@@ -223,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (input.tagName === 'SELECT') {
             if (badgeDisplay) {
                 badgeDisplay.textContent = fieldValue;
-                if (fieldValue === 'ON BOARD') { // Удалил 'Active', заменил на твой класс из HTML
+                if (fieldValue === 'ON BOARD') {
                     badgeDisplay.classList.remove('inactive');
                 } else {
                     badgeDisplay.classList.add('inactive');
@@ -233,18 +338,19 @@ document.addEventListener('DOMContentLoaded', function () {
             valDisplay.href = `mailto:${fieldValue}`;
             valDisplay.textContent = fieldValue;
         } else if (valDisplay) {
-            valDisplay.textContent = fieldValue;
+            if (fieldName === 'monthly_sales') {
+                valDisplay.textContent = fieldValue ? `$${fieldValue}` : 'Not Publicly Available';
+            } else {
+                valDisplay.textContent = fieldValue;
+            }
         }
-
-        const payload = {
-            [fieldName]: fieldValue
-        };
-        console.log('Account Detail updated:', payload);
 
         toggleEditMode(fieldWrap, false);
     }
 });
 
+
+// --- БЛОК 2: INVOICES ---
 document.addEventListener('DOMContentLoaded', function () {
     const lgvInvTableBody = document.getElementById('lgvInvTableBody');
     const lgvInvAddOverlay = document.getElementById('lgvInvAddOverlay');
@@ -253,33 +359,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const lgvInvAddDetail = document.getElementById('lgvInvAddDetail');
     const lgvInvAddCount = document.getElementById('lgvInvAddCount');
 
-    // Initialize existing Cleave.js masks in the table
-    if (typeof Cleave !== 'undefined') {
-        document.querySelectorAll('.lgv-inv-cleave').forEach(el => {
-            new Cleave(el, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
-        });
-    }
-
-    // Character counter for textarea
     if (lgvInvAddDetail) {
         lgvInvAddDetail.addEventListener('input', () => {
             const left = 500 - lgvInvAddDetail.value.length;
             lgvInvAddCount.textContent = `${left} characters left`;
-            lgvInvAddDetail.classList.remove('has-error');
         });
     }
 
-    // Remove errors on input (in popup)
-    lgvInvAddForm?.querySelectorAll('.lgv-inv-input').forEach(input => {
-        input.addEventListener('input', () => input.classList.remove('has-error'));
-        input.addEventListener('change', () => input.classList.remove('has-error'));
-    });
-
-    // Open / Close popup
+    // Open Add Popup
     document.getElementById('lgvInvOpenAddBtn')?.addEventListener('click', () => {
         lgvInvAddForm.reset();
         lgvInvAddCount.textContent = '500 characters left';
-        lgvInvAddForm.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+        lgvInvAddForm.querySelectorAll('input, textarea, select').forEach(el => el.style.borderColor = '');
 
         lgvInvAddOverlay.classList.add('active');
         lgvInvAddPopup.classList.add('active');
@@ -292,102 +383,95 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('lgvInvCloseAddBtn')?.addEventListener('click', closeAddPopup);
 
-    // Add new invoice
+    // Добавление инвойса
     lgvInvAddForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        let isValid = true;
 
-        lgvInvAddForm.querySelectorAll('[required]').forEach(input => {
-            if (!input.value.trim()) {
-                input.classList.add('has-error');
-                isValid = false;
-            }
-        });
+        // ВАЛИДАЦИЯ ДОБАВЛЕНИЯ
+        const inputs = Array.from(lgvInvAddForm.querySelectorAll('input, select, textarea'));
+        if (!validateFormFields(inputs)) return;
 
-        if (isValid) {
-            const formData = new FormData(lgvInvAddForm);
-            const name = formData.get('name');
-            const detail = formData.get('detail');
-            const amount = formData.get('amount');
-            const price = formData.get('price');
-            const status = formData.get('status');
+        const formData = new FormData(lgvInvAddForm);
+        const name = formData.get('name');
+        const detail = formData.get('detail');
+        const amount = formData.get('amount'); // УЖЕ с маской от inputmask
+        const price = formData.get('price');   // УЖЕ с маской от inputmask
+        const status = formData.get('status');
 
-            const badgeClass = status === 'Paid' ? 'lgv-inv-badge-paid' : 'lgv-inv-badge-pending';
-            const actionBtn = status === 'Paid' ? '<button class="lgv-inv-action-btn-outline">Download PDF</button>' : '<button class="lgv-inv-action-btn-fill">Pay from balance</button>';
+        const badgeClass = status === 'Paid' ? 'lgv-inv-badge-paid' : 'lgv-inv-badge-pending';
+        const actionBtn = status === 'Paid' ? '<button class="lgv-inv-action-btn-outline">Download PDF</button>' : '<button class="lgv-inv-action-btn-fill">Pay from balance</button>';
 
-            const newRow = document.createElement('div');
-            newRow.className = 'lgv-inv-row';
-            newRow.innerHTML = `
-                <div class="lgv-inv-cell" data-field="name">
-                    <span class="lgv-inv-view lgv-inv-val">${name}</span>
-                    <input type="text" class="lgv-inv-edit lgv-inv-input" value="${name}">
+        const newRow = document.createElement('div');
+        newRow.className = 'lgv-inv-row';
+        newRow.innerHTML = `
+            <div class="lgv-inv-cell" data-field="name">
+                <span class="lgv-inv-view lgv-inv-val">${name}</span>
+                <input type="text" class="lgv-inv-edit lgv-inv-input" value="${name}" required>
+            </div>
+            <div class="lgv-inv-cell" data-field="details">
+                <span class="lgv-inv-view lgv-inv-val">${detail}</span>
+                <textarea class="lgv-inv-edit lgv-inv-textarea" rows="2" maxlength="500" required>${detail}</textarea>
+            </div>
+            <div class="lgv-inv-cell" data-field="amount">
+                <span class="lgv-inv-view lgv-inv-val">$${amount}</span>
+                <input type="text" name="amount" class="lgv-inv-edit lgv-inv-input lgv-inv-cleave mask-amount" value="${amount}" required>
+            </div>
+            <div class="lgv-inv-cell" data-field="price">
+                <span class="lgv-inv-view lgv-inv-val">$${price}</span>
+                <input type="text" name="price" class="lgv-inv-edit lgv-inv-input lgv-inv-cleave mask-amount" value="${price}" required>
+            </div>
+            <div class="lgv-inv-cell" data-field="status">
+                <span class="lgv-inv-view lgv-inv-badge ${badgeClass} lgv-inv-val">${status}</span>
+                <select class="lgv-inv-edit lgv-inv-input" required>
+                    <option value="Paid" ${status === 'Paid' ? 'selected' : ''}>Paid</option>
+                    <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                </select>
+            </div>
+            <div class="lgv-inv-cell lgv-inv-right">
+                <div class="lgv-inv-view lgv-inv-actions-wrapper">
+                    ${actionBtn}
                 </div>
-                <div class="lgv-inv-cell" data-field="details">
-                    <span class="lgv-inv-view lgv-inv-val">${detail}</span>
-                    <textarea class="lgv-inv-edit lgv-inv-textarea" rows="2" maxlength="500">${detail}</textarea>
+                <div class="lgv-inv-edit lgv-inv-edit-actions">
+                    <button class="lgv-inv-btn-save">Save</button>
+                    <button class="lgv-inv-btn-cancel">Cancel</button>
                 </div>
-                <div class="lgv-inv-cell" data-field="amount">
-                    <span class="lgv-inv-view lgv-inv-val">$${amount}</span>
-                    <input type="text" class="lgv-inv-edit lgv-inv-input lgv-inv-cleave" value="${amount.replace(/,/g, '')}">
-                </div>
-                <div class="lgv-inv-cell" data-field="price">
-                    <span class="lgv-inv-view lgv-inv-val">$${price}</span>
-                    <input type="text" class="lgv-inv-edit lgv-inv-input lgv-inv-cleave" value="${price.replace(/,/g, '')}">
-                </div>
-                <div class="lgv-inv-cell" data-field="status">
-                    <span class="lgv-inv-view lgv-inv-badge ${badgeClass} lgv-inv-val">${status}</span>
-                    <select class="lgv-inv-edit lgv-inv-input">
-                        <option value="Paid" ${status === 'Paid' ? 'selected' : ''}>Paid</option>
-                        <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
-                    </select>
-                </div>
-                <div class="lgv-inv-cell lgv-inv-right">
-                    <div class="lgv-inv-view lgv-inv-actions-wrapper">
-                        ${actionBtn}
-                    </div>
-                    <div class="lgv-inv-edit lgv-inv-edit-actions">
-                        <button class="lgv-inv-btn-save">Save</button>
-                        <button class="lgv-inv-btn-cancel">Cancel</button>
-                    </div>
-                </div>
-            `;
+            </div>
+        `;
 
-            lgvInvTableBody.insertBefore(newRow, lgvInvTableBody.firstChild);
+        lgvInvTableBody.insertBefore(newRow, lgvInvTableBody.firstChild);
 
-            // Apply Cleave to new inputs
-            if (typeof Cleave !== 'undefined') {
-                newRow.querySelectorAll('.lgv-inv-cleave').forEach(el => {
-                    new Cleave(el, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
-                });
-            }
+        // Применяем маску к созданной строке
+        applyMasks(newRow);
 
-            closeAddPopup();
-        }
+        closeAddPopup();
     });
 
-    // Inline editing logic (Row click)
+    // Инлайн редактирование (Invoices)
     if (lgvInvTableBody) {
         lgvInvTableBody.addEventListener('click', (e) => {
             const row = e.target.closest('.lgv-inv-row');
             if (!row) return;
 
-            // Ignore if action button clicked or row already editing
             const isActionButton = e.target.closest('button') && !e.target.closest('.lgv-inv-edit-actions');
             if (isActionButton || row.classList.contains('is-editing')) {
 
-                // Handle Save/Cancel buttons
                 const cancelBtn = e.target.closest('.lgv-inv-btn-cancel');
                 const saveBtn = e.target.closest('.lgv-inv-btn-save');
 
                 if (cancelBtn) {
                     e.stopPropagation();
                     row.classList.remove('is-editing');
+                    row.querySelectorAll('.lgv-inv-edit').forEach(i => i.style.borderColor = '');
                 }
 
                 if (saveBtn) {
                     e.stopPropagation();
-                    const cells = row.querySelectorAll('.lgv-inv-cell[data-field]');
 
+                    // ВАЛИДАЦИЯ ИНЛАЙН СТРОКИ
+                    const inputsToValidate = row.querySelectorAll('input.lgv-inv-edit, select.lgv-inv-edit, textarea.lgv-inv-edit');
+                    if (!validateFormFields(Array.from(inputsToValidate))) return;
+
+                    const cells = row.querySelectorAll('.lgv-inv-cell[data-field]');
                     cells.forEach(cell => {
                         const input = cell.querySelector('.lgv-inv-edit');
                         const view = cell.querySelector('.lgv-inv-val');
@@ -395,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (input && view) {
                             let val = input.value;
 
-                            if (input.classList.contains('lgv-inv-cleave')) {
+                            if (input.classList.contains('lgv-inv-cleave') || input.classList.contains('mask-amount')) {
                                 view.textContent = `$${val}`;
                             } else if (cell.getAttribute('data-field') === 'status') {
                                 view.textContent = val;
@@ -406,7 +490,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                     view.classList.add('lgv-inv-badge-pending');
                                 }
 
-                                // Change action button
                                 const actionWrapper = row.querySelector('.lgv-inv-actions-wrapper');
                                 if (actionWrapper) {
                                     if (val === 'Paid') {
@@ -426,12 +509,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Open edit mode on row click
             row.classList.add('is-editing');
         });
     }
 });
 
+
+// --- БЛОК 3: PIPELINE FILTER ---
 document.addEventListener('DOMContentLoaded', function () {
     const filterPopup = document.getElementById('prFilterPopup');
     const filterOverlay = document.getElementById('prFilterOverlay');
@@ -585,7 +669,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentFilterButton.classList.remove('filtered');
             }
         }
-
         applyAllFilters();
         closePopup();
     });

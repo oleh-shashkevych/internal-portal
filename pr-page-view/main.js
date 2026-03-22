@@ -1,15 +1,113 @@
+// ==========================================
+// ГЛОБАЛЬНЫЕ МАСКИ И ВАЛИДАЦИЯ
+// ==========================================
+
+function applyMasks(container = document) {
+    if (typeof $ === 'undefined' || typeof $.fn.inputmask === 'undefined') {
+        console.warn('jQuery or jQuery Inputmask is not loaded!');
+        return;
+    }
+
+    // Маска телефона: (000) 000-0000
+    // Ищем по ID, name, классу или внутри родителя data-field="phone"
+    $(container).find('input[id*="Phone"], input[id*="phone"], input[name*="phone"], .mask-phone, [data-field="phone"] input').each(function () {
+        if (!$(this).hasClass('mask-applied')) {
+            $(this).inputmask({
+                mask: "(999) 999-9999",
+                clearIncomplete: true, // Очищает поле, если введено не полностью
+                showMaskOnHover: false
+            }).addClass('mask-applied');
+        }
+    });
+
+    // Маска суммы: 9,000,000.00
+    $(container).find('input[id*="Amount"], .pay-edit-amount, .mask-amount').each(function () {
+        if (!$(this).hasClass('mask-applied')) {
+            $(this).inputmask("currency", {
+                alias: "numeric",
+                groupSeparator: ",",
+                autoGroup: true,
+                digits: 2,
+                digitsOptional: false,
+                prefix: "",
+                placeholder: "0",
+                rightAlign: false,
+                clearMaskOnLostFocus: false,
+                max: "999999999.99",
+                allowMinus: false
+            }).addClass('mask-applied');
+        }
+    });
+
+    // Очистка красной обводки при вводе
+    $(container).find('input, select, textarea').on('input change', function () {
+        this.style.borderColor = '';
+    });
+}
+
+function validateFormFields(inputsArray) {
+    let isValid = true;
+
+    inputsArray.forEach(input => {
+        // ДОБАВЛЕНА ЗАЩИТА: Если это не поле ввода (например, случайно попал div), игнорируем
+        if (!input || typeof input.value === 'undefined') return;
+
+        let isFieldValid = true;
+        const val = input.value.trim();
+
+        // 1. Проверка на заполненность (если required)
+        if (input.hasAttribute('required') && val === '') {
+            isFieldValid = false;
+        }
+
+        // 2. Строгая проверка Email
+        if (val !== '' && input.type === 'email') {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(val)) isFieldValid = false;
+        }
+
+        // 3. Строгая проверка Телефона (должно быть ровно 10 цифр под маской)
+        const isPhoneField = input.id.toLowerCase().includes('phone') ||
+            input.classList.contains('mask-phone') ||
+            (input.closest('[data-field="phone"]') !== null);
+
+        if (val !== '' && isPhoneField) {
+            const digits = val.replace(/\D/g, '');
+            if (digits.length !== 10) isFieldValid = false;
+        }
+
+        // Применяем или убираем ошибку
+        if (!isFieldValid) {
+            input.style.borderColor = '#FF496B';
+            isValid = false;
+        } else {
+            input.style.borderColor = '';
+        }
+    });
+
+    return isValid;
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    applyMasks(document);
+});
+
+
+// ==========================================
+// ОСНОВНОЙ СКРИПТ (САЙДБАР, ТАБЫ И Т.Д.)
+// ==========================================
+
 const burger = document.getElementById('burger');
 const closeBurger = document.getElementById('close_burger');
 const sideBar = document.querySelector('.left_cp_bar');
 const overlay = document.querySelector('.overlay');
 
-// При клике на бургер показываем меню
 burger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(0)';
     overlay.style.display = 'flex';
 });
 
-// При клике на крестик скрываем меню
 closeBurger.addEventListener('click', () => {
     sideBar.style.transform = 'translateX(-120%)';
     overlay.style.display = 'none';
@@ -30,10 +128,7 @@ function toggleContactsPanel(width) {
     }
 }
 
-// Инициализация при загрузке
 toggleContactsPanel(window.innerWidth);
-
-// Слушатель изменения размера окна
 window.addEventListener('resize', () => {
     toggleContactsPanel(window.innerWidth);
 });
@@ -104,8 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tabButtons.length > 0) {
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-
-                // 1. СБРОС ГЛОБАЛЬНЫХ РЕЖИМОВ РЕДАКТИРОВАНИЯ
+                // 1. СБРОС ГЛОБАЛЬНЫХ РЕЖИМОВ
                 const lpGlobalBtn = document.getElementById('lpGlobalEditBtn');
                 if (lpGlobalBtn && lpGlobalBtn.classList.contains('pr-lp-edit-btn-active')) lpGlobalBtn.click();
 
@@ -115,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const rplGlobalBtn = document.getElementById('rplGlobalEditBtn');
                 if (rplGlobalBtn && rplGlobalBtn.classList.contains('rpl-edit-btn-global--active')) rplGlobalBtn.click();
 
-                // 2. СБРОС ИНЛАЙН (ВСТРОЕННЫХ) РЕЖИМОВ РЕДАКТИРОВАНИЯ
+                // 2. СБРОС ИНЛАЙН РЕЖИМОВ
                 document.querySelectorAll('.pr-edit-mode .pr-cancel-btn').forEach(btn => {
                     const wrap = btn.closest('.pr-edit-mode');
                     if (wrap && window.getComputedStyle(wrap).display !== 'none') btn.click();
@@ -162,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isLpGlobalEditActive = false;
 
-    // Helper: Reset global button if all fields are closed manually
     function checkLpGlobalState() {
         if (!lpGlobalEditBtn) return;
         const allEditModes = referralBlock.querySelectorAll('.pr-edit-mode');
@@ -219,14 +312,13 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const fieldWrap = cancelBtn.closest('.pr-inline-field');
             toggleEditMode(fieldWrap, false);
-            checkLpGlobalState(); // NEW CHECK
+            checkLpGlobalState();
         }
 
         if (saveBtn) {
             e.preventDefault();
             const fieldWrap = saveBtn.closest('.pr-inline-field');
             saveInlineData(fieldWrap);
-            checkLpGlobalState(); // NEW CHECK
         }
     });
 
@@ -255,16 +347,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const input = fieldWrap.querySelector('.pr-edit-input');
         if (!input) return;
 
+        // ВАЛИДАЦИЯ
+        if (!validateFormFields([input])) return;
+
         const fieldName = input.getAttribute('name');
         let fieldValue = input.value;
 
         if (input.type === 'file') {
             fieldValue = input.files[0] ? input.files[0].name : '';
-        }
-
-        if (input.hasAttribute('required') && !fieldValue.toString().trim()) {
-            input.style.borderColor = '#FF496B';
-            return;
         }
 
         const valueDisplay = fieldWrap.querySelector('.pr-val-display');
@@ -282,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         toggleEditMode(fieldWrap, false);
+        checkLpGlobalState();
     }
 });
 
@@ -308,6 +399,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('addEmail').value = '';
         document.getElementById('addPassword').value = '';
         document.getElementById('addStatus').value = '';
+
+        document.querySelectorAll('#addAccountPopup input, #addAccountPopup select').forEach(i => i.style.borderColor = '');
 
         const pInput = document.getElementById('addPassword');
         if (pInput) pInput.type = 'password';
@@ -337,21 +430,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (editBtn) {
                 const row = editBtn.closest('.ab-row');
-                row.classList.add('is-editing');
-                row.classList.add('is-active-row');
+                row.classList.add('is-editing', 'is-active-row');
             }
 
             if (cancelBtn) {
                 const row = cancelBtn.closest('.ab-row');
-                row.classList.remove('is-editing');
-                row.classList.remove('is-active-row');
+                row.classList.remove('is-editing', 'is-active-row');
+                row.querySelectorAll('.ab-edit').forEach(i => i.style.borderColor = '');
             }
 
             if (saveBtn) {
                 const row = saveBtn.closest('.ab-row');
+
+                // ИСПРАВЛЕНИЕ: Ищем ТОЛЬКО инпуты и селекты, исключая div-обертки
+                const inputsToValidate = row.querySelectorAll('input.ab-edit, select.ab-edit');
+                if (!validateFormFields(Array.from(inputsToValidate))) return;
+
                 saveRowData(row);
-                row.classList.remove('is-editing');
-                row.classList.remove('is-active-row');
+                row.classList.remove('is-editing', 'is-active-row');
             }
 
             if (convertBtn) {
@@ -364,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (deleteBtn) {
                 e.preventDefault();
                 activeAbDeleteRow = deleteBtn.closest('.ab-row');
-
                 if (abDeleteOverlay && abDeletePopup) {
                     abDeleteOverlay.classList.add('active');
                     abDeletePopup.classList.add('active');
@@ -375,6 +470,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (popupSaveBtn && tableBody) {
         popupSaveBtn.addEventListener('click', () => {
+            // ВАЛИДАЦИЯ ПОПАПА
+            const inputsToValidate = [
+                document.getElementById('addFirstName'),
+                document.getElementById('addLastName'),
+                document.getElementById('addPhone'),
+                document.getElementById('addEmail'),
+                document.getElementById('addStatus')
+            ];
+
+            inputsToValidate.forEach(el => el.setAttribute('required', 'true'));
+            if (!validateFormFields(inputsToValidate)) return;
+
             const firstName = document.getElementById('addFirstName').value.trim();
             const lastName = document.getElementById('addLastName').value.trim();
             const phone = document.getElementById('addPhone').value.trim();
@@ -396,15 +503,15 @@ document.addEventListener('DOMContentLoaded', function () {
             newRow.innerHTML = `
                 <div class="ab-cell" data-field="fullName">
                     <span class="ab-view">${fullName}</span>
-                    <input type="text" class="ab-edit ab-input" value="${fullName}">
+                    <input type="text" class="ab-edit ab-input" value="${fullName}" required>
                 </div>
                 <div class="ab-cell" data-field="email">
                     <span class="ab-view">${email}</span>
-                    <input type="email" class="ab-edit ab-input" value="${email}">
+                    <input type="email" class="ab-edit ab-input" value="${email}" required>
                 </div>
                 <div class="ab-cell" data-field="phone">
                     <span class="ab-view">${phone}</span>
-                    <input type="text" class="ab-edit ab-input" value="${phone}">
+                    <input type="text" class="ab-edit ab-input mask-phone" value="${phone}" required>
                 </div>
                 <div class="ab-cell" data-field="status">
                     <span class="ab-view ab-badge ${badgeClass}">${displayStatus}</span>
@@ -430,6 +537,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
 
             tableBody.appendChild(newRow);
+            applyMasks(newRow); // Активируем маски для новой строки
 
             clearAddAccountForm();
             addAccountOverlay.classList.remove('active');
@@ -531,7 +639,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('abCloseDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
     document.getElementById('abCancelDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
-
     document.getElementById('abConfirmDeleteBtn')?.addEventListener('click', () => {
         if (activeAbDeleteRow) {
             activeAbDeleteRow.remove();
@@ -549,7 +656,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isGlobalEditActive = false;
 
-    // Helper: Reset global button if all fields are closed manually
     function checkBdGlobalState() {
         if (!bdGlobalEditBtn) return;
         const allEditModes = bdCard.querySelectorAll('.bd-edit-mode');
@@ -602,13 +708,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.bd-field'), false);
-            checkBdGlobalState(); // NEW CHECK
+            checkBdGlobalState();
         }
 
         if (saveBtn) {
             e.preventDefault();
-            saveFieldData(saveBtn.closest('.bd-field'));
-            checkBdGlobalState(); // NEW CHECK
+            const fieldWrap = saveBtn.closest('.bd-field');
+            saveFieldData(fieldWrap);
         }
     });
 
@@ -622,12 +728,16 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             viewMode.style.display = 'flex';
             editMode.style.display = 'none';
+            const input = editMode.querySelector('.bd-input');
+            if (input) input.style.borderColor = '';
         }
     }
 
     function saveFieldData(fieldWrap) {
         const input = fieldWrap.querySelector('.bd-input');
         if (!input) return;
+
+        if (!validateFormFields([input])) return;
 
         const fieldName = input.getAttribute('name');
         const fieldValue = input.value;
@@ -648,6 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         toggleEditMode(fieldWrap, false);
+        checkBdGlobalState();
     }
 });
 
@@ -670,7 +781,10 @@ document.addEventListener('DOMContentLoaded', function () {
         ];
         simpleFields.forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.value = '';
+            if (el) {
+                el.value = '';
+                el.style.borderColor = '';
+            }
         });
 
         const dobGroup = document.querySelector('.form-group[data-field="dob"]');
@@ -683,8 +797,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (input._flatpickr) input._flatpickr.clear();
             }
         }
-
-        document.querySelectorAll('.cr-input').forEach(inp => inp.style.borderColor = '');
     }
 
     function closeDeletePopup() {
@@ -726,19 +838,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (editBtn) {
                 const row = editBtn.closest('.cr-row');
-                row.classList.add('is-editing');
-                row.classList.add('is-active-row');
+                row.classList.add('is-editing', 'is-active-row');
             }
 
             if (cancelBtn) {
                 const row = cancelBtn.closest('.cr-row');
-                row.classList.remove('is-editing');
-                row.classList.remove('is-active-row');
+                row.classList.remove('is-editing', 'is-active-row');
+                row.querySelectorAll('input').forEach(i => i.style.borderColor = '');
             }
 
             if (saveBtn) {
                 const row = saveBtn.closest('.cr-row');
                 const cells = row.querySelectorAll('.cr-cell[data-field]');
+
+                // ВАЛИДАЦИЯ ИНЛАЙН
+                const inputs = row.querySelectorAll('.cr-input');
+                if (!validateFormFields(Array.from(inputs))) return;
 
                 cells.forEach(cell => {
                     const input = cell.querySelector('input, select');
@@ -758,8 +873,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                row.classList.remove('is-editing');
-                row.classList.remove('is-active-row');
+                row.classList.remove('is-editing', 'is-active-row');
             }
 
             if (deleteBtn) {
@@ -777,22 +891,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const email = document.getElementById('crEmail');
         const phone = document.getElementById('crPhone');
 
-        let hasError = false;
-        [fName, lName, email, phone].forEach(input => {
-            if (!input.value.trim()) {
-                input.style.borderColor = '#FF496B';
-                hasError = true;
-            } else {
-                input.style.borderColor = '';
-            }
-        });
+        fName.setAttribute('required', 'true');
+        lName.setAttribute('required', 'true');
+        email.setAttribute('required', 'true');
+        phone.setAttribute('required', 'true');
 
-        if (hasError) return;
+        // ВАЛИДАЦИЯ ПОПАПА
+        if (!validateFormFields([fName, lName, email, phone])) return;
 
         const fullName = `${fName.value.trim()} ${lName.value.trim()}`;
         const ownership = document.getElementById('crOwnership').value.trim() || '-';
         const role = document.getElementById('crRole').value || '-';
         const ssn = document.getElementById('crSsn').value.trim() || '-';
+        const phoneVal = phone.value; // Уже в маске
 
         const dobGroup = document.querySelector('#crAddPopup [data-field="dob"]');
         const dobInput = dobGroup ? dobGroup.querySelector('input') : null;
@@ -811,7 +922,7 @@ document.addEventListener('DOMContentLoaded', function () {
         newRow.innerHTML = `
         <div class="cr-cell" data-field="fullName">
             <span class="cr-view cr-val">${fullName}</span>
-            <input type="text" class="cr-edit cr-input" value="${fullName}">
+            <input type="text" class="cr-edit cr-input" value="${fullName}" required>
         </div>
         <div class="cr-cell" data-field="ownership">
             <span class="cr-view cr-val">${ownership}</span>
@@ -826,12 +937,12 @@ document.addEventListener('DOMContentLoaded', function () {
             </select>
         </div>
         <div class="cr-cell" data-field="phone">
-            <span class="cr-view cr-val">${phone.value}</span>
-            <input type="text" class="cr-edit cr-input" value="${phone.value}">
+            <span class="cr-view cr-val">${phoneVal}</span>
+            <input type="text" class="cr-edit cr-input mask-phone" value="${phoneVal}" required>
         </div>
         <div class="cr-cell" data-field="email">
             <span class="cr-view cr-val">${email.value}</span>
-            <input type="email" class="cr-edit cr-input" value="${email.value}">
+            <input type="email" class="cr-edit cr-input" value="${email.value}" required>
         </div>
         <div class="cr-cell" data-field="ssn">
             <span class="cr-view cr-val">${ssn}</span>
@@ -863,6 +974,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         crTableBody.appendChild(newRow);
         initAllCustomDatePickers(newRow);
+        applyMasks(newRow); // Активация масок
 
         crAddOverlay.classList.remove('active');
         crAddPopup.classList.remove('active');
@@ -884,7 +996,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let isRplGlobalEditActive = false;
 
-    // Helper: Reset global button if all fields are closed manually
     function checkRplGlobalState() {
         if (!rplGlobalEditBtn) return;
         const allEditModes = rplCard.querySelectorAll('.rpl-edit-mode');
@@ -948,13 +1059,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (cancelBtn) {
             e.preventDefault();
             toggleEditMode(cancelBtn.closest('.rpl-field'), false);
-            checkRplGlobalState(); // NEW CHECK
+            checkRplGlobalState();
         }
 
         if (saveBtn) {
             e.preventDefault();
             saveFieldData(saveBtn.closest('.rpl-field'));
-            checkRplGlobalState(); // NEW CHECK
         }
     });
 
@@ -977,12 +1087,15 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             viewMode.style.display = 'flex';
             editMode.style.display = 'none';
+            if (input) input.style.borderColor = '';
         }
     }
 
     function saveFieldData(fieldWrap) {
         const input = fieldWrap.querySelector('.rpl-input');
         if (!input) return;
+
+        if (!validateFormFields([input])) return;
 
         const fieldName = input.getAttribute('name');
         const fieldValue = input.value;
@@ -1005,6 +1118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         toggleEditMode(fieldWrap, false);
+        checkRplGlobalState();
     }
 });
 
@@ -1070,19 +1184,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function populatePopupList(items, checkedItems) {
         filterList.innerHTML = '';
-        items.forEach((item, index) => {
+        items.forEach((item) => {
             const label = document.createElement('label');
             label.className = 'pr-filter-popup__item';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = item;
-            if (checkedItems.includes(item)) {
-                checkbox.checked = true;
-            }
+            if (checkedItems.includes(item)) checkbox.checked = true;
 
             const textNode = document.createTextNode(item);
-
             label.appendChild(checkbox);
             label.appendChild(textNode);
             filterList.appendChild(label);
@@ -1140,8 +1251,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     applyBtn?.addEventListener('click', () => {
-        const selectedValues = Array.from(filterList.querySelectorAll('input[type="checkbox"]:checked'))
-            .map(cb => cb.value);
+        const selectedValues = Array.from(filterList.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
 
         if (selectedValues.length > 0) {
             activeFilters[currentColumnIndex] = selectedValues;
@@ -1158,9 +1268,7 @@ document.addEventListener('DOMContentLoaded', function () {
     resetBtn?.addEventListener('click', () => {
         if (activeFilters[currentColumnIndex]) {
             delete activeFilters[currentColumnIndex];
-            if (currentFilterButton) {
-                currentFilterButton.classList.remove('filtered');
-            }
+            if (currentFilterButton) currentFilterButton.classList.remove('filtered');
         }
 
         applyAllFilters();
@@ -1185,8 +1293,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedFiles = [];
 
     function getFileIconClass(extension) {
-        const isDoc = ['doc', 'docx'].includes(extension);
-        return isDoc ? 'icon-doc' : 'icon-pdf';
+        return ['doc', 'docx'].includes(extension) ? 'icon-doc' : 'icon-pdf';
     }
 
     function openDocPopup() {
@@ -1211,37 +1318,29 @@ document.addEventListener('DOMContentLoaded', function () {
         docFileInput.click();
     });
 
-    docFileInput?.addEventListener('change', (e) => {
-        handleFiles(e.target.files);
-    });
+    docFileInput?.addEventListener('change', (e) => handleFiles(e.target.files));
 
     docDropzone?.addEventListener('dragover', (e) => {
         e.preventDefault();
         docDropzone.classList.add('dragover');
     });
 
-    docDropzone?.addEventListener('dragleave', () => {
-        docDropzone.classList.remove('dragover');
-    });
+    docDropzone?.addEventListener('dragleave', () => docDropzone.classList.remove('dragover'));
 
     docDropzone?.addEventListener('drop', (e) => {
         e.preventDefault();
         docDropzone.classList.remove('dragover');
-        if (e.dataTransfer.files.length) {
-            handleFiles(e.dataTransfer.files);
-        }
+        if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
     });
 
     function handleFiles(files) {
-        Array.from(files).forEach(file => {
-            selectedFiles.push(file);
-        });
+        Array.from(files).forEach(file => selectedFiles.push(file));
         renderPreview();
     }
 
     function renderPreview() {
         docPreviewList.innerHTML = '';
-        selectedFiles.forEach((file, index) => {
+        selectedFiles.forEach(file => {
             const item = document.createElement('div');
             item.className = 'doc-preview-item';
             item.textContent = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
@@ -1257,10 +1356,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let hr = d.getHours();
         const min = String(d.getMinutes()).padStart(2, '0');
         const ampm = hr >= 12 ? 'PM' : 'AM';
-        hr = hr % 12;
-        hr = hr ? hr : 12;
-        const hrStr = String(hr).padStart(2, '0');
-        return `${mo}/${da}/${yr} ${hrStr}:${min} • ${ampm}`;
+        hr = hr % 12 || 12;
+        return `${mo}/${da}/${yr} ${String(hr).padStart(2, '0')}:${min} • ${ampm}`;
     }
 
     docSubmitBtn?.addEventListener('click', () => {
@@ -1284,10 +1381,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="doc-cell-size">File size: ${sizeStr} KB</div>
                 <div class="doc-cell-type">File type: ${ext.toUpperCase()}</div>
             `;
-
             docListBody.insertBefore(row, docListBody.firstChild);
         });
-
         closeDocPopup();
     });
 });
@@ -1299,10 +1394,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     ahTab.addEventListener('click', function (e) {
         const header = e.target.closest('.ah-header');
-        if (header) {
-            const block = header.closest('.ah-block');
-            block.classList.toggle('is-expanded');
-        }
+        if (header) header.closest('.ah-block').classList.toggle('is-expanded');
     });
 });
 
@@ -1312,58 +1404,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!payTab) return;
 
     const jsonData_2025 = {
-        year: '2025',
-        total_due: '10,800.00',
-        total_paid: '7,135.00',
-        total: '10,800.00',
-        data: [
-            {
-                itm_id: '24',
-                payment_date: '05/16/2024',
-                payment_amount: '28,000.00',
-                payment_type: 'Ria',
-                payment_details: 'This Text message 2',
-                deals_paid: [
-                    { name: 'Item Name Text 4882345657568', url: 'pathto?itm=877' },
-                    { name: 'Item Name Text 675678356', url: 'pathto?itm=789' },
-                    { name: 'Item Name Text 4356347889769', url: 'pathto?itm=565' }
-                ]
-            }
-        ]
+        year: '2025', total_due: '10,800.00', total_paid: '7,135.00', total: '10,800.00',
+        data: [{ itm_id: '24', payment_date: '05/16/2024', payment_amount: '28,000.00', payment_type: 'Ria', payment_details: 'This Text message 2', deals_paid: [{ name: 'Item Name Text 4882345657568', url: 'pathto?itm=877' }] }]
     };
 
-    const jsonData_2018 = {
-        year: '2018',
-        total_due: '15,800.00',
-        total_paid: '4,135.00',
-        total: '15,800.00',
-        data: [
-            {
-                itm_id: '26',
-                payment_date: '01/12/2018',
-                payment_amount: '29,000.00',
-                payment_type: 'Paypal',
-                payment_details: 'This Text message 311',
-                deals_paid: []
-            }
-        ]
-    };
-
-    const dealsPaidData = [
-        { id: '10', name: 'David Bechtel Photography Dba Loft Creative Group #1' },
-        { id: '11', name: 'Carlie Care Kids Inc #1' },
-        { id: '15', name: 'David Bechtel Photography Dba Loft Creative Group #1' },
-        { id: '20', name: 'Hayes Lawncare And Landscape Services #1' },
-        { id: '22', name: 'C&j Mechanical Services #1' },
-        { id: '25', name: 'Low Country Fish Camp Homes Homes At Olive Shell #1' },
-        { id: '30', name: 'LSSP Corporation #9' },
-        { id: '31', name: 'TABA PERSONAL CARE LLC #1' },
-        { id: '33', name: 'Gustavo Anthony Ponce De Leon Dba Chula Vista Fence #1' },
-        { id: '40', name: "Ljl Food Management Inc Dba Tina's Cafe #1" }
-    ];
-
+    const dealsPaidData = [{ id: '10', name: 'David Bechtel Photography Dba Loft Creative Group #1' }, { id: '11', name: 'Carlie Care Kids Inc #1' }];
     let currentYear = '2025';
-    const dataByYear = { '2025': jsonData_2025, '2018': jsonData_2018 };
+    const dataByYear = { '2025': jsonData_2025 };
 
     const payTableBody = document.getElementById('payTableBody');
     const payYearSelector = document.getElementById('payYearSelector');
@@ -1376,7 +1423,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const payAddPopup = document.getElementById('payAddPopup');
     const payDeleteOverlay = document.getElementById('payDeleteOverlay');
     const payDeletePopup = document.getElementById('payDeletePopup');
-
     let currentDeleteId = null;
 
     initYearDropdown();
@@ -1456,19 +1502,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="pay-cell" data-field="payment_date">
                     <div class="pay-view">${item.payment_date}</div>
                     <div class="pay-edit" style="width: 100%;">
-                        <div class="custom-calendar">
-                            <span>${item.payment_date}</span>
-                        </div>
+                        <div class="custom-calendar"><span>${item.payment_date}</span></div>
                     </div>
                 </div>
                 <div class="pay-cell">
                     <div class="pay-view">$${item.payment_amount}</div>
-                    <div class="pay-edit"><input type="text" class="pay-input pay-edit-amount" value="${item.payment_amount.replace(/,/g, '')}"></div>
+                    <div class="pay-edit"><input type="text" class="pay-input pay-edit-amount mask-amount" value="${item.payment_amount.replace(/,/g, '')}" required></div>
                 </div>
                 <div class="pay-cell">
                     <div class="pay-view">${item.payment_type}</div>
                     <div class="pay-edit">
-                        <select class="pay-input pay-edit-type" style="cursor:pointer;">
+                        <select class="pay-input pay-edit-type" style="cursor:pointer;" required>
                             <option value="Payroll" ${item.payment_type === 'Payroll' ? 'selected' : ''}>Payroll</option>
                             <option value="Paypal" ${item.payment_type === 'Paypal' ? 'selected' : ''}>Paypal</option>
                             <option value="Ria" ${item.payment_type === 'Ria' ? 'selected' : ''}>Ria</option>
@@ -1485,8 +1529,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>
                     <div class="pay-edit">
-                        <textarea class="pay-textarea pay-edit-details" rows="2">${item.payment_details}</textarea>
-                        
+                        <textarea class="pay-textarea pay-edit-details" rows="2" required>${item.payment_details}</textarea>
                         <div class="pay-multiselect-wrapper" style="margin-top: 5px;">
                             <div class="pay-multiselect-box">
                                 <input type="text" class="pay-multiselect-search" placeholder="Search options...">
@@ -1511,13 +1554,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
             payTableBody.appendChild(row);
-
-            if (typeof Cleave !== 'undefined') {
-                new Cleave(row.querySelector('.pay-edit-amount'), { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
-            }
         });
 
         initAllCustomDatePickers(payTableBody);
+        applyMasks(payTableBody); // Активация масок
     }
 
     payTableBody.addEventListener('click', (e) => {
@@ -1539,12 +1579,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (btnCancel) {
-            const row = e.target.closest('.pay-row');
-            row.classList.remove('is-editing', 'is-active-row');
-            renderData();
+            renderData(); // Перерисовываем для сброса
         }
 
         if (btnSave) {
+            const row = btnSave.closest('.pay-row');
+            const inputs = row.querySelectorAll('.pay-input, .pay-textarea');
+            if (!validateFormFields(Array.from(inputs))) return;
             saveInlineEdit(e);
         }
 
@@ -1562,8 +1603,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const item = dataByYear[currentYear].data.find(d => String(d.itm_id) === String(id));
 
         if (item) {
-            const dateInput = row.querySelector('.pay-input.pay-edit-date')?.value ||
-                row.querySelector('.custom-calendar input')?.value;
+            const dateInput = row.querySelector('.pay-input.pay-edit-date')?.value || row.querySelector('.custom-calendar input')?.value;
             const amountInput = row.querySelector('.pay-edit-amount').value;
             const typeInput = row.querySelector('.pay-edit-type').value;
             const detailsInput = row.querySelector('.pay-edit-details').value;
@@ -1575,10 +1615,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return { name: deal.name, url: '#' };
             });
 
-            if (dateInput) {
-                item.payment_date = dateInput;
-            }
-
+            if (dateInput) item.payment_date = dateInput;
             item.payment_amount = amountInput;
             item.payment_type = typeInput;
             item.payment_details = detailsInput;
@@ -1592,10 +1629,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const addAmount = document.getElementById('payAddAmount');
     const addDetails = document.getElementById('payAddDetails');
     const addCharCount = document.getElementById('payAddCharCount');
-
-    if (typeof Cleave !== 'undefined' && addAmount) {
-        new Cleave(addAmount, { numeral: true, numeralThousandsGroupStyle: 'thousand', numeralDecimalMark: '.', numeralDecimalScale: 2 });
-    }
 
     if (addDetails) {
         addDetails.addEventListener('input', () => {
@@ -1618,6 +1651,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('payOpenAddBtn')?.addEventListener('click', () => {
         addForm.reset();
         addCharCount.textContent = '500 characters left';
+        addForm.querySelectorAll('input, select, textarea').forEach(i => i.style.borderColor = '');
 
         const tags = document.querySelector('#payAddDealsWrapper .pay-multiselect-tags');
         const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
@@ -1643,9 +1677,13 @@ document.addEventListener('DOMContentLoaded', function () {
             dateInput = addForm.querySelector('[data-field="addDate"] input');
         }
 
-        const typeInput = document.getElementById('payAddType').value;
-        const detailsInput = addDetails.value;
-        const amountVal = addAmount.value;
+        const typeInput = document.getElementById('payAddType');
+        const detailsInput = addDetails;
+
+        addAmount.classList.add('mask-amount'); // Чтобы маска применилась, если еще не применена
+
+        // ВАЛИДАЦИЯ
+        if (!validateFormFields([addAmount, typeInput, detailsInput])) return;
 
         if (!dateInput || !dateInput.value || dateInput.value === '-') {
             const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
@@ -1670,9 +1708,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const newItem = {
             itm_id: Date.now().toString(),
             payment_date: dateInput.value,
-            payment_amount: amountVal,
-            payment_type: typeInput,
-            payment_details: detailsInput,
+            payment_amount: addAmount.value,
+            payment_type: typeInput.value,
+            payment_details: detailsInput.value,
             deals_paid: dealsObj
         };
 
@@ -1688,6 +1726,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (calendarSpan) calendarSpan.textContent = '-';
     });
 
+    // Multiselect Listeners...
     document.addEventListener('click', (e) => {
         const searchInput = e.target.closest('.pay-multiselect-search');
         if (searchInput) return;
@@ -1790,9 +1829,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentDeleteId = null;
     }
 
-    if (payAddPopup) {
-        initAllCustomDatePickers(payAddPopup);
-    }
-
+    if (payAddPopup) initAllCustomDatePickers(payAddPopup);
     initAllCustomDatePickers(document.getElementById('payAddPopup'));
 });
