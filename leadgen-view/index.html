@@ -801,8 +801,7 @@
                                     <button class="pr-tab-btn" data-tab="pipeline">Pipeline</button>
                                 </div>
 
-                                <div class="pr-tabs-content-wrapper"
-                                    style="padding: 0; background: transparent; border: none;">
+                                <div class="pr-tabs-content-wrapper">
                                     <div class="pr-tab-content" id="tab-detail">
                                         <div class="lgv-det-header">
                                             <h3 class="lgv-det-title">Account Details</h3>
@@ -820,7 +819,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="business_name" class="lgv-det-input"
                                                             value="Bank of America">
                                                         <div class="lgv-det-edit-actions">
@@ -837,7 +836,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="representative" class="lgv-det-input"
                                                             value="TBD (To Be Determined)">
                                                         <div class="lgv-det-edit-actions">
@@ -854,7 +853,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="rp_type" class="lgv-det-input"
                                                             value="Lending Partner">
                                                         <div class="lgv-det-edit-actions">
@@ -871,7 +870,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <select name="account_status" class="lgv-det-input">
                                                             <option value="ON BOARD" selected>ON BOARD</option>
                                                             <option value="PENDING">PENDING</option>
@@ -891,7 +890,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="bank" class="lgv-det-input"
                                                             value="Bank of America, N.A.">
                                                         <div class="lgv-det-edit-actions">
@@ -908,7 +907,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="programs" class="lgv-det-input"
                                                             value="SBA">
                                                         <div class="lgv-det-edit-actions">
@@ -926,7 +925,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="url" name="company_website" class="lgv-det-input"
                                                             value="www.bankofamerica.com">
                                                         <div class="lgv-det-edit-actions">
@@ -943,7 +942,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="monthly_sales" class="lgv-det-input"
                                                             value="Not Publicly Available">
                                                         <div class="lgv-det-edit-actions">
@@ -953,8 +952,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="lgv-det-empty-cell" style="display: none;"></div>
-
                                                 <div class="lgv-det-field" data-field="sales_agents">
                                                     <span class="lgv-det-label">Number of Sales Agents</span>
                                                     <div class="lgv-det-view-mode">
@@ -962,7 +959,7 @@
                                                         <button class="lgv-det-action-btn lgv-det-edit-btn-inline">
                                                         </button>
                                                     </div>
-                                                    <div class="lgv-det-edit-mode" style="display: none;">
+                                                    <div class="lgv-det-edit-mode">
                                                         <input type="text" name="sales_agents" class="lgv-det-input"
                                                             value="Corporate Sales Division">
                                                         <div class="lgv-det-edit-actions">
@@ -1095,7 +1092,7 @@
 
                                     <div class="pr-tab-content" id="tab-criterias">
                                         <div class="lgv-tab-card">
-                                            <p style="color: #8B928C;">Criteria's Content Placeholder</p>
+                                            <p>Criteria's Content Placeholder</p>
                                         </div>
                                     </div>
 
@@ -1228,45 +1225,43 @@
     </div>
 
     <div class="popup-overlay" id="lgvInvAddOverlay"></div>
-    <div class="popup popup--large" id="lgvInvAddPopup" style="max-width: 600px; padding: 25px 30px;">
-        <div class="popup-top" style="margin-bottom: 25px;">
-            <h2
-                style="font-family: 'Urbanist', sans-serif; font-size: 20px; font-weight: 700; color: #232323; margin: 0;">
-                Add Invoice</h2>
+    <div class="popup popup--large" id="lgvInvAddPopup">
+        <div class="popup-top">
+            <h2>Add Invoice</h2>
             <button class="popup-close" id="lgvInvCloseAddBtn">
             </button>
         </div>
-        <form id="lgvInvAddForm" style="display: flex; flex-direction: column; gap: 15px;" novalidate>
-            <div class="lgv-inv-form-group">
-                <label class="lgv-inv-label">Name*</label>
+        <form id="lgvInvAddForm" novalidate>
+            <div class="form-group">
+                <label class="label">Name*</label>
                 <input type="text" name="name" class="lgv-inv-input" required placeholder="INV-000">
             </div>
             <div class="lgv-inv-form-grid">
-                <div class="lgv-inv-form-group">
-                    <label class="lgv-inv-label">Amount*</label>
+                <div class="form-group">
+                    <label class="label">Amount*</label>
                     <input type="text" id="lgvInvAddAmount" name="amount" class="lgv-inv-input lgv-inv-cleave" required
                         placeholder="0.00">
                 </div>
-                <div class="lgv-inv-form-group">
-                    <label class="lgv-inv-label">Price*</label>
+                <div class="form-group">
+                    <label class="label">Price*</label>
                     <input type="text" id="lgvInvAddPrice" name="price" class="lgv-inv-input lgv-inv-cleave" required
                         placeholder="0.00">
                 </div>
             </div>
-            <div class="lgv-inv-form-group">
-                <label class="lgv-inv-label">Status*</label>
-                <select name="status" class="lgv-inv-input" required style="cursor: pointer;">
+            <div class="form-group">
+                <label class="label">Status*</label>
+                <select name="status" class="lgv-inv-input" required>
                     <option value="Paid">Paid</option>
                     <option value="Pending" selected>Pending</option>
                 </select>
             </div>
-            <div class="lgv-inv-form-group">
-                <label class="lgv-inv-label">Detail*</label>
+            <div class="form-group">
+                <label class="label">Detail*</label>
                 <textarea id="lgvInvAddDetail" name="detail" class="lgv-inv-textarea" maxlength="500"
                     required></textarea>
                 <span class="lgv-inv-char-count" id="lgvInvAddCount">500 characters left</span>
             </div>
-            <button type="submit" class="lgv-inv-btn-submit-full" style="margin-top: 10px;">Add New</button>
+            <button type="submit" class="lgv-inv-btn-submit-full">Add New</button>
         </form>
     </div>
 

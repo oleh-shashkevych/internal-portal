@@ -319,10 +319,11 @@
 
 .form-group select,
 .form-group textarea,
-.form-group input {
+.form-group input:not(.pay-multiselect-search) {
 	width: 100%;
 	padding: 10px 6px;
 	border: 1px solid #D0D3D1;
+	background-color: transparent;
 	border-radius: 3px;
 	font-size: 14px;
 	line-height: 20px;
@@ -339,6 +340,18 @@
 	padding-right: 30px;
 }
 
+.form-group .custom-calendar {
+	padding: 10px 6px;
+	border: 1px solid #D0D3D1;
+	background-color: transparent;
+	border-radius: 3px;
+	font-size: 14px;
+	line-height: 20px;
+	font-family: 'Urbanist', sans-serif;
+	color: rgba(35, 35, 35, 0.8);
+	box-sizing: border-box;
+}
+
 .form-group textarea {
 	min-height: 40px;
 	resize: vertical;
@@ -347,7 +360,7 @@
 	padding-bottom: 25px;
 }
 
-.form-group input::placeholder,
+.form-group input:not(.pay-multiselect-search)::placeholder,
 .form-group textarea::placeholder {
 	color: #808080;
 }
@@ -1058,7 +1071,7 @@
 }
 
 .pr-edit-mode {
-	display: flex;
+	display: none;
 	align-items: center;
 	gap: 10px;
 }
@@ -1072,6 +1085,7 @@
 	font-size: 14px;
 	color: #232323;
 	outline: none;
+	background-color: transparent;
 }
 
 .pr-edit-input:focus {
@@ -1732,7 +1746,7 @@
 }
 
 .bd-edit-mode {
-	display: flex;
+	display: none;
 	align-items: center;
 	gap: 10px;
 }
@@ -1986,6 +2000,7 @@
 
 .cr-edit {
 	display: none;
+	width: 100%;
 }
 
 .is-editing .cr-view {
@@ -2295,7 +2310,7 @@
 }
 
 .rpl-edit-mode {
-	display: flex;
+	display: none;
 	align-items: center;
 	gap: 10px;
 }
@@ -2982,6 +2997,7 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	margin-inline-start: auto;
 }
 
 .doc-btn-submit::before {

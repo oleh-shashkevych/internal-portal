@@ -1043,6 +1043,7 @@
 
 .lga-edit {
     display: none;
+    width: 100%;
 }
 
 .is-editing .lga-view {
@@ -1223,6 +1224,7 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
     align-self: flex-start;
+    margin-top: 8px;
 }
 
 .lga-btn-generate:hover {
