@@ -1490,7 +1490,13 @@ document.addEventListener('DOMContentLoaded', function () {
         data: [{ itm_id: '24', payment_date: '05/16/2024', payment_amount: '28,000.00', payment_type: 'Ria', payment_details: 'This Text message 2', deals_paid: [{ name: 'Item Name Text 4882345657568', url: 'pathto?itm=877' }] }]
     };
 
-    const dealsPaidData = [{ id: '10', name: 'David Bechtel Photography Dba Loft Creative Group #1' }, { id: '11', name: 'Carlie Care Kids Inc #1' }];
+    const dealsPaidData = [
+        { id: '10', name: 'Item Name Text 4882345657568' },
+        { id: '11', name: 'Item Name Text 675678356' },
+        { id: '12', name: 'Item Name Text 4356347889769' },
+        { id: '13', name: 'Item Name Text 789789' }
+    ];
+
     let currentYear = '2025';
     const dataByYear = { '2025': jsonData_2025 };
 
@@ -1505,7 +1511,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const payAddPopup = document.getElementById('payAddPopup');
     const payDeleteOverlay = document.getElementById('payDeleteOverlay');
     const payDeletePopup = document.getElementById('payDeletePopup');
+
     let currentDeleteId = null;
+    let activePayEditRow = null; // Флаг для режима редактирования
 
     initYearDropdown();
     renderData();
@@ -1514,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', function () {
     payYearSelector.addEventListener('click', (e) => {
         e.stopPropagation();
         payYearDropdown.classList.toggle('active');
-        payYearArrow.style.transform = payYearDropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        if (payYearArrow) payYearArrow.style.transform = payYearDropdown.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
     });
 
     payYearList.addEventListener('click', (e) => {
@@ -1570,57 +1578,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 return found ? found.id : null;
             }).filter(Boolean) : [];
 
-            const listOptionsHtml = dealsPaidData.map(d => {
-                const isSelected = selectedDealIds.includes(d.id);
-                return `<li data-id="${d.id}" data-name="${d.name}" class="${isSelected ? 'selected' : ''}"><div class="pay-checkbox-custom"></div>${d.name}</li>`;
-            }).join('');
-
-            const tagsHtml = selectedDealIds.map(id => {
-                const deal = dealsPaidData.find(d => String(d.id) === String(id));
-                return deal ? `<div class="pay-tag"><span>${deal.name}</span><span class="pay-tag-remove" data-id="${deal.id}">×</span></div>` : '';
-            }).join('');
-
+            // Убрали инлайн инпуты, оставили только отображение (pay-view)
             row.innerHTML = `
                 <div class="pay-cell" data-field="payment_date">
-                    <div class="pay-view">${item.payment_date}</div>
-                    <div class="pay-edit" style="width: 100%;">
-                        <div class="custom-calendar"><span>${item.payment_date}</span></div>
-                    </div>
+                    <div class="pay-view pay-val">${item.payment_date}</div>
                 </div>
-                <div class="pay-cell">
-                    <div class="pay-view">$${item.payment_amount}</div>
-                    <div class="pay-edit"><input type="text" class="pay-input pay-edit-amount mask-amount" value="${item.payment_amount.replace(/,/g, '')}" required></div>
+                <div class="pay-cell" data-field="payment_amount">
+                    <div class="pay-view pay-val">$${item.payment_amount}</div>
                 </div>
-                <div class="pay-cell">
-                    <div class="pay-view">${item.payment_type}</div>
-                    <div class="pay-edit">
-                        <select class="pay-input pay-edit-type" style="cursor:pointer;" required>
-                            <option value="Payroll" ${item.payment_type === 'Payroll' ? 'selected' : ''}>Payroll</option>
-                            <option value="Paypal" ${item.payment_type === 'Paypal' ? 'selected' : ''}>Paypal</option>
-                            <option value="Ria" ${item.payment_type === 'Ria' ? 'selected' : ''}>Ria</option>
-                            <option value="Payoneer" ${item.payment_type === 'Payoneer' ? 'selected' : ''}>Payoneer</option>
-                        </select>
-                    </div>
+                <div class="pay-cell" data-field="payment_type">
+                    <div class="pay-view pay-val">${item.payment_type}</div>
                 </div>
-                <div class="pay-cell">
+                <div class="pay-cell" data-field="payment_details">
                     <div class="pay-view">
                         <div class="pay-notes-wrapper">
-                            <div>${item.payment_details}</div>
+                            <div class="pay-val">${item.payment_details}</div>
                             ${linksHtml}
                             ${btnHtml}
-                        </div>
-                    </div>
-                    <div class="pay-edit">
-                        <textarea class="pay-textarea pay-edit-details" rows="2" required>${item.payment_details}</textarea>
-                        <div class="pay-multiselect-wrapper" style="margin-top: 5px;">
-                            <div class="pay-multiselect-box">
-                                <input type="text" class="pay-multiselect-search" placeholder="Search options...">
-                                <div class="pay-multiselect-tags">${tagsHtml}</div>
-                            </div>
-                            <div class="pay-multiselect-dropdown">
-                                <ul class="pay-multiselect-list">${listOptionsHtml}</ul>
-                            </div>
-                            <input type="hidden" class="pay-edit-deals-hidden" value='${JSON.stringify(selectedDealIds)}'>
+                            <input type="hidden" class="pay-deals-hidden" value='${JSON.stringify(selectedDealIds)}'>
                         </div>
                     </div>
                 </div>
@@ -1629,25 +1604,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button class="pay-icon-btn pay-icon-btn-edit"></button>
                         <button class="pay-icon-btn pay-icon-btn-delete"></button>
                     </div>
-                    <div class="pay-edit pay-edit-actions">
-                        <button class="pay-btn-save">Save</button>
-                        <button class="pay-btn-cancel">Cancel</button>
-                    </div>
                 </div>
             `;
             payTableBody.appendChild(row);
         });
-
-        initAllCustomDatePickers(payTableBody);
-        applyMasks(payTableBody); // Активация масок
     }
 
+    // Обработка кликов в таблице (Открытие попапа на Edit)
     payTableBody.addEventListener('click', (e) => {
         const btnMore = e.target.closest('.pay-btn-more');
         const btnEdit = e.target.closest('.pay-icon-btn-edit');
-        const btnCancel = e.target.closest('.pay-btn-cancel');
-        const btnSave = e.target.closest('.pay-btn-save');
         const btnDelete = e.target.closest('.pay-icon-btn-delete');
+        const row = e.target.closest('.pay-row');
 
         if (btnMore) {
             btnMore.classList.toggle('is-active');
@@ -1656,57 +1624,64 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (btnEdit) {
-            const row = btnEdit.closest('.pay-row');
-            row.classList.add('is-editing', 'is-active-row');
-        }
+            e.preventDefault();
+            activePayEditRow = row;
+            row.classList.add('is-active-row'); // Подсвечиваем строку
 
-        if (btnCancel) {
-            renderData(); // Перерисовываем для сброса
-        }
+            const date = row.querySelector('[data-field="payment_date"] .pay-val').textContent.trim();
+            const amount = row.querySelector('[data-field="payment_amount"] .pay-val').textContent.replace('$', '').trim();
+            const type = row.querySelector('[data-field="payment_type"] .pay-val').textContent.trim();
+            const details = row.querySelector('[data-field="payment_details"] .pay-val').textContent.trim();
+            const dealsHidden = row.querySelector('.pay-deals-hidden').value;
 
-        if (btnSave) {
-            const row = btnSave.closest('.pay-row');
-            const inputs = row.querySelectorAll('.pay-input, .pay-textarea');
-            if (!validateFormFields(Array.from(inputs))) return;
-            saveInlineEdit(e);
+            // Заполняем форму
+            const calendarSpan = document.querySelector('#payAddForm .custom-calendar span');
+            if (calendarSpan) calendarSpan.textContent = date;
+            const hiddenDateInput = document.querySelector('#payAddForm [data-field="addDate"] input');
+            if (hiddenDateInput) {
+                hiddenDateInput.value = date;
+                if (hiddenDateInput._flatpickr) hiddenDateInput._flatpickr.setDate(date);
+            }
+
+            document.getElementById('payAddAmount').value = amount;
+            document.getElementById('payAddType').value = type;
+            document.getElementById('payAddDetails').value = details;
+
+            const countDisplay = document.getElementById('payAddCharCount');
+            if (countDisplay) countDisplay.textContent = `${500 - details.length} characters left`;
+
+            // Обновляем выбранные Deals
+            let selectedDeals = [];
+            try { selectedDeals = JSON.parse(dealsHidden); } catch (err) { }
+
+            const list = document.querySelector('#payAddDealsWrapper .options-listPay');
+            list.querySelectorAll('li .checkbox').forEach(cb => cb.classList.remove('active'));
+
+            selectedDeals.forEach(id => {
+                const li = list.querySelector(`li[data-id="${id}"]`);
+                if (li) li.querySelector('.checkbox').classList.add('active');
+            });
+            updateMultiselectTags(document.getElementById('payAddDealsWrapper'));
+
+            document.getElementById('payPopupTitle').textContent = "EDIT PAYMENT";
+
+            payAddOverlay.classList.add('active');
+            payAddPopup.classList.add('active');
         }
 
         if (btnDelete) {
-            const row = btnDelete.closest('.pay-row');
+            e.preventDefault();
             currentDeleteId = row.getAttribute('data-id');
+            activePayEditRow = row;
+            row.classList.add('is-deleting-row');
+
             payDeleteOverlay.classList.add('active');
             payDeletePopup.classList.add('active');
         }
     });
 
-    function saveInlineEdit(e) {
-        const row = e.target.closest('.pay-row');
-        const id = row.getAttribute('data-id');
-        const item = dataByYear[currentYear].data.find(d => String(d.itm_id) === String(id));
 
-        if (item) {
-            const dateInput = row.querySelector('.pay-input.pay-edit-date')?.value || row.querySelector('.custom-calendar input')?.value;
-            const amountInput = row.querySelector('.pay-edit-amount').value;
-            const typeInput = row.querySelector('.pay-edit-type').value;
-            const detailsInput = row.querySelector('.pay-edit-details').value;
-            const dealsHidden = row.querySelector('.pay-edit-deals-hidden').value;
-
-            const selectedDealIds = JSON.parse(dealsHidden || '[]');
-            const dealsObj = selectedDealIds.map(dealId => {
-                const deal = dealsPaidData.find(d => String(d.id) === String(dealId));
-                return { name: deal.name, url: '#' };
-            });
-
-            if (dateInput) item.payment_date = dateInput;
-            item.payment_amount = amountInput;
-            item.payment_type = typeInput;
-            item.payment_details = detailsInput;
-            item.deals_paid = dealsObj;
-
-            renderData();
-        }
-    }
-
+    /* ФОРМА И ПОПАПЫ */
     const addForm = document.getElementById('payAddForm');
     const addAmount = document.getElementById('payAddAmount');
     const addDetails = document.getElementById('payAddDetails');
@@ -1719,60 +1694,83 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateAddPopupList() {
-        const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
+        const list = document.querySelector('#payAddDealsWrapper .options-listPay');
         if (!list) return;
         dealsPaidData.forEach(deal => {
             const li = document.createElement('li');
             li.setAttribute('data-id', deal.id);
             li.setAttribute('data-name', deal.name);
-            li.innerHTML = `<div class="pay-checkbox-custom"></div>${deal.name}`;
+            // НОВЫЙ ДИЗАЙН ЧЕКБОКСОВ:
+            li.innerHTML = `<div class="checkbox"></div>${deal.name}`;
             list.appendChild(li);
         });
     }
 
-    document.getElementById('payOpenAddBtn')?.addEventListener('click', () => {
-        addForm.reset();
-        addCharCount.textContent = '500 characters left';
-        addForm.querySelectorAll('input, select, textarea').forEach(i => i.style.borderColor = '');
+    function resetPayForm() {
+        if (addForm) {
+            addForm.reset();
+            addForm.querySelectorAll('input, select, textarea').forEach(i => i.style.borderColor = '');
+        }
+        if (addCharCount) addCharCount.textContent = '500 characters left';
 
-        const tags = document.querySelector('#payAddDealsWrapper .pay-multiselect-tags');
-        const list = document.querySelector('#payAddDealsWrapper .pay-multiselect-list');
+        const tags = document.querySelector('#payAddDealsWrapper .select-input');
+        const list = document.querySelector('#payAddDealsWrapper .options-listPay');
         const hidden = document.getElementById('payAddDeals');
-        if (tags) tags.innerHTML = '';
-        if (hidden) hidden.value = '';
-        if (list) list.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
 
+        if (tags) {
+            tags.querySelectorAll('.selected-item').forEach(el => el.remove());
+        }
+        if (hidden) hidden.value = '';
+        if (list) list.querySelectorAll('.checkbox').forEach(cb => cb.classList.remove('active'));
+
+        const calendarSpan = document.querySelector('#payAddForm .custom-calendar span');
+        if (calendarSpan) calendarSpan.textContent = '-';
+        const hiddenDateInput = document.querySelector('#payAddForm [data-field="addDate"] input');
+        if (hiddenDateInput && hiddenDateInput._flatpickr) hiddenDateInput._flatpickr.clear();
+    }
+
+    function closePayModals() {
+        payAddOverlay.classList.remove('active');
+        payAddPopup.classList.remove('active');
+        payDeleteOverlay.classList.remove('active');
+        payDeletePopup.classList.remove('active');
+
+        if (activePayEditRow) {
+            activePayEditRow.classList.remove('is-active-row', 'is-deleting-row');
+            activePayEditRow = null;
+        }
+        currentDeleteId = null;
+        resetPayForm();
+    }
+
+    document.getElementById('payOpenAddBtn')?.addEventListener('click', () => {
+        activePayEditRow = null;
+        resetPayForm();
+        document.getElementById('payPopupTitle').textContent = "ADD NEW";
         payAddOverlay.classList.add('active');
         payAddPopup.classList.add('active');
     });
 
-    document.getElementById('payCloseAddBtn')?.addEventListener('click', () => {
-        payAddOverlay.classList.remove('active');
-        payAddPopup.classList.remove('active');
-    });
+    document.getElementById('payCloseAddBtn')?.addEventListener('click', closePayModals);
 
+    // Сохранение (Срабатывает и на Add New, и на Edit)
     addForm?.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        let dateInput = document.getElementById('payAddDate');
-        if (!dateInput) {
-            dateInput = addForm.querySelector('[data-field="addDate"] input');
-        }
-
+        let dateInput = document.querySelector('#payAddForm [data-field="addDate"] input');
         const typeInput = document.getElementById('payAddType');
         const detailsInput = addDetails;
 
-        addAmount.classList.add('mask-amount'); // Чтобы маска применилась, если еще не применена
+        addAmount.classList.add('mask-amount');
 
         // ВАЛИДАЦИЯ
         if (!validateFormFields([addAmount, typeInput, detailsInput])) return;
 
+        const calendarBox = addForm.querySelector('.custom-calendar');
         if (!dateInput || !dateInput.value || dateInput.value === '-') {
-            const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
             if (calendarBox) calendarBox.style.borderColor = '#FF496B';
             return;
         } else {
-            const calendarBox = addForm.querySelector('[data-field="addDate"] .custom-calendar');
             if (calendarBox) calendarBox.style.borderColor = '#159C2A';
         }
 
@@ -1787,112 +1785,134 @@ document.addEventListener('DOMContentLoaded', function () {
             return { name: deal ? deal.name : 'Unknown', url: '#' };
         });
 
-        const newItem = {
-            itm_id: Date.now().toString(),
-            payment_date: dateInput.value,
-            payment_amount: addAmount.value,
-            payment_type: typeInput.value,
-            payment_details: detailsInput.value,
-            deals_paid: dealsObj
-        };
+        if (activePayEditRow) {
+            // UPDATE ROW
+            const id = activePayEditRow.getAttribute('data-id');
+            const item = dataByYear[currentYear].data.find(d => String(d.itm_id) === String(id));
 
-        if (!dataByYear[currentYear]) dataByYear[currentYear] = { data: [] };
-        dataByYear[currentYear].data.unshift(newItem);
+            if (item) {
+                item.payment_date = dateInput.value;
+                item.payment_amount = addAmount.value;
+                item.payment_type = typeInput.value;
+                item.payment_details = detailsInput.value;
+                item.deals_paid = dealsObj;
+            }
+        } else {
+            // CREATE ROW
+            const newItem = {
+                itm_id: Date.now().toString(),
+                payment_date: dateInput.value,
+                payment_amount: addAmount.value,
+                payment_type: typeInput.value,
+                payment_details: detailsInput.value,
+                deals_paid: dealsObj
+            };
+            if (!dataByYear[currentYear]) dataByYear[currentYear] = { data: [] };
+            dataByYear[currentYear].data.unshift(newItem);
+        }
 
         renderData();
-
-        payAddOverlay.classList.remove('active');
-        payAddPopup.classList.remove('active');
-        addForm.reset();
-        const calendarSpan = addForm.querySelector('.custom-calendar span');
-        if (calendarSpan) calendarSpan.textContent = '-';
+        closePayModals();
     });
 
-    // Multiselect Listeners...
+
+    // --- ЛОГИКА НОВОГО МУЛЬТИСЕЛЕКТА ---
     document.addEventListener('click', (e) => {
-        const searchInput = e.target.closest('.pay-multiselect-search');
-        if (searchInput) return;
-
-        const box = e.target.closest('.pay-multiselect-box');
-        if (box) {
-            const wrapper = box.closest('.pay-multiselect-wrapper');
-            const dropdown = wrapper.querySelector('.pay-multiselect-dropdown');
-
-            document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => {
-                if (d !== dropdown) d.classList.remove('active');
-            });
-            document.querySelectorAll('.pay-multiselect-box').forEach(b => {
-                if (b !== box) b.classList.remove('is-focused');
-            });
-
-            dropdown.classList.add('active');
-            box.classList.add('is-focused');
-            box.querySelector('.pay-multiselect-search').focus();
-            e.stopPropagation();
-            return;
-        }
-
-        const listItem = e.target.closest('.pay-multiselect-list li');
-        if (listItem) {
-            e.stopPropagation();
-            listItem.classList.toggle('selected');
-            updateMultiselectTags(listItem.closest('.pay-multiselect-wrapper'));
-            return;
-        }
-
+        // 1. Обработка удаления тега (клик по крестику)
+        // Выносим эту проверку наверх, чтобы она срабатывала первой
         if (e.target.classList.contains('pay-tag-remove')) {
             e.stopPropagation();
             const id = e.target.getAttribute('data-id');
             const wrapper = e.target.closest('.pay-multiselect-wrapper');
-            const li = wrapper.querySelector(`li[data-id="${id}"]`);
-            if (li) li.classList.remove('selected');
-            updateMultiselectTags(wrapper);
+
+            if (wrapper) {
+                // Находим нужный li по data-id и снимаем класс .active с чекбокса
+                const li = wrapper.querySelector(`.options-listPay li[data-id="${id}"]`);
+                if (li) {
+                    const checkbox = li.querySelector('.checkbox');
+                    if (checkbox) checkbox.classList.remove('active');
+                }
+                // Перерисовываем теги без удаленного
+                updateMultiselectTags(wrapper);
+            }
             return;
         }
 
-        document.querySelectorAll('.pay-multiselect-dropdown').forEach(d => d.classList.remove('active'));
-        document.querySelectorAll('.pay-multiselect-box').forEach(b => b.classList.remove('is-focused'));
+        const wrapper = e.target.closest('.pay-multiselect-wrapper');
+        const dropdowns = document.querySelectorAll('.options-listPay');
 
-        const yearDropdown = document.getElementById('payYearDropdown');
-        const yearArrow = document.getElementById('payYearArrow');
+        // 2. Закрытие списка при клике вне элемента
+        if (!wrapper) {
+            dropdowns.forEach(d => d.classList.remove('show'));
+            return;
+        }
 
-        if (yearDropdown) yearDropdown.classList.remove('active');
-        if (yearArrow) yearArrow.style.transform = 'rotate(0deg)';
+        const dropdown = wrapper.querySelector('.options-listPay');
+        const searchInput = wrapper.querySelector('.search-box');
+
+        // 3. Открытие по клику на поле ввода (.select-input)
+        if (e.target.closest('.select-input')) {
+            dropdown.classList.add('show');
+            if (searchInput && e.target !== searchInput) searchInput.focus();
+            return;
+        }
+
+        // 4. Обработка клика по опции списка (ставим/снимаем галочку)
+        const listItem = e.target.closest('.options-listPay li');
+        if (listItem) {
+            e.stopPropagation();
+            const checkbox = listItem.querySelector('.checkbox');
+            if (checkbox) checkbox.classList.toggle('active');
+            updateMultiselectTags(wrapper);
+            // Не закрываем дропдаун для возможности множественного выбора
+            return;
+        }
     });
 
+    // Живой поиск
     document.addEventListener('input', (e) => {
-        if (e.target.classList.contains('pay-multiselect-search')) {
+        if (e.target.classList.contains('search-box')) {
             const val = e.target.value.toLowerCase();
-            const list = e.target.closest('.pay-multiselect-wrapper').querySelector('.pay-multiselect-list');
+            const list = e.target.closest('.pay-multiselect-wrapper').querySelector('.options-listPay');
             list.querySelectorAll('li').forEach(li => {
-                li.style.display = li.textContent.toLowerCase().includes(val) ? 'flex' : 'none';
+                const text = li.getAttribute('data-name').toLowerCase();
+                li.style.display = text.includes(val) ? 'flex' : 'none';
             });
         }
     });
 
+    // Функция обновления визуальных тегов
     function updateMultiselectTags(wrapper) {
-        const tagsContainer = wrapper.querySelector('.pay-multiselect-tags');
+        const tagsContainer = wrapper.querySelector('.select-input');
         const hiddenInput = wrapper.querySelector('input[type="hidden"]');
-        const selectedLis = wrapper.querySelectorAll('.pay-multiselect-list li.selected');
+        const activeCheckboxes = wrapper.querySelectorAll('.options-listPay li .checkbox.active');
 
-        tagsContainer.innerHTML = '';
+        // Remove old tags to prevent duplicates
+        tagsContainer.querySelectorAll('.selected-item').forEach(el => el.remove());
+
         const ids = [];
 
-        selectedLis.forEach(li => {
+        activeCheckboxes.forEach(checkbox => {
+            const li = checkbox.closest('li');
             const id = li.getAttribute('data-id');
             const name = li.getAttribute('data-name');
             ids.push(id);
+
             const tag = document.createElement('div');
-            tag.className = 'pay-tag';
-            tag.innerHTML = `<span>${name}</span><span class="pay-tag-remove" data-id="${id}">×</span>`;
+            tag.className = 'selected-item';
+            tag.innerHTML = `${name} <span class="pay-tag-remove" data-id="${id}">&#10005;</span>`;
+
+            // Append tag to the end of the container (AFTER the search input)
             tagsContainer.appendChild(tag);
         });
 
         if (hiddenInput) hiddenInput.value = JSON.stringify(ids);
     }
 
-    document.getElementById('payCancelDeleteBtn')?.addEventListener('click', closeDeleteModal);
-    document.getElementById('payCloseDeleteBtn')?.addEventListener('click', closeDeleteModal);
+    // --- УДАЛЕНИЕ ИНВОЙСА ---
+    document.getElementById('payCancelDeleteBtn')?.addEventListener('click', closePayModals);
+    document.getElementById('payCloseDeleteBtn')?.addEventListener('click', closePayModals);
+
     document.getElementById('payConfirmDeleteBtn')?.addEventListener('click', () => {
         if (currentDeleteId) {
             const dataArr = dataByYear[currentYear].data;
@@ -1901,16 +1921,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 dataArr.splice(index, 1);
                 renderData();
             }
-            closeDeleteModal();
+            closePayModals();
         }
     });
 
-    function closeDeleteModal() {
-        payDeleteOverlay.classList.remove('active');
-        payDeletePopup.classList.remove('active');
-        currentDeleteId = null;
-    }
-
-    if (payAddPopup) initAllCustomDatePickers(payAddPopup);
-    initAllCustomDatePickers(document.getElementById('payAddPopup'));
 });

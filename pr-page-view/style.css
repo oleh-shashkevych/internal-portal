@@ -3893,3 +3893,111 @@
 #payDeletePopup {
 	text-align: center;
 }
+
+.options-list,
+.options-listPay {
+	position: absolute;
+	top: calc(100% + 5px);
+	left: 0;
+	right: 0;
+	border: 1px solid #D0D3D1;
+	border-radius: 3px;
+	background: #fff;
+	max-height: 150px;
+	overflow-y: auto;
+	z-index: 100;
+	display: none;
+}
+
+
+.options-list li,
+.options-listPay li {
+	padding: 8px 10px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+
+.options-list li:hover,
+.options-listPay li:hover {
+	background-color: #ddf1e1;
+}
+
+
+.options-list.show,
+.options-listPay.show {
+	display: block;
+}
+
+
+.select-input {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	min-height: 42px;
+	width: 100%;
+	padding: 10px 6px;
+	border: 1px solid #D0D3D1;
+	background-color: transparent;
+	border-radius: 3px;
+	font-size: 14px;
+	line-height: 20px;
+	font-family: 'Urbanist', sans-serif;
+	color: rgba(35, 35, 35, 0.8);
+	box-sizing: border-box;
+}
+
+
+.selected-item {
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	background-color: #ddf1e1;
+	border: 1px solid #D0D3D1;
+	font-size: 15px;
+	border-radius: 5px;
+	padding-left: 3px;
+	width: fit-content;
+}
+
+
+.selected-item span {
+	background: transparent;
+	color: #999;
+	width: 20px;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
+	cursor: pointer;
+	font-size: 15px;
+	border-left: 1px solid #999;
+}
+
+
+.checkbox {
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	background-color: #ffffff;
+	border: 1px solid #159c2a;
+	position: relative;
+	transform: translateY(1px);
+}
+
+.checkbox.active {
+	background: url('../assets/images/checkbox-icon.svg');
+	border: none;
+}
+
+.selected {
+	background-color: #ddf1e1;
+}
+
+.search-box {
+	background: transparent !important;
+}

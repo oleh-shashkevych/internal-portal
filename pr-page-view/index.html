@@ -2875,9 +2875,8 @@
 	<div class="popup-overlay" id="payAddOverlay"></div>
 	<div class="popup" id="payAddPopup">
 		<div class="popup-top">
-			<h2>ADD NEW</h2>
-			<button class="popup-close" id="payCloseAddBtn">
-			</button>
+			<h2 id="payPopupTitle">ADD NEW</h2>
+			<button class="popup-close" id="payCloseAddBtn"></button>
 		</div>
 		<form id="payAddForm">
 			<div class="form-group" data-field="addDate">
@@ -2888,7 +2887,7 @@
 			</div>
 			<div class="form-group">
 				<label class="label">Payment Amount*</label>
-				<input type="text" id="payAddAmount" class="input" required placeholder="0.00">
+				<input type="text" id="payAddAmount" class="input mask-amount" required placeholder="0.00">
 			</div>
 			<div class="form-group">
 				<label class="label">Payment Type*</label>
@@ -2905,20 +2904,19 @@
 				<textarea id="payAddDetails" class="pay-textarea" required maxlength="500"></textarea>
 				<span class="pay-char-count" id="payAddCharCount">500 characters left</span>
 			</div>
+
 			<div class="form-group">
 				<label class="label">Deals Paid</label>
 				<div class="pay-multiselect-wrapper" id="payAddDealsWrapper">
-					<div class="pay-multiselect-box">
-						<input type="text" class="pay-multiselect-search" placeholder="Search options...">
-						<div class="pay-multiselect-tags"></div>
+					<div class="select-input">
+						<input type="text" class="search-box pay-multiselect-search" placeholder="Search options...">
 					</div>
-					<div class="pay-multiselect-dropdown">
-						<ul class="pay-multiselect-list"></ul>
-					</div>
+					<ul class="options-listPay"></ul>
 					<input type="hidden" id="payAddDeals">
 				</div>
 			</div>
-			<button type="submit" class="pay-btn-submit-full">Add New</button>
+
+			<button type="submit" class="pay-btn-submit-full">Save</button>
 		</form>
 	</div>
 
