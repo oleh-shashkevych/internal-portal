@@ -265,7 +265,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     document.getElementById('lgvInvCloseAddBtn')?.addEventListener('click', closeAddPopup);
-    lgvInvAddOverlay?.addEventListener('click', closeAddPopup);
 
     // Додавання нового інвойсу
     lgvInvAddForm?.addEventListener('submit', (e) => {

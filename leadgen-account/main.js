@@ -234,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     document.getElementById('lgaCloseAddBtn')?.addEventListener('click', closeAllModals);
+    document.getElementById('lgaCloseDeleteBtn')?.addEventListener('click', closeAllModals);
     document.getElementById('lgaCancelDeleteBtn')?.addEventListener('click', closeAllModals);
-    lgaOverlay?.addEventListener('click', closeAllModals);
 
     document.getElementById('lgaConfirmDeleteBtn')?.addEventListener('click', () => {
         if (activeDeleteRow) {

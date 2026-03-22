@@ -2065,30 +2065,60 @@
 	background: #007E05;
 }
 
-.cr-btn-black {
-	background: #232323;
+.cr-btn-red,
+.ab-btn-red {
+	background: #FF0000;
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 10px 35px;
+	padding: 5px 23px;
 	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
-	font-weight: 600;
-	cursor: pointer;
-}
-
-.cr-btn-red {
-	background: #F04539;
-	color: #FFF;
-	border: none;
-	border-radius: 3px;
-	padding: 10px 35px;
-	font-family: 'Urbanist', sans-serif;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
+	gap: 10px;
+	height: 40px;
+}
+
+.cr-btn-red:hover,
+.ab-btn-red:hover {
+	background: #FF3535;
+}
+
+.cr-btn-red::before,
+.ab-btn-red::before {
+	content: '';
+	background-image: url("data:image/svg+xml,%3Csvg width='16' height='17' viewBox='0 0 16 17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.53906 0C10.3901 0 11.0857 0.694945 11.0859 1.5459V3.55762H16V4.98535H14.0469V14.2627C14.0467 15.6852 12.8903 16.8408 11.4678 16.8408H3.93457C2.51202 16.8408 1.35561 15.6852 1.35547 14.2627V4.9834H0V3.55664H4.32227V1.5459C4.32249 0.694945 5.01814 0 5.86914 0H9.53906ZM2.78613 14.2607C2.78624 14.8953 3.30199 15.4121 3.9375 15.4121H11.4688C12.1031 15.4119 12.619 14.8961 12.6191 14.2607V4.9834H2.78613V14.2607ZM6.93262 12.7783H5.50488V7.53125H6.93262V12.7783ZM10.1934 12.7783H8.76562V7.53125H10.1934V12.7783ZM5.86914 1.42773C5.80238 1.42773 5.75022 1.4792 5.75 1.5459V3.55664H9.6582V1.5459C9.65799 1.4792 9.60583 1.42773 9.53906 1.42773H5.86914Z' fill='white'/%3E%3C/svg%3E%0A");
+	width: 16px;
+	height: 17px;
+	display: block;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.cr-btn-grey,
+.ab-btn-grey {
+	background: #232323;
+	color: #FFF;
+	border: none;
+	border-radius: 3px;
+	padding: 5px 23px;
+	font-family: 'Urbanist', sans-serif;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 40px;
+}
+
+.cr-btn-grey:hover,
+.ab-btn-grey:hover {
+	background: #4C4C4C;
 }
 
 @media screen and (max-width: 768px) {
@@ -3612,27 +3642,54 @@
 }
 
 .pay-btn-red {
-	background: #F44336;
+	background: #FF0000;
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 10px 30px;
+	padding: 5px 23px;
 	font-family: 'Urbanist', sans-serif;
 	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 40px;
+}
+
+.pay-btn-red:hover {
+	background: #FF3535;
+}
+
+.pay-btn-red::before {
+	content: '';
+	background-image: url("data:image/svg+xml,%3Csvg width='16' height='17' viewBox='0 0 16 17' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9.53906 0C10.3901 0 11.0857 0.694945 11.0859 1.5459V3.55762H16V4.98535H14.0469V14.2627C14.0467 15.6852 12.8903 16.8408 11.4678 16.8408H3.93457C2.51202 16.8408 1.35561 15.6852 1.35547 14.2627V4.9834H0V3.55664H4.32227V1.5459C4.32249 0.694945 5.01814 0 5.86914 0H9.53906ZM2.78613 14.2607C2.78624 14.8953 3.30199 15.4121 3.9375 15.4121H11.4688C12.1031 15.4119 12.619 14.8961 12.6191 14.2607V4.9834H2.78613V14.2607ZM6.93262 12.7783H5.50488V7.53125H6.93262V12.7783ZM10.1934 12.7783H8.76562V7.53125H10.1934V12.7783ZM5.86914 1.42773C5.80238 1.42773 5.75022 1.4792 5.75 1.5459V3.55664H9.6582V1.5459C9.65799 1.4792 9.60583 1.42773 9.53906 1.42773H5.86914Z' fill='white'/%3E%3C/svg%3E%0A");
+	width: 16px;
+	height: 17px;
+	display: block;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
 }
 
 .pay-btn-grey {
-	background: #808080;
+	background: #232323;
 	color: #FFF;
 	border: none;
 	border-radius: 3px;
-	padding: 10px 30px;
+	padding: 5px 23px;
 	font-family: 'Urbanist', sans-serif;
 	font-size: 15px;
 	font-weight: 600;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: 40px;
+}
+
+.pay-btn-grey:hover {
+	background: #4C4C4C;
 }
 
 /* НОВЫЙ МУЛЬТИСЕЛЕКТ ДЛЯ ИНЛАЙН И ПОПАПОВ */
@@ -3811,4 +3868,8 @@
 	font-family: 'Urbanist', sans-serif;
 	font-size: 14px;
 	color: #232323;
+}
+
+#payDeletePopup {
+	text-align: center;
 }

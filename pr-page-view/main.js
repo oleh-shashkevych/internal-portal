@@ -254,6 +254,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let activeConvertRow = null;
 
+    // Variables for delete popup
+    let activeAbDeleteRow = null;
+    const abDeleteOverlay = document.getElementById('abDeleteOverlay');
+    const abDeletePopup = document.getElementById('abDeletePopup');
+
     function clearAddAccountForm() {
         document.getElementById('addFirstName').value = '';
         document.getElementById('addLastName').value = '';
@@ -319,12 +324,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 convertPopup.classList.add('active');
             }
 
-            // if (deleteBtn) {
-            //     if (confirm('Are you sure you want to delete this account?')) {
-            //         const row = deleteBtn.closest('.ab-row');
-            //         if (row) row.remove();
-            //     }
-            // }
+            if (deleteBtn) {
+                e.preventDefault();
+                activeAbDeleteRow = deleteBtn.closest('.ab-row');
+
+                if (abDeleteOverlay && abDeletePopup) {
+                    abDeleteOverlay.classList.add('active');
+                    abDeletePopup.classList.add('active');
+                }
+            }
         });
     }
 
@@ -475,6 +483,25 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleEyeBtn.classList.toggle('is-visible');
         });
     }
+
+    // Function to close the delete modal and clear active row
+    function closeAbDeleteModal() {
+        if (abDeleteOverlay) abDeleteOverlay.classList.remove('active');
+        if (abDeletePopup) abDeletePopup.classList.remove('active');
+        activeAbDeleteRow = null;
+    }
+
+    // Event listeners for closing the modal
+    document.getElementById('abCloseDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
+    document.getElementById('abCancelDeleteBtn')?.addEventListener('click', closeAbDeleteModal);
+
+    // Event listener for confirming deletion
+    document.getElementById('abConfirmDeleteBtn')?.addEventListener('click', () => {
+        if (activeAbDeleteRow) {
+            activeAbDeleteRow.remove();
+            closeAbDeleteModal();
+        }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1739,6 +1766,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Delete Modal Confirmation
     document.getElementById('payCancelDeleteBtn')?.addEventListener('click', closeDeleteModal);
+    document.getElementById('payCloseDeleteBtn')?.addEventListener('click', closeDeleteModal);
     document.getElementById('payConfirmDeleteBtn')?.addEventListener('click', () => {
         if (currentDeleteId) {
             const dataArr = dataByYear[currentYear].data;
